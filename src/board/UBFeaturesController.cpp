@@ -241,7 +241,7 @@ QString UBFeature::getNameFromVirtualPath(const QString &pVirtPath)
     QString result;
     int slashPos = pVirtPath.lastIndexOf("/");
     if (slashPos != -1) {
-        result = pVirtPath.right(pVirtPath.count() - slashPos - 1);
+        result = pVirtPath.right(pVirtPath.length() - slashPos - 1);
     } else {
         qDebug() << "UBFeature: incorrect virtual path parameter specified";
     }
@@ -441,7 +441,7 @@ void UBFeaturesController::scanFS()
     }
 
     QSet<QUrl> favoriteDocumentsToRemove;
-    for (auto&& favoriteElement : qAsConst(*favoriteSet))
+    for (auto&& favoriteElement : std::as_const(*favoriteSet))
     {
         if (favoriteElement.fileName().endsWith(".rdf"))
         {
@@ -462,7 +462,7 @@ void UBFeaturesController::scanFS()
         }
     }
 
-    for (auto&& favoriteDocumentToRemove : qAsConst(favoriteDocumentsToRemove))
+    for (auto&& favoriteDocumentToRemove : std::as_const(favoriteDocumentsToRemove))
     {
         removeFromFavorite(favoriteDocumentToRemove);
     }
@@ -529,7 +529,7 @@ bool UBFeaturesController::isInFavoriteList(QUrl url)
 
 bool UBFeaturesController::isDocumentInFavoriteList(QString documentFolderName)
 {
-    for(auto&& url : qAsConst(*favoriteSet))
+    for(auto&& url : std::as_const(*favoriteSet))
     {
         QString localFile = url.toLocalFile();
         if (localFile.endsWith(".rdf"))
@@ -546,7 +546,7 @@ bool UBFeaturesController::isDocumentInFavoriteList(QString documentFolderName)
 
 bool UBFeaturesController::isInRecentlyOpenDocuments(QString documentFolderName)
 {
-    for(auto&& url : qAsConst(recentlyOpenDocuments))
+    for(auto&& url : std::as_const(recentlyOpenDocuments))
     {
         QString localFile = url.toLocalFile();
         if (localFile.endsWith(".rdf"))
@@ -611,10 +611,10 @@ QString UBFeaturesController::uniqNameForFeature(const UBFeature &feature, const
             if (!parentVirtualPath.endsWith("/")) {
                 parentVirtualPath.append("/");
             }
-            //Cut virtual path prevfix
+            //Cut virtual path prefix
             int i = curResultName.indexOf(feature.getFullVirtualPath());
             if (i != -1) {
-                curResultName = curResultName.right(curFeature.getFullVirtualPath().count() - i - parentVirtualPath.count());
+                curResultName = curResultName.right(curFeature.getFullVirtualPath().length() - i - parentVirtualPath.length());
             }
             //if directory has children, emptying the name;
             i = curResultName.indexOf("/");
@@ -736,6 +736,24 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
     }
 }
 
+void UBFeaturesController::addUserWidgetToLibrary(const QString &url, const QString &name)
+{
+    UBFeature webFolderFeature(appPath + "/" + tr("Web"), getIcon(appPath + "/" + tr("Web"), FEATURE_FOLDER), tr("Web"), QUrl::fromLocalFile(mUserInteractiveDirectoryPath.toLocalFile() + "/Web"), FEATURE_FOLDER);
+    if (!getFeatures()->contains(webFolderFeature))
+    {
+        featuresModel->addItem(webFolderFeature);
+    }
+
+    UBFeature userWidget(appPath + "/" + tr("Web") + "/" + name, QImage(url + "/icon.png"), name, QUrl::fromLocalFile(url), fileTypeFromUrl(url));
+
+    if (!userWidget.getVirtualPath().isEmpty() && !userWidget.getVirtualPath().isNull())
+    {
+        featuresModel->addItem(userWidget);
+    }
+
+    refreshModels();
+}
+
 void UBFeaturesController::storeAsFavorite(UBFeature feature)
 {
     favoriteSet->insert( feature.getFullPath());
@@ -851,7 +869,7 @@ QString UBFeaturesController::categoryNameForVirtualPath(const QString &str)
     QString result;
     int ind = str.lastIndexOf("/");
     if (ind != -1) {
-        result = str.right(str.count() - ind - 1);
+        result = str.right(str.length() - ind - 1);
     }
     return result;
 }

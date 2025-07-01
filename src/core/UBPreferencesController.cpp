@@ -176,8 +176,6 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
 
     // PDF preferences
-    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), settings->enableQualityLossToIncreaseZoomPerfs, SLOT(setBool(bool)));
-    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), this, SLOT(setPdfZoomBehavior(bool)));
     connect(mPreferencesUI->exportBackgroundGrid, SIGNAL(clicked(bool)), settings->exportBackgroundGrid, SLOT(setBool(bool)));
     connect(mPreferencesUI->exportBackgroundColor, SIGNAL(clicked(bool)), settings->exportBackgroundColor, SLOT(setBool(bool)));
 
@@ -295,8 +293,6 @@ void UBPreferencesController::wire()
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
-
-    connect(mPreferencesUI->checkOpenSankoreAtStartup, SIGNAL(clicked(bool)), settings->appLookForOpenSankoreInstall, SLOT(setBool(bool)));
 }
 
 void UBPreferencesController::init()
@@ -305,7 +301,6 @@ void UBPreferencesController::init()
 
     // about tab
     mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(settings->appEnableAutomaticSoftwareUpdates->get().toBool());
-    mPreferencesUI->checkOpenSankoreAtStartup->setChecked(settings->appLookForOpenSankoreInstall->get().toBool());
 
     // display tab
     for(int i=0; i<mPreferencesUI->keyboardPaletteKeyButtonSize->count(); i++)
@@ -317,7 +312,6 @@ void UBPreferencesController::init()
     mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
     this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
-    mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->get().toBool());
     mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->get().toBool());
     mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->get().toBool());
 
@@ -395,7 +389,6 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->reset().toBool());
         UBApplication::documentController->refreshDateColumns();
 
-        mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->reset().toBool());
         mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->reset().toBool());
         mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->reset().toBool());
 
@@ -450,9 +443,6 @@ void UBPreferencesController::defaultSettings()
     {
         bool defaultValue = settings->appEnableAutomaticSoftwareUpdates->reset().toBool();
         mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(defaultValue);
-
-        defaultValue = settings->appLookForOpenSankoreInstall->reset().toBool();
-        mPreferencesUI->checkOpenSankoreAtStartup->setChecked(defaultValue);
 
     }
     else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->networkTab){
@@ -700,18 +690,6 @@ void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
     mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
 }
 
-void UBPreferencesController::setPdfZoomBehavior(bool checked)
-{
-    if (checked)
-    {
-        UBSettings::settings()->pdfZoomBehavior->setInt(4);// Multithreaded, several steps, downsampled.
-    }
-    else
-    {
-        UBSettings::settings()->pdfZoomBehavior->setInt(0);//Old behavior. To remove if no issues found with the other mode
-    }
-}
-
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
                                                const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
                                                const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
@@ -893,7 +871,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
     const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : qAsConst(mScreenLabels))
+    for (QPushButton* button : std::as_const(mScreenLabels))
     {
         button->setDisabled(screenList.contains(button->property("screenIndex").toString()));
     }
@@ -903,7 +881,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         // create and attach a new QCompleter
         QStringList model;
 
-        for (QPushButton* button : qAsConst(mScreenLabels))
+        for (QPushButton* button : std::as_const(mScreenLabels))
         {
             if (button->isEnabled())
             {

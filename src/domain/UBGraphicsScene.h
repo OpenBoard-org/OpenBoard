@@ -29,6 +29,7 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
 
@@ -100,7 +101,7 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
-    bool zLevelAvailable(qreal z);
+    bool zLevelAvailable(QGraphicsItem* item);
 
 private:
     ScopeMap scopeMap;
@@ -138,9 +139,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease(int tool = -1);
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
 
         void leaveEvent (QEvent* event);
 
@@ -247,6 +248,12 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void addMask(const QPointF &center = QPointF());
         void addCache();
         UBGraphicsCache* graphicsCache();
+
+        bool isSnapping() const;
+        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}, QPointF* gridSnapPoint = nullptr) const;
+        QPointF snap(const std::vector<QPointF>& corners, int* snapIndex = nullptr) const;
+        QPointF snap(const QRectF& rect, Qt::Corner* corner = nullptr) const;
+        static QRectF itemRect(const QGraphicsItem* item);
 
         class SceneViewState
         {
@@ -394,6 +401,9 @@ public slots:
 
         void controlViewportChanged();
 
+signals:
+        void zoomChanged(qreal zoomFactor);
+
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
@@ -465,6 +475,7 @@ public slots:
         QPointF mPreviousPoint;
         qreal mPreviousWidth;
         qreal mDistanceFromLastStrokePoint;
+        QPointF mCurrentPoint;
 
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 

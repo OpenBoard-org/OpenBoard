@@ -82,8 +82,9 @@ class UBBoardController : public UBDocumentContainer
         std::shared_ptr<UBGraphicsScene> activeScene() const;
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
-        QSize controlViewport();
         void closing();
+
+        void reloadThumbnails() override;
 
         int currentPage();
 
@@ -164,6 +165,7 @@ class UBBoardController : public UBDocumentContainer
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
+        void setCursorFromAngle(qreal angle, const QPoint offset = {});
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 
@@ -179,9 +181,8 @@ class UBBoardController : public UBDocumentContainer
 
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &items);
         void ClearUndoStack();
-
-        void setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
-        void setActiveDocumentScene(int pSceneIndex);
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(int pSceneIndex);
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
@@ -192,6 +193,11 @@ class UBBoardController : public UBDocumentContainer
 
         QString actionGroupText(){ return mActionGroupText;}
         QString actionUngroupText(){ return mActionUngroupText;}
+
+        std::shared_ptr<UBGraphicsScene> initialDocumentScene()
+        {
+            return mInitialDocumentScene;
+        }
 
     public slots:
         void showDocumentsDialog();
@@ -320,6 +326,7 @@ class UBBoardController : public UBDocumentContainer
         int mMovingSceneIndex;
         QString mActionGroupText;
         QString mActionUngroupText;
+        std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
 
         QTimer *mAutosaveTimer;
 

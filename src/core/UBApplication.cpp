@@ -45,6 +45,7 @@
 #include "UBPreferencesController.h"
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
+#include "UBShortcutManager.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -57,7 +58,7 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
-#include "gui/UBThumbnailWidget.h"
+#include "gui/UBDocumentThumbnailsView.h"
 #include "gui/UBStartupHintsPalette.h"
 
 #include "ui_mainWindow.h"
@@ -77,6 +78,8 @@ UBWebController* UBApplication::webController = 0;
 UBDocumentController* UBApplication::documentController = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
+
+bool UBApplication::isClosing = false;
 
 const QString UBApplication::mimeTypeUniboardDocument = QString("application/vnd.mnemis-uniboard-document");
 const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mnemis-uniboard-page");
@@ -140,7 +143,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     setStyle("fusion");
 
-    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
+    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationEtcDirectory() + "/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
         setStyleSheet(css);
 
@@ -242,11 +245,14 @@ void UBApplication::setupTranslators(QStringList args)
 
         QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
 
-
-        if(!QFile(qtGuiTranslationPath).exists()){
+        if(!QFile(qtGuiTranslationPath).exists())
+        {
             qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language.left(2));
+
             if(!QFile(qtGuiTranslationPath).exists())
+            {
                 qtGuiTranslationPath = "";
+            }
         }
 
         QLocale locale(language);
@@ -263,17 +269,17 @@ void UBApplication::setupTranslators(QStringList args)
         }
         else
         {
-            loaded = mQtGuiTranslator->load(qtGuiTranslationPath);
+            loaded = mQtGuiTranslator->load(qtGuiTranslationPath, UBPlatformUtils::applicationResourcesDirectory() + "/" + "i18n", "_", ".qm");
         }
 
         if (loaded)
         {
-            qDebug() << "Loaded Qt translations";
+            qDebug() << "Loaded Qt Gui translations";
             installTranslator(mQtGuiTranslator);
         }
         else
         {
-            qDebug() << "Qt gui translation in " << language << " is not available";
+            qWarning() << "Qt gui translations in " << language << " are not available or could not be loaded";
         }
 
         // QtWebEngine translations
@@ -282,12 +288,12 @@ void UBApplication::setupTranslators(QStringList args)
 
         if (loaded)
         {
-            qDebug() << "Loaded QWebengine translations";
+            qDebug() << "Loaded QtWebengine translations";
             installTranslator(qtWebEngineTranslator);
         }
         else
         {
-            qDebug() << "Qt WebEngine translation in " << language << " is not available";
+            qWarning() << "QtWebEngine translations in " << language << " are not available or could not be loaded";
         }
     }
 
@@ -503,6 +509,8 @@ void UBApplication::closeEvent(QCloseEvent *event)
 
 void UBApplication::closing()
 {
+    isClosing = true;
+
     if (UBSettings::settings()->emptyTrashForOlderDocuments->get().toBool())
     {
         UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
@@ -543,7 +551,11 @@ void UBApplication::setDisabled(bool disable)
 
 void UBApplication::decorateActionMenu(QAction* action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject* menuWidget,  action->associatedObjects())
+#else
     foreach(QWidget* menuWidget,  action->associatedWidgets())
+#endif
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -646,14 +658,14 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    if (event->type() == QEvent::TabletLeaveProximity)
+    else if (event->type() == QEvent::TabletLeaveProximity)
     {
         if (boardController && boardController->controlView())
             boardController->controlView()->forcedTabletRelease();
     }
 
 
-    if (event->type() == QEvent::ApplicationActivate)
+    else if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
 
@@ -669,6 +681,31 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
             UBPlatformUtils::showFullScreen(mainWindow);
         }
 #endif
+    }
+
+    else if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        // set snap action when pressing shift while snapping tool is active
+        if (keyEvent->key() == Qt::Key_Shift && UBDrawingController::drawingController()->isSnappingTool())
+        {
+            mainWindow->actionSnap->setChecked(true);
+        }
+    }
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        // intercept key release events for shortcut handler
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        // unset snap action when releasing shift while snapping tool is active
+        if (keyEvent->key() == Qt::Key_Shift && UBDrawingController::drawingController()->isSnappingTool())
+        {
+            mainWindow->actionSnap->setChecked(false);
+        }
+
+        return UBShortcutManager::shortcutManager()->handleKeyReleaseEvent(keyEvent)
+                    || result;
     }
 
     return result;

@@ -151,7 +151,10 @@ void UBBoardController::init()
 
     std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
-    setActiveDocumentScene(doc);
+    if (doc)
+    {
+        mInitialDocumentScene = setActiveDocumentScene(doc);
+    }
 
     connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
         initBackgroundGridSize();
@@ -249,7 +252,7 @@ void UBBoardController::setBoxing(QRect displayRect)
 {
     if (displayRect.isNull())
     {
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        mControlView->setBoxing({});
         return;
     }
 
@@ -275,7 +278,7 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxWidth = 0;
         }
 
-        mControlLayout->setContentsMargins(boxWidth, 0, boxWidth, 0);
+        mControlView->setBoxing({boxWidth, 0, boxWidth, 0});
     }
     else if (displayRatio > controlRatio)
     {
@@ -287,19 +290,58 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxHeight = 0;
         }
 
-        mControlLayout->setContentsMargins(0, boxHeight, 0, boxHeight);
+        mControlView->setBoxing({0, boxHeight, 0, boxHeight});
     }
     else
     {
         // No boxing
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        mControlView->setBoxing({});
     }
 }
 
-
-QSize UBBoardController::controlViewport()
+void UBBoardController::setCursorFromAngle(qreal angle, const QPoint offset)
 {
-    return UBApplication::displayManager->screenSize(ScreenRole::Control);
+        QString displayedAngle = QString::number(angle, 'f', 1);
+        QWidget *controlViewport = controlView()->viewport();
+
+        QSize cursorSize(45,30);
+        QSize bitmapSize = cursorSize;
+        int hotX = -1;
+        int hotY = -1;
+
+        if (!offset.isNull())
+        {
+            bitmapSize.setWidth(std::max(bitmapSize.width(), 2 * std::abs(offset.x())));
+            bitmapSize.setHeight(std::max(bitmapSize.height(), 2 * std::abs(offset.y())));
+            hotX = bitmapSize.width() / 2 - offset.x();
+            hotY = bitmapSize.height() / 2 - offset.y();
+        }
+
+        QSize origin = (bitmapSize - cursorSize) / 2;
+
+        QImage mask_img(bitmapSize, QImage::Format_Mono);
+        mask_img.fill(0xff);
+        QPainter mask_ptr(&mask_img);
+        mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
+        mask_ptr.drawRoundedRect(origin.width(), origin.height(), cursorSize.width()-1, cursorSize.height()-1, 6, 6);
+        QBitmap bmpMask = QBitmap::fromImage(mask_img);
+
+
+        QPixmap pixCursor(bitmapSize);
+        pixCursor.fill(QColor(Qt::white));
+
+        QPainter painter(&pixCursor);
+
+        painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+        painter.setBrush(QBrush(Qt::white));
+        painter.setPen(QPen(QColor(Qt::black)));
+        painter.drawRoundedRect(origin.width() + 1, origin.height() + 1,cursorSize.width()-2,cursorSize.height()-2,6,6);
+        painter.setFont(QFont("Arial", 10));
+        painter.drawText(origin.width() + 1, origin.height() + 1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, displayedAngle.append(QChar(176)));
+        painter.end();
+
+        pixCursor.setMask(bmpMask);
+        controlViewport->setCursor(QCursor(pixCursor, hotX, hotY));
 }
 
 
@@ -527,10 +569,9 @@ void UBBoardController::addScene()
 
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
     emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex+1);
-
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
-        UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+        UBApplication::documentController->insertThumbPage(mActiveSceneIndex +1);
         UBApplication::documentController->reloadThumbnails();
     }
 
@@ -539,6 +580,8 @@ void UBBoardController::addScene()
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
 }
 
 void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
@@ -595,12 +638,13 @@ void UBBoardController::duplicateScene(int nIndex)
     persistCurrentScene(false,true);
 
     duplicatePage(nIndex);
-
+    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
+        UBApplication::documentController->insertThumbPage(nIndex +1);
         UBApplication::documentController->reloadThumbnails();
     }
-    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
+
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
@@ -726,7 +770,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         }
         duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
         duplicatedGroup->setTransform(groupItem->transform());
+        groupItem->copyItemParameters(duplicatedGroup);
         groupItem->setSelected(false);
+
 
         retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
 
@@ -798,7 +844,7 @@ void UBBoardController::deleteScene(int nIndex)
         mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
-        showMessage(tr("Deleting page %1").arg(nIndex+1), true);
+        UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
         QList<int> scIndexes;
         scIndexes << nIndex;
@@ -816,7 +862,7 @@ void UBBoardController::deleteScene(int nIndex)
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
-        showMessage(tr("Page %1 deleted").arg(nIndex+1));
+        UBApplication::showMessage(tr("Page %1 deleted").arg(nIndex+1));
         QApplication::restoreOverrideCursor();
         mDeletingSceneIndex = -1;
     }
@@ -934,14 +980,11 @@ void UBBoardController::zoomRestore()
 
     centerRestore();
 
-    foreach(QGraphicsItem *gi, mActiveScene->selectedItems ())
-    {
-        //force item to redraw the frame (for the anti scale calculation)
-        gi->setSelected(false);
-        gi->setSelected(true);
-    }
-
     emit zoomChanged(1.0);
+    UBApplication::applicationController->adjustDisplayView();
+
+    emit controlViewportChanged();
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
 }
 
 
@@ -953,7 +996,10 @@ void UBBoardController::centerRestore()
 
 void UBBoardController::centerOn(QPointF scenePoint)
 {
-    mControlView->centerOn(scenePoint);
+    // workaround: foreground not repainted after centerOn on Qt5 (fixed in Qt6)
+    QPointF offset{1, 1};
+    mControlView->centerOn(scenePoint - offset);
+    mControlView->translate(offset.x(), offset.y());
     UBApplication::applicationController->adjustDisplayView();
 }
 
@@ -1029,10 +1075,10 @@ void UBBoardController::nextScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-// not necessary, done by setActiveDocumentScene
-//        persistCurrentScene();
+
         setActiveDocumentScene(mActiveSceneIndex + 1);
         centerOn(mActiveScene->lastCenter());
+
         QApplication::restoreOverrideCursor();
     }
 
@@ -1046,8 +1092,9 @@ void UBBoardController::firstScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
+
         setActiveDocumentScene(0);
+
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
@@ -1062,7 +1109,6 @@ void UBBoardController::lastScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
@@ -1149,7 +1195,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
     if (!pSuccess)
     {
-        showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
+        UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
         return NULL;
     }
 
@@ -1158,7 +1204,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     const QString scheme = sourceUrl.scheme();
 
     if (scheme != "file" && scheme != "openboardtool" && scheme != "data")
-        showMessage(tr("Download finished"));
+        UBApplication::showMessage(tr("Download finished"));
 
     if (UBMimeType::RasterImage == itemMimeType)
     {
@@ -1289,7 +1335,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 &pData);
             if (!b)
             {
-                showMessage(tr("Add file operation failed: file copying error"));
+                UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
             }
 
@@ -1334,7 +1380,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 &pData);
             if (!b)
             {
-                showMessage(tr("Add file operation failed: file copying error"));
+                UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
             }
 
@@ -1407,12 +1453,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "sourceurl : " + sourceUrl.toString();
         QString sUrl = sourceUrl.toString();
 
-        int result = 0;
+        int numberOfImportedDocuments = 0;
+        int currentNumberOfThumbnails = selectedDocument()->pageCount();
         if(!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
         {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
-            result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+            numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
         else if(pData.size()){
             QTemporaryFile pdfFile("XXXXXX.pdf");
@@ -1421,21 +1468,35 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 pdfFile.write(pData);
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
-                result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-                reloadThumbnails();
+                numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+
                 pdfFile.close();
             }
         }
 
-        if (result)
+        if (numberOfImportedDocuments > 0)
         {
-            if (UBApplication::documentController->selectedDocument() == selectedDocument())
-                UBApplication::documentController->reloadThumbnails();
 
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-            emit initThumbnailsRequired(selectedDocument());
+
+            int numberOfThumbnailsToAdd =  selectedDocument()->pageCount() - currentNumberOfThumbnails;
+
+            bool updateDocumentThumbnailsView = UBApplication::documentController->selectedDocument() ==  selectedDocument();
+            for (int i = 0; i < numberOfThumbnailsToAdd; i++)
+            {
+                emit addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
+
+                if (updateDocumentThumbnailsView)
+                {
+                    UBApplication::documentController->insertThumbPage(currentNumberOfThumbnails+i);
+                }
+            }
+            if (updateDocumentThumbnailsView)
+            {
+                UBApplication::documentController->reloadThumbnails();
+            }
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -1489,7 +1550,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
+            UBApplication::showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
         }
     }
     else if (UBMimeType::Html == itemMimeType)
@@ -1529,25 +1590,26 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            showMessage(tr("Could not find document."));
+            UBApplication::showMessage(tr("Could not find document."));
         }
     }
     else
     {
-        showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
+        UBApplication::showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
         qWarning() << "ignoring mime type" << pContentTypeHeader ;
     }
 
     return NULL;
 }
 
-void UBBoardController::setActiveDocumentScene(int pSceneIndex)
+std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int pSceneIndex)
 {
-    setActiveDocumentScene(selectedDocument(), pSceneIndex);
+    return setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
+std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
+    UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     saveViewState();
 
     bool documentChange = selectedDocument() != pDocumentProxy;
@@ -1580,9 +1642,13 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
 
         updateSystemScaleFactor();
 
+        if (mControlView->scene())
+        {
+            disconnect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), mControlView->scene().get(), SLOT(updateSelectionFrameWrapper(int)));
+        }
+
         mControlView->setScene(mActiveScene.get());
-        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
-        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
+        connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), mControlView->scene().get(), SLOT(updateSelectionFrameWrapper(int)));
 
         mDisplayView->setScene(mActiveScene.get());
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
@@ -1599,6 +1665,12 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
         selectionChanged();
 
         updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
+
+        if (UBApplication::documentController
+        && (UBApplication::documentController->selectedDocument() == selectedDocument()))
+        {
+            UBApplication::documentController->setActiveThumbnail(pSceneIndex);
+        }
 
         if(documentChange)
         {
@@ -1626,6 +1698,9 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
     {
         qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
     }
+    UBApplication::restoreOverrideCursor();
+
+    return targetScene;
 }
 
 
@@ -1844,7 +1919,6 @@ void UBBoardController::setDisabled(bool disable)
 void UBBoardController::selectionChanged()
 {
     updateActionStates();
-    emit updateThumbnailsRequired();
     emit pageSelectionChanged(activeSceneIndex());
 }
 
@@ -1941,16 +2015,34 @@ void UBBoardController::lastWindowClosed()
 {
     if (!mCleanupDone)
     {
-        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
+        if (initialDocumentScene() && initialDocumentScene()->document())
         {
-            UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
+            if (initialDocumentScene()->isEmpty() && (initialDocumentScene()->document()->documentDate() == initialDocumentScene()->document()->lastUpdate()))
+            {
+                // intial scene or document have not been modified at all, so we can delete the document.
+                UBPersistenceManager::persistenceManager()->deleteDocument(initialDocumentScene()->document());
+
+                //if current scene is not the initial document scene, we still need to persist it to ensure no data can be lost this way
+                if (activeScene() != initialDocumentScene())
+                {
+                    persistCurrentScene();
+                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
+                }
+            }
+            else
+            {
+                // if intial scene or document changed, then rather the initial document scene is the current scene,
+                // or current scene changed and initial document scene has already been persisted.
+                // Now, we just persist the current scene before closing the app, to ensure no data can be lost this way.
+                persistCurrentScene();
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
+            }
         }
         else
-        {
+        { //should not happen ?
             persistCurrentScene();
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         }
-
-        UBPersistenceManager::persistenceManager()->purgeEmptyDocuments();
 
         mCleanupDone = true;
     }
@@ -2059,10 +2151,8 @@ void UBBoardController::updateSystemScaleFactor()
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
       //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
-            QSize controlSize = controlViewport();
-
-            qreal hFactor = ((qreal)controlSize.width()) / ((qreal)pageNominalSize.width());
-            qreal vFactor = ((qreal)controlSize.height()) / ((qreal)pageNominalSize.height());
+            qreal hFactor = ((qreal)controlView()->size().width()) / ((qreal)pageNominalSize.width());
+            qreal vFactor = ((qreal)controlView()->size().height()) / ((qreal)pageNominalSize.height());
 
             newScaleFactor = qMin(hFactor, vFactor);
         }
@@ -2257,7 +2347,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
                     destFile);
         if (!b)
         {
-            showMessage(tr("Add file operation failed: file copying error"));
+            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
             return NULL;
         }
         concreteUrl = QUrl::fromLocalFile(destFile);
@@ -2293,7 +2383,7 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
             destFile);
         if (!b)
         {
-            showMessage(tr("Add file operation failed: file copying error"));
+            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
             return NULL;
         }
         concreteUrl = QUrl::fromLocalFile(destFile);
@@ -2410,10 +2500,14 @@ void UBBoardController::copy()
 void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    qreal xPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 400;
-    qreal yPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 200;
-    QPointF pos(xPosition -200 , yPosition - 100);
-    processMimeData(clipboard->mimeData(), pos);
+    qreal xPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 400;
+    qreal yPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 200;
+    QPointF randomPos(xPosition -200 , yPosition - 100);
+    QRect rect = mControlView->rect();
+    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+    QPointF viewRelativeCenter = mControlView->mapToScene(center);
+
+    processMimeData(clipboard->mimeData(), viewRelativeCenter + randomPos);
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -2703,4 +2797,11 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         widget->setWebActive(!freeze);
     }
+}
+
+void UBBoardController::reloadThumbnails()
+{
+    //UBApplication::showMessage(tr("Reloading Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()));
+    emit initThumbnailsRequired(selectedDocument());
+    //UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
 }

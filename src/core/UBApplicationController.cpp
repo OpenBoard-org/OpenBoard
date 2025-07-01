@@ -37,7 +37,6 @@
 #include "core/UBSetting.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
-#include "core/UBOpenSankoreImporter.h"
 
 
 #include "board/UBBoardView.h"
@@ -129,9 +128,6 @@ UBApplicationController::~UBApplicationController()
     }
     delete mMirror;
     delete mUninoteController;
-
-    delete(mOpenSankoreImporter);
-    mOpenSankoreImporter = NULL;
 }
 
 
@@ -234,28 +230,28 @@ void UBApplicationController::adjustDisplayView()
     {
         qreal systemDisplayViewScaleFactor = 1.0;
 
-        QSize pageSize = UBApplication::boardController->activeScene()->nominalSize();
+        QSize pageSize = mControlView->size();
         QSize displaySize = mDisplayView->size();
 
         qreal hFactor = ((qreal)displaySize.width()) / ((qreal)pageSize.width());
         qreal vFactor = ((qreal)displaySize.height()) / ((qreal)pageSize.height());
 
-        systemDisplayViewScaleFactor = qMin(hFactor, vFactor);
+        systemDisplayViewScaleFactor = qMax(hFactor, vFactor);
 
         QTransform tr;
-        qreal scaleFactor = systemDisplayViewScaleFactor * UBApplication::boardController->currentZoom();
+        qreal scaleFactor = systemDisplayViewScaleFactor
+                * UBApplication::boardController->currentZoom()
+                * UBApplication::boardController->systemScaleFactor();
 
         tr.scale(scaleFactor, scaleFactor);
-
-        QRect rect = mControlView->rect();
-        QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
         QTransform recentTransform = mDisplayView->transform();
 
         if (recentTransform != tr)
             mDisplayView->setTransform(tr);
 
-        mDisplayView->centerOn(mControlView->mapToScene(center));
+        QRect rect = mControlView->rect();
+        mDisplayView->centerOn(mControlView->mapToScene(rect.center()));
     }
 }
 
@@ -450,8 +446,8 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
-            UBApplication::boardController->persistCurrentScene();
+        UBApplication::boardController->persistCurrentScene();
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(UBApplication::boardController->selectedDocument());
 
         UBApplication::boardController->hide();
     }
@@ -600,8 +596,6 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
 
 void UBApplicationController::checkAtLaunch()
 {
-    mOpenSankoreImporter = new UBOpenSankoreImporter(mMainWindow->centralWidget());
-
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
         checkUpdate();
@@ -728,27 +722,14 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     if (success && document)
     {
-        if (mMainMode == Board || mMainMode == Internet)
+        if (UBApplication::boardController)
         {
-            if (UBApplication::boardController)
-            {
-                UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
-            }
-
-            if (UBApplication::documentController)
-            {
-                if (UBApplication::documentController->selectedDocument() == document)
-                {
-                    UBApplication::documentController->reloadThumbnails();
-                }
-            }
+            UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
         }
-        else if (mMainMode == Document)
+
+        if (UBApplication::documentController)
         {
-            if (UBApplication::documentController)
-            {
-                UBApplication::documentController->selectDocument(document, true, true);
-            }
+            UBApplication::documentController->selectDocument(document, true, true);
         }
 
         // This import operation happens when double-clicking on a UBZ for example.

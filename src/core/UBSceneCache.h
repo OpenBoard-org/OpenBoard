@@ -32,6 +32,9 @@
 
 #include <QtCore>
 
+#include <variant>
+
+#include "adaptors/UBSvgSubsetAdaptor.h"
 #include "domain/UBGraphicsScene.h"
 
 class UBDocumentProxy;
@@ -40,25 +43,23 @@ class UBGraphicsScene;
 
 class UBSceneCacheID
 {
+public:
 
-    public:
+    UBSceneCacheID()
+        : documentProxy(0)
+        , pageIndex(-1)
+    {
+        // NOOP
+    }
 
-        UBSceneCacheID()
-            : documentProxy(0)
-            , pageIndex(-1)
-        {
-            // NOOP
-        }
+    UBSceneCacheID(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pPageIndex)
+    {
+        documentProxy = pDocumentProxy;
+        pageIndex = pPageIndex;
+    }
 
-        UBSceneCacheID(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pPageIndex)
-        {
-            documentProxy = pDocumentProxy;
-            pageIndex = pPageIndex;
-        }
-
-        std::shared_ptr<UBDocumentProxy> documentProxy;
-        int pageIndex;
-
+    std::shared_ptr<UBDocumentProxy> documentProxy;
+    int pageIndex;
 };
 
 inline bool operator==(const UBSceneCacheID &id1, const UBSceneCacheID &id2)
@@ -72,49 +73,63 @@ inline uint qHash(const UBSceneCacheID &id)
     return qHash(id.pageIndex);
 }
 
-class UBSceneCache : public QHash<UBSceneCacheID, std::shared_ptr<UBGraphicsScene>>
+
+class UBSceneCache
 {
+public:
+    UBSceneCache();
+    virtual ~UBSceneCache();
+
+    std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
+
+    std::shared_ptr<UBGraphicsScene> prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+
+    void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, std::shared_ptr<UBGraphicsScene> scene);
+
+    bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const;
+
+    std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+
+    void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+
+    void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
+
+    void moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
+
+    void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
+
+    void shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex);
+
+
+private:
+    class SceneCacheEntry
+    {
     public:
-
-        UBSceneCache();
-        virtual ~UBSceneCache();
-
-        std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
-
-        void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, std::shared_ptr<UBGraphicsScene> scene );
-
-        bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const;
-
-        std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
-
-        std::shared_ptr<UBGraphicsScene> value(const UBSceneCacheID& key) const
-        {
-            return QHash<UBSceneCacheID, std::shared_ptr<UBGraphicsScene>>::value(key);
-        }
-
-        void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
-
-        void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
-
-        void moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
-
-        void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
-
-        void shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex);
-
+        SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+        SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene);
+        ~SceneCacheEntry();
+        void startLoading();
+        bool isSceneAvailable() const;
+        std::shared_ptr<UBGraphicsScene> scene();
 
     private:
+        std::shared_ptr<UBSvgSubsetAdaptor::UBSvgReaderContext> mContext = nullptr;
+        std::shared_ptr<UBGraphicsScene> mScene = nullptr;
+        QTimer* mTimer = nullptr;
+    };
 
-        void internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
+//    typedef QFuture<std::shared_ptr<UBGraphicsScene>> FutureScene;
+//    typedef std::variant<std::shared_ptr<UBGraphicsScene>, FutureScene> CacheEntry;
 
-        void dumpCacheContent();
+    void internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
-        int mCachedSceneCount;
+    void insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEntry> entry);
 
-        QQueue<UBSceneCacheID> mCachedKeyFIFO;
+    QHash<UBSceneCacheID, std::shared_ptr<SceneCacheEntry>> mSceneCache;
 
-        QHash<UBSceneCacheID, UBGraphicsScene::SceneViewState> mViewStates;
+    QQueue<UBSceneCacheID> mCachedKeyFIFO;
 
+    QHash<UBSceneCacheID, UBGraphicsScene::SceneViewState> mViewStates;
 };
 
 

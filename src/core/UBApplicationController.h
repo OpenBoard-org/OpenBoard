@@ -51,7 +51,6 @@ class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
 class UBRightPalette;
-class UBOpenSankoreImporter;
 
 class UBApplicationController : public QObject
 {
@@ -155,8 +154,6 @@ class UBApplicationController : public QObject
         UBDesktopAnnotationController *mUninoteController;
 
         UBMainWindow *mMainWindow;
-
-        UBOpenSankoreImporter *mOpenSankoreImporter;
 
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;

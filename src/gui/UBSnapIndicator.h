@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -25,33 +20,35 @@
  */
 
 
-#ifndef UBOPENSANKOREIMPORTERWIDGET_H
-#define UBOPENSANKOREIMPORTERWIDGET_H
+#pragma once
 
-class QCheckBox;
-class QPushButton;
+#include <QLabel>
 
-#include "UBFloatingPalette.h"
+// forward
+class QPropertyAnimation;
 
-class UBOpenSankoreImporterWidget : public UBFloatingPalette
+class UBSnapIndicator : public QLabel
 {
     Q_OBJECT
+    Q_PROPERTY(int alpha READ alpha WRITE setAlpha)
 
 public:
-    UBOpenSankoreImporterWidget(QWidget* parent);
-    QPushButton* proceedButton(){return mProceedButton;}
+    UBSnapIndicator(QWidget* parent);
+
+    void appear(Qt::Corner corner, QPointF snapPoint);
+
+    int alpha() const;
+    void setAlpha(int opacity);
+
+    void setColor(const QColor& color);
 
 protected:
-    void showEvent(QShowEvent *event);
-    int border();
+    virtual void paintEvent(QPaintEvent* event) override;
 
-    QCheckBox* mDisplayOnNextRestart;
-    QPushButton* mProceedButton;
-
-private slots:
-    void onNextRestartCheckBoxClicked(bool clicked);
-
-
+private:
+    Qt::Corner mCorner{Qt::TopLeftCorner};
+    int mAlpha;
+    QColor mColor{0x62a7e0};
+    QPropertyAnimation* mAnimation;
 };
 
-#endif // UBOPENSANKOREIMPORTERWIDGET_H

@@ -769,5 +769,49 @@ void UBTabDockPalette::mouseReleaseEvent(QMouseEvent *event)
             dock->tabClicked(clickedTab);
         }
     }
+    else if (dock->mResized)
+    {
+        emit dock->pageSelectionChangedRequired();
+    }
     dock->mCanResize = false;
+}
+
+void UBTabDockPalette::tabletEvent(QTabletEvent *event)
+{
+    if (event->type() == QEvent::TabletPress)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mousePressEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletMove)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mouseMoveEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletRelease)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mouseReleaseEvent(&mouseEvent);
+        event->accept();
+    }
 }

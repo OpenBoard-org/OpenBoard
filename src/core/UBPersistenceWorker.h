@@ -36,7 +36,6 @@
 
 typedef enum{
     WriteScene = 0,
-    ReadScene,
     WriteMetadata
 }ActionType;
 
@@ -54,13 +53,11 @@ public:
     explicit UBPersistenceWorker(QObject *parent = 0);
 
     void saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageIndex);
-    void readScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
     void saveMetadata(std::shared_ptr<UBDocumentProxy> proxy);
 
 signals:
    void finished();
    void error(QString string);
-   void sceneLoaded(QByteArray text,std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
    void scenePersisted(UBGraphicsScene* scene);
    void metadataPersisted(std::shared_ptr<UBDocumentProxy> proxy);
 
@@ -71,6 +68,7 @@ public slots:
 protected:
    bool mReceivedApplicationClosing;
    QSemaphore mSemaphore;
+   QMutex mMutex;
    QList<PersistenceInformation> saves;
 };
 

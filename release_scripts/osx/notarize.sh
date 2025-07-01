@@ -31,6 +31,7 @@ PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
 LRELEASE=$BASE_QT_DIR/bin/lrelease
 USER=$1
+TEAMID=$2
 
 # Directories
 BUILD_DIR="$PROJECT_ROOT/build/macx/release"
@@ -71,7 +72,6 @@ function checkExecutable {
 notify "================================================"
 notify "=============== NOTARIZATION ==================="
 notify "================================================"
-read -s -p "Password for $USER is required: " PASSWORD
 printf "\n"
 
 cd $INSTALL_DIR;
@@ -80,68 +80,7 @@ notify "================================================"
 notify "Submitting $APPLICATION_NAME for notarization..."
 notify "================================================"
 
-NOTARIZE_APP_OUTPUT=$(2>&1 xcrun altool --notarize-app -f OpenBoard.dmg --primary-bundle-id ch.openboard.id -u "$USER" -p "$PASSWORD")
-SUBMISSION_ID=$(echo "$NOTARIZE_APP_OUTPUT" | grep "RequestUUID" | sed -Ee "s|.*= (.*)$|\1|")
+echo $(2>&1 xcrun notarytool submit --wait --apple-id "$USER" --team-id "$TEAMID" OpenBoard.dmg)
 
-
-if [[ "$SUBMISSION_ID" == "" ]]; then
-    NOTARIZE_APP_ERROR_LOG_NAME="notarization-submission-error.log"
-    NOTARIZE_APP_ERROR_LOG_PATH="$SCRIPT_PATH/$NOTARIZE_APP_ERROR_LOG_NAME"
-
-    echo "$NOTARIZE_APP_OUTPUT" > "$NOTARIZE_APP_ERROR_LOG_PATH"
-
-    warn "================================================"
-    warn "Submission of $APPLICATION_NAME failed !"
-    warn "See $NOTARIZE_APP_ERROR_LOG_NAME for details."
-    warn "================================================"
-
-    abort "$APPLICATION_NAME notarization failed"
-else
-    NOTARIZE_APP_SUCCESS_LOG_NAME="notarization-submission-success.log"
-    NOTARIZE_APP_SUCCESS_LOG_PATH="$SCRIPT_PATH/$NOTARIZE_APP_SUCCESS_LOG_NAME"
-
-    echo "$OUTPUT" > "$NOTARIZE_APP_SUCCESS_LOG_PATH"
-
-    notify "================================================"
-    notify "Submission of  $APPLICATION_NAME succeed."
-    notify "See $NOTARIZE_APP_SUCCESS_LOG_NAME for details."
-    notify "================================================"
-
-    notify "================================================"
-    notify "Checking status of notarization (RequestUUID = $SUBMISSION_ID)"
-    notify "================================================"
-
-    while true; do
-        NOTARIZATION_INFO_OUTPUT=$(2>&1 xcrun altool --notarization-info "$SUBMISSION_ID" -u "$USER" -p "$PASSWORD")
-        STATUS=$(echo "$NOTARIZATION_INFO_OUTPUT" | grep "Status:" | sed -Ee "s|.*: (.*)$|\1|" )
-        notify "notarization status: $STATUS"
-        if [[ "$STATUS" != "in progress" ]]; then
-            break
-        fi
-        sleep 30
-    done
-
-    if [[ $STATUS == "success" ]]; then
-        NOTARIZATION_SUCCESS_LOG_NAME="notarization-success.log"
-        NOTARIZATION_SUCCESS_LOG="$SCRIPT_PATH/$NOTARIZATION_SUCCESS_LOG_NAME"
-        echo "$NOTARIZATION_INFO_OUTPUT" > "$NOTARIZATION_SUCCESS_LOG"
-
-        notify "================================================"
-        notify "$APPLICATION_NAME was notarized sucessfully. You can now distribute it."
-        notify "See $NOTARIZATION_SUCCESS_LOG_NAME for details."
-        notify "================================================"
-    else
-        NOTARIZATION_ERROR_LOG_NAME="notarization-error.log"
-        NOTARIZATION_ERROR_LOG="$SCRIPT_PATH/$NOTARIZATION_ERROR_LOG_NAME"
-        echo "$NOTARIZATION_INFO_OUTPUT" > "$NOTARIZATION_ERROR_LOG"
-
-        warn "================================================"
-        warn "$APPLICATION_NAME could not be notarized."
-        warn "See $NOTARIZATION_ERROR_LOG_NAME for details."
-        warn "================================================"
-
-        abort "$APPLICATION_NAME notarization failed"
-    fi
-fi
 exit 0
 

@@ -43,6 +43,7 @@
 #include "core/UBTextTools.h"
 
 #include "gui/UBMagnifer.h"
+#include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -171,44 +172,41 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 #endif
 
-    if (dest == up) {
-        qDebug() << "item data zvalue= " << item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        if (iCurElement.findNext(item)) {
-            if (iCurElement.hasNext()) {
-                qreal nextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekNext().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
+    if (dest == up)
+    {
+        qreal newZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal() + 1;
+        UBGraphicsItem::assignZValue(item, newZValue);
+        shiftStoredZValue(item, newZValue);
 
-                iCurElement.next();
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                    UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
-        }
-
-    } else if (dest == top) {
+        //show a human-readable zValue so the user can adapt his objects zvalues easily
+        UBApplication::showMessage(QString::number(1000000 + newZValue));
+    }
+    else if (dest == top)
+    {
         if (iCurElement.findNext(item)) {
             if (iCurElement.hasNext()) {
                 UBGraphicsItem::assignZValue(item, generateZLevel(item));
             }
         }
+    }
+    else if (dest == down)
+    {
+        qreal newZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal()-1;
+        if (newZValue >= -999999.0)
+        {
+            UBGraphicsItem::assignZValue(item, newZValue);
+            shiftStoredZValue(item, newZValue);
 
-    } else if (dest == down) {
-        iCurElement.toBack();
-        if (iCurElement.findPrevious(item)) {
-            if (iCurElement.hasPrevious()) {
-                qreal nextZ = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekPrevious().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                        UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
+            //show a human-readable zValue so the user can adapt his objects zvalues easily
+            UBApplication::showMessage(QString::number(1000000 + newZValue));
         }
-
-    } else if (dest == bottom) {
+        else
+        {
+            UBApplication::showMessage(tr("Bottom layer limit reached"));
+        }
+    }
+    else if (dest == bottom)
+    {
         iCurElement.toBack();
         if (iCurElement.findPrevious(item)) {
             if (iCurElement.hasPrevious()) {
@@ -302,11 +300,15 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
 /**
  * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
  */
-bool UBZLayerController::zLevelAvailable(qreal z)
+bool UBZLayerController::zLevelAvailable(QGraphicsItem* item)
 {
-    foreach(QGraphicsItem* it, mScene->items()) {
-        if (it->zValue() == z)
-            return false;
+    foreach(QGraphicsItem* it, mScene->items())
+    {
+        if (item != it)
+        {
+            if (it->zValue() == item->zValue())
+                return false;
+        }
     }
 
     return true;
@@ -365,10 +367,14 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
+    connect(UBApplication::boardController, &UBBoardController::zoomChanged, this, &UBGraphicsScene::zoomChanged);
 }
 
 UBGraphicsScene::~UBGraphicsScene()
 {
+    // disconnect all consumers of this signal at once to speed-up deletion of scene
+    disconnect(this, &UBGraphicsScene::zoomChanged, nullptr, nullptr);
+
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
         mCurrentStroke = NULL;
@@ -402,13 +408,13 @@ QPointF UBGraphicsScene::lastCenter()
     return mViewState.lastSceneCenter();
 }
 
-bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
     if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
-        accepted = inputDeviceMove(scenePos, pressure);
+        accepted = inputDeviceMove(scenePos, pressure, modifiers);
     }
     else {
         mInputDeviceIsPressed = true;
@@ -458,10 +464,18 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (UBDrawingController::drawingController()->activeRuler())
                 UBDrawingController::drawingController()->activeRuler()->StartLine(scenePos, width);
             else {
-                moveTo(scenePos);
-                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                bool isLine = UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line;
+                QPointF pos = scenePos;
 
-                mCurrentStroke->addPoint(scenePos, width);
+                if (isLine && isSnapping())
+                {
+                    pos += snap(scenePos);
+                }
+
+                moveTo(pos);
+                drawLineTo(pos, width, isLine);
+
+                mCurrentStroke->addPoint(pos, width);
             }
             accepted = true;
         }
@@ -493,7 +507,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -501,6 +515,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool();
 
     QPointF position = QPointF(scenePos);
+    mCurrentPoint = position;
 
     if (currentTool == UBStylusTool::Eraser)
     {
@@ -543,6 +558,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
+            std::optional<QPointF> altPosition;
+
             if (currentTool == UBStylusTool::Line || dc->activeRuler())
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
@@ -559,19 +576,19 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 }
 
                 // ------------------------------------------------------------------------
-                // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
+                // Here we wanna make sure that the Line will 'grip' at multiples of
+                // rotationAngleStep and propose a point as alternative snap point
                 // ------------------------------------------------------------------------
 
-                QLineF radius(mPreviousPoint, position);
-                qreal angle = radius.angle();
-                angle = qRound(angle / 45) * 45;
-                qreal radiusLength = radius.length();
-                QPointF newPosition(
-                    mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-                    mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-                QLineF chord(position, newPosition);
-                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-                    position = newPosition;
+                if (isSnapping())
+                {
+                    double step = UBSettings::settings()->rotationAngleStep->get().toDouble();
+                    QLineF radius(mPreviousPoint, position);
+                    qreal angle = radius.angle();
+                    angle = qRound(angle / step) * step;
+                    radius.setAngle(angle);
+                    altPosition = radius.p2();
+                }
             }
 
             if (!mCurrentStroke)
@@ -582,6 +599,33 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             }
 
             else if (currentTool == UBStylusTool::Line) {
+                if (isSnapping())
+                {
+                    // compute two proposals and compare the angle
+                    QPointF gridSnapPoint;
+                    position += snap(position, nullptr, altPosition, &gridSnapPoint);
+
+                    if (position != gridSnapPoint)
+                    {
+                        const auto angle1 = QLineF{mPreviousPoint, position}.angle();
+                        const auto angle2 = QLineF{mPreviousPoint, gridSnapPoint}.angle();
+
+                        if (std::fmod(std::fabs(angle1 - angle2), 360.) < 0.01)
+                        {
+                            position = gridSnapPoint;
+                        }
+                    }
+                }
+
+                QLineF radius(mPreviousPoint, position);
+                auto angle = radius.angle();
+                QLineF viewRadius{UBApplication::boardController->controlView()->mapFromScene(radius.p1()),
+                        UBApplication::boardController->controlView()->mapFromScene(radius.p2())};
+                QPoint offset = - viewRadius.p2().toPoint();
+                viewRadius.setLength(viewRadius.length() + 30);
+                offset += viewRadius.p2().toPoint();
+                UBApplication::boardController->setCursorFromAngle(angle, offset);
+
                 drawLineTo(position, width, true);
             }
 
@@ -652,7 +696,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease(int tool)
+bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -668,14 +712,9 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
     }
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)tool;
-
-    if (currentTool == UBStylusTool::Eraser)
-        hideEraser();
-
-
     UBDrawingController *dc = UBDrawingController::drawingController();
 
-    if (dc->isDrawingTool() || mDrawWithCompass)
+    if (dc->isDrawingTool(tool) || mDrawWithCompass)
     {
         if(mArcPolygonItem){
 
@@ -748,7 +787,6 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
 
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
-
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             if (UBApplication::undoStack)
             {
@@ -1041,7 +1079,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         else if (eraserPath.intersects(itemPainterPath))
         {
             itemPainterPath.setFillRule(Qt::WindingFill);
-            QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
+            // reverse eraserPath so that it has the opposite orientation of the stroke
+            // necessary for punching a hole with WindingFill rule
+            QPainterPath newPath = itemPainterPath.subtracted(eraserPath.toReversed());
             intersectedItems << pi;
             intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
         }
@@ -1394,10 +1434,15 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
                 groupCloned->resetTransform();
                 groupCloned->setPos(0, 0);
 
-                foreach (QGraphicsItem* eachItem, group->childItems())
+                foreach (QGraphicsItem* childItem, group->childItems())
                 {
-                    QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                    groupCloned->addToGroup(copiedChild);
+                    UBItem* childUBItem = dynamic_cast<UBItem*>(childItem);
+                    if (childUBItem)
+                    {
+                        UBItem* childUBItemCopy = childUBItem->deepCopy();
+                        QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(childUBItemCopy);
+                        groupCloned->addToGroup(copiedChild);
+                    }
                 }
 
                 bool locked = group->Delegate()->isLocked();
@@ -1947,8 +1992,7 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
     // the default z value is already set. This is the case when a svg file is read
     if(item->zValue() == DEFAULT_Z_VALUE
-            || item->zValue() == UBZLayerController::errorNum()
-            || !mZLayerController->zLevelAvailable(item->zValue()))
+            || item->zValue() == UBZLayerController::errorNum())
     {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
@@ -1958,13 +2002,23 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
         notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
-      ++mItemCount;
+    {
+        ++mItemCount;
+        setModified(true);
+    }
 
     auto widget = dynamic_cast<UBGraphicsWidgetItem*>(item);
 
     if (widget)
     {
         widget->initAPI();
+    }
+
+    UBGraphicsItem* ubitem = dynamic_cast<UBGraphicsItem*>(item);
+
+    if (ubitem)
+    {
+        ubitem->Delegate()->sceneChanged(this);
     }
 }
 
@@ -1976,6 +2030,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
     }
 
     mItemCount += items.size();
+    setModified(true);
 }
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
@@ -1985,7 +2040,10 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
     UBApplication::boardController->freezeW3CWidget(item, true);
 
     if (!mTools.contains(item))
-      --mItemCount;
+    {
+        --mItemCount;
+        setModified(true);
+    }
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
@@ -1994,6 +2052,7 @@ void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
         UBCoreGraphicsScene::removeItem(item);
 
     mItemCount -= items.size();
+    setModified(true);
 }
 
 void UBGraphicsScene::deselectAllItems()
@@ -2200,7 +2259,6 @@ void UBGraphicsScene::addRuler(QPointF center)
 void UBGraphicsScene::addAxes(QPointF center)
 {
     UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
-    mTools << axes;
 
     axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -2381,12 +2439,21 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
 
 void UBGraphicsScene::stylusToolChanged(int tool, int previousTool)
 {
-    if (mInputDeviceIsPressed && tool != previousTool)
+    if (tool != previousTool)
     {
-        // tool was changed while input device is pressed
-        // simulate release and press to terminate pervious strokes
-        inputDeviceRelease(previousTool);
-        inputDevicePress(mPreviousPoint);
+        hideTool();
+
+        if (mInputDeviceIsPressed)
+        {
+            // tool was changed while input device is pressed
+            // simulate release and press to terminate previous strokes
+            inputDeviceRelease(previousTool);
+            inputDevicePress(mCurrentPoint);
+        }
+        else if (previousTool >= 0)
+        {
+            inputDeviceMove(mCurrentPoint);
+        }
     }
 }
 
@@ -2442,6 +2509,155 @@ UBGraphicsCache* UBGraphicsScene::graphicsCache()
     }
 
     return mGraphicsCache;
+}
+
+bool UBGraphicsScene::isSnapping() const
+{
+    return UBApplication::mainWindow->actionSnap->isChecked();
+}
+
+QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint, QPointF* gridSnapPoint) const
+{
+    QPointF snapPoint{point};
+    double snapForce{0};
+    double gridSize = backgroundGridSize();
+
+    if (mIntermediateLines)
+    {
+        gridSize /= 2.;
+    }
+
+    // y axis
+    double floorY = std::floor(point.y () / gridSize) * gridSize;
+    snapPoint.setY(point.y() - floorY < gridSize / 2. ? floorY : floorY + gridSize);
+
+    // for blank background, use same snapping as for grid
+    if (mPageBackground == UBPageBackground::crossed || mPageBackground == UBPageBackground::plain)
+    {
+        // x axis
+        double floorX = std::floor(point.x () / gridSize) * gridSize;
+        snapPoint.setX(point.x() - floorX < gridSize / 2. ? floorX : floorX + gridSize);
+    }
+
+    // force is a number between 0 and 1 based on the manhattan distance of the snap point
+    // from the original point
+    double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
+    snapForce = std::max(1. - relativeDist, 0.);
+
+    if (gridSnapPoint)
+    {
+        *gridSnapPoint = snapPoint;
+    }
+
+    if (proposedPoint)
+    {
+        // compute force for proposed point and take that if it has higher force
+        double relativeDist = (proposedPoint.value() - point).manhattanLength() / gridSize;
+        double proposedForce = std::max(1. - relativeDist, 0.);
+
+        if (proposedForce > snapForce)
+        {
+            snapForce = proposedForce;
+            snapPoint = proposedPoint.value();
+        }
+    }
+
+    if (force)
+    {
+        *force = snapForce;
+    }
+
+    return snapPoint - point;
+}
+
+QPointF UBGraphicsScene::snap(const std::vector<QPointF>& corners, int* snapIndex) const
+{
+    if (corners.empty())
+    {
+        if (snapIndex)
+        {
+            *snapIndex = -1;
+        }
+
+        return QPointF{};
+    }
+
+    std::vector<double> forces;
+    std::vector<QPointF> snapVectors;
+
+    for (const auto& corner : corners)
+    {
+        double force = 0.;
+        snapVectors.emplace_back(snap(corner, &force));
+        forces.emplace_back(force);
+    }
+
+    const auto maxElement = std::max_element(forces.cbegin(), forces.cend());
+    const auto index = std::distance(forces.cbegin(), maxElement);
+
+    if (snapIndex)
+    {
+        *snapIndex = index;
+    }
+
+    return snapVectors[index];
+}
+
+QPointF UBGraphicsScene::snap(const QRectF& rect, Qt::Corner* corner) const
+{
+    int snapIndex;
+    std::vector<QPointF> rectPoints{rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()};
+    const auto offset = snap(rectPoints, &snapIndex);
+    const auto snapCorner = Qt::Corner(snapIndex);
+
+    if (corner)
+    {
+        *corner = snapCorner;
+    }
+
+    if (!offset.isNull())
+    {
+        auto* view = UBApplication::boardController->controlView();
+        view->updateSnapIndicator(snapCorner, rectPoints.at(snapIndex) + offset);
+    }
+
+    return offset;
+}
+
+QRectF UBGraphicsScene::itemRect(const QGraphicsItem* item)
+{
+    // compute an item's rectangle in scene coordinates
+    // taking into account the shape of the item and
+    // the nature of nominal lines
+    QRectF bounds = item->boundingRect();
+
+    const QAbstractGraphicsShapeItem* shapeItem = dynamic_cast<const QAbstractGraphicsShapeItem*>(item);
+
+    if (shapeItem && shapeItem->pen().style() != Qt::NoPen)
+    {
+        qreal margin = shapeItem->pen().widthF() / 2.f;
+        bounds -= QMarginsF(margin, margin, margin, margin);
+    }
+
+    // Try to find out whether the item is a single line
+    // Note: this only works for lines drawn within the current session as the isNominalLine
+    // and originalLine attributes are lost when serializing the document.
+    const UBGraphicsStrokesGroup* strokesGroup = dynamic_cast<const UBGraphicsStrokesGroup*>(item);
+
+    if (strokesGroup && strokesGroup->childItems().count() == 1)
+    {
+        UBGraphicsPolygonItem* polygonItem = dynamic_cast<UBGraphicsPolygonItem*>(strokesGroup->childItems().at(0));
+
+        if (polygonItem && polygonItem->isNominalLine())
+        {
+            const auto line = polygonItem->originalLine();
+            bounds = QRectF{line.p1(), line.p2()};
+        }
+    }
+
+    QRectF rect = item->mapRectToScene(bounds);
+
+    return rect;
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)
@@ -2855,94 +3071,54 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
+    // let's propagate the event through the scene's children to
+    // see if it must be handled by a child before trying to handle it as
+    // a scene key event. Note that the child must accept() the event
+    // to stop the propagation.
+    keyEvent->ignore();
+    QGraphicsScene::keyReleaseEvent(keyEvent);
 
-    QList<QGraphicsItem*> si = selectedItems();
-
-    if(keyEvent->matches(QKeySequence::SelectAll))
+    if (!keyEvent->isAccepted())
     {
-        foreach(auto item, items())
+        // Select All scene event
+        if(keyEvent->matches(QKeySequence::SelectAll))
         {
-            item->setSelected(true);
+            foreach(auto item, items())
+            {
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+
+                if (ubGraphicsItem) //only select items that inherit from UBGraphicsItem
+                    item->setSelected(true);
+            }
+
+            keyEvent->accept();
         }
 
-        keyEvent->accept();
-        return;
-    }
-
-    if ((si.size() > 0) && (keyEvent->isAccepted()))
-    {
+        // Delete selection scene event
 #ifdef Q_OS_MAC
         if (keyEvent->key() == Qt::Key_Backspace)
 #else
         if (keyEvent->matches(QKeySequence::Delete))
 #endif
         {
-            QVector<UBGraphicsItem*> ubItemsToRemove;
-            QVector<QGraphicsItem*> itemToRemove;
-
-            bool bRemoveOk = true;
-
-            foreach(QGraphicsItem* item, si)
+            foreach(QGraphicsItem* item, selectedItems())
             {
-                switch (item->type())
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+                if (ubGraphicsItem)
                 {
-                case UBGraphicsWidgetItem::Type:
-                    {
-                        UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                        if (0 != wc3_widget)
-                        if (!wc3_widget->hasFocus())
-                            ubItemsToRemove << wc3_widget;
-                        break;
-                    }
-                case UBGraphicsTextItem::Type:
-                    {
-                        UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
-                        if (0 != text_item){
-                            if (!text_item->hasFocus())
-                                ubItemsToRemove << text_item;
-                            else
-                                bRemoveOk = false;
-                        }
-                        break;
-                    }
-
-                case UBGraphicsGroupContainerItem::Type:
-                {
-                    UBGraphicsGroupContainerItem* group_item = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                    if(NULL != group_item){
-                        if(!hasTextItemWithFocus(group_item))
-                            ubItemsToRemove << group_item;
-                        else
-                            bRemoveOk = false;
-                    }
-                    break;
+                    ubGraphicsItem->remove();
                 }
-
-                default:
-                    {
-                        UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
-                        if (0 != ubgi)
-                            ubItemsToRemove << ubgi;
-                        else
-                            itemToRemove << item;
-                    }
+                else //should never happen ?
+                {
+                    UBCoreGraphicsScene::removeItem(item);
                 }
             }
 
-            if(bRemoveOk){
-                foreach(UBGraphicsItem* pUBItem, ubItemsToRemove){
-                    pUBItem->remove();
-                }
-                foreach(QGraphicsItem* pItem, itemToRemove){
-                    UBCoreGraphicsScene::removeItem(pItem);
-                }
-            }
+            keyEvent->accept();
         }
 
-        keyEvent->accept();
+        updateSelectionFrame();
     }
-
-    QGraphicsScene::keyReleaseEvent(keyEvent);
 }
 
 bool UBGraphicsScene::hasTextItemWithFocus(UBGraphicsGroupContainerItem *item){
@@ -2996,8 +3172,6 @@ void UBGraphicsScene::setDocumentUpdated()
 
 void UBGraphicsScene::updateBackground()
 {
-    setModified(true);
-
     foreach(QGraphicsView* view, views())
     {
         view->resetCachedContent();

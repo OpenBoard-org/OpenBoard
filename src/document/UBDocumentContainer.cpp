@@ -48,20 +48,8 @@ void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document,
     if (mCurrentDocument != document || forceReload)
     {
         mCurrentDocument = document;
-        emit initThumbnailsRequired(document); //for board mode
-        clearThumbPage(); //for document mode
-        reloadThumbnails();
         emit documentSet(mCurrentDocument);
-    }
-}
-
-void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
-{
-    int offset = 0;
-    foreach(int sceneIndex, pageIndexes)
-    {
-        UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
-        offset++;
+        reloadThumbnails();
     }
 }
 
@@ -146,7 +134,6 @@ void UBDocumentContainer::insertThumbPage(int index)
     mDocumentThumbs.insert(index, std::make_shared<QPixmap>(newPixmap));
 
     emit documentPageInserted(index);
-    emit addThumbnailRequired(selectedDocument(), index);
 }
 
 void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap)
@@ -155,11 +142,6 @@ void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPi
 
     emit documentPageInserted(index);
     emit addThumbnailRequired(selectedDocument(), index);
-}
-
-void UBDocumentContainer::reloadThumbnails()
-{
-    emit documentThumbnailsUpdated(this);
 }
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)

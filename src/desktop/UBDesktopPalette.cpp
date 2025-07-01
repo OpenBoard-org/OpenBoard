@@ -137,8 +137,7 @@ void UBDesktopPalette::showHideClick(bool checked)
 
 void UBDesktopPalette::updateShowHideState(bool pShowEnabled)
 {
-    if (mShowHideAction)
-        mShowHideAction->setChecked(pShowEnabled);
+    mShowHideAction->setChecked(pShowEnabled);
 
     if (mShowHideAction->isChecked())
         mShowHideAction->setToolTip(tr("Show Board on Secondary Screen"));
