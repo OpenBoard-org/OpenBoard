@@ -261,31 +261,30 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
 std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStructure(QFileInfo& contentInfo)
 {
     QString fullPath = contentInfo.absoluteFilePath();
-    QDir dir(fullPath);
 
-    if (dir.entryList(QDir::Files | QDir::NoDotAndDotDot).size() > 0)
-    {
-        QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
-        QString docGroupName = metadatas.value(UBSettings::documentGroupName, QString()).toString();
-        QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
+    QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
+    QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
 
-        if (docName.isEmpty()) {
-            qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
-            return nullptr;
-        }
-
-        std::shared_ptr<UBDocumentProxy> docProxy = std::make_shared<UBDocumentProxy>(fullPath);
-        foreach(QString key, metadatas.keys())
-        {
-            docProxy->setMetaData(key, metadatas.value(key));
-        }
-
-        docProxy->setPageCount(sceneCount(docProxy));
-
-        return docProxy;
+    if (docName.isEmpty()) {
+        qWarning() << "Could not find a document name: " << fullPath;
+        metadatas.insert(UBSettings::documentName, tr("Retrieved - %1").arg(contentInfo.baseName()));
     }
 
-    return nullptr;
+    std::shared_ptr<UBDocumentProxy> docProxy = std::make_shared<UBDocumentProxy>(fullPath);
+    foreach(QString key, metadatas.keys())
+    {
+        docProxy->setMetaData(key, metadatas.value(key));
+    }
+
+    docProxy->setPageCount(sceneCount(docProxy));
+
+    if (docProxy->pageCount() == 0)
+    {
+        qWarning() << "No pages found - " << fullPath;
+        docProxy->setMetaData(UBSettings::documentName, tr("Broken - %1").arg(contentInfo.baseName()));
+    }
+
+    return docProxy;
 };
 
 QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(std::shared_ptr<UBDocumentProxy> pProxy, bool multipleFiles)
