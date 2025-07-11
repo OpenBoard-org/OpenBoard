@@ -178,11 +178,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
     QObject::connect(&futureWatcher, &QFutureWatcher<void>::progressValueChanged,  &mProgress, &QProgressDialog::setValue);
 
     // Start the computation.
-    std::function<std::shared_ptr<UBDocumentProxy> (QFileInfo contentInfo)> createDocumentProxyLambda = [=](QFileInfo contentInfo) {
-        return createDocumentProxyStructure(contentInfo);
-    };
-
-    QFuture<std::shared_ptr<UBDocumentProxy>> proxiesFuture = QtConcurrent::mapped(contentInfoList, createDocumentProxyLambda);
+    QFuture<std::shared_ptr<UBDocumentProxy>> proxiesFuture = QtConcurrent::mapped(contentInfoList, &UBPersistenceManager::createDocumentProxyStructure);
     futureWatcher.setFuture(proxiesFuture);
 
     // Display the dialog and start the event loop.
@@ -258,7 +254,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
     }
 }
 
-std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStructure(QFileInfo& contentInfo)
+std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStructure(const QFileInfo& contentInfo)
 {
     QString fullPath = contentInfo.absoluteFilePath();
 
