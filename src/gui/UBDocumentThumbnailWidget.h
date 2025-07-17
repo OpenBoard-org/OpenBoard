@@ -30,11 +30,11 @@
 #ifndef UBDOCUMENTTHUMBNAILWIDGET_H_
 #define UBDOCUMENTTHUMBNAILWIDGET_H_
 
-#include "UBThumbnailWidget.h"
+#include "UBDocumentThumbnailsView.h"
 
 class UBGraphicsScene;
 
-class UBDocumentThumbnailWidget: public UBThumbnailWidget
+class UBDocumentThumbnailWidget: public UBDocumentThumbnailsView
 {
     Q_OBJECT;
 
@@ -46,6 +46,8 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         bool dragEnabled() const;
 
         void hightlightItem(int index);
+
+        std::shared_ptr<UBDocumentProxy> currentThumbnailsDocument();
 
     public slots:
             void updateThumbnailPixmap(int index, const QPixmap& newThumbnail);

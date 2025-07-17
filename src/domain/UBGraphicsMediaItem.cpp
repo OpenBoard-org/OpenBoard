@@ -49,7 +49,7 @@ bool UBGraphicsMediaItem::sIsMutedByDefault = false;
  */
 UBGraphicsMediaItem* UBGraphicsMediaItem::createMediaItem(const QUrl &pMediaFileUrl, QGraphicsItem* parent)
 {
-    UBGraphicsMediaItem * mediaItem;
+    UBGraphicsMediaItem * mediaItem = nullptr;
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
@@ -194,10 +194,6 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
 {
-    if (mMediaObject) {
-        mMediaObject->stop();
-        delete mMediaObject;
-    }
 }
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)

@@ -89,25 +89,6 @@ buildWithStandardQt(){
   fi
 }
 
-buildImporter(){
-    IMPORTER_DIR="../OpenBoard-Importer/"
-    IMPORTER_NAME="OpenBoardImporter"
-    checkDir $IMPORTER_DIR
-    cd ${IMPORTER_DIR}
-
-    rm moc_*
-    rm -rf debug release
-    rm *.o
-
-    notifyProgress "Building importer"
-
-    $QMAKE_PATH ${IMPORTER_NAME}.pro
-    make clean
-    make -j4
-    checkExecutable $IMPORTER_NAME
-    cd -
-}
-
 createBuildContext() {
     BUILD_CONTEXT="buildContext"
     echo $ARCHITECTURE > $BUILD_CONTEXT
@@ -139,14 +120,10 @@ checkDir $QT_PATH
 checkDir $PLUGINS_PATH
 checkDir $GUI_TRANSLATIONS_DIRECTORY_PATH
 
+
 checkExecutable $QMAKE_PATH
 checkExecutable $LRELEASES
 checkExecutable $ZIP_PATH
-
-#build third party application
-#buildImporter
-#notifyProgress "OpenBoardImporter" "Built Importer"
-
 
 # cleaning the build directory
 rm -rf $BUILD_DIR

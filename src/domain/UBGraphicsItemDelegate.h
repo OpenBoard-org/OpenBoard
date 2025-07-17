@@ -270,6 +270,7 @@ class UBGraphicsItemDelegate : public QObject
         void printMessage(const QString &mess) {qDebug() << mess;}
 
         QGraphicsItem* delegated();
+        void sceneChanged(UBGraphicsScene* scene);
 
         virtual void positionHandles();
         void setZOrderButtonsVisible(bool visible);
@@ -358,6 +359,10 @@ class UBGraphicsItemDelegate : public QObject
         QList<DelegateButton*> mButtons;
         QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
+
+#ifdef DEBUG_Z_LEVEL
+        QGraphicsSimpleTextItem* mZLevelTextItem;
+#endif
 
 protected slots:
         virtual void setAsBackground();

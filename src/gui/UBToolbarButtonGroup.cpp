@@ -118,12 +118,20 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, mActions.at(index)->associatedObjects())
+#else
     foreach(QWidget *widget, mActions.at(index)->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
         {
-            button->setIcon(icon);
+            // change icon at action, so that updates of action do not overwrite the icon
+            for (QAction* action : button->actions())
+            {
+                action->setIcon(icon);
+            }
         }
     }
 }
@@ -138,7 +146,11 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
 
 void UBToolbarButtonGroup::selected(QAction *action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, action->associatedObjects())
+#else
     foreach(QWidget *widget, action->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)

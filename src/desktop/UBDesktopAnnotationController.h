@@ -155,6 +155,7 @@ class UBDesktopAnnotationController : public QObject
         bool mPendingMarkerButtonPressed;
         bool mPendingEraserButtonPressed;
         bool mbArrowClicked;
+        bool mCustomCaptureClicked;
 
         int mBoardStylusTool;
         int mDesktopStylusTool;

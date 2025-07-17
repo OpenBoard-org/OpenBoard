@@ -27,8 +27,8 @@
 
 
 
-#ifndef UBTHUMBNAILWIDGET_H_
-#define UBTHUMBNAILWIDGET_H_
+#ifndef UBDOCUMENTTHUMBNAILSVIEW_H_
+#define UBDOCUMENTTHUMBNAILSVIEW_H_
 
 #include <QtGui>
 #include <QtSvg>
@@ -54,13 +54,13 @@ class UBDocumentProxy;
 class UBThumbnailTextItem;
 class UBThumbnail;
 
-class UBThumbnailWidget : public QGraphicsView
+class UBDocumentThumbnailsView : public QGraphicsView
 {
     Q_OBJECT
 
     public:
-        UBThumbnailWidget(QWidget* parent);
-        virtual ~UBThumbnailWidget();
+        UBDocumentThumbnailsView(QWidget* parent);
+        virtual ~UBDocumentThumbnailsView();
 
         QList<QGraphicsItem*> selectedItems();
         void selectItemAt(int pIndex, bool extend = false);
@@ -574,7 +574,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 {
     Q_OBJECT
     public:
-        UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index);
+        UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index, const QPixmap& thumbnail);
 
         ~UBDraggableLivePixmapItem()
         {
@@ -611,17 +611,21 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 
     public slots:
         void updatePixmap(const QRectF &region = QRectF());
+        void setScene(std::shared_ptr<UBGraphicsScene> scene);
+        void adjustThumbnail();
+
+    private:
+        void createPixmap();
 
     private:
         static const int sSelectionItemMargin = 5;
         QGraphicsRectItem *mSelectionItem;
         std::shared_ptr<UBGraphicsScene> mScene;
+        QRectF mSceneRect;
         UBThumbnailTextItem* mPageNumber;
         bool mExposed;
         QSizeF mSize;
         QTransform mTransform;
-        QTimer updateTimer;
-        int updateCount;
 };
 
 namespace UBThumbnailUI
@@ -673,4 +677,4 @@ namespace UBThumbnailUI
     bool triggered(qreal y);
 }
 
-#endif /* UBTHUMBNAILWIDGET_H_ */
+#endif /* UBDOCUMENTTHUMBNAILSVIEW_H_ */

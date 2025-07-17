@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:ub="https://openboard.org/widgets"
+        id="http://openboard.org/widgets/latex2svg"
+        version="1.0"
+        width="600"
+        height="400"
+        ub:resizable="true"
+        ub:transparent="false">
+    <name>Latex2svg</name>
+    <author email="fc86@outlook.fr">Clément Fauconnier</author>
+    <description>Convert Latex to SVG that can be copied or drag and drop into the board</description>
+    <content src="index.html"/>
+</widget>

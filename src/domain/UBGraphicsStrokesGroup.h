@@ -36,9 +36,8 @@
 #include "core/UB.h"
 #include "UBItem.h"
 
-class UBGraphicsStrokesGroup : public QObject, public QGraphicsItemGroup, public UBItem, public UBGraphicsItem
+class UBGraphicsStrokesGroup : public QGraphicsItemGroup, public UBItem, public UBGraphicsItem
 {
-    Q_OBJECT
 public:
     enum colorType {
         currentColor = 0

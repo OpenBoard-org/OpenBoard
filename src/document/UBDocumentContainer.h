@@ -60,7 +60,6 @@ class UBDocumentContainer : public QObject
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
 
-        void duplicatePages(QList<int>& pageIndexes);
         void duplicatePage(int index);
         void deletePages(QList<int>& pageIndexes);
 
@@ -68,7 +67,7 @@ class UBDocumentContainer : public QObject
         void addPage(int index);
         void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
 
-        virtual void reloadThumbnails();
+        virtual void reloadThumbnails() =0;
 
         void clearThumbPage();
         void initThumbPage();
@@ -89,7 +88,6 @@ class UBDocumentContainer : public QObject
         void documentPageUpdated(int index);
         void documentPageRemoved(int index);
         void documentPageMoved(int from, int to);
-        void documentThumbnailsUpdated(UBDocumentContainer* source);
 
         void initThumbnailsRequired(std::shared_ptr<UBDocumentProxy> document);
         void addThumbnailRequired(std::shared_ptr<UBDocumentProxy> document, int index);

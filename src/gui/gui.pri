@@ -4,7 +4,7 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBToolbarButtonGroup.h \
     src/gui/UBStylusPalette.h \
     src/gui/UBIconButton.h \
-    src/gui/UBThumbnailWidget.h \
+    src/gui/UBDocumentThumbnailsView.h \
     src/gui/UBCircleFrame.h \
     src/gui/UBColorPicker.h \
     src/gui/UBWidgetMirror.h \
@@ -39,16 +39,16 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBFeaturesWidget.h \
     src/gui/UBFeaturesActionBar.h \
     src/gui/UBMessagesDialog.h \
-    src/gui/UBOpenSankoreImporterWidget.h \
     src/gui/UBBackgroundPalette.h \
-    src/gui/UBBoardThumbnailsView.h
+    src/gui/UBBoardThumbnailsView.h \
+    src/gui/UBSnapIndicator.h
 SOURCES += src/gui/UBThumbnailView.cpp \
     $$PWD/UBStartupHintsPalette.cpp \
     src/gui/UBFloatingPalette.cpp \
     src/gui/UBToolbarButtonGroup.cpp \
     src/gui/UBStylusPalette.cpp \
     src/gui/UBIconButton.cpp \
-    src/gui/UBThumbnailWidget.cpp \
+    src/gui/UBDocumentThumbnailsView.cpp \
     src/gui/UBCircleFrame.cpp \
     src/gui/UBColorPicker.cpp \
     src/gui/UBWidgetMirror.cpp \
@@ -83,9 +83,9 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBFeaturesWidget.cpp \
     src/gui/UBFeaturesActionBar.cpp \
     src/gui/UBMessagesDialog.cpp \
-    src/gui/UBOpenSankoreImporterWidget.cpp \
     src/gui/UBBackgroundPalette.cpp \
-    src/gui/UBBoardThumbnailsView.cpp
+    src/gui/UBBoardThumbnailsView.cpp \
+    src/gui/UBSnapIndicator.cpp
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp
 macx:OBJECTIVE_SOURCES += src/gui/UBKeyboardPalette_mac.mm
 linux-g++:SOURCES += src/gui/UBKeyboardPalette_linux.cpp

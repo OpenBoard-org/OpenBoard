@@ -72,7 +72,7 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
         if (logFile.open(QIODevice::Append | QIODevice::Text)) {
             QTextStream out(&logFile);
-            out << QDateTime::currentDateTime().toString(Qt::ISODate)
+            out << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
                 << "      " << msg << "\n";
             logFile.close();
         }
@@ -83,6 +83,11 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    #if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 2))
+        qputenv("QT_MEDIA_BACKEND", "ffmpeg");
+    #endif
+#endif
 
     // Uncomment next section to have memory leaks information
     // tracing in VC++ debug mode under Windows

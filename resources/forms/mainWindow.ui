@@ -1433,7 +1433,7 @@
     <string>Annotate Document</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="actionEraser">
@@ -1957,6 +1957,25 @@
    </property>
    <property name="toolTip">
     <string>Open Hints and tips</string>
+   </property>
+  </action>
+  <action name="actionSnap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/stylusPalette/snap.svg</normaloff>
+     <normalon>:/images/stylusPalette/snapOn.svg</normalon>:/images/stylusPalette/snap.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Snap to grid</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap to grid and angle</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

@@ -34,10 +34,6 @@ APPLICATION_CONTENTS_DIR="$APPLICATION_DIR/Contents"
 APPLICATION_RESOURCES_DIR="$APPLICATION_CONTENTS_DIR/Resources"
 APPLICATION_FRAMEWORKS_DIR="$APPLICATION_CONTENTS_DIR/Frameworks"
 
-IMPORTER_NAME="OpenBoardImporter"
-IMPORTER_DOT_APP="$IMPORTER_NAME.app"
-IMPORTER_DIR="$APPLICATION_RESOURCES_DIR/$IMPORTER_DOT_APP"
-
 WEBENGINE_NAME="QtWebEngineProcess"
 WEBENGINE_DOT_APP="$WEBENGINE_NAME"
 WEBENGINE_DIR="$APPLICATION_FRAMEWORKS_DIR/QtWebEngineCore.framework/Helpers"
@@ -88,19 +84,6 @@ function signWebEngine
     cd -
 }
 
-function signImporter
-{
-    notify "signing $IMPORTER_NAME..."
-    if [ ! -e ${IMPORTER_DIR} ]; then
-        abort "${IMPORTER_DIR} not found"
-    fi
-
-    cd $APPLICATION_RESOURCES_DIR
-
-    $CODESIGN --force --deep -o runtime --timestamp --verbose=4 -s "$IDENTITY" --digest-algorithm=sha1,sha256 "$IMPORTER_DOT_APP"
-    cd -
-}
-
 function signOpenBoard
 {
     notify "signing $APPLICATION_NAME..."
@@ -113,8 +96,6 @@ function signOpenBoard
     $CODESIGN --force --deep -o runtime --timestamp --entitlements "$MACX_RESOURCES_DIR/Entitlements.plist" --verbose=4 -s "$IDENTITY" --digest-algorithm=sha1,sha256 "$APPLICATION_DOT_APP"
     cd -
 }
-
-#signImporter
 
 signOpenBoard
 

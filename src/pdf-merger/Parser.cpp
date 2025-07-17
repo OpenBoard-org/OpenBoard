@@ -113,7 +113,7 @@ void Parser::_clearParser()
 {
    _root = 0;
    _fileContent.clear();
-   _fileContent.reserve();
+   _fileContent.shrink_to_fit();
    _objects.clear();
 }
 

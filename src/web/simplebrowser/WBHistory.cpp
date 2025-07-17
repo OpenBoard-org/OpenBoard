@@ -274,7 +274,7 @@ void WBHistoryManager::clear()
     m_fullSave = true;
     m_saveTimer->changeOccurred();
     m_saveTimer->saveIfNeccessary();
-    historyReset();
+    emit historyReset();
 }
 
 void WBHistoryManager::loadSettings()

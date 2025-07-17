@@ -381,6 +381,9 @@ void UBDisplayManager::positionScreens()
 
         qDebug() << "control geometry" << geometry;
         controlWidget->setGeometry(geometry);
+        // with Qt6, setGeometry has not the desired effect so we additionally use move and resize
+        controlWidget->move(geometry.topLeft());
+        controlWidget->resize(geometry.size());
         UBPlatformUtils::showFullScreen(controlWidget);
     }
 
@@ -448,7 +451,7 @@ void UBDisplayManager::blackout()
 
     UBPlatformUtils::fadeDisplayOut();
 
-    for (UBBlackoutWidget* blackoutWidget : qAsConst(mBlackoutWidgets))
+    for (UBBlackoutWidget* blackoutWidget : std::as_const(mBlackoutWidgets))
     {
         UBPlatformUtils::showFullScreen(blackoutWidget);
     }

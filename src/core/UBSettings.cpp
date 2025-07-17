@@ -158,7 +158,7 @@ QSettings* UBSettings::getAppSettings()
     if (!UBSettings::sAppSettings)
     {
         QString tmpSettings = QDir::tempPath() + "/" + qApp->applicationName() + ".config";
-        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
+        QString appSettings = UBPlatformUtils::applicationEtcDirectory() + "/" + qApp->applicationName() + ".config";
 
         // tmpSettings exists when upgrading Uniboard on Mac (see UBPlatformUtils_mac.mm updater:willInstallUpdate:)
         if (QFile::exists(tmpSettings))
@@ -267,8 +267,6 @@ void UBSettings::init()
     appScreenList = new UBSetting(this, "App", "ScreenList", QVariant());
 
     appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",false);
-
-    appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
     appRunInWindow = new UBSetting(this, "App", "RunInWindow", false);
@@ -424,8 +422,6 @@ void UBSettings::init()
     pdfUsePDFMerger = new UBSetting(this, "PDF", "UsePDFMerger", "true");
     pdfResolution = new UBSetting(this, "PDF", "Resolution", "300");
 
-    pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");
-    enableQualityLossToIncreaseZoomPerfs = new UBSetting(this, "PDF", "enableQualityLossToIncreaseZoomPerfs", true);
     exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
     exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 
@@ -472,7 +468,7 @@ void UBSettings::init()
     KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
-    angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
+    rotationAngleStep = new UBSetting(this, "App", "RotationAngleStep", 5.);
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
@@ -544,17 +540,32 @@ void UBSettings::save()
          * We save the setting to the user settings if
          * a) it is different from the (non-null) value stored in the user settings, or
          * b) it doesn't currently exist in the user settings AND has changed from the app settings
+         * An invalid value indicates removal of the setting
         */
         if (mUserSettings->contains(it.key())
                 && it.value() != mUserSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         else if (!mUserSettings->contains(it.key())
                  && it.value() != mAppSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         ++it;

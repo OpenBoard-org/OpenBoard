@@ -107,7 +107,7 @@ void UBEmbedParser::parse(const QString& html)
 
     QList<QString> oembedUrls;
 
-    for (QString result : qAsConst(results))
+    for (QString result : std::as_const(results))
     {
         // replace entities
         result = result.trimmed().replace("&lt;", "<").replace("&gt;", ">").replace("\\&quot;", "\"").replace("\\", "");

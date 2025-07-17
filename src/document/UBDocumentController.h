@@ -232,8 +232,7 @@ public:
     void addDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent = QModelIndex());
     void addNewDocument(std::shared_ptr<UBDocumentProxy>pProxyData, const QModelIndex &pParent = QModelIndex());
     QModelIndex addCatalog(const QString &pName, const QModelIndex &pParent);
-    QList<std::shared_ptr<UBDocumentProxy>> newDocuments() {return mNewDocuments;}
-    void markDocumentAsNew(std::shared_ptr<UBDocumentProxy> pDoc) {if (indexForProxy(pDoc).isValid()) mNewDocuments << pDoc;}
+
     void setNewName(const QModelIndex &index, const QString &newName);
     QString adjustNameForParentIndex(const QString &pName, const QModelIndex &pIndex);
 
@@ -277,7 +276,7 @@ private:
     QPersistentModelIndex mMyDocuments;
     QPersistentModelIndex mTrash;
     QPersistentModelIndex mUntitledDocuments;
-    QList<std::shared_ptr<UBDocumentProxy>> mNewDocuments;
+
     QModelIndex mHighLighted;
 
     //N/C - NNE - 20140407
@@ -424,6 +423,7 @@ class UBDocumentController : public UBDocumentContainer
         bool addFileToDocument(std::shared_ptr<UBDocumentProxy> document);
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
+        void setActiveThumbnail(int sceneIndex);
 
 
         bool pageCanBeMovedUp(int page);
@@ -432,8 +432,7 @@ class UBDocumentController : public UBDocumentContainer
         bool pageCanBeDeleted(int page);
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
-
-        void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
+        void reloadThumbnails() override;
         QModelIndex firstSelectedTreeIndex();
         std::shared_ptr<UBDocumentProxy> firstSelectedTreeProxy();
         inline DeletionType deletionTypeForSelection(LastSelectedElementType pTypeSelection
@@ -513,6 +512,8 @@ class UBDocumentController : public UBDocumentContainer
         void collapseAll();
         void expandAll();
 
+
+        void refreshDocumentThumbnailsView();
         void updateThumbnail(int index);
         void removeThumbnail(int index);
         void moveThumbnail(int from, int to);
@@ -582,7 +583,6 @@ protected:
         void addFolderOfImages();
         void addFileToDocument();
         void addImages();
-        void refreshDocumentThumbnailsView(UBDocumentContainer* source);
 };
 
 
