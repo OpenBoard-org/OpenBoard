@@ -270,10 +270,17 @@ UBFFmpegVideoEncoder::UBFFmpegVideoEncoder(QObject* parent)
 UBFFmpegVideoEncoder::~UBFFmpegVideoEncoder()
 {
     if (mVideoWorker)
-        delete mVideoWorker;
+    {
+        UBFFmpegVideoEncoder::stop();
+        mVideoWorker->deleteLater();
+    }
 
     if (mVideoEncoderThread)
+    {
+        mVideoEncoderThread->quit();
+        mVideoEncoderThread->wait();
         delete mVideoEncoderThread;
+    }
 
     if (mAudioInput)
         delete mAudioInput;
