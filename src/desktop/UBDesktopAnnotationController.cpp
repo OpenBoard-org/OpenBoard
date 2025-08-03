@@ -442,25 +442,22 @@ void UBDesktopAnnotationController::customCapture()
         updateBackground();
 
         mDesktopPalette->disappearForCapture();
-        UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-        // need to show the window before execute it to avoid some glitch on windows.
 
-    #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-        UBPlatformUtils::showFullScreen(&customCaptureWindow);
-    #endif
+        getScreenPixmap([this](QPixmap pixmap){
+            UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
 
-        if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
-        {
-            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-            emit imageCaptured(selectedPixmap, false);
-        }
+            if (customCaptureWindow.execute(pixmap) == QDialog::Accepted)
+            {
+                QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+                emit imageCaptured(selectedPixmap, false);
+            }
 
+            mDesktopPalette->appear();
 
-        mDesktopPalette->appear();
-
-        mCustomCaptureClicked = false;
-        mIsFullyTransparent = false;
-        updateBackground();
+            mCustomCaptureClicked = false;
+            mIsFullyTransparent = false;
+            updateBackground();
+        });
     }
 }
 
@@ -473,21 +470,21 @@ void UBDesktopAnnotationController::screenCapture()
 
     mDesktopPalette->disappearForCapture();
 
-    QPixmap originalPixmap = getScreenPixmap();
+    getScreenPixmap([this](QPixmap pixmap){
+        mDesktopPalette->appear();
 
-    mDesktopPalette->appear();
+        emit imageCaptured(pixmap, false);
 
-    emit imageCaptured(originalPixmap, false);
+        mIsFullyTransparent = false;
 
-    mIsFullyTransparent = false;
-
-    updateBackground();
+        updateBackground();
+    });
 }
 
 
-QPixmap UBDesktopAnnotationController::getScreenPixmap()
+void UBDesktopAnnotationController::getScreenPixmap(std::function<void(QPixmap)> callback)
 {
-    return UBApplication::displayManager->grab(ScreenRole::Control);
+    UBApplication::displayManager->grab(ScreenRole::Control, callback);
 }
 
 

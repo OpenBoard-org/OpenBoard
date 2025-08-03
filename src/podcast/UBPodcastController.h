@@ -94,6 +94,7 @@ class UBPodcastController : public QObject
     private slots:
 
         void processScreenGrabingTimerEvent();
+        void encodeWidgetContent(QPixmap pixmap);
 
         void processScenePaintEvent();
 
