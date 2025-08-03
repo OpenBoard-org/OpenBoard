@@ -494,3 +494,9 @@ void UBPlatformUtils::showOSK(bool show)
             PostMessage(oskWindow, WM_SYSCOMMAND, SC_CLOSE, 0);
     }
 }
+
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+{
+    QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    callback(pixmap);
+}

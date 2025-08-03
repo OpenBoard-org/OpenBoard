@@ -35,6 +35,7 @@
 #include <QProcess>
 
 class QMainWindow;
+class QScreen;
 
 #define SYMBOL_KEYS_COUNT 47
 
@@ -212,12 +213,24 @@ public:
         static void setFrontProcess();
         static void showFullScreen(QWidget * pWidget);
         static void showOSK(bool show);
+        static void grabScreen(QScreen* screen, std::function<void(QPixmap)> callback, QRect rect = {});
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);
         static void toggleFinder(const bool on);
 
         static bool errorOpeningVirtualKeyboard;
+#endif
+        enum SessionType {
+            UNKNOWN,
+            X11,
+            WAYLAND
+        };
+
+#ifdef Q_OS_LINUX
+        static SessionType sessionType();
+#else
+        static SessionType sessionType() { return UNKNOWN; }
 #endif
 };
 

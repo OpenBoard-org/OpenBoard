@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <X11/keysym.h>
 
+#include "frameworks/UBDesktopPortal.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
@@ -533,6 +534,52 @@ void UBPlatformUtils::showOSK(bool show)
     {
         qDebug() << "onboard not registered/installed";
     }
+}
+
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+{
+    if (sessionType() == WAYLAND)
+    {
+        UBDesktopPortal* portal = new UBDesktopPortal;
+
+        QObject::connect(portal, &UBDesktopPortal::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
+            callback(screenshot);
+            portal->deleteLater();
+        });
+
+        portal->grabScreen(screen, rect);
+    }
+    else
+    {
+        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
+        // for using window id 0
+        QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        callback(pixmap);
+    }
+}
+
+UBPlatformUtils::SessionType UBPlatformUtils::sessionType()
+{
+    /*
+     * We use XDG_SESSION_TYPE here instead of QGuiApplication::platformName(), because
+     * the platformName just says what Qt plugin is used to access the platform, while
+     * XDG_SESSION_TYPE is the actual type of the session. E.g. if we're on Wayland,
+     * but use the xcb platform plugin using xwayland, then platform name returns "xdg"
+     * just as if we're running on X11. However we would still have to use the desktop
+     * portal to access screen content outside of our application.
+     */
+    QString xdgSessionType = QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE", "");
+
+    if (xdgSessionType == "x11")
+    {
+        return X11;
+    }
+    else if (xdgSessionType == "wayland")
+    {
+        return WAYLAND;
+    }
+
+    return UNKNOWN;
 }
 
 OnboardListener::OnboardListener(const QDBusConnection& connection, QObject* parent)
