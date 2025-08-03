@@ -99,7 +99,7 @@ class UBDesktopAnnotationController : public QObject
         void restoreUniboard();
 
     protected:
-        QPixmap getScreenPixmap();
+        void getScreenPixmap(std::function<void (QPixmap)> callback);
 
         UBBoardView* mTransparentDrawingView;       
         std::shared_ptr<UBGraphicsScene> mTransparentDrawingScene;

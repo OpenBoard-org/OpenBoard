@@ -744,7 +744,10 @@ void UBPodcastController::processScreenGrabingTimerEvent()
 
     if (mIsDesktopMode)
     {
-        widgetContent = UBApplication::displayManager->grab(ScreenRole::Control);
+        // TODO implement screencast based on screencast portal
+        UBApplication::displayManager->grab(ScreenRole::Control, [this](QPixmap pixmap){
+            encodeWidgetContent(pixmap);
+        });
     }
     else
     {
@@ -752,8 +755,12 @@ void UBPodcastController::processScreenGrabingTimerEvent()
         widgetContent = QPixmap(mSourceWidget->size());
         QPainter p(&widgetContent);
         mSourceWidget->render(&p);
+        encodeWidgetContent(widgetContent);
     }
+}
 
+void UBPodcastController::encodeWidgetContent(QPixmap pixmap)
+{
     QPainter p(&mLatestCapture);
 
     if (!mInitialized)
@@ -762,11 +769,11 @@ void UBPodcastController::processScreenGrabingTimerEvent()
         mInitialized = true;
     }
 
-    QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, widgetContent.width(), widgetContent.height()));
+    QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, pixmap.width(), pixmap.height()));
 
     p.setRenderHints(QPainter::Antialiasing);
     p.setRenderHints(QPainter::SmoothPixmapTransform);
-    p.drawPixmap(targetRect.left(), targetRect.top(), widgetContent.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    p.drawPixmap(targetRect.left(), targetRect.top(), pixmap.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     sendLatestPixmapToEncoder();
 }

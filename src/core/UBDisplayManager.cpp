@@ -521,18 +521,18 @@ qreal UBDisplayManager::logicalDpi(ScreenRole role) const
     return scr ? scr->logicalDotsPerInch() : 96.;
 }
 
-QPixmap UBDisplayManager::grab(ScreenRole role, QRect rect) const
+void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callback, QRect rect) const
 {
     QScreen* scr = screen(role);
 
     if (scr)
     {
-        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
-        // for using window id 0
-        return scr->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        UBPlatformUtils::grabScreen(scr, callback, rect);
     }
-
-    return QPixmap();
+    else
+    {
+        callback(QPixmap());
+    }
 }
 
 QPixmap UBDisplayManager::grabGlobal(QRect rect) const

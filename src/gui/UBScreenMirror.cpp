@@ -90,14 +90,17 @@ void UBScreenMirror::grabPixmap()
     if (mSourceWidget)
     {
         mLastPixmap = mSourceWidget->grab();
+
+        if (!mLastPixmap.isNull())
+            mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     else
     {
-        mLastPixmap = UBApplication::displayManager->grab(ScreenRole::Control);
+        UBApplication::displayManager->grab(ScreenRole::Control, [this](QPixmap pixmap){
+            if (!pixmap.isNull())
+                mLastPixmap = pixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        });
     }
-
-    if (!mLastPixmap.isNull())
-        mLastPixmap = mLastPixmap.scaled(size() * mLastPixmap.devicePixelRatioF(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 
