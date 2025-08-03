@@ -149,11 +149,10 @@ signals:
     void screenListChanged(QStringList screenList);
 
 private slots:
-    void addScreen();
+    void addScreen(const QString& screenIndex);
     void onTextChanged(const QString& input);
 
 private:
-    QList<QPushButton*> mScreenLabels;
     UBStringListValidator* mValidator;
 };
 
