@@ -79,6 +79,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
+    mTransparentDrawingView->setWindowTitle("DesktopView");
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     // didn't find the equivalent in Qt6
@@ -350,6 +351,10 @@ void UBDesktopAnnotationController::showWindow()
 #ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
 #endif // UB_REQUIRES_MASK_UPDATE
+
+#ifdef Q_OS_LINUX
+    UBPlatformUtils::keepOnTop();
+#endif
 }
 
 

@@ -32,6 +32,8 @@
 #include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 #include "desktop/UBDesktopAnnotationController.h"
+#include "frameworks/UBPlatformUtils.h"
+
 
 enum : uint { MONITOR = 1, WINDOW = 2, VIRTUAL = 4 } SourceType;
 enum : uint { HIDDEN = 1, EMBEDDED = 2, METADATA = 4 } CursorMode;
@@ -373,5 +375,10 @@ void UBDesktopPortal::showGlassPane(bool show) const
     if (UBApplication::applicationController->isShowingDesktop())
     {
         UBApplication::applicationController->uninotesController()->drawingView()->setVisible(show);
+
+        if (show)
+        {
+            UBPlatformUtils::keepOnTop();
+        }
     }
 }
