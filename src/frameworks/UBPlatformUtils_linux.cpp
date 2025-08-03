@@ -582,6 +582,30 @@ UBPlatformUtils::SessionType UBPlatformUtils::sessionType()
     return UNKNOWN;
 }
 
+void UBPlatformUtils::keepOnTop()
+{
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.KWin"))
+    {
+        QTimer::singleShot(500, [](){
+            // keep desktop window on top for KDE environments
+            QDBusInterface scripting("org.kde.KWin", "/Scripting");
+            auto result = scripting.callWithArgumentList(QDBus::Block, "loadScript", {applicationTemplateDirectory() + "/kwinKeepAbove.js"});
+
+            if (result.type() != QDBusMessage::ReplyMessage || result.arguments().empty() || !result.arguments().first().canConvert<int>())
+            {
+                qDebug() << "Failed loading KWin script";
+                return;
+            }
+
+            auto path = "/" + result.arguments().first().toString();
+
+            QDBusInterface script("org.kde.KWin", path);
+            script.call("run");
+            script.call("stop");
+        });
+    }
+}
+
 OnboardListener::OnboardListener(const QDBusConnection& connection, QObject* parent)
         : QObject{parent}
         , mConnection{connection}

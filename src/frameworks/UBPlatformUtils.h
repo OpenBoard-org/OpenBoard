@@ -229,6 +229,7 @@ public:
 
 #ifdef Q_OS_LINUX
         static SessionType sessionType();
+        static void keepOnTop();
 #else
         static SessionType sessionType() { return UNKNOWN; }
 #endif
