@@ -311,9 +311,46 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
     return mAvailableScreens;
 }
 
+namespace
+{
+    // backport of UBPlatformUtils::sessionType() == WAYLAND from 1.8
+    bool isWaylandSession()
+    {
+#ifdef Q_OS_LINUX
+        return QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE") == "wayland";
+#else
+        return false;
+#endif
+    }
+}
+
 void UBDisplayManager::adjustScreens()
 {
     assignRoles();
+
+    if (isWaylandSession())
+    {
+        auto controlWidget = widget(ScreenRole::Control);
+
+        // hide windows for repositioning
+        if (controlWidget && hasControl() && controlWidget->isVisible())
+        {
+            for (auto widget : mWidgetsByRole)
+            {
+                if (widget)
+                {
+                    widget->hide();
+                }
+            }
+
+            QTimer::singleShot(100, this, [this](){
+                positionScreens();
+            });
+
+            return;
+        }
+    }
+
     positionScreens();
 }
 
