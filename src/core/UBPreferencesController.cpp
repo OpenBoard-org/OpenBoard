@@ -158,7 +158,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
     connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
-        settings->appScreenList->set(screenList);
+        mScreenList = screenList;
 
         if (!mScreenConfigurationPath.isEmpty())
         {
@@ -361,6 +361,12 @@ void UBPreferencesController::close()
     UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
+
+    // screen settings
+    if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
+    {
+        UBSettings::settings()->appScreenList->set(mScreenList);
+    }
 
     mPreferencesWindow->accept();
 }

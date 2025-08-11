@@ -374,6 +374,30 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
 void UBDisplayManager::adjustScreens()
 {
     assignRoles();
+
+    if (UBPlatformUtils::sessionType() == UBPlatformUtils::SessionType::WAYLAND)
+    {
+        auto controlWidget = widget(ScreenRole::Control);
+
+        // hide windows for repositioning
+        if (controlWidget && hasControl() && controlWidget->isVisible())
+        {
+            for (auto widget : mWidgetsByRole)
+            {
+                if (widget)
+                {
+                    widget->hide();
+                }
+            }
+
+            QTimer::singleShot(100, this, [this](){
+                positionScreens();
+            });
+
+            return;
+        }
+    }
+
     positionScreens();
 }
 
