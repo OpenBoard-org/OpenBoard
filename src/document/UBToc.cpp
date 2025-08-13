@@ -171,7 +171,7 @@ void UBToc::unsetAssets(int index)
     mToc[index].remove(ASSETS);
 }
 
-bool UBToc::hasAssets(int index) const
+bool UBToc::hasAssetsEntry(int index) const
 {
     if (index < 0 || index >= mToc.count())
     {

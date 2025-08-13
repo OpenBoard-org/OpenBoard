@@ -57,7 +57,7 @@ public:
     QStringList assets(int index) const;
     void setAssets(int index, const QStringList& assets);
     void unsetAssets(int index);
-    bool hasAssets(int index) const;
+    bool hasAssetsEntry(int index) const;
 
     // load and save
     bool load();

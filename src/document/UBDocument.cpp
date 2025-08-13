@@ -237,7 +237,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::getScene(int index)
 
 QList<QString> UBDocument::pageRelativeDependencies(int index)
 {
-    if (mToc->hasAssets(index))
+    if (mToc->hasAssetsEntry(index))
     {
         return mToc->assets(index);
     }
@@ -320,7 +320,7 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
     const auto persistenceManager = UBPersistenceManager::persistenceManager();
     auto index = mToc->findUuid(scene->uuid());
 
-    if (index >= 0 && !mToc->hasAssets(index))
+    if (index >= 0 && !mToc->hasAssetsEntry(index))
     {
         const auto mediaAssetItems = scene->mediaAssetItems();
 
@@ -389,7 +389,7 @@ void UBDocument::scanAssets()
 
     for (int index = 0; index < mToc->pageCount(); ++index)
     {
-        if (!mToc->hasAssets(index))
+        if (!mToc->hasAssetsEntry(index))
         {
             int pageId = mToc->pageId(index);
             paths.append({index, mProxy->persistencePath() + persistenceManager->sceneFilenameForId(pageId)});
@@ -619,7 +619,7 @@ void UBDocument::deleteUnreferencedAssets()
 
     for (int index = 0; index < mToc->pageCount(); ++index)
     {
-        if (!mToc->hasAssets(index))
+        if (!mToc->hasAssetsEntry(index))
         {
             // no cleanup with incomplete asset information
             return;
