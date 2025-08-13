@@ -205,12 +205,6 @@ void UBThumbnailScene::createThumbnails(int startIndex)
     for (int index = startIndex; index < mDocument->pageCount(); ++index)
     {
         const auto thumbnailPath = UBThumbnailAdaptor::thumbnailUrl(mDocument, index).toLocalFile();
-
-        if (!QFile::exists(thumbnailPath))
-        {
-            UBThumbnailAdaptor::generateMissingThumbnail(mDocument, index);
-        }
-
         paths << std::pair<int,QString>{index, thumbnailPath};
     }
 
