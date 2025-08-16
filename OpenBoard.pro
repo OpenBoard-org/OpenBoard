@@ -455,7 +455,6 @@ linux-g++* {
     CONFIG += link_prl
     LIBS += -lcrypto
     #LIBS += -lprofiler
-    LIBS += -lX11
 
     greaterThan(QT_MAJOR_VERSION, 5) {
         LIBS += -lquazip1-qt6
