@@ -116,7 +116,6 @@ include(cmake/DependencyZlib.cmake)
 include(cmake/DependencyQuaZip.cmake)
 include(cmake/DependencyFFmpeg.cmake)
 include(cmake/DependencyPipewire.cmake)
-include(cmake/DependencyX11.cmake)
 
 # add source path to include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
