@@ -27,7 +27,7 @@
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 #include "document/UBDocumentController.h"
-#include "document/UBToc.h"
+#include "document/UBDocumentToc.h"
 #include "domain/UBMediaAssetItem.h"
 #include "frameworks/UBBackgroundLoader.h"
 #include "gui/UBMainWindow.h"
@@ -265,11 +265,11 @@ UBThumbnailScene* UBDocument::thumbnailScene()
     return mThumbnailScene.get();
 }
 
-UBToc* UBDocument::toc()
+UBDocumentToc* UBDocument::toc()
 {
     if (!mToc)
     {
-        mToc = new UBToc{mProxy->persistencePath()};
+        mToc = new UBDocumentToc{mProxy->persistencePath()};
         const auto tocPresent = mToc->load();
 
         if (!tocPresent ||

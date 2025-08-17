@@ -20,7 +20,7 @@
  */
 
 
-#include "UBToc.h"
+#include "UBDocumentToc.h"
 
 #include <QUuid>
 
@@ -30,29 +30,29 @@ static const QString UUID{"uuid"};
 static const QString PAGE_ID{"id"};
 static const QString ASSETS("assets");
 
-UBToc::UBToc(const QString& documentPath)
+UBDocumentToc::UBDocumentToc(const QString& documentPath)
     : mDocumentPath{documentPath}
 {
 }
 
-UBToc::UBToc(const UBToc& other, const QString& documentPath)
+UBDocumentToc::UBDocumentToc(const UBDocumentToc& other, const QString& documentPath)
     : mDocumentPath{documentPath}
     , mVersion{other.mVersion}
     , mToc{other.mToc}
 {
 }
 
-QVersionNumber UBToc::version() const
+QVersionNumber UBDocumentToc::version() const
 {
     return mVersion;
 }
 
-int UBToc::pageCount() const
+int UBDocumentToc::pageCount() const
 {
     return mToc.count();
 }
 
-int UBToc::insert(int index)
+int UBDocumentToc::insert(int index)
 {
     if (index >= 0 && index <= mToc.count())
     {
@@ -65,7 +65,7 @@ int UBToc::insert(int index)
     return -1;
 }
 
-void UBToc::move(int fromIndex, int toIndex)
+void UBDocumentToc::move(int fromIndex, int toIndex)
 {
     if (fromIndex < 0 || fromIndex >= mToc.count() || toIndex < 0 || toIndex >= mToc.count())
     {
@@ -78,7 +78,7 @@ void UBToc::move(int fromIndex, int toIndex)
     mModified = true;
 }
 
-void UBToc::remove(int index)
+void UBDocumentToc::remove(int index)
 {
     if (index >= 0 && index < mToc.count())
     {
@@ -87,7 +87,7 @@ void UBToc::remove(int index)
     }
 }
 
-QUuid UBToc::uuid(int index) const
+QUuid UBDocumentToc::uuid(int index) const
 {
     if (index < 0 || index >= mToc.count())
     {
@@ -97,7 +97,7 @@ QUuid UBToc::uuid(int index) const
     return mToc.at(index).value(UUID).toUuid();
 }
 
-void UBToc::setUuid(int index, const QUuid& uuid)
+void UBDocumentToc::setUuid(int index, const QUuid& uuid)
 {
     if (index < 0)
     {
@@ -109,7 +109,7 @@ void UBToc::setUuid(int index, const QUuid& uuid)
     mModified = true;
 }
 
-int UBToc::findUuid(const QUuid& sceneUuid) const
+int UBDocumentToc::findUuid(const QUuid& sceneUuid) const
 {
     for (int i = 0; i < mToc.size(); ++i)
     {
@@ -122,7 +122,7 @@ int UBToc::findUuid(const QUuid& sceneUuid) const
     return -1;
 }
 
-int UBToc::pageId(int index) const
+int UBDocumentToc::pageId(int index) const
 {
     if (index < 0 || index >= mToc.count())
     {
@@ -132,7 +132,7 @@ int UBToc::pageId(int index) const
     return mToc.at(index).value(PAGE_ID).toInt();
 }
 
-void UBToc::setPageId(int index, int pageId)
+void UBDocumentToc::setPageId(int index, int pageId)
 {
     if (index < 0)
     {
@@ -144,7 +144,7 @@ void UBToc::setPageId(int index, int pageId)
     mModified = true;
 }
 
-QStringList UBToc::assets(int index) const
+QStringList UBDocumentToc::assets(int index) const
 {
     if (index < 0 || index >= mToc.count())
     {
@@ -154,7 +154,7 @@ QStringList UBToc::assets(int index) const
     return mToc.at(index).value(ASSETS).toStringList();
 }
 
-void UBToc::setAssets(int index, const QStringList& assets)
+void UBDocumentToc::setAssets(int index, const QStringList& assets)
 {
     if (index < 0)
     {
@@ -166,12 +166,12 @@ void UBToc::setAssets(int index, const QStringList& assets)
     mModified = true;
 }
 
-void UBToc::unsetAssets(int index)
+void UBDocumentToc::unsetAssets(int index)
 {
     mToc[index].remove(ASSETS);
 }
 
-bool UBToc::hasAssetsEntry(int index) const
+bool UBDocumentToc::hasAssetsEntry(int index) const
 {
     if (index < 0 || index >= mToc.count())
     {
@@ -181,7 +181,7 @@ bool UBToc::hasAssetsEntry(int index) const
     return mToc.at(index).contains(ASSETS);
 }
 
-bool UBToc::load()
+bool UBDocumentToc::load()
 {
     UBTocJsonSerializer serializer(mDocumentPath);
     const auto ok = serializer.load(mVersion, mToc);
@@ -195,7 +195,7 @@ bool UBToc::load()
     return ok;
 }
 
-void UBToc::save()
+void UBDocumentToc::save()
 {
     if (mModified)
     {
@@ -205,12 +205,12 @@ void UBToc::save()
     }
 }
 
-int UBToc::nextAvailablePageId()
+int UBDocumentToc::nextAvailablePageId()
 {
     return mNextAvailablePageId++;
 }
 
-void UBToc::assureSize(int index)
+void UBDocumentToc::assureSize(int index)
 {
     if (index >= mToc.count())
     {

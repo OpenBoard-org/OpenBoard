@@ -49,7 +49,7 @@
 #include "document/UBDocument.h"
 #include "document/UBDocumentController.h"
 #include "document/UBDocumentProxy.h"
-#include "document/UBToc.h"
+#include "document/UBDocumentToc.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -598,7 +598,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
         return nullptr; // if we can't create the path, abort function.
     }
 
-    UBToc toc{doc->persistencePath()};
+    UBDocumentToc toc{doc->persistencePath()};
 
     if (withEmptyPage)
     {

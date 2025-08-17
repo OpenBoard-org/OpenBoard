@@ -33,9 +33,9 @@
 // forward
 class UBBackgroundLoader;
 class UBDocumentProxy;
+class UBDocumentToc;
 class UBGraphicsScene;
 class UBThumbnailScene;
-class UBToc;
 
 
 /**
@@ -70,7 +70,7 @@ public:
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
     UBThumbnailScene* thumbnailScene();
-    UBToc* toc();
+    UBDocumentToc* toc();
 
     int pageCount();
 
@@ -93,7 +93,7 @@ private:
 private:
     std::shared_ptr<UBDocumentProxy> mProxy{nullptr};
     std::unique_ptr<UBThumbnailScene> mThumbnailScene;
-    UBToc* mToc{nullptr};
+    UBDocumentToc* mToc{nullptr};
     UBBackgroundLoader* mSceneHeaderLoader{nullptr};
     UBBackgroundLoader* mSceneAssetLoader{nullptr};
     QHash<QUuid, QUuid> mUuidV5Map{};

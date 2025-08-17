@@ -28,13 +28,13 @@
 #include <QVersionNumber>
 
 
-static const QVersionNumber TOC_VERSION{1, 0};
+static const QVersionNumber DOCUMENT_TOC_VERSION{1, 0};
 
-class UBToc
+class UBDocumentToc
 {
 public:
-    UBToc(const QString& documentPath);
-    UBToc(const UBToc& other, const QString& documentPath);
+    UBDocumentToc(const QString& documentPath);
+    UBDocumentToc(const UBDocumentToc& other, const QString& documentPath);
 
     QVersionNumber version() const;
 
@@ -71,7 +71,7 @@ private:
 
 private:
     const QString mDocumentPath;
-    QVersionNumber mVersion{TOC_VERSION};
+    QVersionNumber mVersion{DOCUMENT_TOC_VERSION};
     QVector<QVariantMap> mToc;
     int mNextAvailablePageId{0};
     bool mModified{false};

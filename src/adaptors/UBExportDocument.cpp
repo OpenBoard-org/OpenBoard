@@ -39,7 +39,7 @@
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-#include "document/UBToc.h"
+#include "document/UBDocumentToc.h"
 
 #ifdef Q_OS_OSX
     #include <quazip.h>
@@ -81,7 +81,7 @@ bool UBExportDocument::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocume
     QDir documentDir = QDir(pDocumentProxy->persistencePath());
 
     // try to load a TOC for mapping and check version number
-    UBToc toc{pDocumentProxy->persistencePath()};
+    UBDocumentToc toc{pDocumentProxy->persistencePath()};
     std::unique_ptr<UBPageMapper> mapper{nullptr};
     const auto version = QVersionNumber::fromString(pDocumentProxy->metaData(UBSettings::documentVersion).toString());
 

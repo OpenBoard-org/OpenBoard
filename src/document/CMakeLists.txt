@@ -7,10 +7,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBDocumentController.h
     UBDocumentProxy.cpp
     UBDocumentProxy.h
+    UBDocumentToc.cpp
+    UBDocumentToc.h
     UBSortFilterProxyModel.cpp
     UBSortFilterProxyModel.h
-    UBToc.cpp
-    UBToc.h
     UBTocSerializer.cpp
     UBTocSerializer.h
 )

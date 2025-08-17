@@ -23,9 +23,9 @@
 #include "UBPageMapper.h"
 
 #include "core/UBPersistenceManager.h"
-#include "document/UBToc.h"
+#include "document/UBDocumentToc.h"
 
-UBPageMapper::UBPageMapper(const QString& documentPath, UBToc* toc)
+UBPageMapper::UBPageMapper(const QString& documentPath, UBDocumentToc* toc)
     : mDocumentPath{documentPath}
     , mSourceToc{toc}
 {
@@ -36,7 +36,7 @@ UBPageMapper::UBPageMapper(const QString& documentPath, UBToc* toc)
     }
 
     auto pm = UBPersistenceManager::persistenceManager();
-    mMappedToc = std::unique_ptr<UBToc>{new UBToc(*mSourceToc, mTempDir.path())};
+    mMappedToc = std::unique_ptr<UBDocumentToc>{new UBDocumentToc(*mSourceToc, mTempDir.path())};
 
     // create page map and target TOC
     for (int index = 0; index < mSourceToc->pageCount(); ++index)

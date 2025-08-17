@@ -29,7 +29,7 @@
 #include <memory>
 
 // forward
-class UBToc;
+class UBDocumentToc;
 
 /**
  * @brief The UBPageMapper maps a file name which should be saved in a ZIP
@@ -49,14 +49,14 @@ public:
     };
 
 public:
-    UBPageMapper(const QString& documentPath, UBToc* toc);
+    UBPageMapper(const QString& documentPath, UBDocumentToc* toc);
 
     MapResult map(const QString& filename) const;
 
 private:
     const QString mDocumentPath;
-    const UBToc* mSourceToc{nullptr};
-    std::unique_ptr<UBToc> mMappedToc;
+    const UBDocumentToc* mSourceToc{nullptr};
+    std::unique_ptr<UBDocumentToc> mMappedToc;
     QHash<QString, QString> mFileMap;
     QTemporaryDir mTempDir;
 };
