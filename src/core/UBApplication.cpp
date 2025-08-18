@@ -106,6 +106,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
     setOrganizationName("Open Education Foundation");
     setOrganizationDomain("oe-f.org");
     setApplicationName("OpenBoard");
+    setDesktopFileName("ch.openboard.OpenBoard");
 
     QString version = UBVERSION;
     if(version.endsWith("."))
