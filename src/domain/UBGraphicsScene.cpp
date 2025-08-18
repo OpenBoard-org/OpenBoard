@@ -54,6 +54,7 @@
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCache.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "board/UBBoardController.h"
@@ -1401,6 +1402,7 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
 {
     std::shared_ptr<UBGraphicsScene> copy = std::make_shared<UBGraphicsScene>(this->document(), this->mUndoRedoStackEnabled);
 
+    copy->setUuid(this->uuid());
     copy->setBackground(this->isDarkBackground(), mPageBackground);
     copy->setBackgroundGridSize(mBackgroundGridSize);
     copy->setSceneRect(this->sceneRect());
@@ -1522,9 +1524,11 @@ void UBGraphicsScene::clearContent(clearCase pCase)
                 if (itemGroup) {
                     itemGroup->removeFromGroup(item);
 
-                    groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
+                    UBItem* ubitem = dynamic_cast<UBItem*>(item);
+                    groupsMap.insert(itemGroup, ubitem ? ubitem->uuid() : QUuid{});
                     if (itemGroup->childItems().count() == 1) {
-                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().constFirst()));
+                        UBItem* ubitem = dynamic_cast<UBItem*>(itemGroup->childItems().constFirst());
+                        groupsMap.insert(itemGroup, ubitem ? ubitem->uuid() : QUuid{});
                         QGraphicsItem *lastItem = itemGroup->childItems().constFirst();
                         bool isSelected = itemGroup->isSelected();
                         itemGroup->destroy(false);
@@ -1634,7 +1638,8 @@ UBGraphicsPixmapItem* UBGraphicsScene::addImage(QByteArray pData, QGraphicsItem*
         format = "png." + format;
     }
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + "." + format;
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + UBMediaAssetItem::createMediaAssetUuid(pData).toString() + "." + format;
+    pixmapItem->setMediaAsset(documentPath, fileName);
 
     QString path = documentPath + "/" + fileName;
 
@@ -1862,7 +1867,7 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    QString fileName = svgItem->mediaAssets().at(0);
 
     QString completePath = documentPath + "/" + fileName;
 
@@ -2181,21 +2186,6 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     return normalizedRect;
 }
 
-QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
-{
-    QGraphicsItem *result = 0;
-
-    //simple search before implementing container for fast access
-    foreach (QGraphicsItem *item, items())
-    {
-        if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
-            result = item;
-        }
-    }
-
-    return result;
-}
-
 void UBGraphicsScene::setDocument(std::shared_ptr<UBDocumentProxy> pDocument)
 {
     if (pDocument != mDocument)
@@ -2461,6 +2451,11 @@ void UBGraphicsScene::controlViewportChanged()
     }
 }
 
+void UBGraphicsScene::loadingCompleted(std::shared_ptr<void> handle)
+{
+    UBDocument::getDocument(mDocument)->sceneLoaded(this, handle);
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene
@@ -2676,76 +2671,38 @@ void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQua
     }
 }
 
-QList<QUrl> UBGraphicsScene::relativeDependenciesOfItem(QGraphicsItem* item) const
+QList<QString> UBGraphicsScene::relativeDependencies() const
 {
-    QList<QUrl> relativePaths;
+    QList<QString> relativePaths;
 
-    UBGraphicsVideoItem *videoItem = dynamic_cast<UBGraphicsVideoItem*> (item);
-    if (videoItem){
-        QString completeFileName = QFileInfo(videoItem->mediaFileUrl().toLocalFile()).fileName();
-        QString path = UBPersistenceManager::videoDirectory + "/";
-        relativePaths << QUrl(path + completeFileName);
-        return relativePaths;
+    for (const auto item : mediaAssetItems())
+    {
+        relativePaths << item->mediaAssets();
     }
 
-    UBGraphicsAudioItem *audioItem =  dynamic_cast<UBGraphicsAudioItem*> (item);
-    if (audioItem){
-        QString completeFileName = QFileInfo(audioItem->mediaFileUrl().toLocalFile()).fileName();
-        QString path = UBPersistenceManager::audioDirectory + "/";
-        relativePaths << QUrl(path + completeFileName);
-        return relativePaths;
-    }
-
-    UBGraphicsWidgetItem* widget = dynamic_cast<UBGraphicsWidgetItem*>(item);
-    if(widget){
-        QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
-        QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString().remove("{").remove("}") + ".png";
-        relativePaths << QUrl(widgetPath);
-        relativePaths << QUrl(screenshotPath);
-        return relativePaths;
-    }
-
-    UBGraphicsPixmapItem* pixmapItem = dynamic_cast<UBGraphicsPixmapItem*>(item);
-    if(pixmapItem){
-        QDir imageDir = mDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
-        QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
-
-        if (!imageFiles.isEmpty())
-        {
-            relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + imageFiles.last());
-        }
-
-        return relativePaths;
-    }
-
-    UBGraphicsSvgItem* svgItem = dynamic_cast<UBGraphicsSvgItem*>(item);
-    if(svgItem){
-        relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg");
-        return relativePaths;
-    }
+    // remove duplicates
+    std::sort(relativePaths.begin(), relativePaths.end());
+    relativePaths.erase(std::unique(relativePaths.begin(), relativePaths.end()), relativePaths.end());
 
     return relativePaths;
 }
 
-QList<QUrl> UBGraphicsScene::relativeDependencies() const
+QList<UBMediaAssetItem*> UBGraphicsScene::mediaAssetItems() const
 {
-    QList<QUrl> relativePaths;
+    QList<UBMediaAssetItem*> mediaAssetItemList;
 
-    foreach(auto item, items())
+    for (const auto item : items())
     {
-        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-        if(groupItem)
+        // items() returns a list of all items, including child items
+        const auto mediaAssetItem = dynamic_cast<UBMediaAssetItem*>(item);
+
+        if (mediaAssetItem)
         {
-            foreach (QGraphicsItem* child, groupItem->childItems())
-            {
-                relativePaths << relativeDependenciesOfItem(child);
-            }
+            mediaAssetItemList << mediaAssetItem;
         }
-        else
-            relativePaths << relativeDependenciesOfItem(item);
     }
 
-    return relativePaths;
+    return mediaAssetItemList;
 }
 
 QSize UBGraphicsScene::nominalSize()
@@ -2820,12 +2777,6 @@ void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-}
-
-QUuid UBGraphicsScene::getPersonalUuid(QGraphicsItem *item)
-{
-    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
-    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
 }
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest, bool addUndo)

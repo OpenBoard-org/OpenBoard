@@ -51,9 +51,20 @@ void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document,
 {
     if (mCurrentDocument != document || forceReload)
     {
-        mCurrentDocument = document;
-        emit documentSet(mCurrentDocument);
+        pureSetDocument(document);
+        emit documentSet(document);
     }
+}
+
+void UBDocumentContainer::pureSetDocument(std::shared_ptr<UBDocumentProxy> document)
+{
+    mCurrentDocument = document;
+    mActiveDocument = UBDocument::getDocument(mCurrentDocument);
+}
+
+std::shared_ptr<UBDocument> UBDocumentContainer::activeDocument()
+{
+    return mActiveDocument;
 }
 
 void UBDocumentContainer::duplicatePage(int index)
@@ -80,14 +91,12 @@ void UBDocumentContainer::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> prox
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 {
-    auto document = UBDocument::getDocument(mCurrentDocument);
-    document->deletePages(pageIndexes);
+    mActiveDocument->deletePages(pageIndexes);
 }
 
 void UBDocumentContainer::addPage(int index)
 {
-    auto document = UBDocument::getDocument(mCurrentDocument);
-    document->createPage(index);
+    mActiveDocument->createPage(index);
 }
 
 

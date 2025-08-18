@@ -55,6 +55,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* pa
     {
         mFileData = f.readAll();
         f.close();
+        mMediaAssetUuid = createMediaAssetUuid(mFileData);
     }
 }
 
@@ -67,6 +68,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
 
     setSharedRenderer(renderer);
     mFileData = pFileData;
+    mMediaAssetUuid = createMediaAssetUuid(mFileData);
 }
 
 
@@ -89,11 +91,21 @@ void UBGraphicsSvgItem::init()
 
     setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
 
-    setUuid(QUuid::createUuid());
+    UBGraphicsSvgItem::setUuid(QUuid::createUuid());
 }
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
 {
+}
+
+QList<QString> UBGraphicsSvgItem::mediaAssets() const
+{
+    return {UBPersistenceManager::imageDirectory + "/" + mMediaAssetUuid.toString() + ".svg"};
+}
+
+void UBGraphicsSvgItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    mMediaAssetUuid = uuidFromPath(mediaAsset);
 }
 
 
@@ -186,6 +198,7 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
+        cp->mMediaAssetUuid = mMediaAssetUuid;
     }
 }
 
@@ -228,18 +241,4 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
 
     return pixmapItem;
-}
-
-void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
-
-void UBGraphicsSvgItem::clearSource()
-{
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
-    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
-    UBFileSystemUtils::deleteFile(diskPath);
 }

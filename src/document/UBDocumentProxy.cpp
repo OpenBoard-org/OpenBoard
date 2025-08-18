@@ -40,8 +40,7 @@
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBDocumentProxy::UBDocumentProxy()
-    : mPageCount(0)
-    , mPageDpi(0)
+    : mPageDpi(0)
     , mPersistencePath("")
     , mDocumentDateLittleEndian("")
     , mDocumentUpdatedAtLittleEndian("")
@@ -54,8 +53,7 @@ UBDocumentProxy::UBDocumentProxy()
 
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
-    : mPageCount(0)
-    , mPageDpi(0)
+    : mPageDpi(0)
     , mNeedsCleanup(true)
     , mLastVisitedIndex(0)
     , mIsInFavoriteList(false)
@@ -95,7 +93,6 @@ std::shared_ptr<UBDocumentProxy> UBDocumentProxy::deepCopy() const
 
     copy->mPersistencePath = QString(mPersistencePath);
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
-    copy->mPageCount = mPageCount;
     copy->mLastVisitedIndex = mLastVisitedIndex;
     copy->mIsInFavoriteList = mIsInFavoriteList;
 
@@ -120,17 +117,6 @@ bool UBDocumentProxy::isInFavoriteList() const
 void UBDocumentProxy::setIsInFavoristeList(bool isInFavoriteList)
 {
     mIsInFavoriteList = isInFavoriteList;
-}
-
-int UBDocumentProxy::pageCount()
-{
-    return mPageCount;
-}
-
-
-void UBDocumentProxy::setPageCount(int pPageCount)
-{
-    mPageCount = pPageCount;
 }
 
 int UBDocumentProxy::pageDpi()
@@ -158,36 +144,6 @@ bool UBDocumentProxy::testAndResetCleanupNeeded()
     bool tmp = mNeedsCleanup;
     mNeedsCleanup = false;
     return tmp;
-}
-
-int UBDocumentProxy::incPageCount()
-{
-    if (mPageCount <= 0)
-    {
-        mPageCount = 1;
-    }
-    else
-    {
-        mPageCount++;
-    }
-
-    return mPageCount;
-
-}
-
-
-int UBDocumentProxy::decPageCount()
-{
-    mPageCount --;
-
-    if (mPageCount < 0)
-    {
-        mPageCount = 0;
-    }
-
-    mNeedsCleanup = true;
-
-    return mPageCount;
 }
 
 QString UBDocumentProxy::persistencePath() const

@@ -737,11 +737,13 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
         foreach (UBMimeDataItem sourceItem, ubMime->items())
         {
             std::shared_ptr<UBDocumentProxy> fromProxy = sourceItem.documentProxy();
-            int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocProxy->pageCount();
-
             auto fromDocument = UBDocument::getDocument(fromProxy);
-            fromDocument->copyPage(fromIndex, targetDocProxy, toIndex);
+            auto targetDocument = UBDocument::getDocument(targetDocProxy);
+
+            int fromIndex = sourceItem.sceneIndex();
+            int toIndex = targetDocument->pageCount();
+
+            fromDocument->copyPage(fromIndex, targetDocument, toIndex);
         }
 
         QApplication::restoreOverrideCursor();
@@ -1629,7 +1631,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         auto targetDocument = UBDocument::getDocument(targetDocProxy);
 
         const UBMimeData *ubMime = qobject_cast <const UBMimeData*>(event->mimeData());
-        if (!targetDocProxy || !ubMime || !ubMime->items().count()) {
+        if (!targetDocument || !ubMime || !ubMime->items().count()) {
             qDebug() << "an error ocured while parsing " << UBApplication::mimeTypeUniboardPage;
             QTreeView::dropEvent(event);
             return;
@@ -1643,49 +1645,16 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         {
             std::shared_ptr<UBDocumentProxy> fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocProxy->pageCount();            
+            int toIndex = targetDocument->pageCount();
 
-            count++;
+            UBApplication::showMessage(tr("Copying page %1/%2").arg(++count).arg(total), true);
 
-            UBApplication::showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
-            // FIXME code is similar to UBPersistenceManager::copyDocumentScene()
-            // PersistenceManaget works with UBForeignObjectHandler, while we here ask the scene for relative dependencies
-            // one is at file level, the other at scene level. I prefer scene level, as it avoids another SVG parser.
-            // Implement one single UBDocument::copyPage
-
-            // TODO UB 4.x Move following code to some controller class
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), fromIndex);
-            if (scene)
-            {
-                std::shared_ptr<UBGraphicsScene> sceneClone = scene->sceneDeepCopy();
-
-                std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyForIndex(targetIndex);
-
-                foreach (QUrl relativeFile, scene->relativeDependencies())
-                {
-                    QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
-                    QString target = targetDocProxy->persistencePath() + "/" + relativeFile.toString();
-
-                    QString sourceDecoded = scene->document()->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
-                    QString targetDecoded = targetDocProxy->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
-
-                    if(QFileInfo(source).isDir())
-                        UBFileSystemUtils::copyDir(source,target);
-                    else{
-                        QFileInfo fi(targetDecoded);
-                        QDir d = fi.dir();
-                        d.mkpath(d.absolutePath());
-                        QFile::copy(sourceDecoded, targetDecoded);
-                    }
-                }
-
-                targetDocument->insertPage(sceneClone, toIndex);
-            }
-
-            QApplication::restoreOverrideCursor();
-
-            docModel->setHighLighted(QModelIndex());
+            auto sourceDocument = UBDocument::getDocument(fromProxy);
+            sourceDocument->copyPage(fromIndex, targetDocument, toIndex);
         }
+
+        QApplication::restoreOverrideCursor();
+        docModel->setHighLighted(QModelIndex());
 
         UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
     }
@@ -3397,7 +3366,7 @@ void UBDocumentController::addToDocument()
             mBoardController->addScene(pageInfoList.at(i).first, pageInfoList.at(i).second, false);
         }
 
-        int newActiveSceneIndex = selectedItems.count() == mBoardController->selectedDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
+        int newActiveSceneIndex = selectedItems.count() == mBoardController->activeDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
         selectDocument(mBoardController->selectedDocument());
         QDateTime now = QDateTime::currentDateTime();
@@ -3428,8 +3397,9 @@ bool UBDocumentController::isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> p
 
     if (docVersion.isEmpty() || docVersion.startsWith("4.1") || docVersion.startsWith("4.2")
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
-            || docVersion.startsWith("4.6") || docVersion.startsWith("4.8")) // TODO UB 4.7 update if necessary
+            || docVersion.startsWith("4.6") || docVersion.startsWith("4.8") || docVersion.startsWith("4.9"))
     {
+        UBDocument::getDocument(proxy)->scanAssets();
         // Invoke widget upgrader
         widgetUpgradeAdaptor.upgradeWidgets(proxy);
         return true;
@@ -3624,10 +3594,6 @@ void UBDocumentController::updateActions()
 
     QModelIndex selectedIndex = firstSelectedTreeIndex();
     std::shared_ptr<UBDocumentProxy> selectedProxy = docModel->proxyData(selectedIndex);
-    int pageCount = -1;
-    if (selectedProxy) {
-        pageCount = selectedProxy->pageCount();
-    }
 
     bool pageSelected = false;
     bool groupSelected = false;
@@ -3670,7 +3636,7 @@ void UBDocumentController::updateActions()
 
     } else if (pageSelected) {
         QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-        if(pageCount == 1) {
+        if(mDocumentUI->thumbnailWidget->document()->pageCount() == 1) {
             mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
 
         } else {
@@ -3846,7 +3812,7 @@ bool UBDocumentController::pageCanBeMovedUp(int page)
 
 bool UBDocumentController::pageCanBeMovedDown(int page)
 {
-    return page < selectedDocument()->pageCount() - 1;
+    return page < activeDocument()->pageCount() - 1;
 }
 
 bool UBDocumentController::pageCanBeDuplicated(int page)
@@ -3910,7 +3876,7 @@ bool UBDocumentController::everySceneSelected() const
         UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(0));
         if (p)
         {
-            return (selection.count() == mDocumentUI->thumbnailWidget->document()->proxy()->pageCount());
+            return (selection.count() == mDocumentUI->thumbnailWidget->document()->pageCount());
         }
     }
     return false;
@@ -3924,7 +3890,7 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
         UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(i));
         if (p)
         {
-            int pageCount = mDocumentUI->thumbnailWidget->document()->proxy()->pageCount();
+            int pageCount = mDocumentUI->thumbnailWidget->document()->pageCount();
             if (pageCount > 1) //not the only scene
             {
                 return false;

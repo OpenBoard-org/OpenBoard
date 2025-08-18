@@ -54,6 +54,10 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
         void setCacheAllowed(bool const value) { mIsCacheAllowed = value; }
         QSizeF pageSize() const { return mRenderer->pointSizeF(mPageNumber); }
         virtual void updateChild() = 0;
+
+    protected:
+        void switchRenderer(PDFRenderer* newRenderer);
+
     protected:
         PDFRenderer *mRenderer;
         int mPageNumber;

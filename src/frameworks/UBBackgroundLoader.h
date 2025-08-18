@@ -22,40 +22,51 @@
 
 #pragma once
 
-#include <QMutex>
+#include <QFuture>
 #include <QObject>
-#include <QSemaphore>
-#include <QThread>
-#include <deque>
 
-class UBBackgroundLoader : public QThread
+// forward
+class UBBlockingBuffer;
+
+
+class UBBackgroundLoader : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit UBBackgroundLoader(QObject* parent = nullptr);
-    UBBackgroundLoader(QList<std::pair<int, QString>> paths, QObject* parent = nullptr);
+    UBBackgroundLoader(QObject* parent = nullptr);
     virtual ~UBBackgroundLoader();
 
-    bool isIdle();
-    bool isResultAvailable();
-    std::pair<int, QByteArray> takeResult();
+    void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1);
+    void abort();
+    void waitForFinished();
+    void setKeepAlive(std::shared_ptr<void> keepAlive);
 
 public slots:
-    void start();
-    void addPaths(QList<std::pair<int, QString>> paths);
-    void abort();
+    void resultProcessed(int index);
 
 signals:
-    void resultAvailable(int index, QByteArray data);
-
-protected:
-    void run() override;
+    void resultAvailable(int index, const QByteArray& data);
+    void finished();
 
 private:
-    std::deque<std::pair<int, QString>> mPaths{};
-    std::deque<std::pair<int, QByteArray>> mResults{};
-    QMutex mMutex{};
-    QSemaphore mPathCounter{};
-    bool mRunning{false};
+    class ReadData
+    {
+    public:
+        typedef std::pair<int, QByteArray> result_type;
+
+        ReadData(int maxBytes);
+        result_type operator()(const std::pair<int, QString>& path);
+
+    private:
+        const int mMaxBytes{-1};
+    };
+
+private:
+    QFuture<std::pair<int, QByteArray>> mFuture;
+    int mIndex{0};
+    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher{nullptr};
+    std::shared_ptr<void> mKeepAlive;
+    UBBlockingBuffer* mBlockingBuffer{nullptr};
+    QThread* mWatcherThread{nullptr};
 };

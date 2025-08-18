@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -25,29 +20,34 @@
  */
 
 
-#ifndef UBExportCFF_H_
-#define UBExportCFF_H_
+#pragma once
 
-#include <QtCore>
+#include <QString>
+#include <QVariantMap>
+#include <QVector>
+#include <QVersionNumber>
 
-#include "UBExportAdaptor.h"
 
-#include "frameworks/UBFileSystemUtils.h"
-
-class UBDocumentProxy;
-
-class UBExportCFF : public UBExportAdaptor
+class UBTocSerializer
 {
-    Q_OBJECT
-
 public:
-    UBExportCFF(QObject *parent = 0);
-    virtual ~UBExportCFF();
+    UBTocSerializer(QString path);
+    virtual ~UBTocSerializer() = default;
 
-    virtual QString exportName();
-    virtual QString exportExtention();
-    virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
-    virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
+    virtual bool load(QVersionNumber& version, QVector<QVariantMap>& toc) = 0;
+    virtual bool save(const QVersionNumber& version, const QVector<QVariantMap>& toc) = 0;
+
+protected:
+    QString mPath;
 };
 
-#endif /* UBExportCFF_H_ */
+
+class UBTocJsonSerializer : public UBTocSerializer
+{
+public:
+    UBTocJsonSerializer(QString filename);
+    virtual ~UBTocJsonSerializer() = default;
+
+    virtual bool load(QVersionNumber& version, QVector<QVariantMap>& toc) override;
+    virtual bool save(const QVersionNumber& version, const QVector<QVariantMap>& toc) override;
+};

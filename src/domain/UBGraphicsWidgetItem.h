@@ -36,7 +36,7 @@
 
 #include "core/UB.h"
 
-#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 #include "UBResizableGraphicsItem.h"
 
 class QWebChannel;
@@ -57,7 +57,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
+class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBMediaAssetItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -68,7 +68,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         enum { Type = UBGraphicsItemType::GraphicsWidgetItemType };
 
         virtual int type() const override { return Type; }
-
+        virtual QList<QString> mediaAssets() const override;
         virtual void initialize();
 
         virtual void resize(qreal w, qreal h) override;
@@ -108,10 +108,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         virtual void setOwnFolder(const QUrl &newFolder);
         virtual void setSnapshotPath(const QUrl &newFilePath);
         virtual QUrl getSnapshotPath() const;
-
-        virtual void clearSource() override;
-
-        virtual void setUuid(const QUuid &pUuid) override;
 
         QSize nominalSize() const;
 
@@ -226,9 +222,9 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
         UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
         ~UBGraphicsAppleWidgetItem();
 
-        virtual void copyItemParameters(UBItem *copy) const;
-        virtual void setUuid(const QUuid &pUuid);
-        virtual UBItem* deepCopy() const;
+        virtual void copyItemParameters(UBItem *copy) const override;
+        virtual UBItem* deepCopy() const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 };
 
 class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
@@ -271,15 +267,15 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
         ~UBGraphicsW3CWidgetItem();
 
-        virtual void setUuid(const QUuid &pUuid);
-        virtual UBItem* deepCopy() const;
-        virtual void copyItemParameters(UBItem *copy) const;
+        virtual UBItem* deepCopy() const override;
+        virtual void copyItemParameters(UBItem *copy) const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
         QMap<QString, PreferenceValue> preferences() const;
         Metadata metadatas() const;
 
-        virtual void removeScript();
-        virtual void sendJSEnterEvent();
-        virtual void sendJSLeaveEvent();
+        virtual void removeScript() override;
+        virtual void sendJSEnterEvent() override;
+        virtual void sendJSLeaveEvent() override;
 
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createNPAPIWrapperInDir(const QString& url, const QDir& pDir, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
@@ -289,7 +285,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         Metadata mMetadatas;
 
     private slots:
-        virtual void registerAPI();
+        virtual void registerAPI() override;
 
     private:
         static void loadNPAPIWrappersTemplates();

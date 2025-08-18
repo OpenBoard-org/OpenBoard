@@ -33,17 +33,16 @@
 #include "adaptors/UBExportFullPDF.h"
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
-#include "adaptors/UBExportCFF.h"
 #include "adaptors/UBExportDocumentSetAdaptor.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
-#include "adaptors/UBImportCFF.h"
 #include "adaptors/UBImportDocumentSetAdaptor.h"
 
 #include "board/UBBoardController.h"
 
 #include "domain/UBGraphicsScene.h"
+#include "domain/UBMediaAssetItem.h"
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
@@ -79,7 +78,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     QString dummyObjects = tr("objects");
     QString dummyWidgets = tr("widgets");
 
-    //UBExportCFF* cffExporter = new UBExportCFF(this);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
 
@@ -88,7 +86,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mExportAdaptors.append(exportDocumentSet);
     //mExportAdaptors.append(webPublished);
     mExportAdaptors.append(exportFullPdf);
-    //mExportAdaptors.append(cffExporter);
 
 //     UBExportWeb* exportWeb = new UBExportWeb(this);
 //     mExportAdaptors.append(exportWeb);
@@ -101,8 +98,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mImportAdaptors.append(pdfImport);
     UBImportImage* imageImport = new UBImportImage(this);
     mImportAdaptors.append(imageImport);
-    UBImportCFF* cffImport = new UBImportCFF(this);
-    mImportAdaptors.append(cffImport);
 }
 
 
@@ -248,7 +243,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
 {
     int nImportedDocuments = 0;
     auto doc = UBDocument::getDocument(document);
-    const auto currentNumberOfPages = document->pageCount();
+    const auto currentNumberOfPages = doc->pageCount();
 
     foreach(const QString& fileName, fileNames)
     {
@@ -279,7 +274,16 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                 {
                     UBPageBasedImportAdaptor* importAdaptor = (UBPageBasedImportAdaptor*)adaptor;
 
+                    QByteArray data;
                     QUuid uuid = QUuid::createUuid();
+
+                    if (file.open(QFile::ReadOnly))
+                    {
+                        data = file.readAll();
+                        file.close();
+                        uuid = UBMediaAssetItem::createMediaAssetUuid(data);
+                    }
+
                     QString filepath = file.fileName();
                     if (importAdaptor->folderToCopy() != "")
                     {
@@ -295,7 +299,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     foreach(UBGraphicsItem* page, pages)
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-                        int pageIndex = document->pageCount();
+                        int pageIndex = doc->pageCount();
                         std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
                         doc->persistPage(scene, pageIndex);

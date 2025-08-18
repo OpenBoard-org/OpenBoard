@@ -58,12 +58,6 @@ UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
 {
 }
 
-void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
 {
     //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete

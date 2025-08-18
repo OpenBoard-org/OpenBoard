@@ -150,7 +150,7 @@ void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)
 
     if (currentThumbnail)
     {
-        std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->getDocumentScene(mDocument->proxy(), index);
+        std::shared_ptr<UBGraphicsScene> pageScene = mDocument->getScene(index);
         currentThumbnail->setPageScene(pageScene);
         ensureVisible(currentThumbnail);
     }

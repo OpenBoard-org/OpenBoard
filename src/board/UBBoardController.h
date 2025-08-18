@@ -200,7 +200,6 @@ class UBBoardController : public UBDocumentContainer
         void blackout();
         void addScene();
         void addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
-        void addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
         void clearScene();
@@ -235,8 +234,8 @@ class UBBoardController : public UBDocumentContainer
         void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
-        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
-        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
+        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
         void adjustDisplayViews();
         void cut();
@@ -254,9 +253,9 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
-        void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index);
-        void documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex);
-        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index);
+        void documentSceneDuplicated(UBDocument* document, int index);
+        void documentSceneMoved(UBDocument* document, int fromIndex, int toIndex);
+        void documentSceneDeleted(UBDocument* document, int index);
 
     signals:
         void newPageAdded();

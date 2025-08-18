@@ -48,6 +48,7 @@
 #include "core/memcheck.h"
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 #include "core/UBSettings.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -196,6 +197,13 @@ UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
     // get ownership back and delete widget
     setWidget(nullptr);
     delete mWebEngineView;
+}
+
+QList<QString> UBGraphicsWidgetItem::mediaAssets() const
+{
+    const QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + mWidgetUrl.fileName();
+    const QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + uuid().toString(QUuid::WithoutBraces) + ".png";
+    return {widgetPath, screenshotPath};
 }
 
 void UBGraphicsWidgetItem::initialize()
@@ -388,18 +396,6 @@ void UBGraphicsWidgetItem::setSnapshotPath(const QUrl &newFilePath)
 QUrl UBGraphicsWidgetItem::getSnapshotPath() const
 {
     return mSnapshotFile;
-}
-
-void UBGraphicsWidgetItem::clearSource()
-{
-    UBFileSystemUtils::deleteDir(getOwnFolder().toLocalFile());
-    UBFileSystemUtils::deleteFile(getSnapshotPath().toLocalFile());
-}
-
-void UBGraphicsWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 QSize UBGraphicsWidgetItem::nominalSize() const
@@ -1000,12 +996,6 @@ UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
     /* NOOP */
 }
 
-void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 {
     UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebEngineView->url(), parentItem());
@@ -1014,6 +1004,10 @@ UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 
     return appleWidget;
 
+}
+
+void UBGraphicsAppleWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
 }
 
 void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
@@ -1189,12 +1183,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
 {
     /* NOOP */
-}
-
-void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
@@ -1524,6 +1512,16 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->setZValue(this->zValue());
         cp->setSnapshot(this->snapshot(), this->isFrozen());
+    }
+}
+
+void UBGraphicsW3CWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    if (mediaAsset.endsWith(".wgt"))
+    {
+        widgetUrl(QUrl::fromLocalFile(documentPath + "/" + mediaAsset));
+        setOwnFolder(widgetUrl());
+        mMainHtmlUrl.setPath(widgetUrl().path() + "/" + mMainHtmlFileName);
     }
 }
 

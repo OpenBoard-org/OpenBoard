@@ -29,42 +29,30 @@
 
 #include "UBThumbnailAdaptor.h"
 
-#include <QtCore>
-
-#include "frameworks/UBFileSystemUtils.h"
-
-#include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
-#include "board/UBBoardController.h"
-#include "board/UBBoardPaletteManager.h"
-
-#include "document/UBDocumentProxy.h"
+#include "document/UBDocument.h"
 
 #include "domain/UBGraphicsScene.h"
 
-#include "UBSvgSubsetAdaptor.h"
-
 #include "core/memcheck.h"
 
-void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy)
+void UBThumbnailAdaptor::generateMissingThumbnails(UBDocument* document)
 {
-    int existingPageCount = proxy->pageCount();
+    int existingPageCount = document->pageCount();
 
     for (int iPageNo = 0; iPageNo < existingPageCount; ++iPageNo)
     {
-        QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", iPageNo);
+        QString thumbFileName = document->thumbnailFile(iPageNo);
 
-        QFile thumbFile(thumbFileName);
-
-        if (!thumbFile.exists())
+        if (!QFile::exists(thumbFileName))
         {
             bool displayMessage = (existingPageCount > 5);
 
             int thumbCount = 0;
 
-            std::shared_ptr<UBGraphicsScene> scene = UBSvgSubsetAdaptor::loadScene(proxy, iPageNo);
+            std::shared_ptr<UBGraphicsScene> scene = document->loadScene(iPageNo);
 
             if (scene)
             {
@@ -73,7 +61,7 @@ void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentPro
                 if (displayMessage && thumbCount == 1)
                     UBApplication::showMessage(tr("Generating preview thumbnails ..."));
 
-                persistScene(proxy, scene, iPageNo);
+                persistScene(document, scene, iPageNo);
             }
 
             if (displayMessage && thumbCount > 0)
@@ -83,19 +71,17 @@ void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentPro
     }
 }
 
-QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+QPixmap UBThumbnailAdaptor::generateMissingThumbnail(UBDocument* document, int pageIndex)
 {
-    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+    QString thumbFileName = document->thumbnailFile(pageIndex);
 
-    QFile thumbFile(thumbFileName);
-
-    if (!thumbFile.exists())
+    if (!QFile::exists(thumbFileName))
     {
-        std::shared_ptr<UBGraphicsScene> scene = UBSvgSubsetAdaptor::loadScene(proxy, pageIndex);
+        std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
 
         if (scene)
         {
-            persistScene(proxy, scene, pageIndex);
+            persistScene(document, scene, pageIndex);
         }
     }
 
@@ -104,41 +90,32 @@ QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentP
     return pix;
 }
 
-QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+QPixmap UBThumbnailAdaptor::get(UBDocument* document, int pageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+    QString fileName = document->thumbnailFile(pageIndex);
 
     QFile file(fileName);
+
     if (!file.exists())
     {
-        generateMissingThumbnails(proxy);
+        generateMissingThumbnails(document);
     }
 
     QPixmap pix;
+
     if (file.exists())
     {
         pix.load(fileName, 0, Qt::AutoColor);
     }
+
     return pix;
 }
 
-void UBThumbnailAdaptor::load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list)
+void UBThumbnailAdaptor::persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified)
 {
-    list.clear();
-    UBApplication::showMessage(tr("Loading thumbnails (%1 pages)").arg(proxy->pageCount()));
-    for(int i=0; i<proxy->pageCount(); i++)
-    {
-        list.append(std::make_shared<QPixmap>(get(proxy, i)));
-    }
-}
+    QString fileName = document->thumbnailFile(pageIndex);
 
-void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified)
-{
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
-
-    QFile thumbFile(fileName);
-
-    if (pScene->isModified() || overrideModified || !thumbFile.exists())
+    if (pScene->isModified() || overrideModified || !QFile::exists(fileName))
     {
         qreal nominalWidth = pScene->nominalSize().width();
         qreal nominalHeight = pScene->nominalSize().height();
@@ -178,9 +155,9 @@ void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
 }
 
 
-QUrl UBThumbnailAdaptor::thumbnailUrl(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+QUrl UBThumbnailAdaptor::thumbnailUrl(UBDocument* document, int pageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+    QString fileName = document->thumbnailFile(pageIndex);
 
     return QUrl::fromLocalFile(fileName);
 }

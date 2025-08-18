@@ -13,8 +13,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBDownloadManager.h
     UBDownloadThread.cpp
     UBDownloadThread.h
-    UBForeignObjectsHandler.cpp
-    UBForeignObjectsHandler.h
     UBIdleTimer.cpp
     UBIdleTimer.h
     UBMimeData.cpp

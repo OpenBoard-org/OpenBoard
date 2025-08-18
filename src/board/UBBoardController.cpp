@@ -493,10 +493,10 @@ void UBBoardController::saveData(SaveFlags fls)
     }
 }
 
-void UBBoardController::documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index)
+void UBBoardController::documentSceneDuplicated(UBDocument* document, int index)
 {
     // index is duplicated page
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
         {
@@ -511,9 +511,9 @@ void UBBoardController::documentSceneDuplicated(std::shared_ptr<UBDocumentProxy>
     }
 }
 
-void UBBoardController::documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex)
+void UBBoardController::documentSceneMoved(UBDocument* document, int fromIndex, int toIndex)
 {
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         int nextSceneIndex = mActiveSceneIndex;
 
@@ -549,13 +549,13 @@ void UBBoardController::documentSceneMoved(std::shared_ptr<UBDocumentProxy> prox
     }
 }
 
-void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
+void UBBoardController::documentSceneDeleted(UBDocument* document, int index)
 {
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         int nextSceneIndex = mActiveSceneIndex;
 
-        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == proxy->pageCount() && index > 0))
+        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == document->pageCount() && index > 0))
         {
             --nextSceneIndex;
         }
@@ -658,52 +658,14 @@ void UBBoardController::addScene()
     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
 }
 
-void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
-{
-    if (scene)
-    {
-        std::shared_ptr<UBGraphicsScene> clone = scene->sceneDeepCopy();
-
-        if (scene->document() && (scene->document() != selectedDocument()))
-        {
-            foreach(QUrl relativeFile, scene->relativeDependencies())
-            {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
-                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile.path();
-
-                UBFileSystemUtils::copy(source, destination, true);
-            }
-        }
-
-        auto document = UBDocument::getDocument(selectedDocument());
-
-        if (replaceActiveIfEmpty && mActiveScene->isEmpty())
-        {
-            document->insertPage(clone, mActiveSceneIndex);
-            setActiveDocumentScene(mActiveSceneIndex);
-            deleteScene(mActiveSceneIndex + 1);
-        }
-        else
-        {
-            persistCurrentScene(false,true);
-            document->insertPage(clone, mActiveSceneIndex + 1);
-            setActiveDocumentScene(mActiveSceneIndex + 1);
-        }
-
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-    }
-}
-
 
 void UBBoardController::addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
-    std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
-
-    if (scene)
-    {
-        addScene(scene, replaceActiveIfEmpty);
-    }
+    // copy scene after active scene index
+    auto sourceDocument = UBDocument::getDocument(proxy);
+    auto targetDocument = UBDocument::getDocument(selectedDocument());
+    sourceDocument->copyPage(sceneIndex, targetDocument, mActiveSceneIndex + 1);
+    setActiveDocumentScene(mActiveSceneIndex + 1);
 }
 
 void UBBoardController::duplicateScene(int nIndex)
@@ -907,22 +869,23 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>=2)
+    auto document = UBDocument::getDocument(selectedDocument());
+
+    if (document->pageCount() >= 2)
     {
         mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
         UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
-        auto document = UBDocument::getDocument(selectedDocument());
         document->deletePages({nIndex});
 
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
-        if (nIndex >= pageCount())
-            nIndex = pageCount()-1;
+        if (nIndex >= document->pageCount())
+            nIndex = document->pageCount()-1;
         setActiveDocumentScene(nIndex);
         UBApplication::showMessage(tr("Page %1 deleted").arg(nIndex+1));
         QApplication::restoreOverrideCursor();
@@ -1177,7 +1140,7 @@ void UBBoardController::previousScene()
 
 void UBBoardController::nextScene()
 {
-    if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
+    if (mActiveSceneIndex < activeDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -1203,10 +1166,10 @@ void UBBoardController::firstScene()
 
 void UBBoardController::lastScene()
 {
-    if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
+    if (mActiveSceneIndex < activeDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        setActiveDocumentScene(selectedDocument()->pageCount() - 1);
+        setActiveDocumentScene(activeDocument()->pageCount() - 1);
         QApplication::restoreOverrideCursor();
     }
 
@@ -1419,9 +1382,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as video";
 
         UBGraphicsMediaItem *mediaVideoItem = 0;
-        QUuid uuid = QUuid::createUuid();
+
         if (pData.length() > 0)
         {
+            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -1442,7 +1406,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         else
         {
             qDebug() << sourceUrl.toString();
-            mediaVideoItem = addVideo(sourceUrl, false, pPos, true);
+            mediaVideoItem = addVideo(sourceUrl, false, pPos);
         }
 
         if(mediaVideoItem){
@@ -1450,7 +1414,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 mediaVideoItem->setSourceUrl(sourceUrl);
             else
                 mediaVideoItem->setSourceUrl(contentUrl);
-            mediaVideoItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
         }
 
@@ -1464,9 +1427,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         UBGraphicsMediaItem *audioMediaItem = 0;
 
-        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
+            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -1486,7 +1449,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            audioMediaItem = addAudio(sourceUrl, false, pPos, true);
+            audioMediaItem = addAudio(sourceUrl, false, pPos);
         }
 
         if(audioMediaItem){
@@ -1494,7 +1457,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 audioMediaItem->setSourceUrl(sourceUrl);
             else
                 audioMediaItem->setSourceUrl(contentUrl);
-            audioMediaItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
         }
 
@@ -1691,12 +1653,13 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
 
     bool documentChange = selectedDocument() != pDocumentProxy;
 
+    auto document = UBDocument::getDocument(pDocumentProxy);
     int index = pSceneIndex;
-    int sceneCount = pDocumentProxy->pageCount();
+    int sceneCount = document->pageCount();
     if (index >= sceneCount && sceneCount > 0)
         index = sceneCount - 1;
 
-    std::shared_ptr<UBGraphicsScene> targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
+    std::shared_ptr<UBGraphicsScene> targetScene = document->loadScene(index);
 
     bool sceneChange = targetScene != mActiveScene;
 
@@ -1992,7 +1955,7 @@ void UBBoardController::undoRedoStateChange(bool canUndo)
 void UBBoardController::updateActionStates()
 {
     mMainWindow->actionBack->setEnabled(selectedDocument() && (mActiveSceneIndex > 0));
-    mMainWindow->actionForward->setEnabled(selectedDocument() && (mActiveSceneIndex < selectedDocument()->pageCount() - 1));
+    mMainWindow->actionForward->setEnabled(selectedDocument() && (mActiveSceneIndex < activeDocument()->pageCount() - 1));
     mMainWindow->actionErase->setEnabled(mActiveScene && !mActiveScene->isEmpty());
 }
 
@@ -2377,28 +2340,10 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
     }
 }
 
-UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
+UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
-
-    // media file is not in document folder yet
-    if (!bUseSource)
-    {
-        QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                    pSourceUrl.toLocalFile(),
-                    UBPersistenceManager::videoDirectory,
-                    uuid,
-                    destFile);
-        if (!b)
-        {
-            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
-        concreteUrl = QUrl::fromLocalFile(destFile);
-    }// else we just use source Url.
-
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     QDateTime now  = QDateTime::currentDateTime();
@@ -2413,27 +2358,10 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 }
 
-UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
+UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
-
-    // media file is not in document folder yet
-    if (!bUseSource)
-    {
-        QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-            pSourceUrl.toLocalFile(),
-            UBPersistenceManager::audioDirectory,
-            uuid,
-            destFile);
-        if (!b)
-        {
-            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
-        concreteUrl = QUrl::fromLocalFile(destFile);
-    }// else we just use source Url.
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     QDateTime now = QDateTime::currentDateTime();
@@ -2452,21 +2380,27 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 {
     UBGraphicsWidgetItem* w3cWidgetItem = 0;
 
-    QUuid uuid = QUuid::createUuid();
+    QDir widgetDir{pUrl.toLocalFile()};
+
+    if (!widgetDir.exists())
+    {
+        return nullptr;
+    }
+
+    QUuid assetUuid = UBMediaAssetItem::createMediaAssetUuid(pUrl.toLocalFile());
 
     QString destPath;
-    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), assetUuid, destPath))
         return NULL;
     QUrl newUrl = QUrl::fromLocalFile(destPath);
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 
     if (w3cWidgetItem) {
-        w3cWidgetItem->setUuid(uuid);
         w3cWidgetItem->setOwnFolder(newUrl);
         w3cWidgetItem->setSourceUrl(pUrl);
 
-        QString struuid = UBStringUtils::toCanonicalUuid(uuid);
+        QString struuid = w3cWidgetItem->uuid().toString(QUuid::WithoutBraces);
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
     }
@@ -2802,7 +2736,7 @@ void UBBoardController::addItem()
 
 void UBBoardController::importPage()
 {
-    int pageCount = selectedDocument()->pageCount();
+    int pageCount = activeDocument()->pageCount();
     if (UBApplication::documentController->addFileToDocument(selectedDocument()))
     {
         setActiveDocumentScene(selectedDocument(), pageCount, true);

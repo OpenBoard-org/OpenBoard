@@ -22,13 +22,18 @@
 
 #pragma once
 
+#include <QHash>
 #include <QList>
+#include <QSet>
+#include <QUuid>
 
 #include <memory>
 
 
 // forward
+class UBBackgroundLoader;
 class UBDocumentProxy;
+class UBDocumentToc;
 class UBGraphicsScene;
 class UBThumbnailScene;
 
@@ -44,7 +49,7 @@ class UBThumbnailScene;
  * getDocument() function. They are always referenced by a shared pointer and live as long
  * as anybody wants to work with the doument.
  */
-class UBDocument
+class UBDocument : public std::enable_shared_from_this<UBDocument>
 {
 private:
     UBDocument(std::shared_ptr<UBDocumentProxy> proxy);
@@ -57,21 +62,42 @@ public:
     void deletePages(QList<int> indexes);
     void duplicatePage(int index);
     void movePage(int fromIndex, int toIndex);
-    void copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex);
-    void insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
+    void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool useUndoRedoStack = true);
-    void persistPage(std::shared_ptr<UBGraphicsScene> scene, const int index, bool isAutomaticBackup = false,
+    void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false);
-    UBThumbnailScene* thumbnailScene() const;
+    std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
+    std::shared_ptr<UBGraphicsScene> getScene(int index);
+    QList<QString> pageRelativeDependencies(int index);
+    UBThumbnailScene* thumbnailScene();
+    UBDocumentToc* toc();
+
+    int pageCount();
+
+    QString sceneFile(int index);
+    QString thumbnailFile(int index);
+
+    void sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handle);
+    void scanAssets();
 
     static std::shared_ptr<UBDocument> getDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
+    void scan(bool tocPresent);
+    void copyPage(int fromIndex, UBDocument* to, int toIndex);
+    void deleteUnreferencedAssets();
+    void assureLoaderFinished();
+
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
     std::shared_ptr<UBDocumentProxy> mProxy{nullptr};
-    UBThumbnailScene* mThumbnailScene{nullptr};
+    std::unique_ptr<UBThumbnailScene> mThumbnailScene;
+    UBDocumentToc* mToc{nullptr};
+    UBBackgroundLoader* mSceneHeaderLoader{nullptr};
+    UBBackgroundLoader* mSceneAssetLoader{nullptr};
+    QHash<QUuid, QUuid> mUuidV5Map{};
+    QSet<std::shared_ptr<void>> mLoaderHandles;
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
 };

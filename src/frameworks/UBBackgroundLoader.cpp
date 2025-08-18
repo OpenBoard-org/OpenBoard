@@ -23,105 +23,103 @@
 #include "UBBackgroundLoader.h"
 
 #include <QFile>
+#include <QFutureWatcher>
+#include <QtConcurrentMap>
 
-#include "core/UBApplication.h"
+#include "frameworks/UBBlockingBuffer.h"
 
 UBBackgroundLoader::UBBackgroundLoader(QObject* parent)
-    : QThread{parent}
+    : QObject{parent}
 {
-}
+    mWatcher = new QFutureWatcher<std::pair<int, QByteArray>>;
+    mWatcher->setPendingResultsLimit(2);
+    mWatcherThread = new QThread{this};
+    mWatcher->moveToThread(mWatcherThread);
 
-UBBackgroundLoader::UBBackgroundLoader(QList<std::pair<int, QString>> paths, QObject* parent)
-    : QThread{parent}
-{
-    mPaths.insert(mPaths.cend(), paths.constBegin(), paths.constEnd());
-    mPathCounter.release(paths.size());
+    mBlockingBuffer = new UBBlockingBuffer{this};
+    mBlockingBuffer->setWatcher(mWatcher);
+
+    connect(mBlockingBuffer, &UBBlockingBuffer::resultAvailable, this, &UBBackgroundLoader::resultAvailable);
+    connect(mBlockingBuffer, &UBBlockingBuffer::finished, this, &UBBackgroundLoader::finished);
+
+    connect(mWatcher, &QFutureWatcher<std::pair<int, QByteArray>>::finished, mWatcherThread, &QThread::quit);
+
+    mBlockingBuffer->start();
+    mWatcherThread->start();
 }
 
 UBBackgroundLoader::~UBBackgroundLoader()
 {
+    qDebug() << "Destruct UBBackgroundLoader";
+    mWatcher->cancel();
+    mWatcherThread->quit();
+    mBlockingBuffer->halt();
+    mWatcherThread->wait();
+    mBlockingBuffer->wait();
     abort();
-    wait();
+
+    delete mWatcher;
 }
 
-bool UBBackgroundLoader::isIdle()
+void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes)
 {
-    QMutexLocker lock{&mMutex};
-    return mPaths.empty() && mResults.empty();
-}
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
+#else
+    // use a separate thread pool for each loader so that tasks are interwoven between loaders
+    auto threadPool = new QThreadPool{this};
+    threadPool->setMaxThreadCount(4);
+    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{maxBytes});
+#endif
 
-bool UBBackgroundLoader::isResultAvailable()
-{
-    QMutexLocker lock{&mMutex};
-    return !mResults.empty();
-}
+    mWatcher->setFuture(mFuture);
 
-std::pair<int, QByteArray> UBBackgroundLoader::takeResult()
-{
-    QMutexLocker lock{&mMutex};
-
-    if (mResults.empty())
-    {
-        return {};
-    }
-
-    const auto result = mResults.front();
-    mResults.pop_front();
-    return result;
-}
-
-void UBBackgroundLoader::start()
-{
-    mRunning = true;
-    QThread::start();
-}
-
-void UBBackgroundLoader::addPaths(QList<std::pair<int, QString>> paths)
-{
-    QMutexLocker lock{&mMutex};
-    mPaths.insert(mPaths.cend(), paths.constBegin(), paths.constEnd());
-    mPathCounter.release(paths.size());
+    qDebug() << "UBBackgroundLoader: Start loading" << paths.at(0).second;
 }
 
 void UBBackgroundLoader::abort()
 {
-    mRunning = false;
-    mPathCounter.release();
+    mFuture.cancel();
 }
 
-void UBBackgroundLoader::run()
+void UBBackgroundLoader::waitForFinished()
 {
-    while (mRunning && !UBApplication::isClosing)
+    mFuture.waitForFinished();
+}
+
+void UBBackgroundLoader::setKeepAlive(std::shared_ptr<void> keepAlive)
+{
+    mKeepAlive = keepAlive;
+}
+
+void UBBackgroundLoader::resultProcessed(int index)
+{
+    mBlockingBuffer->resultProcessed(index);
+}
+
+UBBackgroundLoader::ReadData::ReadData(int maxBytes)
+    : mMaxBytes{maxBytes}
+{
+}
+
+UBBackgroundLoader::ReadData::result_type UBBackgroundLoader::ReadData::operator()(const std::pair<int, QString>& path)
+{
+    QFile file{path.second};
+    QByteArray result;
+
+    if (file.open(QFile::ReadOnly))
     {
-        mPathCounter.acquire();
-
-        if (mRunning && !UBApplication::isClosing)
+        if (mMaxBytes < 0)
         {
-            std::pair<int, QString> path;
-
-            {
-                QMutexLocker lock{&mMutex};
-                path = mPaths.front();
-                mPaths.pop_front();
-            }
-
-            QFile file{path.second};
-            QByteArray result;
-
-            if (file.open(QFile::ReadOnly))
-            {
-                result = file.readAll();
-                file.close();
-            }
-
-            {
-                QMutexLocker lock{&mMutex};
-                mResults.push_back({path.first, result});
-            }
-
-            emit resultAvailable(path.first, result);
+            result = file.readAll();
         }
+        else
+        {
+            result = file.read(mMaxBytes);
+        }
+
+        file.close();
     }
 
-    quit();
+    return {path.first, result};
 }

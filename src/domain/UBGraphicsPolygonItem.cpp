@@ -92,12 +92,6 @@ void UBGraphicsPolygonItem::initialize()
     setUuid(QUuid::createUuid());
 }
 
-void UBGraphicsPolygonItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 void UBGraphicsPolygonItem::clearStroke()
 {
     if (mStroke!=NULL)

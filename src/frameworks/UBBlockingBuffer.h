@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -24,31 +19,40 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBFOREIGHNOBJECTSHANDLER_H
-#define UBFOREIGHNOBJECTSHANDLER_H
 
-#include <QList>
-#include <QUrl>
-#include <algorithm>
+#pragma once
 
-class UBForeighnObjectsHandlerPrivate;
+#include <QFutureWatcher>
+#include <QSemaphore>
+#include <QThread>
 
-class UBForeighnObjectsHandler
+#include <deque>
+
+class UBBlockingBuffer : public QThread
 {
+    Q_OBJECT
+
 public:
-    UBForeighnObjectsHandler();
-    ~UBForeighnObjectsHandler();
+    UBBlockingBuffer(QObject* parent = nullptr);
+    void setWatcher(QFutureWatcher<std::pair<int, QByteArray>>* watcher);
 
-    void cure(const QList<QUrl> &dirs);
-    void cure(const QUrl &dir);
+public slots:
+    void addResult(int index);
+    void resultProcessed(int index);
+    void watcherFinished();
+    void halt();
 
-    void copyPage(const QUrl &fromDir, int fromIndex,
-                  const QUrl &toDir, int toIndex);
+signals:
+    void resultAvailable(int index, const QByteArray& data);
+    void finished();
+
+protected:
+    void run() override;
 
 private:
-    UBForeighnObjectsHandlerPrivate *d;
-
-    friend class UBForeighnObjectsHandlerPrivate;
+    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher;
+    QSemaphore mAvailableResults;
+    QSemaphore mAvailableSpace{1};
+    QMutex mMutex;
+    std::deque<std::pair<int,QByteArray>> mBuffer;
 };
-
-#endif // UBFOREIGHNOBJECTSHANDLER_H

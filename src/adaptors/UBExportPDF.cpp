@@ -41,13 +41,10 @@
 #include "core/UBPersistenceManager.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPDFItem.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "pdf/GraphicsPDFItem.h"
 
 #include "core/memcheck.h"
 
@@ -97,11 +94,12 @@ bool UBExportPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentPro
     QPainter pdfPainter;
     bool painterNeedsBegin = true;
 
-    int existingPageCount = pDocumentProxy->pageCount();
+    auto document = UBDocument::getDocument(pDocumentProxy);
+    int existingPageCount = document->pageCount();
 
     for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++) {
 
-        std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+        std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
         UBApplication::showMessage(tr("Exporting page %1 of %2").arg(pageIndex + 1).arg(existingPageCount));
 
         // set background to white, no crossing for PDF output

@@ -57,6 +57,7 @@ class UBMagnifierParams;
 class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
+class UBMediaAssetItem;
 class UBSelectionFrame;
 class UBBoardView;
 
@@ -186,8 +187,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         QRectF normalizedSceneRect(qreal ratio = -1.0);
 
-        QGraphicsItem *itemForUuid(QUuid uuid);
-
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
@@ -285,8 +284,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
-        QList<QUrl> relativeDependenciesOfItem(QGraphicsItem* item) const;
-        QList<QUrl> relativeDependencies() const;
+        QList<QString> relativeDependencies() const;
+        QList<UBMediaAssetItem*> mediaAssetItems() const;
 
         QSize nominalSize();
 
@@ -328,8 +327,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
-
-        static QUuid getPersonalUuid(QGraphicsItem *item);
 
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void clearSelectionFrame();
@@ -382,6 +379,7 @@ public slots:
         void stylusToolChanged(int tool, int previousTool);
 
         void controlViewportChanged();
+        void loadingCompleted(std::shared_ptr<void> handle);
 
 signals:
         void zoomChanged(qreal zoomFactor);

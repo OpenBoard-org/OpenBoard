@@ -45,6 +45,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBGraphicsWidgetItemDelegate.h
     UBItem.cpp
     UBItem.h
+    UBMediaAssetItem.cpp
+    UBMediaAssetItem.h
     UBPageSizeUndoCommand.cpp
     UBPageSizeUndoCommand.h
     UBResizableGraphicsItem.cpp

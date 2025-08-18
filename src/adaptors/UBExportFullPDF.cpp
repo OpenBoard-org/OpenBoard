@@ -40,13 +40,11 @@
 #include "core/UBPersistenceManager.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "pdf/GraphicsPDFItem.h"
 
 #include "UBExportPDF.h"
 
@@ -79,7 +77,9 @@ UBExportFullPDF::~UBExportFullPDF()
 
 void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
-    if (!pDocumentProxy || filename.length() == 0 || pDocumentProxy->pageCount() == 0)
+    auto document = UBDocument::getDocument(pDocumentProxy);
+
+    if (!document || filename.length() == 0 || document->pageCount() == 0)
         return;
 
     /*
@@ -105,9 +105,9 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
 
         QPainter* pdfPainter = 0;
 
-        for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
+        for(int pageIndex = 0 ; pageIndex < document->pageCount(); pageIndex++)
         {
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+            std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
             // set background according to PDF export settings
             bool isDark = scene->isDarkBackground();
             UBPageBackground pageBackground = scene->pageBackground();
@@ -219,11 +219,12 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
             // factor between scene coordinates and PDF coordinates
             double dpiScale = 72. / pDocumentProxy->pageDpi();
 
-            int existingPageCount = pDocumentProxy->pageCount();
+            auto document = UBDocument::getDocument(pDocumentProxy);
+            int existingPageCount = document->pageCount();
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
             {
-                std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+                std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
                 if (pdfItem)

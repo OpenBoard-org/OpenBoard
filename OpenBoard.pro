@@ -66,10 +66,6 @@ DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
 
-#plugins
-include(plugins/plugins.pri)
-INCLUDEPATH += plugins/cffadaptor/src
-
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
    resources/forms/brushProperties.ui \

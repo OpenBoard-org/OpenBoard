@@ -63,11 +63,21 @@ UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
 
     setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
 
-    setUuid(QUuid::createUuid()); //more logical solution is in creating uuid for element in element's constructor
+    UBGraphicsPixmapItem::setUuid(QUuid::createUuid()); //more logical solution is in creating uuid for element in element's constructor
 }
 
 UBGraphicsPixmapItem::~UBGraphicsPixmapItem()
 {
+}
+
+QList<QString> UBGraphicsPixmapItem::mediaAssets() const
+{
+    if (!mMediaAsset.isEmpty())
+    {
+        return {mMediaAsset};
+    }
+
+    return {};
 }
 
 QVariant UBGraphicsPixmapItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -76,10 +86,9 @@ QVariant UBGraphicsPixmapItem::itemChange(GraphicsItemChange change, const QVari
     return QGraphicsPixmapItem::itemChange(change, newValue);
 }
 
-void UBGraphicsPixmapItem::setUuid(const QUuid &pUuid)
+void UBGraphicsPixmapItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
 {
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+    mMediaAsset = mediaAsset;
 }
 
 void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -167,6 +176,7 @@ void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
         cp->setSourceUrl(this->sourceUrl());
 
         cp->setZValue(this->zValue());
+        cp->mMediaAsset = mMediaAsset;
     }
 }
 
@@ -186,16 +196,4 @@ void UBGraphicsPixmapItem::setOpacity(qreal op)
 qreal UBGraphicsPixmapItem::opacity() const
 {
     return QGraphicsPixmapItem::opacity();
-}
-
-
-void UBGraphicsPixmapItem::clearSource()
-{
-    QDir imageDir = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
-    const QStringList imageFiles = imageDir.entryList({uuid().toString() + ".*"});
-
-    for (const auto& imageFile : imageFiles)
-    {
-        UBFileSystemUtils::deleteFile(imageFile);
-    }
 }

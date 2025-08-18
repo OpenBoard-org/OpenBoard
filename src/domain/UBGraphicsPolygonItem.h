@@ -53,8 +53,6 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         void initialize();
 
-        void setUuid(const QUuid &pUuid);
-
         void setStrokesGroup(UBGraphicsStrokesGroup* group);
         UBGraphicsStrokesGroup* strokesGroup() const{return mpGroup;}
         void setColor(const QColor& color);

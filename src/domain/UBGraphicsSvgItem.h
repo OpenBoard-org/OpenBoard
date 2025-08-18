@@ -33,14 +33,14 @@
 #include <QtGui>
 #include <QtSvg>
 
-#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 
 #include "core/UB.h"
 
 class UBGraphicsItemDelegate;
 class UBGraphicsPixmapItem;
 
-class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphicsItem
+class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBMediaAssetItem, public UBGraphicsItem
 {
     public:
         UBGraphicsSvgItem(const QString& pFile, QGraphicsItem* parent = 0);
@@ -50,45 +50,40 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         virtual ~UBGraphicsSvgItem();
 
-        QByteArray fileData() const;
+        virtual QList<QString> mediaAssets() const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
-        void setFileData(const QByteArray& pFileData)
-        {
-            mFileData = pFileData;
-        }
+        QByteArray fileData() const;
 
         enum { Type = UBGraphicsItemType::SvgItemType };
 
-        virtual int type() const
+        virtual int type() const override
         {
             return Type;
         }
 
-        virtual UBItem* deepCopy() const;
+        virtual UBItem* deepCopy() const override;
 
-        virtual void copyItemParameters(UBItem *copy) const;
+        virtual void copyItemParameters(UBItem *copy) const override;
 
-        virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
+        virtual void setRenderingQuality(RenderingQuality pRenderingQuality) override;
 
-        virtual std::shared_ptr<UBGraphicsScene> scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene() override;
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
 
-        virtual void setUuid(const QUuid &pUuid);
-
-        virtual void clearSource();
-
     protected:
 
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
         QByteArray mFileData;
+        QUuid mMediaAssetUuid;
 };
 
 #endif /* UBGRAPHICSSVGITEM_H_ */

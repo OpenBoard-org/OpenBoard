@@ -34,11 +34,11 @@
 
 #include "core/UB.h"
 
-#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 
 class UBGraphicsItemDelegate;
 
-class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public UBItem, public UBGraphicsItem
+class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public UBMediaAssetItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -48,34 +48,38 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
 
         enum { Type = UBGraphicsItemType::PixmapItemType };
 
-        virtual int type() const
+        virtual int type() const override
         {
             return Type;
         }
-        virtual UBItem* deepCopy() const;
 
-        virtual void copyItemParameters(UBItem *copy) const;
+        virtual QList<QString> mediaAssets() const override;
 
-        virtual std::shared_ptr<UBGraphicsScene> scene();
+        virtual UBItem* deepCopy() const override;
+
+        virtual void copyItemParameters(UBItem *copy) const override;
+
+        virtual std::shared_ptr<UBGraphicsScene> scene() override;
 
         Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
         void setOpacity(qreal op);
         qreal opacity() const;
 
-        virtual void clearSource();
-
-        virtual void setUuid(const QUuid &pUuid);
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
 protected:
 
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+private:
+        QString mMediaAsset;
 };
 
 #endif /* UBGRAPHICSPIXMAPITEM_H_ */

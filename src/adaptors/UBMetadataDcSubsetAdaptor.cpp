@@ -117,13 +117,15 @@ void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
 
     // introduced in UB 4.2
     xmlWriter.writeTextElement(nsDc, "identifier", proxy->metaData(UBSettings::documentIdentifer).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "version", UBSettings::currentFileVersion);
     QString width = QString::number(proxy->defaultDocumentSize().width());
     QString height = QString::number(proxy->defaultDocumentSize().height());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "size", QString("%1x%2").arg(width).arg(height));
 
     // introduced in UB 4.4
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
+
+    // write as last element to cope with parsing problem
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "version", UBSettings::currentFileVersion);
 
     xmlWriter.writeEndElement(); //dc:Description
     xmlWriter.writeEndElement(); //RDF
@@ -157,6 +159,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
         }
 
         QXmlStreamReader xml(&file);
+        QString docVersion = "4.1"; // untagged doc version 4.1
 
         while (!xml.atEnd())
         {
@@ -164,7 +167,6 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
             if (xml.isStartElement())
             {
-                QString docVersion = "4.1"; // untagged doc version 4.1
                 QString name = xml.name().toString();
 
                 if (name == "title")
@@ -225,7 +227,6 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                     metadata.insert(UBSettings::documentUpdatedAt, xml.readElementText());
                     updatedAtFound = true;
                 }
-                metadata.insert(UBSettings::documentVersion, docVersion);
             }
 
             if (xml.hasError())
@@ -234,6 +235,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
             }
         }
 
+        metadata.insert(UBSettings::documentVersion, docVersion);
         file.close();
     }
 
