@@ -14,7 +14,7 @@ function keepOnTop() {
     }
     for (var i = 0; i < allClients.length; ++i) {
         var client = allClients[i];
-        if (client.resourceClass == "org.oe-f.openboard" && client.caption == "DesktopView") {
+        if (client.resourceClass == "ch.openboard.OpenBoard" && client.caption == "DesktopView") {
             client.keepAbove=true;
         }
     }
