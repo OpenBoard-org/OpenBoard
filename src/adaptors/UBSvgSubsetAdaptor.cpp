@@ -2264,25 +2264,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pdfItemToLinkedPDF(UBGraphicsPDFItem
     mXmlWriter.writeStartElement("foreignObject");
     mXmlWriter.writeAttribute("requiredExtensions", "http://ns.adobe.com/pdf/1.3/");
 
-    QString fileName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
-
-    QString path = mDocumentPath + "/" + fileName;
-
-    if (!QFile::exists(path))
-    {
-        QDir dir;
-        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::objectDirectory);
-
-        QFile file(path);
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qWarning() << "cannot open file for writing embeded pdf content " << path;
-            return;
-        }
-
-        file.write(pdfItem->fileData());
-        file.close();
-    }
+    const auto fileName = pdfItem->mediaAssets().at(0);
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName + "#page=" + QString::number(pdfItem->pageNumber()));
 
@@ -2328,7 +2310,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAud
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString audioFileHref = "audios/" + audioItem->mediaFileUrl().fileName();
+    QString audioFileHref = audioItem->mediaAssets().at(0);
 
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
@@ -2355,7 +2337,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVid
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString videoFileHref = "videos/" + videoItem->mediaFileUrl().fileName();
+    QString videoFileHref = videoItem->mediaAssets().at(0);
 
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
