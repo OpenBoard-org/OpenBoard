@@ -142,7 +142,7 @@ class UBPersistenceManager : public QObject
         }
 
         bool addGraphicsWidgetToDocument(std::shared_ptr<UBDocumentProxy> mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
-        bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
+        QUuid addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir, QString& destinationPath, QByteArray* data = NULL);
 
         bool mayHaveVideo(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         bool mayHaveAudio(std::shared_ptr<UBDocumentProxy> pDocumentProxy);

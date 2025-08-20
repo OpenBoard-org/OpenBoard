@@ -39,7 +39,6 @@
 #include "board/UBBoardController.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBMediaAssetItem.h"
 
 #include "document/UBDocument.h"
 #include "document/UBDocumentController.h"
@@ -197,18 +196,19 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                 if (document)
                 {
                     auto doc = UBDocument::getDocument(document);
-                    QUuid uuid = QUuid::createUuid();
                     QString filepath = pFile.fileName();
+                    QUuid uuid;
                     if (importAdaptor->folderToCopy() != "")
                     {
-                        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
-                        if (!b)
+                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy(), filepath);
+                        if (uuid.isNull())
                         {
                             UBApplication::setDisabled(false);
                             return NULL;
                         }
                     }
 
+                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
                     QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                     int pageIndex = 0;
 
@@ -276,25 +276,25 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     UBPageBasedImportAdaptor* importAdaptor = (UBPageBasedImportAdaptor*)adaptor;
 
                     QByteArray data;
-                    QUuid uuid = QUuid::createUuid();
 
                     if (file.open(QFile::ReadOnly))
                     {
                         data = file.readAll();
                         file.close();
-                        uuid = UBMediaAssetItem::createMediaAssetUuid(data);
                     }
 
                     QString filepath = file.fileName();
+                    QUuid uuid;
                     if (importAdaptor->folderToCopy() != "")
                     {
-                        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
-                        if (!b)
+                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy(), filepath);
+                        if (uuid.isNull())
                         {
                             continue;
                         }
                     }
 
+                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
                     QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                     int nPage = 0;
                     foreach(UBGraphicsItem* page, pages)

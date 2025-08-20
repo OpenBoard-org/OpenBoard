@@ -27,6 +27,7 @@
 
 
 #include "UBPersistenceManager.h"
+#include "domain/UBMediaAssetItem.h"
 #include "gui/UBMainWindow.h"
 
 #include <QtXml>
@@ -985,22 +986,21 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
 }
 
 
-bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
-                                                     QString path,
-                                                     const QString& subdir,
-                                                     QUuid objectUuid,
-                                                     QString& destinationPath,
-                                                     QByteArray* data)
+QUuid UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
+                                                     QString path,              // full path of source file
+                                                     const QString& subdir,     // target subdir in document
+                                                     QString& destinationPath,  // return value for absolute destination path
+                                                     QByteArray* data)          // optional file data
 {
     Q_ASSERT(path.length());
     QFileInfo fi(path);
 
-    if (!pDocumentProxy || objectUuid.isNull())
-        return false;
+    if (!pDocumentProxy)
+        return {};
     if (data == NULL && !fi.exists())
-        return false;
+        return {};
 
-    qDebug() << fi.suffix();
+    QUuid objectUuid = data ? UBMediaAssetItem::createMediaAssetUuid(*data) : UBMediaAssetItem::createMediaAssetUuid(path);
 
     QString fileName = subdir + "/" + objectUuid.toString() + "." + fi.suffix();
 
@@ -1011,12 +1011,12 @@ bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pD
         QDir dir;
         dir.mkdir(pDocumentProxy->persistencePath() + "/" + subdir);
         if (!QFile::exists(pDocumentProxy->persistencePath() + "/" + subdir))
-            return false;
+            return {};
 
         if (data == NULL)
         {
             QFile source(path);
-            return source.copy(destinationPath);
+            return source.copy(destinationPath) ? objectUuid : QUuid{};
         }
         else
         {
@@ -1027,17 +1027,17 @@ bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pD
                 qint64 n = newFile.write(*data);
                 newFile.flush();
                 newFile.close();
-                return n == data->size();
+                return n == data->size() ? objectUuid : QUuid{};
             }
             else
             {
-                return false;
+                return {};
             }
         }
     }
     else
     {
-        return true;
+        return objectUuid;
     }
 }
 

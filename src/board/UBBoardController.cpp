@@ -1385,15 +1385,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (pData.length() > 0)
         {
-            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+            const auto uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
                 UBPersistenceManager::videoDirectory,
-                uuid,
                 destFile,
                 &pData);
-            if (!b)
+            if (uuid.isNull())
             {
                 UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
@@ -1429,15 +1427,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (pData.length() > 0)
         {
-            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+            const auto uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
                 UBPersistenceManager::audioDirectory,
-                uuid,
                 destFile,
                 &pData);
-            if (!b)
+            if (uuid.isNull())
             {
                 UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
