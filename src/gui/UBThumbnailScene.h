@@ -63,7 +63,7 @@ public:
 protected:
     // only to be called from UBDocument
     friend class UBDocument;
-    void insertThumbnail(int pageIndex, std::shared_ptr<UBGraphicsScene> pageScene = nullptr);
+    void insertThumbnail(int pageIndex, bool loadThumbnail = true);
     void deleteThumbnail(int pageIndex, bool rearrange = true);
     void moveThumbnail(int fromIndex, int toIndex);
     void reloadThumbnail(int pageIndex);

@@ -31,6 +31,7 @@
 #include "domain/UBMediaAssetItem.h"
 #include "frameworks/UBBackgroundLoader.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBThumbnail.h"
 #include "gui/UBThumbnailScene.h"
 
 QList<std::weak_ptr<UBDocument>> UBDocument::sDocuments;
@@ -172,25 +173,39 @@ void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toI
     copyPage(fromIndex, to.get(), toIndex);
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool useUndoRedoStack)
 {
     // create a new TOC entry for the page
     assureLoaderFinished();
     auto pageId = mToc->insert(index);
     auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
-    mToc->save();
 
-    thumbnailScene()->insertThumbnail(index, scene);
+    if (saveToc)
+    {
+        mToc->save();
+    }
+
+    thumbnailScene()->insertThumbnail(index, false);
 
     return scene;
 }
 
 void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup,
-                             bool forceImmediateSaving)
+                             bool forceImmediateSaving, bool persistThumbnail)
 {
     const auto pageId = mToc->pageId(index);
-    UBThumbnailAdaptor::persistScene(this, scene, index);
+
+    if (persistThumbnail)
+    {
+        const auto pixmap = UBThumbnailAdaptor::persistScene(this, scene, index);
+
+        if (!pixmap.isNull())
+        {
+            thumbnailScene()->thumbnailAt(index)->setPixmap(pixmap);
+        }
+    }
+
     UBPersistenceManager::persistenceManager()->persistDocumentScene(mProxy, scene, pageId, isAutomaticBackup,
                                                                      forceImmediateSaving);
 
@@ -201,8 +216,6 @@ void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, 
         mToc->setAssets(index, assets);
         mToc->save();
     }
-
-    thumbnailScene()->reloadThumbnail(index);
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes)

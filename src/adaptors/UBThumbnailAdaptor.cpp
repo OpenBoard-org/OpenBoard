@@ -38,56 +38,20 @@
 
 #include "core/memcheck.h"
 
-void UBThumbnailAdaptor::generateMissingThumbnails(UBDocument* document)
-{
-    int existingPageCount = document->pageCount();
 
-    for (int iPageNo = 0; iPageNo < existingPageCount; ++iPageNo)
-    {
-        QString thumbFileName = document->thumbnailFile(iPageNo);
-
-        if (!QFile::exists(thumbFileName))
-        {
-            bool displayMessage = (existingPageCount > 5);
-
-            int thumbCount = 0;
-
-            std::shared_ptr<UBGraphicsScene> scene = document->loadScene(iPageNo);
-
-            if (scene)
-            {
-                thumbCount++;
-
-                if (displayMessage && thumbCount == 1)
-                    UBApplication::showMessage(tr("Generating preview thumbnails ..."));
-
-                persistScene(document, scene, iPageNo);
-            }
-
-            if (displayMessage && thumbCount > 0)
-                UBApplication::showMessage(tr("%1 thumbnails generated ...").arg(thumbCount));
-
-        }
-    }
-}
 
 QPixmap UBThumbnailAdaptor::generateMissingThumbnail(UBDocument* document, int pageIndex)
 {
     QString thumbFileName = document->thumbnailFile(pageIndex);
 
-    if (!QFile::exists(thumbFileName))
-    {
-        std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
+    std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
 
-        if (scene)
-        {
-            persistScene(document, scene, pageIndex);
-        }
+    if (scene)
+    {
+        return persistScene(document, scene, pageIndex);
     }
 
-    QPixmap pix;
-    pix.load(thumbFileName);
-    return pix;
+    return {};
 }
 
 QPixmap UBThumbnailAdaptor::get(UBDocument* document, int pageIndex)
@@ -98,20 +62,15 @@ QPixmap UBThumbnailAdaptor::get(UBDocument* document, int pageIndex)
 
     if (!file.exists())
     {
-        generateMissingThumbnails(document);
+        return generateMissingThumbnail(document, pageIndex);
     }
 
     QPixmap pix;
-
-    if (file.exists())
-    {
-        pix.load(fileName, 0, Qt::AutoColor);
-    }
-
+    pix.load(fileName, 0, Qt::AutoColor);
     return pix;
 }
 
-void UBThumbnailAdaptor::persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified)
+QPixmap UBThumbnailAdaptor::persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified)
 {
     QString fileName = document->thumbnailFile(pageIndex);
 
@@ -150,8 +109,13 @@ void UBThumbnailAdaptor::persistScene(UBDocument* document, std::shared_ptr<UBGr
         pScene->setRenderingContext(UBGraphicsScene::Screen);
         pScene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
-        thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation).save(fileName, "JPG");
+        const auto scaledThumb  = thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        scaledThumb.save(fileName, "JPG");
+
+        return QPixmap::fromImage(scaledThumb);
     }
+
+    return {};
 }
 
 

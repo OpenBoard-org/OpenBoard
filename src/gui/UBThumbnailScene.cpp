@@ -245,21 +245,14 @@ void UBThumbnailScene::createThumbnails(int startIndex)
 /**
  * @brief Insert a thumbnail.
  *
- * Insert a thumbnail at the given index. This function assumes that the thumbnail pixmap files
- * are already moved to provide the necessary space. The pixmap for the new thumbnail can either
- * be provided in the corresponding pixmap file or it will be created from the scene.
+ * Insert a thumbnail at the given index.
  *
  * @param pageIndex Page index of the scene.
- * @param pageScene Optional scene. If this parameter is provided, then the tumbnail pixmap is
- * created from the scene. Otherwise it is assumed that the pixmap file already exists.
+ * @param loadThumbnail If true, load the thumbnail from the file (default).
+ * If false, only an empty thumbnail is created which will be filled later.
  */
-void UBThumbnailScene::insertThumbnail(int pageIndex, std::shared_ptr<UBGraphicsScene> pageScene)
+void UBThumbnailScene::insertThumbnail(int pageIndex, bool loadThumbnail)
 {
-    if (pageScene)
-    {
-        UBThumbnailAdaptor::persistScene(mDocument, pageScene, pageIndex);
-    }
-
     if (pageIndex <= mThumbnailItems.size())
     {
         if (mThumbnailItems.size() == 1)
@@ -269,7 +262,12 @@ void UBThumbnailScene::insertThumbnail(int pageIndex, std::shared_ptr<UBGraphics
 
         auto thumbnailItem = new UBThumbnail;
 
-        thumbnailItem->setPixmap(UBThumbnailAdaptor::get(mDocument, pageIndex));
+        if (loadThumbnail)
+        {
+            const auto pixmap = UBThumbnailAdaptor::get(mDocument, pageIndex);
+            thumbnailItem->setPixmap(pixmap);
+        }
+
         thumbnailItem->setSceneIndex(pageIndex);
 
         mThumbnailItems.insert(pageIndex, thumbnailItem);

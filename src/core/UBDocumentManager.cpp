@@ -27,9 +27,6 @@
 
 #include "UBDocumentManager.h"
 
-#include "document/UBDocument.h"
-#include "frameworks/UBStringUtils.h"
-
 #include "adaptors/UBExportFullPDF.h"
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
@@ -44,8 +41,12 @@
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBMediaAssetItem.h"
 
-#include "document/UBDocumentProxy.h"
+#include "document/UBDocument.h"
 #include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
+#include "document/UBDocumentToc.h"
+
+#include "frameworks/UBStringUtils.h"
 
 #include "gui/UBThumbnailScene.h"
 
@@ -218,14 +219,14 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                         //Workaround for issue 912
                         QApplication::processEvents();
     #endif
-                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
+                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        doc->persistPage(scene, pageIndex);
+                        doc->persistPage(scene, pageIndex, false, false, false);
                         pageIndex++;
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-                    doc->thumbnailScene()->createThumbnails();
+                    doc->toc()->save();
                     UBApplication::showMessage(tr("Import successful."));
                 }
             }
@@ -306,6 +307,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+                    doc->toc()->save();
                     UBApplication::showMessage(tr("Import of file %1 successful.").arg(file.fileName()));
                     nImportedDocuments++;
                     break;

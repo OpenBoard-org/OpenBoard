@@ -42,14 +42,12 @@ class UBThumbnailAdaptor //static class
 public:
     static QUrl thumbnailUrl(UBDocument* document, int pageIndex);
 
-    static void persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
+    static QPixmap persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
     static QPixmap get(UBDocument* document, int index);
     static QPixmap generateMissingThumbnail(UBDocument* document, int pageIndex);
 
 private:
-    static void generateMissingThumbnails(UBDocument* document);
-
     UBThumbnailAdaptor() {}
 };
 
