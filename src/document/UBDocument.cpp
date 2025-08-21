@@ -173,12 +173,12 @@ void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toI
     copyPage(fromIndex, to.get(), toIndex);
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool cached, bool useUndoRedoStack)
 {
     // create a new TOC entry for the page
     assureLoaderFinished();
     auto pageId = mToc->insert(index);
-    auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, useUndoRedoStack);
+    auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, cached, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
 
     if (saveToc)
@@ -192,7 +192,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
 }
 
 void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup,
-                             bool forceImmediateSaving, bool persistThumbnail)
+                             bool forceImmediateSaving, bool persistThumbnail, bool addToCache)
 {
     const auto pageId = mToc->pageId(index);
 
@@ -207,14 +207,19 @@ void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, 
     }
 
     UBPersistenceManager::persistenceManager()->persistDocumentScene(mProxy, scene, pageId, isAutomaticBackup,
-                                                                     forceImmediateSaving);
+                                                                     forceImmediateSaving, addToCache);
 
     const auto assets = scene->relativeDependencies();
 
     if (assets != mToc->assets(index))
     {
         mToc->setAssets(index, assets);
-        mToc->save();
+
+        if (addToCache)
+        {
+            // when scene is cached it is also time to save the TOC
+            mToc->save();
+        }
     }
 }
 
@@ -267,12 +272,16 @@ QList<QString> UBDocument::pageRelativeDependencies(int index)
     return {};
 }
 
-UBThumbnailScene* UBDocument::thumbnailScene()
+UBThumbnailScene* UBDocument::thumbnailScene(bool startLoader)
 {
     if (!mThumbnailScene)
     {
         mThumbnailScene = std::unique_ptr<UBThumbnailScene>(new UBThumbnailScene(this));
-        mThumbnailScene->createThumbnails();
+
+        if (startLoader)
+        {
+            mThumbnailScene->createThumbnails();
+        }
     }
 
     return mThumbnailScene.get();
@@ -291,6 +300,18 @@ UBDocumentToc* UBDocument::toc()
         {
             scan(tocPresent);
             mToc->save();
+        }
+        else
+        {
+            // scan assets if missing
+            for (int index = 0; index < mToc->pageCount(); ++index)
+            {
+                if (!mToc->hasAssetsEntry(index))
+                {
+                    scanAssets();
+                    break;
+                }
+            }
         }
     }
 
@@ -385,11 +406,16 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
         persistenceManager->persistDocumentScene(mProxy, scene->shared_from_this(), mToc->pageId(index));
     }
 
+    // generate and load thumbnail from scene if not already existing and loaded
+    mThumbnailScene->ensureThumbnail(index, scene);
+
     // prepare next scene
-    if (mSceneAssetLoader)
-    {
-        mSceneAssetLoader->resultProcessed(index);
-    }
+    QTimer::singleShot(5, mSceneAssetLoader, [this, index](){
+        if (mSceneAssetLoader)
+        {
+            mSceneAssetLoader->resultProcessed(index);
+        }
+    });
 }
 
 void UBDocument::scanAssets()

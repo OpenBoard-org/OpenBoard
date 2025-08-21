@@ -34,6 +34,7 @@
 
 class UBExportAdaptor;
 class UBImportAdaptor;
+class UBDocument;
 class UBDocumentProxy;
 
 
@@ -51,7 +52,7 @@ class UBDocumentManager : public QObject
         QStringList importFileExtensions(bool notUbx = false);
 
         QFileInfoList importUbx(const QString &Incomingfile, const QString &destination);
-        std::shared_ptr<UBDocumentProxy> importFile(const QFile& pFile, const QString& pGroup);
+        std::shared_ptr<UBDocument> importFile(const QFile& pFile, const QString& pGroup);
 
         int addFilesToDocument(std::shared_ptr<UBDocumentProxy> pDocument, QStringList fileNames);
 

@@ -67,6 +67,7 @@ protected:
     void deleteThumbnail(int pageIndex, bool rearrange = true);
     void moveThumbnail(int fromIndex, int toIndex);
     void reloadThumbnail(int pageIndex);
+    void ensureThumbnail(int pageIndex, UBGraphicsScene* scene);
 
 private:
     friend class UBThumbnail;

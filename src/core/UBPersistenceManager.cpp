@@ -804,16 +804,28 @@ QUuid UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> f
 }
 
 
-std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool cached, bool useUndoRedoStack)
 {
-    std::shared_ptr<UBGraphicsScene> newScene = mSceneCache.createScene(proxy, pageId, useUndoRedoStack);
+    std::shared_ptr<UBGraphicsScene> newScene;
+
+    if (cached)
+    {
+        newScene = mSceneCache.createScene(proxy, pageId, useUndoRedoStack);
+    }
+    else
+    {
+        newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
+    }
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::pageBackground());
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
-    persistDocumentScene(proxy, newScene, pageId);
+    if (cached)
+    {
+        persistDocumentScene(proxy, newScene, pageId);
+    }
 
     return newScene;
 }
@@ -868,7 +880,8 @@ void UBPersistenceManager::cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> p
     }
 }
 
-void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId, bool isAnAutomaticBackup, bool forceImmediateSaving)
+void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId,
+                                                bool isAnAutomaticBackup, bool forceImmediateSaving, bool addToCache)
 {
     checkIfDocumentRepositoryExists();
 
@@ -895,7 +908,10 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
     pScene->setModified(false);
 
-    mSceneCache.insert(pDocumentProxy, pageId, pScene);
+    if (addToCache)
+    {
+        mSceneCache.insert(pDocumentProxy, pageId, pScene);
+    }
 }
 
 

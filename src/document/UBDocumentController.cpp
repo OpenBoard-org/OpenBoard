@@ -3107,7 +3107,7 @@ void UBDocumentController::importFile()
 
             if (filePath.length() > 0)
             {
-                std::shared_ptr<UBDocumentProxy> createdDocument = nullptr;
+                std::shared_ptr<UBDocument> createdDocument = nullptr;
                 QApplication::processEvents();
                 QFile selectedFile(filePath);
 
@@ -3127,7 +3127,7 @@ void UBDocumentController::importFile()
                 createdDocument = docManager->importFile(selectedFile, groupName);
 
                 if (createdDocument && !multipleFilesImported) {
-                    selectDocument(createdDocument, true, true, true);
+                    selectDocument(createdDocument->proxy(), true, true, true);
                     pageSelectionChanged();
 
                 } else {

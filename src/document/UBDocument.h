@@ -63,13 +63,13 @@ public:
     void duplicatePage(int index);
     void movePage(int fromIndex, int toIndex);
     void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
-    std::shared_ptr<UBGraphicsScene> createPage(int index, bool saveToc = true, bool useUndoRedoStack = true);
+    std::shared_ptr<UBGraphicsScene> createPage(int index, bool saveToc = true, bool cached = true, bool useUndoRedoStack = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
-                     bool forceImmediateSaving = false, bool persistThumbnail = true);
+                     bool forceImmediateSaving = false, bool persistThumbnail = true, bool addToCache = true);
     std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
-    UBThumbnailScene* thumbnailScene();
+    UBThumbnailScene* thumbnailScene(bool startLoader = true);
     UBDocumentToc* toc();
 
     int pageCount();

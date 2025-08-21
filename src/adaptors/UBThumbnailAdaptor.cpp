@@ -40,15 +40,32 @@
 
 
 
-QPixmap UBThumbnailAdaptor::generateMissingThumbnail(UBDocument* document, int pageIndex)
+QPixmap UBThumbnailAdaptor::generateMissingThumbnail(UBDocument* document, int pageIndex, UBGraphicsScene* scene)
 {
     QString thumbFileName = document->thumbnailFile(pageIndex);
 
-    std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
+    if (QFile::exists(thumbFileName))
+    {
+        QPixmap pix;
+        pix.load(thumbFileName, 0, Qt::AutoColor);
+        return pix;
+    }
+
+    std::shared_ptr<UBGraphicsScene> scenePtr;
 
     if (scene)
     {
-        return persistScene(document, scene, pageIndex);
+        scenePtr = scene->shared_from_this();
+    }
+
+    if (!scenePtr)
+    {
+        scenePtr = document->loadScene(pageIndex, false);
+    }
+
+    if (scenePtr)
+    {
+        return persistScene(document, scenePtr, pageIndex);
     }
 
     return {};
@@ -109,10 +126,9 @@ QPixmap UBThumbnailAdaptor::persistScene(UBDocument* document, std::shared_ptr<U
         pScene->setRenderingContext(UBGraphicsScene::Screen);
         pScene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
-        const auto scaledThumb  = thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        scaledThumb.save(fileName, "JPG");
+        thumb.save(fileName, "JPG");
 
-        return QPixmap::fromImage(scaledThumb);
+        return QPixmap::fromImage(thumb);
     }
 
     return {};

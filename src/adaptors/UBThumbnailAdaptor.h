@@ -45,7 +45,7 @@ public:
     static QPixmap persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
     static QPixmap get(UBDocument* document, int index);
-    static QPixmap generateMissingThumbnail(UBDocument* document, int pageIndex);
+    static QPixmap generateMissingThumbnail(UBDocument* document, int pageIndex, UBGraphicsScene* scene = {});
 
 private:
     UBThumbnailAdaptor() {}

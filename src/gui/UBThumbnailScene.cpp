@@ -23,9 +23,8 @@
 #include "UBThumbnailScene.h"
 
 #include "adaptors/UBThumbnailAdaptor.h"
-#include "core/UBApplication.h"
 #include "document/UBDocument.h"
-#include "document/UBDocumentProxy.h"
+#include "document/UBDocumentToc.h"
 #include "frameworks/UBBackgroundLoader.h"
 #include "gui/UBThumbnail.h"
 #include "gui/UBThumbnailArranger.h"
@@ -204,8 +203,12 @@ void UBThumbnailScene::createThumbnails(int startIndex)
 
     for (int index = startIndex; index < mDocument->pageCount(); ++index)
     {
-        const auto thumbnailPath = UBThumbnailAdaptor::thumbnailUrl(mDocument, index).toLocalFile();
-        paths << std::pair<int,QString>{index, thumbnailPath};
+        // only load thumbnails for pages with assets, others are loaded while scanning
+        if (mDocument->toc()->hasAssetsEntry(index))
+        {
+            const auto thumbnailPath = UBThumbnailAdaptor::thumbnailUrl(mDocument, index).toLocalFile();
+            paths << std::pair<int,QString>{index, thumbnailPath};
+        }
     }
 
     // start background loading of files
@@ -228,10 +231,12 @@ void UBThumbnailScene::createThumbnails(int startIndex)
         // now create all missing thumbnails for document as they arrive from the loader
         loadThumbnail(index, data);
 
-        if (mLoader)
-        {
-            mLoader->resultProcessed(index);
-        }
+        QTimer::singleShot(5, this, [this, index](){
+            if (mLoader)
+            {
+                mLoader->resultProcessed(index);
+            }
+        });
     });
     connect(mLoader, &UBBackgroundLoader::finished, this, [this](){
         // delete loader
@@ -355,6 +360,29 @@ void UBThumbnailScene::reloadThumbnail(int pageIndex)
         if (thumbnail)
         {
             thumbnail->setPixmap(UBThumbnailAdaptor::get(mDocument, pageIndex));
+            arrangeThumbnails(pageIndex, pageIndex + 1);
+        }
+    }
+}
+
+void UBThumbnailScene::ensureThumbnail(int pageIndex, UBGraphicsScene* scene)
+{
+    if (pageIndex < mThumbnailItems.size())
+    {
+        auto thumbnailItem = mThumbnailItems.at(pageIndex);
+
+        if (!thumbnailItem || thumbnailItem->pixmap().isNull())
+        {
+            QPixmap pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument, pageIndex, scene);
+
+            thumbnailItem = new UBThumbnail;
+
+            thumbnailItem->setPixmap(pixmap);
+            thumbnailItem->setSceneIndex(pageIndex);
+
+            mThumbnailItems[pageIndex] = thumbnailItem;
+            addItem(thumbnailItem);
+
             arrangeThumbnails(pageIndex, pageIndex + 1);
         }
     }
