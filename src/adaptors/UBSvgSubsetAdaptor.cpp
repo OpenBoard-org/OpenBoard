@@ -160,7 +160,11 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(std::shared_ptr<UBDocumentPro
             return doc;
         }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+        doc.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing);
+#else
         doc.setContent(&file, true);
+#endif
         file.close();
     }
 
