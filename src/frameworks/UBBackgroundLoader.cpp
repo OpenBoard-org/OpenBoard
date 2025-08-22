@@ -62,7 +62,7 @@ UBBackgroundLoader::~UBBackgroundLoader()
     delete mWatcher;
 }
 
-void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes)
+void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes, std::function<void(int,QString)> preCheck)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
@@ -70,7 +70,7 @@ void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int m
     // use a separate thread pool for each loader so that tasks are interwoven between loaders
     auto threadPool = new QThreadPool{this};
     threadPool->setMaxThreadCount(4);
-    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{maxBytes});
+    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{maxBytes, preCheck});
 #endif
 
     mWatcher->setFuture(mFuture);
@@ -93,18 +93,24 @@ void UBBackgroundLoader::setKeepAlive(std::shared_ptr<void> keepAlive)
     mKeepAlive = keepAlive;
 }
 
-void UBBackgroundLoader::resultProcessed(int index)
+void UBBackgroundLoader::resultProcessed()
 {
-    mBlockingBuffer->resultProcessed(index);
+    mBlockingBuffer->resultProcessed();
 }
 
-UBBackgroundLoader::ReadData::ReadData(int maxBytes)
+UBBackgroundLoader::ReadData::ReadData(int maxBytes, std::function<void (int, QString)> preCheck)
     : mMaxBytes{maxBytes}
+    , mPreCheck{preCheck}
 {
 }
 
 UBBackgroundLoader::ReadData::result_type UBBackgroundLoader::ReadData::operator()(const std::pair<int, QString>& path)
 {
+    if (mPreCheck)
+    {
+        mPreCheck(path.first, path.second);
+    }
+
     QFile file{path.second};
     QByteArray result;
 

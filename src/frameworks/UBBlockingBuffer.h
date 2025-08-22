@@ -38,7 +38,7 @@ public:
 
 public slots:
     void addResult(int index);
-    void resultProcessed(int index);
+    void resultProcessed();
     void watcherFinished();
     void halt();
 

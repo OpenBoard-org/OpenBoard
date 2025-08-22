@@ -413,7 +413,7 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
     QTimer::singleShot(5, mSceneAssetLoader, [this, index](){
         if (mSceneAssetLoader)
         {
-            mSceneAssetLoader->resultProcessed(index);
+            mSceneAssetLoader->resultProcessed();
         }
     });
 }
@@ -431,7 +431,7 @@ void UBDocument::scanAssets()
         if (!mToc->hasAssetsEntry(index))
         {
             int pageId = mToc->pageId(index);
-            paths.append({index, mProxy->persistencePath() + persistenceManager->sceneFilenameForId(pageId)});
+            paths.append({pageId, mProxy->persistencePath() + persistenceManager->sceneFilenameForId(pageId)});
         }
     }
 
@@ -441,13 +441,19 @@ void UBDocument::scanAssets()
         // load scenes for scanning
         mSceneAssetLoader = new UBBackgroundLoader;
 
-        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int index, const QByteArray& data){
-            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(index).arg(mToc->pageCount()), true);
-
-            const auto pageId = mToc->pageId(index);
+        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int pageId, const QByteArray& data){
+            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(pageId).arg(mToc->pageCount()), true);
 
             if (pageId >= 0 && !data.isEmpty())
             {
+                auto scene = UBPersistenceManager::persistenceManager()->getDocumentScene(mProxy, pageId);
+
+                if (scene)
+                {
+                    sceneLoaded(scene.get(), nullptr);
+                    return;
+                }
+
                 const auto handle = UBPersistenceManager::persistenceManager()->prepareSceneLoading(mProxy, pageId, data, false);
 
                 if (handle)
@@ -459,7 +465,7 @@ void UBDocument::scanAssets()
             }
 
             // page deleted or already in cache, loading not necessary
-            mSceneAssetLoader->resultProcessed(index);
+            mSceneAssetLoader->resultProcessed();
         });
 
         QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::finished, mSceneAssetLoader, [this](){
@@ -467,7 +473,14 @@ void UBDocument::scanAssets()
             qDebug() << "Asset scan completed";
         });
 
-        mSceneAssetLoader->load(paths);
+        mSceneAssetLoader->load(paths, -1, [this](int pageId, QString path){
+            // check that the scene file actually exists to avoid a race condition
+            // with saving scene files during import
+            while (!QFile::exists(path))
+            {
+                QThread::msleep(10);
+            }
+        });
     }
 }
 
@@ -578,7 +591,7 @@ void UBDocument::scan(bool tocPresent)
                 mToc->setPageId(pageProcessed, index);
             }
 
-            loader.resultProcessed(index);
+            loader.resultProcessed();
         });
 
         QObject::connect(&loader, &UBBackgroundLoader::finished, &loader, [&](){
@@ -606,7 +619,7 @@ void UBDocument::scan(bool tocPresent)
         QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QByteArray& data){
             const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data);
             mToc->setUuid(index, uuid);
-            mSceneHeaderLoader->resultProcessed(index);
+            mSceneHeaderLoader->resultProcessed();
         });
 
         QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::finished, mSceneHeaderLoader, [this](){

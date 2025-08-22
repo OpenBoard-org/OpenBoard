@@ -37,13 +37,13 @@ public:
     UBBackgroundLoader(QObject* parent = nullptr);
     virtual ~UBBackgroundLoader();
 
-    void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1);
+    void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1, std::function<void(int,QString)> preCheck = nullptr);
     void abort();
     void waitForFinished();
     void setKeepAlive(std::shared_ptr<void> keepAlive);
 
 public slots:
-    void resultProcessed(int index);
+    void resultProcessed();
 
 signals:
     void resultAvailable(int index, const QByteArray& data);
@@ -55,11 +55,12 @@ private:
     public:
         typedef std::pair<int, QByteArray> result_type;
 
-        ReadData(int maxBytes);
+        ReadData(int maxBytes, std::function<void(int,QString)> preCheck);
         result_type operator()(const std::pair<int, QString>& path);
 
     private:
         const int mMaxBytes{-1};
+        std::function<void(int,QString)> mPreCheck{};
     };
 
 private:

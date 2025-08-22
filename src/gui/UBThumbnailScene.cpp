@@ -189,11 +189,15 @@ UBThumbnail* UBThumbnailScene::lastSelectedThumbnail() const
  */
 void UBThumbnailScene::createThumbnails(int startIndex)
 {
-    // adjust number of thumbnail items
-    mThumbnailItems.resize(mDocument->pageCount());
+    // adjust number of thumbnail items and create empty thumbnails in new items
+    for (int index =  mThumbnailItems.count(); index < mDocument->pageCount(); ++index)
+    {
+        insertThumbnail(index, false);
+    }
 
     // skip already loaded thumbnails
-    while (startIndex < mThumbnailItems.count() && mThumbnailItems.at(startIndex))
+    while (startIndex < mThumbnailItems.count() && mThumbnailItems.at(startIndex)
+           && !mThumbnailItems.at(startIndex)->pixmap().isNull())
     {
         ++startIndex;
     }
@@ -234,7 +238,7 @@ void UBThumbnailScene::createThumbnails(int startIndex)
         QTimer::singleShot(5, this, [this, index](){
             if (mLoader)
             {
-                mLoader->resultProcessed(index);
+                mLoader->resultProcessed();
             }
         });
     });
@@ -282,7 +286,7 @@ void UBThumbnailScene::insertThumbnail(int pageIndex, bool loadThumbnail)
         arrangeThumbnails(pageIndex);
     }
 
-    if (mLoader)
+    if (mLoader && loadThumbnail)
     {
         // restart loading remaining thumbnails
         createThumbnails();
@@ -375,13 +379,19 @@ void UBThumbnailScene::ensureThumbnail(int pageIndex, UBGraphicsScene* scene)
         {
             QPixmap pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument, pageIndex, scene);
 
-            thumbnailItem = new UBThumbnail;
+            if (!thumbnailItem)
+            {
+                thumbnailItem = new UBThumbnail;
+            }
 
             thumbnailItem->setPixmap(pixmap);
             thumbnailItem->setSceneIndex(pageIndex);
 
-            mThumbnailItems[pageIndex] = thumbnailItem;
-            addItem(thumbnailItem);
+            if (!mThumbnailItems.at(pageIndex))
+            {
+                mThumbnailItems[pageIndex] = thumbnailItem;
+                addItem(thumbnailItem);
+            }
 
             arrangeThumbnails(pageIndex, pageIndex + 1);
         }

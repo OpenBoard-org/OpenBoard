@@ -900,10 +900,11 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
     else
     {
        std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
-       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pageId);
 
        // keep copiedScene alive until saving is finished
        mScenesToSave.append(copiedScene);
+
+       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pageId);
     }
 
     pScene->setModified(false);

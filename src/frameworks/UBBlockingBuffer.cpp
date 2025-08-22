@@ -54,7 +54,7 @@ void UBBlockingBuffer::addResult(int index)
     }
 }
 
-void UBBlockingBuffer::resultProcessed(int index)
+void UBBlockingBuffer::resultProcessed()
 {
     mAvailableSpace.release();
 }
