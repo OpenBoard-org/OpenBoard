@@ -22,6 +22,7 @@
 
 #include "UBBackgroundLoader.h"
 
+#include <QDebug>
 #include <QFile>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
