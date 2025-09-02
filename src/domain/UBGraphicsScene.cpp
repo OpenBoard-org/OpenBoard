@@ -408,13 +408,41 @@ QPointF UBGraphicsScene::lastCenter()
     return mViewState.lastSceneCenter();
 }
 
-bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
+bool UBGraphicsScene::inputDevicePress(int id, const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
+{
+    PointerState &state = mPointerStates[id];
+    loadPointerState(state);
+    bool accepted = inputDevicePressImpl(scenePos, pressure, modifiers);
+    savePointerState(state);
+    return accepted;
+}
+
+bool UBGraphicsScene::inputDeviceMove(int id, const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
+{
+    PointerState &state = mPointerStates[id];
+    loadPointerState(state);
+    bool accepted = inputDeviceMoveImpl(scenePos, pressure, modifiers);
+    savePointerState(state);
+    return accepted;
+}
+
+bool UBGraphicsScene::inputDeviceRelease(int id, int tool, Qt::KeyboardModifiers modifiers)
+{
+    PointerState &state = mPointerStates[id];
+    loadPointerState(state);
+    bool accepted = inputDeviceReleaseImpl(tool, modifiers);
+    savePointerState(state);
+    mPointerStates.remove(id);
+    return accepted;
+}
+
+bool UBGraphicsScene::inputDevicePressImpl(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
     if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
-        accepted = inputDeviceMove(scenePos, pressure, modifiers);
+        accepted = inputDeviceMoveImpl(scenePos, pressure, modifiers);
     }
     else {
         mInputDeviceIsPressed = true;
@@ -507,7 +535,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
+bool UBGraphicsScene::inputDeviceMoveImpl(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -696,7 +724,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifiers)
+bool UBGraphicsScene::inputDeviceReleaseImpl(int tool, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -3328,4 +3356,40 @@ void UBGraphicsScene::setToolCursor(int tool)
 void UBGraphicsScene::initStroke()
 {
     mCurrentStroke = new UBGraphicsStroke(shared_from_this());
+}
+
+void UBGraphicsScene::loadPointerState(const PointerState &state)
+{
+    mInputDeviceIsPressed = state.mInputDeviceIsPressed;
+    mPreviousPoint = state.mPreviousPoint;
+    mPreviousWidth = state.mPreviousWidth;
+    mDistanceFromLastStrokePoint = state.mDistanceFromLastStrokePoint;
+    mCurrentPoint = state.mCurrentPoint;
+    mPreviousPolygonItems = state.mPreviousPolygonItems;
+    mCurrentStroke = state.mCurrentStroke;
+    mAddedItems = state.mAddedItems;
+    mRemovedItems = state.mRemovedItems;
+    mArcPolygonItem = state.mArcPolygonItem;
+    mpLastPolygon = state.mpLastPolygon;
+    mTempPolygon = state.mTempPolygon;
+    mDrawWithCompass = state.mDrawWithCompass;
+    mCurrentPolygon = state.mCurrentPolygon;
+}
+
+void UBGraphicsScene::savePointerState(PointerState &state)
+{
+    state.mInputDeviceIsPressed = mInputDeviceIsPressed;
+    state.mPreviousPoint = mPreviousPoint;
+    state.mPreviousWidth = mPreviousWidth;
+    state.mDistanceFromLastStrokePoint = mDistanceFromLastStrokePoint;
+    state.mCurrentPoint = mCurrentPoint;
+    state.mPreviousPolygonItems = mPreviousPolygonItems;
+    state.mCurrentStroke = mCurrentStroke;
+    state.mAddedItems = mAddedItems;
+    state.mRemovedItems = mRemovedItems;
+    state.mArcPolygonItem = mArcPolygonItem;
+    state.mpLastPolygon = mpLastPolygon;
+    state.mTempPolygon = mTempPolygon;
+    state.mDrawWithCompass = mDrawWithCompass;
+    state.mCurrentPolygon = mCurrentPolygon;
 }

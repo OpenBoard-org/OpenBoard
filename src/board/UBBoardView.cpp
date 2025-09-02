@@ -33,6 +33,7 @@
 #include <QtGui>
 #include <QtXml>
 #include <QListView>
+#include <QTouchEvent>
 
 #include "UBDrawingController.h"
 
@@ -173,6 +174,8 @@ void UBBoardView::init ()
     setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
     setAcceptDrops (true);
+    setAttribute(Qt::WA_AcceptTouchEvents, true);
+    viewport()->setAttribute(Qt::WA_AcceptTouchEvents, true);
 
     mTabletStylusIsPressed = false;
     mMouseButtonIsPressed = false;
@@ -328,6 +331,36 @@ bool UBBoardView::event (QEvent * e)
                 }
             }
         }
+    }
+    else if (e->type() == QEvent::TouchBegin
+             || e->type() == QEvent::TouchUpdate
+             || e->type() == QEvent::TouchEnd)
+    {
+        QTouchEvent *touchEvent = static_cast<QTouchEvent*>(e);
+        if (scene())
+        {
+            for (const QTouchEvent::TouchPoint &tp : touchEvent->touchPoints())
+            {
+                QPointF scenePos = mapToScene(tp.pos().toPoint());
+                qreal pressure = tp.pressure();
+                int id = tp.id();
+                switch (e->type())
+                {
+                case QEvent::TouchBegin:
+                    scene()->inputDevicePress(id, scenePos, pressure);
+                    break;
+                case QEvent::TouchUpdate:
+                    scene()->inputDeviceMove(id, scenePos, pressure);
+                    break;
+                case QEvent::TouchEnd:
+                    scene()->inputDeviceRelease(id);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        return true;
     }
 
     return QGraphicsView::event (e);

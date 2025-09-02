@@ -29,6 +29,7 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <QHash>
 #include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
@@ -139,9 +140,16 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
-        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDevicePress(int id, const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceMove(int id, const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceRelease(int id, int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+        { return inputDevicePress(0, scenePos, pressure, modifiers); }
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+        { return inputDeviceMove(0, scenePos, pressure, modifiers); }
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+        { return inputDeviceRelease(0, tool, modifiers); }
 
         void leaveEvent (QEvent* event);
 
@@ -511,6 +519,28 @@ signals:
         UBSelectionFrame *mSelectionFrame;
 
         UBGraphicsCache* mGraphicsCache;
+
+        struct PointerState {
+            bool mInputDeviceIsPressed = false;
+            QPointF mPreviousPoint;
+            qreal mPreviousWidth = -1.0;
+            qreal mDistanceFromLastStrokePoint = 0;
+            QPointF mCurrentPoint;
+            QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
+            UBGraphicsStroke* mCurrentStroke = nullptr;
+            QSet<QGraphicsItem*> mAddedItems;
+            QSet<QGraphicsItem*> mRemovedItems;
+            UBGraphicsPolygonItem *mArcPolygonItem = nullptr;
+            UBGraphicsPolygonItem *mpLastPolygon = nullptr;
+            UBGraphicsPolygonItem *mTempPolygon = nullptr;
+            bool mDrawWithCompass = false;
+            UBGraphicsPolygonItem *mCurrentPolygon = nullptr;
+        };
+
+        QHash<int, PointerState> mPointerStates;
+
+        void loadPointerState(const PointerState &state);
+        void savePointerState(PointerState &state);        
 };
 
 

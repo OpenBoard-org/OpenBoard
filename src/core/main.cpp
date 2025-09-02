@@ -105,6 +105,16 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(ub_message_output);
 
+    // Disable the Chromium sandbox when no explicit flags are provided so that
+    // QtWebEngine can initialize the GPU process on configurations where the
+    // sandbox is not available (e.g. running as root or on some ARM builds).
+    if (!qEnvironmentVariableIsSet("QTWEBENGINE_CHROMIUM_FLAGS"))
+        qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
+
+    // Share OpenGL contexts across threads to avoid GPU related crashes when
+    // QtWebEngine creates its internal rendering contexts.
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    
     bool hasProcessFlag = false;
 
     for (int i = 1; i < argc; ++i)
