@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Applications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1 class="title">Applications</h1>
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-apps-title">
+      <h2 id="intro-apps-title" class="h2">Accéder aux applications</h2>
+      <p>
+        OpenBoard propose différentes <strong>applications et outils</strong>.
+        Retrouvez-les dans la bibliothèque en cliquant sur
+        <img class="inline-icon" src="../../assets/common/ApplicationsCategory.png" alt="Icône Applications" width="20" height="20" />.
+      </p>
+    </section>
+
+    <!-- Applications par défaut -->
+    <section aria-labelledby="default-apps-title" class="start">
+      <h2 id="default-apps-title" class="h2">Applications par défaut</h2>
+      <p>
+        Vous y trouverez des outils géométriques, une calculatrice, Google Maps, un générateur de QR codes et bien plus.
+        Combinez-les pour créer des expériences pédagogiques stimulantes&nbsp;!
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint10/application-gif1.gif" alt="Exemple d’utilisation des applications intégrées" loading="eager" decoding="async" />
+        <figcaption>Exemple d’utilisation des applications intégrées d’OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Créer ses propres applications -->
+    <section aria-labelledby="custom-apps-title" class="start">
+      <h2 id="custom-apps-title" class="h2">Créez vos propres applications</h2>
+      <p>
+        Comme expliqué dans la section <em>Mode Web</em>, vous pouvez créer une application à partir d’un site,
+        en utilisant le navigateur interne ou en copiant-collant une URL sur le tableau.
+      </p>
+      <p>
+        Cela vous permet d’agrémenter vos cours avec des outils en ligne puissants, utilisables directement dans OpenBoard.
+        Voici quelques exemples intéressants (glissez-déposez les liens sur le tableau pour les tester)&nbsp;:
+      </p>
+
+      <ul class="features" role="list">
+        <li><a class="non-clickable" href="https://scratch.mit.edu/">Scratch</a> — programmation visuelle</li>
+        <li><a class="non-clickable" href="https://phet.colorado.edu">Simulations PhET</a> — expériences scientifiques interactives</li>
+        <li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a> — exploration du globe en 3D</li>
+        <li><a class="non-clickable" href="https://flockmod.com">Flockmod</a> — dessin collaboratif en ligne</li>
+        <li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a> — apprentissage des langues</li>
+      </ul>
+
+      <p>... et bien plus encore&nbsp;!</p>
+
+      <aside class="tip" role="note" aria-label="Astuce application personnalisée">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Vous avez besoin d’une calculatrice plus avancée que celle d’OpenBoard&nbsp;? Créez votre propre
+          application en glissant-déposant ce lien sur le tableau&nbsp;:
+          <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a>
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+ 
+  </footer>
+  <br>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".non-clickable").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault(); // empêche d'ouvrir le lien
+        event.stopPropagation(); // bloque toute propagation
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+/* ====== Controls bar ===================================================== */
+#controls {
+  height: 50px;
+  background: #f2f2f2;
+  border-top: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Conteneur des navs */
+#navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ====== Boutons gauche/droite =========================================== */
+/* État de base : blanc cerclé, icône centrée (via background-image si tu utilises des PNG) */
+#left,
+#right {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #6682b5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.25s ease, border-color 0.25s ease;
+  /* Si tu utilises des PNG d’icônes */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 55% auto;
+}
+
+/* Exemple si tu utilises des images : décommente et adapte les chemins
+#left  { background-image: url("../images/left.png"); }
+#right { background-image: url("../images/right.png"); }
+*/
+
+/* Hover : gradient + ombre douce; le texte (si ◀ ▶ en texte) passe en blanc */
+#left:hover,
+#right:hover {
+  background: linear-gradient(135deg, #6682b5, #4a6290);
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  transform: scale(1.08);
+}
+
+/* Active (clic) : léger “press” */
+#left:active,
+#right:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Focus clavier : halo visible (accessibilité) */
+#left:focus-visible,
+#right:focus-visible {
+  outline: 3px solid rgba(102,130,181,0.35);
+  outline-offset: 3px;
+}
+
+/* État désactivé (si jamais tu l’emploies : <div id="left" aria-disabled="true">) */
+#left[aria-disabled="true"],
+#right[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Motion-friendly : réduit les animations pour les utilisateurs qui le demandent */
+@media (prefers-reduced-motion: reduce) {
+  #left, #right {
+    transition: none;
+  }
+}
+
+/* ====== Titre ============================================================ */
+#title {
+  min-width: 220px;
+  text-align: center;
+  font-size: 18px;      /* plus gros */
+  font-weight: 700;     /* en gras */
+  color: #222;          /* plus contrasté */
+  user-select: none;
+}
+
+/* Un peu plus flexible sur mobile étroit */
+@media (max-width: 420px) {
+  #title {
+    min-width: 160px;
+    font-size: 16px;
+  }
+}
+
+/* ====== Bouton “Accès au tutoriel” ====================================== */
+#btn-tuto {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: #6682b5;   /* bleu principal */
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+#btn-tuto:hover {
+  background-color: #4a6290;   /* bleu plus sombre au survol */
+  transform: translateY(-2px); /* petit effet de lift */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+#btn-tuto:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+#btn-tuto:focus-visible {
+  outline: 3px solid rgba(102,130,181,0.4);
+  outline-offset: 2px;
+}

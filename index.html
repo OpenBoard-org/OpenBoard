@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Startuphints – FR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="css/basic.css" />
+
+  <!-- jQuery legacy (pour rester compatible avec ton projet) -->
+  <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
+
+  <style>
+    /* Optionnel : un peu d’UI si basic.css est minimaliste */
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; }
+    header { display:flex; align-items:center; gap:12px; padding:10px 14px; border-bottom:1px solid #eee; background:#f8f8f8; }
+    header h1 { margin:0; font-size:18px; font-weight:600; }
+    header .spacer { flex:1; }
+    .btn { padding:8px 12px; border:1px solid #ccc; background:#fff; border-radius:8px; text-decoration:none; color:#222; }
+    #main { display:flex; flex-direction:column; height:100vh; }
+    #content { flex:1; display:flex; align-items:center; justify-content:center; background:#fafafa; }
+    #source { width:98%; height:95%; border:0; background:#fff; }
+    #separator { height:1px; background:#eee; }
+    #controls { padding:8px 12px; background:#f8f8f8; border-top:1px solid #eee; }
+    #navigation { display:grid; grid-template-columns: 48px 1fr 48px; gap:8px; align-items:center; }
+    #left, #right { display:flex; align-items:center; justify-content:center; height:40px; border:1px solid #ddd; background:#fff; border-radius:8px; cursor:pointer; user-select:none; font-size:18px; }
+    #title { display:flex; align-items:center; justify-content:center; min-height:40px; border:1px solid #eee; background:#fff; border-radius:8px; padding:0 10px; font-size:14px; }
+  </style>
+
+  <script type="text/javascript">
+    var current = 1, files_count = 0;
+    var lang = "fr"; // langue forcée
+    var tutorialUrl = "tutoriel/index.html"; // cible du bouton tutoriel
+
+    async function init(){
+      var stop = false;
+
+      // Charger tous les fichiers disponibles (1.html, 2.html, etc.)
+      while (1) {
+        try {
+          await makeRequest('locales/' + lang + '/' + (files_count + 1) + '.html');
+          files_count++;
+        } catch (error) {
+          stop = true;
+        }
+        if (stop) break;
+      }
+
+      if (files_count > 0) {
+        // Charger la première page
+        $("#source").attr("src", "locales/" + lang + "/1.html");
+
+        $("#right").click(function () {
+          if (current < files_count) {
+            current++;
+          } else {
+            current = 1;
+          }
+          $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
+        });
+
+        $("#left").click(function () {
+          if (current > 1) {
+            current--;
+          } else {
+            current = files_count;
+          }
+          $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
+        });
+      } else {
+        $("#source").attr("src", "locales/" + lang + "/error.html");
+      }
+
+      // Bouton Accès au tutoriel (ouvre dans un nouvel onglet)
+      $("#btn-tuto").on("click", function(e){
+        e.preventDefault();
+        window.open(tutorialUrl, "_blank", "noopener,noreferrer");
+      });
+
+      // Navigation clavier (flèches gauche/droite)
+      document.addEventListener("keydown", function(e){
+        if (e.key === "ArrowRight") $("#right").click();
+        if (e.key === "ArrowLeft")  $("#left").click();
+      });
+    }
+
+    // Ajax GET (au lieu de POST) pour fichiers statiques
+    function makeRequest(url) {
+      return new Promise(function(resolve, reject) {
+        $.ajax({
+          url: url,
+          type: 'GET',
+          dataType: 'html',
+          cache: false,
+          success: function(data) { resolve(data); },
+          error: function(xhr, status, err) { reject(err || status); }
+        });
+      });
+    }
+
+    // Mettre à jour le titre central avec le <title> de la page chargée
+    function setTitle(){
+      var iframe = document.getElementById("source");
+      try {
+        var doc = iframe.contentWindow.document;
+        var titleEls = doc.getElementsByTagName("title");
+        var titleTxt = (titleEls.length ? titleEls[0].innerHTML : "");
+        $("#title span").text(current + "/" + files_count + (titleTxt ? " : " + titleTxt : ""));
+      } catch(e){
+        $("#title span").text(current + "/" + files_count);
+      }
+    }
+
+    $(document).ready(function(){
+      init();
+    });
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <header>
+      <h1>Trucs et astuces – FR</h1>
+      <div class="spacer"></div>
+      <a id="btn-tuto" class="btn" href="tutoriel/index.html" target="_blank" rel="noopener"> ▶ Accès au tutoriel complet</a>
+    </header>
+
+    <div id="content">
+      <iframe id="source" src="" onload="setTitle()" title="Contenu pédagogique"></iframe>
+    </div>
+
+    <div id="separator"></div>
+
+    <div id="controls">
+      <div id="navigation">
+        <div id="left" title="Précédent">◀</div>
+        <div id="title"><span></span></div>
+        <div id="right" title="Suivant">▶</div>
+      </div>
+    
+    </div>
+      <br>
+      
+  </div>
+</body>
+</html>

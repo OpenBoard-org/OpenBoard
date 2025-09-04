@@ -1,0 +1,292 @@
+/* ============================
+   CSS PRÉCIS — Styles de contenu
+   ============================ */
+
+/* Reset léger & base */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root{
+  --bg: #ffffff;
+  --text: #1f2937;       /* gris très foncé */
+  --muted: #6b7280;      /* gris */
+  --brand: #6682b5;      /* bleu OpenBoard */
+  --brand-weak: #eaf0fb;
+  --card: #ffffff;
+  --line: #e5e7eb;
+  --tip-bg: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1220;
+    --text: #e5e7eb;
+    --muted: #9aa3b2;
+    --brand-weak: #0f1b34;
+    --card: #0f1627;
+    --line: #1f2a44;
+    --tip-bg: #121a2d;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Conteneur central */
+.container{
+  width: min(920px, 92vw);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;            /* 0 si tu veux vraiment collé */
+}
+.logo-title .title { margin: 0; }
+#logo { width: 70px; height: 70px; }
+
+
+
+/* Titres */
+.title {
+  margin: 0;
+  padding: 12px 0 6px;
+  text-align: center;
+  color: var(--brand);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: 700;
+}
+
+.h2{
+  margin: 1rem 0 0.25rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Header / Footer */
+.page-header{
+  border-bottom: 1px solid var(--line);
+  background: var(--brand-weak);
+}
+.page-footer{
+  border-top: 1px solid var(--line);
+  background: var(--brand-weak);
+}
+.page-footer .small{
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Paragraphes */
+.lead{
+  font-size: 1.05rem;
+  margin: 0.75rem 0 0.25rem;
+}
+p { margin: 0.5rem 0; }
+
+/* Figure / Image */
+.image{
+  text-align: center;
+  margin: 20px 0 12px;
+}
+.image img{
+  max-width: min(120px, 40vw);   /* logo lisible, reste responsive */
+  width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+/* Grille des modes */
+.modes{ margin-top: 0.75rem; }
+.modes-grid{
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 640px){
+  .modes-grid{ grid-template-columns: 1fr; }
+}
+.mode-card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.mode-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.mode-title{
+  margin: 0 0 8px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+.mode-text{ margin: 0; }
+
+/* Section démarrage */
+.start{ margin-top: 0.75rem; }
+.start p { margin-bottom: 0.5rem; }
+
+/* Bouton “primaire” local au contenu (pas le btn-tuto global) */
+.btn{
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--brand);
+  background: var(--brand-weak);
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+.btn:hover,
+.btn:focus{
+  outline: none;
+  background: var(--brand);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(102,130,181,0.25);
+}
+.btn:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(102,130,181,0.2);
+}
+
+/* Encadré “Astuce” */
+.tip{
+  margin-top: 1.5rem;
+  background: var(--tip-bg);
+  border: 1px dashed var(--brand);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.tip-icon{
+  margin-top: 4px;
+  width: 24px;
+  height: 24px;
+}
+.inline-icon{
+  vertical-align: -4px;
+  margin-left: 4px;
+}
+
+/* Utilitaires d’accessibilité */
+.visually-hidden{
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; /* évite les retours */
+}
+
+/* Réduction des animations si demandé */
+@media (prefers-reduced-motion: reduce){
+  .mode-card,
+  .btn {
+    transition: none;
+  }
+}
+
+/* Footer sans fond coloré */
+.page-footer {
+  border-top: 1px solid var(--line);
+  background: var(--bg);   /* au lieu de var(--brand-weak) */
+}
+.page-footer .small {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Images plus grandes */
+.image {
+  text-align: center;
+  margin: 20px 0 12px;
+}
+.image img {
+  max-width: min(600px, 90vw);   /* beaucoup plus grand, reste responsive */
+  width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+/* logo page 1 */
+.image_logo {
+  text-align: center;
+  margin: 18px 0 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--brand-weak);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(102,130,181,0.10);
+  padding: 18px 0;
+}
+
+#bureau1{
+   max-width: min(300px, 90vw);
+   width: 100%;
+    height: auto;
+  display: inline-block;
+}
+
+#docu1{
+   max-width: min(300px, 90vw);
+   width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+#web1{
+   max-width: min(300px, 90vw);
+   width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+#bib1{
+   max-width: min(300px, 90vw);
+   width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+#cap1{
+   max-width: min(200px, 90vw);
+   width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+#fav1{
+   max-width: min(400px, 90vw);
+   width: 100%;
+  height: auto;
+  display: inline-block;
+}
