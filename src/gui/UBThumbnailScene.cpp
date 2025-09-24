@@ -24,7 +24,6 @@
 
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "document/UBDocument.h"
-#include "document/UBDocumentToc.h"
 #include "frameworks/UBBackgroundLoader.h"
 #include "gui/UBThumbnail.h"
 #include "gui/UBThumbnailArranger.h"
@@ -197,7 +196,7 @@ void UBThumbnailScene::createThumbnails(int startIndex)
 
     // skip already loaded thumbnails
     while (startIndex < mThumbnailItems.count() && mThumbnailItems.at(startIndex)
-           && !mThumbnailItems.at(startIndex)->pixmap().isNull())
+           && mThumbnailItems.at(startIndex)->isLoaded())
     {
         ++startIndex;
     }
@@ -207,12 +206,8 @@ void UBThumbnailScene::createThumbnails(int startIndex)
 
     for (int index = startIndex; index < mDocument->pageCount(); ++index)
     {
-        // only load thumbnails for pages with assets, others are loaded while scanning
-        if (mDocument->toc()->hasAssetsEntry(index))
-        {
-            const auto thumbnailPath = UBThumbnailAdaptor::thumbnailUrl(mDocument, index).toLocalFile();
-            paths << std::pair<int,QString>{index, thumbnailPath};
-        }
+        const auto thumbnailPath = UBThumbnailAdaptor::thumbnailUrl(mDocument, index).toLocalFile();
+        paths << std::pair<int,QString>{index, thumbnailPath};
     }
 
     // start background loading of files
@@ -375,7 +370,7 @@ void UBThumbnailScene::ensureThumbnail(int pageIndex, UBGraphicsScene* scene)
     {
         auto thumbnailItem = mThumbnailItems.at(pageIndex);
 
-        if (!thumbnailItem || thumbnailItem->pixmap().isNull())
+        if (!thumbnailItem || !thumbnailItem->isLoaded())
         {
             QPixmap pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument, pageIndex, scene);
 
@@ -428,27 +423,22 @@ void UBThumbnailScene::loadThumbnail(int index, const QByteArray& data)
 
     if (!thumbnailItem)
     {
-        QPixmap pixmap;
-
-        if (data.isEmpty())
-        {
-            pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument, index);
-        }
-        else
-        {
-            pixmap.loadFromData(data);
-        }
-
         thumbnailItem = new UBThumbnail;
-
-        thumbnailItem->setPixmap(pixmap);
-        thumbnailItem->setSceneIndex(index);
-
         mThumbnailItems[index] = thumbnailItem;
         addItem(thumbnailItem);
-
-        arrangeThumbnails(index, index + 1);
     }
+
+    QPixmap pixmap;
+
+    if (!data.isEmpty())
+    {
+        pixmap.loadFromData(data);
+        thumbnailItem->setPixmap(pixmap);
+    }
+
+    thumbnailItem->setSceneIndex(index);
+
+    arrangeThumbnails(index, index + 1);
 }
 
 void UBThumbnailScene::renumberThumbnails(int fromIndex, int toIndex) const

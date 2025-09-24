@@ -44,6 +44,8 @@ public:
 
     void setPixmap(const QPixmap& pixmap);
     QPixmap pixmap() const;
+    bool isLoaded() const;
+
     void setSceneIndex(int sceneIndex);
     int sceneIndex() const;
     void setThumbnailSize(QSizeF size);
@@ -75,6 +77,7 @@ private:
 private:
     QGraphicsPixmapItem* mPixmapItem{nullptr};
     UBThumbnailTextItem* mTextItem{nullptr};
+    bool mLoaded{false};
     int mIndex{0};
     int mColumn{0};
     int mRow{0};
