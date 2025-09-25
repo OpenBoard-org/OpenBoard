@@ -1,39 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-     <title>Mode Documents</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Importer et exporter </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="../../css/style.css" type="text/css" />
 </head>
 
 <body>
-	<header>
-		<h1 class="title">Mode Documents</h1>
-	</header>
-	<main>
-		<p>Vous trouverez également dans ce mode deux fonctionnalités très importantes : l'import et l'export.</p>
-		<div class="image"><img id="importation1" src="../../assets/hint5/img1.png" alt=""></div>
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1 class="title">Mode Documents</h1>
+    </div>
+  </header>
 
-		<h3>Import</h3>
-		<p>Vous pouvez importer des fichiers PDF (<span class="file-extension">.pdf</span>), des images (<span class="file-extension">.png</span>, <span class="file-extension">.jpg</span>), des documents OpenBoard (<span class="file-extension">.ubz</span>) ou des dossiers OpenBoard (<span class="file-extension">.ubx</span>), en cliquant sur <span class="icon"><img src="../../assets/common/import.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint5/gif1.gif" alt=""></div>
-		<p>À noter que vous pouvez aussi importer un document OpenBoard (<span class="file-extension">.ubz</span>) en double-cliquant dessus. Cela lancera OpenBoard s'il n'est pas déjà lancé, et l'importera  (ou proposera un remplacement du fichier si déjà existant).</p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez également importer plusieurs éléments à la fois, sans qu'il soit nécessaire de cliquer sur <span class="icon"><img src="../../assets/common/import.png" alt=""></span> encore et encore.</span>
-		<h3>Export</h3>
-		<p>Vous pouvez exporter un document OpenBoard au format PDF ou UBZ, et un dossier OpenBoard au format UBX. Ainsi, vous pouvez, par exemple :
-			<ul>
-				<li>Enregistrer le travail fait durant un cours, et le partager avec un élève absent.</li>
-				<li>Le partager avec d'autres enseignants, ou le sauvegarder sur une clé USB pour l'importer sur un autre ordinateur.</li>
-				<li>Importer le travail d'un élève au format PDF, l'annoter, et exporter le document annoté au format PDF pour le renvoyer à l'élève</li>
-			</ul>
-		</p>
-		<div class="image"><img src="../../assets/hint5/gif2.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Exporter tous vos documents en cliquant sur le dossier racine "Mes Documents", avant de cliquer sur <span class="icon"><img src="../../assets/common/export.png" alt=""></span>, pour les exporter au format UBX. Vous pourrez alors les importer sur un autre ordinateur. C'est aussi un bon moyen d'effectuer une archive ou une sauvegarde de tout votre travail !</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-title">
+      <h2 id="intro-title" class="h2">Import & Export</h2>
+      <p>
+        Dans ce mode, vous disposez de deux fonctionnalités essentielles&nbsp;: <strong>l’import</strong> et <strong>l’export</strong>.
+      </p>
+      <figure class="image">
+        <img id="importation1" src="../../assets/hint5/img1.png" alt="Zone d’import et d’export dans le Mode Documents" loading="eager" decoding="async" />
+	
+      </figure>
+    </section>
 
-	</footer>
+    <!-- Import -->
+    <section aria-labelledby="import-title" class="start">
+      <h2 id="import-title" class="h2">Importer des contenus</h2>
+      <p>
+        Vous pouvez importer des fichiers <strong>PDF</strong> (<span class="file-extension">.pdf</span>),
+        des <strong>images</strong> (<span class="file-extension">.png</span>, <span class="file-extension">.jpg</span>),
+        des <strong>documents OpenBoard</strong> (<span class="file-extension">.ubz</span>) ou des
+        <strong>dossiers OpenBoard</strong> (<span class="file-extension">.ubx</span>) en cliquant sur
+        <img class="inline-icon" src="../../assets/common/import.png" alt="Icône Importer" width="20" height="20" />.
+	
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint5/gif1.gif" alt="Exemple d’import de fichiers dans OpenBoard" loading="lazy" decoding="async" />
+		<figcaption>Exemple d'importation de fichiers dans OpenBoard.</figcaption>
+      </figure>
+
+      <p>
+        Vous pouvez aussi importer un document OpenBoard (<span class="file-extension">.ubz</span>) en
+        <strong>double-cliquant</strong> dessus depuis votre système. OpenBoard se lancera si nécessaire et
+        vous proposera d’importer (ou de remplacer s’il existe déjà).
+      </p>
+
+      <aside class="tip" role="note" aria-label="Astuce import multiple">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Il est possible d’<strong>importer plusieurs éléments en une seule fois</strong>,
+          sans recliquer sur
+          <img class="inline-icon" src="../../assets/common/import.png" alt="Importer" width="20" height="20" />
+          à chaque fois.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Export -->
+    <section aria-labelledby="export-title" class="start">
+      <h2 id="export-title" class="h2">Exporter vos documents</h2>
+      <p>
+        Vous pouvez exporter un <strong>document OpenBoard</strong> au format <strong>PDF</strong> ou <strong>UBZ</strong>,
+        et un <strong>dossier OpenBoard</strong> au format <strong>UBX</strong>. Par exemple&nbsp;:
+      </p>
+      <ul class="features" role="list">
+        <li>Enregistrer le travail fait durant un cours et le partager à un élève absent.</li>
+        <li>Partager à d’autres enseignants, ou sauvegarder sur une clé USB pour l’importer ailleurs.</li>
+        <li>Importer le travail d’un élève en PDF, l’annoter, puis exporter le PDF annoté pour le renvoyer.</li>
+      </ul>
+
+      <figure class="image">
+        <img src="../../assets/hint5/gif2.gif" alt="Exemples d’export de documents et dossiers OpenBoard" loading="lazy" decoding="async" />
+		<figcaption>Exemple d'exportation de fichiers depuis OpenBoard.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Astuce export global">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Pour exporter <strong>tous vos documents</strong>, sélectionnez d’abord le dossier racine
+          <em>Mes Documents</em>, puis cliquez sur
+          <img class="inline-icon" src="../../assets/common/export.png" alt="Icône Exporter" width="20" height="20" />.
+          Vous obtiendrez un <strong>UBX</strong> importable sur un autre ordinateur — parfait pour une
+          <strong>sauvegarde</strong> ou une <strong>archive</strong> complète&nbsp;!
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>
+

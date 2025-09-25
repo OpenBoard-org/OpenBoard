@@ -1,46 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-     <title>Mode Tableau</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Mode Tableau</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Garde le même fichier CSS que tes autres pages -->
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
 </head>
 
 <body>
-	<header>
-		<h1 class="title">Mode Tableau</h1>
-	</header>
-	<main>
-		<h3>La palette des stylets</h3>
-		<p>La palette des stylets vous donne accès à des outils essentiels quand on travaille sur un tableau blanc.</p>
-		<div class="image"><img id="bo1" src="../../assets/hint2/bo1.png" alt=""></div>
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1 class="title">Mode Tableau</h1>
+    </div>
+  </header>
 
-		<p>Vous y trouverez le crayon (<span class="icon"><img src="../../assets/common/pen.png" alt=""></span>), la gomme (<span class="icon"><img src="../../assets/common/eraser.png" alt=""></span>) et le surligneur (<span class="icon"><img src="../../assets/common/marker.png" alt=""></span>). OpenBoard fournit également des fonctionnalités qu'un tableau blanc classique ne peut pas fournir :</p>
-		<ul>
-			<li><span class="icon"><img src="../../assets/common/arrow.png" alt=""></span> est le sélecteur. Avec, vous pouvez sélectionner et interagir avec des objets.</li>
-			<li><span class="icon"><img src="../../assets/common/handPlay.png" alt=""></span> est le doigt magique. Vous pouvez déplacer des objets ou interagir avec eux sans qu'il soit nécessaire de les sélectionner.</li>
-			<li><span class="icon"><img src="../../assets/common/hand.png" alt=""></span> est la main. Vous pouvez déplacer la page avec. Très utile quand combinée avec les fonctionnalités de zoom !</li>
-			<li><span class="icon"><img src="../../assets/common/zoomIn.png" alt=""></span><span class="icon"><img src="../../assets/common/zoomOut.png" alt=""></span> vous donnent la possibilité de zoomer et dézoomer. Sélectionnez simplement l'effet désiré, et cliquer à l'endroit où vous souhaitez l'appliquer !</li>
-			<li><span class="icon"><img src="../../assets/common/laser.png" alt=""></span> est un pointeur laser, utile pour pointer des éléments sur le tableau sans interagir avec ces derniers.</li>
-			<li><span class="icon"><img src="../../assets/common/line.png" alt=""></span> est utilisé pour tracer des droites facilement.</li>
-			<li><span class="icon"><img src="../../assets/common/text.png" alt=""></span> est une boîte de texte, permettant d'écrire au clavier plutôt qu'au crayon.</li>
-		</ul>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez avoir un contrôle plus fin du zoom avec la souris ! Utilisez Ctrl/Cmd + la molette de la souris afin de zoomer/dézoomer avec plus de précision !</span>
-		<h3>La barre du tableau</h3>
-		<p>La barre du tableau vous permet de changer la couleur et/ou la taille du crayon et marqueur, entre autres choses.</p>
-		<div class="image"><img id="bo9" src="../../assets/hint2/bo9.png" alt=""></div>
+  <main id="main" class="container" role="main">
+    <!-- Section : Palette des stylets -->
+    <section aria-labelledby="palette-title">
+      <h2 id="palette-title" class="h2">La palette des stylets</h2>
+      <p>
+        La palette des stylets vous donne accès à des outils essentiels quand on travaille sur un tableau blanc.
+      </p>
 
-		<p>Vous y trouverez également la possibilité de changer le fond du tableau en cliquant sur <span class="icon"><img src="../../assets/common/background.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint2/bo-gif1.gif" alt=""></div>
-		
-		<p>Vous y trouverez aussi des fonctionnalités comme annuler/rétablir, créer et naviguer de pages en pages, effacer le tableau, ...</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez effacer entièrement des éléments plus spécifiques du tableau, en faisant un clic long sur <span class="icon"><img src="../../assets/common/clearPage.png" alt="the erase icon"></span>. Quelques fonctionnalités supplémentaires accessibles également pour <span class="icon"><img src="../../assets/common/newDocument.png" alt="the erase icon"></span> !</span>
-	</main>
-	<footer>
+      <figure class="image">
+        <img id="bo1" src="../../assets/hint2/bo1.png" alt="Palette des stylets d’OpenBoard" loading="eager" decoding="async" />
+      </figure>
 
-	</footer>
+      <p>
+        Vous y trouverez le crayon
+        <img class="inline-icon" src="../../assets/common/pen.png" alt="Crayon" width="20" height="20" />,
+        la gomme
+        <img class="inline-icon" src="../../assets/common/eraser.png" alt="Gomme" width="20" height="20" />
+        et le surligneur
+        <img class="inline-icon" src="../../assets/common/marker.png" alt="Surligneur" width="20" height="20" />.
+        OpenBoard fournit également des fonctionnalités qu’un tableau blanc classique ne peut pas proposer :
+      </p>
+
+      <ul role="list" class="features">
+        <li>
+          <img class="inline-icon" src="../../assets/common/arrow.png" alt="" width="20" height="20" />
+          <strong>Sélecteur</strong> : sélectionnez et interagissez avec les objets.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/handPlay.png" alt="" width="20" height="20" />
+          <strong>Doigt magique</strong> : déplacez/interagissez sans sélectionner au préalable.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/hand.png" alt="" width="20" height="20" />
+          <strong>Main</strong> : déplacez la page (très utile combiné au zoom).
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/zoomIn.png" alt="" width="20" height="20" />
+          <img class="inline-icon" src="../../assets/common/zoomOut.png" alt="" width="20" height="20" />
+          <strong>Zoom / Dézoom</strong> : cliquez où appliquer l’effet après l’avoir sélectionné.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/laser.png" alt="" width="20" height="20" />
+          <strong>Pointeur laser</strong> : pointez des éléments sans interagir avec eux.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/line.png" alt="" width="20" height="20" />
+          <strong>Ligne</strong> : tracez des droites facilement.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/text.png" alt="" width="20" height="20" />
+          <strong>Texte</strong> : insérez une zone de texte pour taper au clavier.
+        </li>
+      </ul>
+
+      <aside class="tip" role="note" aria-label="Astuce zoom">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Pour un contrôle plus fin du zoom avec la souris, utilisez
+          <strong>Ctrl/Cmd + molette</strong> pour zoomer/dézoomer avec précision.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Section : Barre du tableau -->
+    <section aria-labelledby="barre-title" class="start">
+      <h2 id="barre-title" class="h2">La barre du tableau</h2>
+      <p>
+        La barre du tableau vous permet de changer la <strong>couleur</strong> et/ou la <strong>taille</strong> du crayon et du surligneur, entre autres choses.
+      </p>
+
+      <figure class="image">
+        <img id="bo9" src="../../assets/hint2/bo9.png" alt="Barre du tableau d’OpenBoard" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        Vous pouvez aussi changer le <strong>fond du tableau</strong> en cliquant sur
+        <img class="inline-icon" src="../../assets/common/background.png" alt="Changer le fond" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint2/bo-gif1.gif" alt="Exemple de changement de fond du tableau" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        D’autres fonctions sont disponibles : <em>annuler/rétablir</em>, créer des pages, naviguer entre les pages, effacer le tableau, etc.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Astuce effacer et options">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Pour effacer des éléments spécifiques, faites un <strong>clic long</strong> sur
+          <img class="inline-icon" src="../../assets/common/clearPage.png" alt="Effacer la page" width="20" height="20" />.
+          Des options complémentaires existent aussi via
+          <img class="inline-icon" src="../../assets/common/newDocument.png" alt="Nouveau document" width="20" height="20" />.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>

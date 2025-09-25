@@ -1,0 +1,450 @@
+/* ============================
+   CSS general for all languages
+   ============================ */
+
+/* Reset */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root{
+  --bg: #ffffff;
+  --text: #1f2937;       
+  --muted: #6b7280;      
+  --brand: #6682b5;     
+  --brand-weak: #eaf0fb;
+  --card: #ffffff;
+  --line: #e5e7eb;
+  --tip-bg: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1220;
+    --text: #e5e7eb;
+    --muted: #9aa3b2;
+    --brand-weak: #0f1b34;
+    --card: #0f1627;
+    --line: #1f2a44;
+    --tip-bg: #121a2d;
+  }
+}
+
+/* base layout */
+header { display:flex; align-items:center; gap:12px; padding:10px 14px; border-bottom:1px solid #eee; background:#f8f8f8; }
+header h1 { margin:0; font-size:18px; font-weight:600; }
+header .spacer { flex:1; }
+#main { display:flex; flex-direction:column; height:100vh; }
+#content { flex:1; display:flex; align-items:center; justify-content:center; background:#fafafa; }
+#source { width:100%; height:100%; border:0; background:#fff; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* central container*/
+.container{
+  width: min(920px, 92vw);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+
+/* Logo + title */
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;  
+}
+.logo-title .title { margin: 0; }
+#logo { width: 70px; height: 70px; }
+
+/* Title */
+.title {
+  margin: 0;
+  padding: 12px 0 6px;
+  text-align: center;
+  color: var(--brand);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: 700;
+}
+
+.h2{
+  margin: 1rem 0 0.25rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Header / Footer */
+.page-header{
+  border-bottom: 1px solid var(--line);
+  background: var(--brand-weak);
+}
+.page-footer{
+  border-top: 1px solid var(--line);
+  background: var(--bg);   
+}
+.page-footer .small{
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* § */
+.lead{
+  font-size: 1.05rem;
+  margin: 0.75rem 0 0.25rem;
+}
+p { margin: 0.5rem 0; }
+
+/* Figure / Image */
+.image{
+  text-align: center;
+  margin: 20px 0 12px;
+}
+
+
+/* icon inline */
+.icon { vertical-align: middle; }
+.inline-icon{ vertical-align: -4px; margin-left: 4px; }
+
+/* grid mode */
+.modes{ margin-top: 0.75rem; }
+.modes-grid{
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 640px){
+  .modes-grid{ grid-template-columns: 1fr; }
+}
+.mode-card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.mode-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.mode-title{
+  margin: 0 0 8px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+.mode-text{ margin: 0; }
+
+/* Section start */
+.start{ margin-top: 0.75rem; }
+.start p { margin-bottom: 0.5rem; }
+
+
+/* tip */
+.tip{
+  margin-top: 1.5rem;
+  background: var(--tip-bg);
+  border: 1px dashed var(--brand);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.tip-icon{
+  margin-top: 2px;
+  width: 24px;
+  height: 24px;
+}
+
+/* accessibility*/
+.visually-hidden{
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* reduce animation*/
+@media (prefers-reduced-motion: reduce){
+  .mode-card, .btn, #left, #right { transition: none; }
+}
+
+/* for specifical images */
+#bureau1, #docu1, #web1, #bib1 {
+  max-width: min(300px, 90vw);
+  width: 100%; height: auto; display: inline-block;
+}
+#cap1{
+  max-width: min(200px, 90vw);
+  width: 100%; height: auto; display: inline-block;
+}
+#fav1{
+  max-width: min(400px, 90vw);
+  width: 100%; height: auto; display: inline-block;
+}
+
+/* Logo first page */
+.image_logo {
+  text-align: center;
+  margin: 18px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--brand-weak);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(102,130,181,0.10);
+  padding: 18px 0;
+}
+
+/* ====== Controls bar — propre & sans lignes parasites =================== */
+#controls {
+  background: transparent;          /* pas de fond gris imposé */
+  border-top: none;                 /* enlève la ligne horizontale */
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Conteneur pilule centré */
+#navigation {
+  display: grid;
+  grid-template-columns: 44px auto 44px;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.06),
+    0 6px 18px rgba(0,0,0,0.06);
+  backdrop-filter: saturate(120%) blur(6px);
+  -webkit-backdrop-filter: saturate(120%) blur(6px);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* Boutons gauche/droite */
+#left, #right {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: linear-gradient(#fff, #f7f8fb);
+  color: var(--brand);
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .25s ease, border-color .25s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  user-select: none;
+}
+#left:hover, #right:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(#fdfdff, #eef2ff);
+  border-color: rgba(102,130,181,.55);
+  box-shadow: 0 6px 14px rgba(17,24,39,.12);
+}
+#left:active, #right:active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 6px rgba(17,24,39,.1);
+}
+#left[aria-disabled="true"], #right[aria-disabled="true"] {
+  opacity: .45;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Titre — sans bordure ni fond parasite */
+#title {
+  min-width: 220px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: none;       /* supprime le cadre */
+  background: none;   /* pas de rectangle blanc */
+  box-shadow: none;   
+}
+
+/* Responsive */
+@media (max-width: 480px){
+  #navigation {
+    grid-template-columns: 36px auto 36px;
+    gap: 14px;
+    padding: 6px 10px;
+    max-width: 340px;
+  }
+  #left, #right { width: 36px; height: 36px; font-size: 15px; }
+  #title { min-width: 120px; font-size: 14px; }
+}
+
+/* Responsive : serre un peu sur mobile étroit */
+@media (max-width: 480px){
+  #navigation {
+    grid-template-columns: 40px minmax(120px, 1fr) 40px;
+    gap: 10px;
+    padding: 8px;
+  }
+  #left, #right { width: 40px; height: 40px; font-size: 16px; }
+  #title { min-width: 160px; font-size: 15px; padding: 6px 10px; }
+}
+
+/* Réduction d’animations si demandé */
+@media (prefers-reduced-motion: reduce){
+  #left, #right { transition: none; }
+}
+
+/* ==== Mode sombre cohérent ============================================== */
+@media (prefers-color-scheme: dark){
+  #controls { border-top-color: var(--line); }
+  #navigation{
+    background: rgba(15,22,39,0.6);
+    border-color: var(--line);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.4),
+      0 10px 26px rgba(0,0,0,0.35);
+  }
+  #left, #right{
+    background: linear-gradient(#0f1627, #0b1220);
+    color: var(--brand);
+    border-color: var(--line);
+    box-shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+  #left:hover, #right:hover{
+    background: linear-gradient(#111b31, #0f1b34);
+    border-color: rgba(102,130,181,.6);
+    box-shadow: 0 8px 16px rgba(0,0,0,.45);
+  }
+  #title{
+    background: #0f1627;
+    color: var(--text);
+    border-color: var(--line);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.35);
+  }
+}
+
+@media (max-width: 420px) {
+  #title { min-width: 160px; font-size: 16px; }
+}
+
+/* Btn access to tutorial */
+#btn-tuto {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+#btn-tuto:hover {
+  background-color: #4a6290;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+#btn-tuto:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+#btn-tuto:focus-visible {
+  outline: 3px solid rgba(102,130,181,0.4);
+  outline-offset: 2px;
+}
+
+/* --- Minifix by IA  ------------------------------ */
+
+/* 1) reactivity for images */
+img { max-width: 100%; height: auto; }
+
+/* 2) uniform captions for <figure> ... <figcaption> */
+figure.image { margin: 20px 0 12px; text-align: center; }
+figure.image figcaption {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* 3) tip in the right place */
+.tip p { margin: 0; }
+
+/* 4)  (ul.features) */
+ul.features {
+  list-style: none;             
+  padding: 0;
+  margin: 0.5rem 0 0;          
+}
+ul.features li {
+  padding-left: 1.1rem;         
+  position: relative;
+  margin: 0.25rem 0;
+}
+ul.features li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--brand);
+  line-height: 1.2;
+}
+
+/* 5 recap table */
+.recap-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+.recap-table th, .recap-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+.recap-table thead th {
+  background: var(--brand-weak);
+  color: var(--text);
+  font-weight: 700;
+}
+.recap-table tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.02);
+}
+@media (prefers-color-scheme: dark) {
+  .recap-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+}
+
+/* 6) non-clickable links */
+a.non-clickable { cursor: default; text-decoration: underline dotted; }
+a.non-clickable:focus { outline: none; }
+
+
+/* make disapear the bloody line in the middle */
+.page-header { border-bottom: none !important; }
+.page-footer { border-top: none !important; }

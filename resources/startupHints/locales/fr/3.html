@@ -1,30 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-     <title>Mode Bureau</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Mode Bureau</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Garde le même CSS que les autres pages (precis.css / style.css) -->
+   <link rel="stylesheet" href="../../css/style.css" type="text/css" />
 </head>
 
 <body>
-	<header>
-		<h1 class="title">Mode Bureau</h1>
-	</header>
-	<main>
-		<h3>Interagir avec d'autres applications</h3>
-		<p>En utilisant le mode Bureau, vous pouvez interagir avec votre système d'exploitation et d'autres logiciels, tout en conservant OpenBoard par dessus !</p>
-		<p>Cliquez simplement sur l'icône suivante :</p>
-		<div class="image"><img id="bureau1" src="../../assets/hint3/bureau1.png" alt=""></div>
-		<div>Utilisez le sélecteur (<span class="icon"><img src="../../assets/common/arrow.png" alt=""></span>) pour interagir avec le bureau et les autres applications.</div>
-		<h3>Annoter des applications ou des sites web</h3>
-		<div>Vous pouvez annoter n'importe quel logiciel, en utilisant le crayon (<span class="icon"><img src="../../assets/common/penArrow.svg" alt=""></span>) ou le marqueur (<span class="icon"><img src="../../assets/common/markerArrow.svg" alt=""></span>).</div>
-		<div class="image"><img src="../../assets/hint3/bureau-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1 class="title">Mode Bureau</h1>
+    </div>
+  </header>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez accéder à plus d'options pour <span class="icon"><img src="../../assets/common/penArrow.svg" alt="the pen"></span>, <span class="icon"><img src="../../assets/common/markerArrow.svg" alt="the marker"></span> et <span class="icon"><img src="../../assets/common/eraserArrow.svg" alt="the eraser"></span> en faisant en clic long sur eux, ou en cliquant sur la petite flèche noire.</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Section : Interagir avec d'autres applications -->
+    <section aria-labelledby="interagir-title">
+      <h2 id="interagir-title" class="h2">Interagir avec d’autres applications</h2>
+      <p>
+        Le <strong>mode Bureau</strong> vous permet d’interagir avec votre système d’exploitation et vos logiciels,
+        tout en conservant les outils d’OpenBoard par-dessus.
+      </p>
+      <p>Cliquez simplement sur l’icône suivante&nbsp;:</p>
 
-	</footer>
+      <figure class="image">
+        <img id="bureau1" src="../../assets/hint3/bureau1.png" alt="Icône pour activer le Mode Bureau" loading="eager" decoding="async" />
+      </figure>
+
+      <p>
+        Utilisez le <strong>sélecteur</strong>
+        <img class="inline-icon" src="../../assets/common/arrow.png" alt="Sélecteur" width="20" height="20" />
+        pour interagir avec le bureau et les autres applications.
+      </p>
+    </section>
+
+    <!-- Section : Annoter des applications ou sites web -->
+    <section aria-labelledby="annoter-title" class="start">
+      <h2 id="annoter-title" class="h2">Annoter des applications ou des sites web</h2>
+      <p>
+        Vous pouvez annoter n’importe quel logiciel avec le <strong>crayon</strong>
+        <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Crayon" width="20" height="20" />
+        ou le <strong>marqueur</strong>
+        <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marqueur" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint3/bureau-gif1.gif" alt="Annotation d’une application en Mode Bureau" loading="lazy" decoding="async" />
+         <figcaption>Exemple d'annotation sur une page internet.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Astuce outils d’annotation">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Accédez à plus d’options pour
+          <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Crayon" width="20" height="20" />,
+          <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marqueur" width="20" height="20" />
+          et
+          <img class="inline-icon" src="../../assets/common/eraserArrow.svg" alt="Gomme" width="20" height="20" />
+          en effectuant un <strong>clic long</strong> sur l’outil, ou en cliquant sur la <strong>petite flèche noire</strong>.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>

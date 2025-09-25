@@ -1,41 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-     <meta charset="UTF-8">
-	 <title>Interactivités</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Interactivités</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="../../css/style.css" type="text/css" />
 </head>
 
 <body>
-	<header>
-		<h1 class="title">Interactivités</h1>
-	</header>
-	<main>
-		Pour les plus jeunes élèves, vous trouverez un ensemble d'applications personnalisables qui leur sont dédiées. 
-		<h3>Les exercices interactifs d'OpenBoard</h3>
-		<p>Avec ces interactivités, vous pouvez créer différents types d'exercices. Il peut s'agir de catégorisation, calcul mental, mémorisation, etc.</p>
-		<p>Les interactivités sont situées dans la bibliothèque OpenBoard : cliquez sur <span class="icon"><img src="../../assets/common/InteractivesCategory.png" alt=""></span> pour les trouver.</p>
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1 class="title">Interactivités</h1>
+    </div>
+  </header>
 
-		<h3>Exemple</h3>
-		<p>Nous allons créer un exercice utilisant l'interactivité "<strong>Cat</strong>egorize <strong>pict</strong>ures" (traduction : Catégorisez des images) : <span class="icon"><img src="../../assets/hint9/cat-pict.png" alt=""></span></p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Essayez ! Déplacez cette fenêtre sur un côté et reproduisez l'exemple sur le Tableau !</span>
-		<p>Tout d'abord, glissez-déposez l'interactivité sur le tableau, et cliquez sur "Modifier"</p>
-		<p>Ensuite, changez les noms des catégories selon vos besoins :</p>
-		<div class="image"><img id="interactivite3" src="../../assets/hint9/interactivite3.png" alt=""></div>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-int-title">
+      <h2 id="intro-int-title" class="h2">Des exercices interactifs, simples à personnaliser</h2>
+      <p>
+        Pour les plus jeunes élèves (et pas seulement), OpenBoard fournit un ensemble
+        d’<strong>interactivités</strong> personnalisables : catégorisation, calcul mental, mémorisation, etc.
+      </p>
+      <p>
+        Elles sont accessibles dans la <strong>bibliothèque</strong> : cliquez sur
+        <img class="inline-icon" src="../../assets/common/InteractivesCategory.png" alt="Icône Interactivités" width="20" height="20" />.
+      </p>
+    </section>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez ajouter ou supprimer des catégories en utilisant les icônes + et -</span>
+    <!-- Exemple guidé -->
+    <section aria-labelledby="exemple-title" class="start">
+      <h2 id="exemple-title" class="h2">Exemple : « Categorize Pictures »</h2>
+      <p>
+        Créons un exercice avec l’interactivité
+        <em><strong>Cat</strong>egorize <strong>pict</strong>ures</em> (catégoriser des images) :
+        <img class="inline-icon" src="../../assets/hint9/cat-pict.png" alt="Vignette Categorize Pictures" width="20" height="20" />.
+      </p>
 
-		<p>Ensuite, ajoutez les images correspondant à chaque catégorie.</p>
-		<div class="image"><img src="../../assets/hint9/interactivite-gif2.gif" alt=""></div>
+      <aside class="tip" role="note" aria-label="Astuce pratique">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Essayez ! Déplacez cette fenêtre sur le côté et reproduisez l’exemple sur votre Tableau.
+        </p>
+      </aside>
 
-		<p>Enfin, cliquez sur "Afficher" pour voir le résultat et faire l'exercice.</p>
-		<div class="image"><img src="../../assets/hint9/interactivite-gif3.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Vous pouvez relancer l'exercice en cliquant sur l'icône "Recharger".</span>
-	</main>
-	<footer>
+      <h3 class="h2">1) Placer l’interactivité et ouvrir l’éditeur</h3>
+      <p>
+        Glissez-déposez l’interactivité sur le Tableau, puis cliquez sur <strong>Modifier</strong>.
+      </p>
 
-	</footer>
+      <h3 class="h2">2) Nommer les catégories</h3>
+      <p>
+        Renommez les catégories selon vos besoins. Vous pouvez aussi
+        <strong>ajouter</strong> ou <strong>supprimer</strong> des catégories avec les icônes « + » et « − ».
+      </p>
+
+      <figure class="image">
+        <img id="interactivite3" src="../../assets/hint9/interactivite3.png" alt="Édition des catégories de l’interactivité" loading="eager" decoding="async" />
+        <figcaption>Édition des catégories : ajout, suppression, renommage.</figcaption>
+      </figure>
+
+      <h3 class="h2">3) Ajouter les images</h3>
+      <p>
+        Ajoutez les images correspondant à chaque catégorie (glisser-déposer, sélection depuis la bibliothèque, etc.).
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint9/interactivite-gif2.gif" alt="Ajout d’images aux catégories" loading="lazy" decoding="async" />
+        <figcaption>Associer des images aux catégories définies.</figcaption>
+      </figure>
+
+      <h3 class="h2">4) Afficher et faire l’exercice</h3>
+      <p>
+        Cliquez sur <strong>Afficher</strong> pour lancer l’activité en mode élève.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint9/interactivite-gif3.gif" alt="Exécution de l’exercice Categorize Pictures" loading="lazy" decoding="async" />
+        <figcaption>Exécution de l’exercice : déplacer les images dans la bonne catégorie.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Astuce relancer l’exercice">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Pour <strong>relancer</strong> l’exercice, utilisez l’icône <em>Recharger</em>.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+  <br>
 </body>
 </html>
