@@ -65,7 +65,7 @@ UBBackgroundLoader::~UBBackgroundLoader()
 void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes, std::function<void(int,QString)> preCheck)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
+    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes, preCheck});
 #else
     // use a separate thread pool for each loader so that tasks are interwoven between loaders
     auto threadPool = new QThreadPool{this};

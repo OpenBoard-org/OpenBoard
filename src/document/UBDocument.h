@@ -24,10 +24,10 @@
 
 #include <QHash>
 #include <QList>
-#include <QSet>
 #include <QUuid>
 
 #include <memory>
+#include <unordered_set>
 
 
 // forward
@@ -98,7 +98,7 @@ private:
     UBBackgroundLoader* mSceneHeaderLoader{nullptr};
     UBBackgroundLoader* mSceneAssetLoader{nullptr};
     QHash<QUuid, QUuid> mUuidV5Map{};
-    QSet<std::shared_ptr<void>> mLoaderHandles;
+    std::unordered_set<std::shared_ptr<void>> mLoaderHandles;
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
 };

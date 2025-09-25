@@ -349,7 +349,7 @@ QString UBDocument::thumbnailFile(int index)
 
 void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handle)
 {
-    mLoaderHandles.remove(handle);
+    mLoaderHandles.erase(handle);
 
     const auto persistenceManager = UBPersistenceManager::persistenceManager();
     auto index = mToc->findUuid(scene->uuid());
@@ -459,7 +459,7 @@ void UBDocument::scanAssets()
                 if (handle)
                 {
                     // loading started, keep handle until finished
-                    mLoaderHandles << handle;
+                    mLoaderHandles.insert(handle);
                     return;
                 }
             }
