@@ -136,8 +136,8 @@ void UBDocument::deletePages(QList<int> indexes)
 
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
-        thumbnailScene()->deleteThumbnail(indexes.at(i), false);
         mToc->remove(indexes.at(i));
+        thumbnailScene()->deleteThumbnail(indexes.at(i), false);
         emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(this, indexes.at(i));
     }
 
