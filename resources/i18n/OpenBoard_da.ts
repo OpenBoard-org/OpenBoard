@@ -1914,7 +1914,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/core/UBDocumentManager.cpp" line="132"/>
         <source>All supported files (*.%1)</source>
-        <translation>alle understøttede filer (*%1)</translation>
+        <translation>alle understøttede filer (*.%1)</translation>
     </message>
     <message>
         <location filename="../../src/core/UBDocumentManager.cpp" line="216"/>
