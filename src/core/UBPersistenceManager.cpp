@@ -780,8 +780,7 @@ QUuid UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> f
     // save modified scene of the same document
     if (scene && scene->document() == from && scene->isModified())
     {
-        auto page = UBApplication::boardController->activeSceneIndex();
-        persistDocumentScene(from, scene, page, false, true);
+        UBApplication::boardController->persistCurrentScene(false, true);
     }
 
     // copy SVG and thumbnail
