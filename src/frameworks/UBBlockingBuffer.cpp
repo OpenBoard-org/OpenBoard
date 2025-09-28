@@ -22,18 +22,20 @@
 
 #include "UBBlockingBuffer.h"
 
+#include <QVariant>
+
 UBBlockingBuffer::UBBlockingBuffer(QObject* parent)
     : QThread{parent}
 {
 }
 
-void UBBlockingBuffer::setWatcher(QFutureWatcher<std::pair<int, QByteArray>>* watcher)
+void UBBlockingBuffer::setWatcher(QFutureWatcher<std::pair<int, QVariant>>* watcher)
 {
     mWatcher = watcher;
 
-    connect(mWatcher, &QFutureWatcher<std::pair<int, QByteArray>>::resultReadyAt, this, &UBBlockingBuffer::addResult,
+    connect(mWatcher, &QFutureWatcher<std::pair<int, QVariant>>::resultReadyAt, this, &UBBlockingBuffer::addResult,
             Qt::DirectConnection);
-    connect(mWatcher, &QFutureWatcher<std::pair<int, QByteArray>>::finished, this, &UBBlockingBuffer::watcherFinished,
+    connect(mWatcher, &QFutureWatcher<std::pair<int, QVariant>>::finished, this, &UBBlockingBuffer::watcherFinished,
             Qt::DirectConnection);
 }
 

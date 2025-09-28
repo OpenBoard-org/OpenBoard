@@ -72,7 +72,7 @@ protected:
 private:
     friend class UBThumbnail;
     UBThumbnailArranger* currentThumbnailArranger();
-    void loadThumbnail(int index, const QByteArray& data);
+    void loadThumbnail(int index, const QVariant& data);
     void renumberThumbnails(int fromIndex = 0, int toIndex = -1) const;
 
 private:

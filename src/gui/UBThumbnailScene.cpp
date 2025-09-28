@@ -224,19 +224,29 @@ void UBThumbnailScene::createThumbnails(int startIndex)
         return;
     }
 
-    mLoader = new UBBackgroundLoader{this};
+    mLoader = new UBBackgroundLoader{UBBackgroundLoader::Pixmap, this};
 
-    connect(mLoader, &UBBackgroundLoader::resultAvailable, this, [this](int index, const QByteArray& data){
-        // now create all missing thumbnails for document as they arrive from the loader
+    connect(mLoader, &UBBackgroundLoader::resultAvailable, this, [this](int index, const QVariant& data){
+        // now generate all missing thumbnails for document as they arrive from the loader
         loadThumbnail(index, data);
 
-        QTimer::singleShot(5, this, [this, index](){
-            if (mLoader)
+        if (mLoader)
+        {
+            // delay next thumbnail processing  after a specified number of thumbnails
+            // to improve user experience when simultaneously interacting with the board
+            if (index % 10 == 0)
+            {
+                QTimer::singleShot(5, this, [this](){
+                    mLoader->resultProcessed();
+                });
+            }
+            else
             {
                 mLoader->resultProcessed();
             }
-        });
+        }
     });
+
     connect(mLoader, &UBBackgroundLoader::finished, this, [this](){
         // delete loader
         mLoader->deleteLater();
@@ -417,7 +427,7 @@ UBThumbnailArranger* UBThumbnailScene::currentThumbnailArranger()
     return thumbnailArranger;
 }
 
-void UBThumbnailScene::loadThumbnail(int index, const QByteArray& data)
+void UBThumbnailScene::loadThumbnail(int index, const QVariant& data)
 {
     auto thumbnailItem = mThumbnailItems.at(index);
 
@@ -428,11 +438,9 @@ void UBThumbnailScene::loadThumbnail(int index, const QByteArray& data)
         addItem(thumbnailItem);
     }
 
-    QPixmap pixmap;
-
-    if (!data.isEmpty())
+    if (!data.isNull())
     {
-        pixmap.loadFromData(data);
+        QPixmap pixmap = data.value<QPixmap>();
         thumbnailItem->setPixmap(pixmap);
     }
 

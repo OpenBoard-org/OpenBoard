@@ -34,7 +34,7 @@ class UBBlockingBuffer : public QThread
 
 public:
     UBBlockingBuffer(QObject* parent = nullptr);
-    void setWatcher(QFutureWatcher<std::pair<int, QByteArray>>* watcher);
+    void setWatcher(QFutureWatcher<std::pair<int, QVariant>>* watcher);
 
 public slots:
     void addResult(int index);
@@ -43,16 +43,16 @@ public slots:
     void halt();
 
 signals:
-    void resultAvailable(int index, const QByteArray& data);
+    void resultAvailable(int index, const QVariant& data);
     void finished();
 
 protected:
     void run() override;
 
 private:
-    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher;
+    QFutureWatcher<std::pair<int, QVariant>>* mWatcher;
     QSemaphore mAvailableResults;
     QSemaphore mAvailableSpace{1};
     QMutex mMutex;
-    std::deque<std::pair<int,QByteArray>> mBuffer;
+    std::deque<std::pair<int,QVariant>> mBuffer;
 };

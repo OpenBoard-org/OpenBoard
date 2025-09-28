@@ -301,16 +301,14 @@ UBDocumentToc* UBDocument::toc()
             scan(tocPresent);
             mToc->save();
         }
-        else
+
+        // scan assets if missing
+        for (int index = 0; index < mToc->pageCount(); ++index)
         {
-            // scan assets if missing
-            for (int index = 0; index < mToc->pageCount(); ++index)
+            if (!mToc->hasAssetsEntry(index))
             {
-                if (!mToc->hasAssetsEntry(index))
-                {
-                    scanAssets();
-                    break;
-                }
+                scanAssets();
+                break;
             }
         }
     }
@@ -439,12 +437,12 @@ void UBDocument::scanAssets()
     {
         qDebug() << "Scan" << paths.count() << "scenes for assets";
         // load scenes for scanning
-        mSceneAssetLoader = new UBBackgroundLoader;
+        mSceneAssetLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
 
-        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int pageId, const QByteArray& data){
+        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int pageId, const QVariant& data){
             UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(pageId).arg(mToc->pageCount()), true);
 
-            if (pageId >= 0 && !data.isEmpty())
+            if (pageId >= 0 && !data.isNull())
             {
                 auto scene = UBPersistenceManager::persistenceManager()->getDocumentScene(mProxy, pageId);
 
@@ -454,7 +452,7 @@ void UBDocument::scanAssets()
                     return;
                 }
 
-                const auto handle = UBPersistenceManager::persistenceManager()->prepareSceneLoading(mProxy, pageId, data, false);
+                const auto handle = UBPersistenceManager::persistenceManager()->prepareSceneLoading(mProxy, pageId, data.toByteArray(), false);
 
                 if (handle)
                 {
@@ -469,8 +467,14 @@ void UBDocument::scanAssets()
         });
 
         QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::finished, mSceneAssetLoader, [this](){
-            UBApplication::showMessage(UBDocumentController::tr("Scan completed"));
             qDebug() << "Asset scan completed";
+            mSceneAssetLoader->deleteLater();
+            mSceneAssetLoader = nullptr;
+        });
+
+        QObject::connect(mSceneAssetLoader, &QObject::destroyed, [](){
+            // loader either completed or aborted
+            UBApplication::showMessage(UBDocumentController::tr("Scan terminated"));
         });
 
         mSceneAssetLoader->load(paths, -1, [this](int pageId, QString path){
@@ -554,14 +558,14 @@ void UBDocument::scan(bool tocPresent)
         }
 
         // load the first 300 bytes of each file in background, enough to get version and UUID
-        UBBackgroundLoader loader;
+        UBBackgroundLoader loader{UBBackgroundLoader::ByteArray};
         int pageProcessed = -1;
         int currentPage = 0;
         const auto currentVersion = QVersionNumber::fromString(UBSettings::currentFileVersion);
 
-        QObject::connect(&loader, &UBBackgroundLoader::resultAvailable, &loader, [&](int index, const QByteArray& data){
+        QObject::connect(&loader, &UBBackgroundLoader::resultAvailable, &loader, [&](int index, const QVariant& data){
             UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(++currentPage).arg(pages.count()), true);
-            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data);
+            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
 
             // Check whether the tocSceneUuids already contains this scene.
             // If yes, locate and update the TOC entry
@@ -575,7 +579,7 @@ void UBDocument::scan(bool tocPresent)
                     tocSceneUuids.remove(uuid);
 
                     // invalidate assets if scene was modified by an earlier version
-                    if (UBSvgSubsetAdaptor::sceneVersion(data) < currentVersion)
+                    if (UBSvgSubsetAdaptor::sceneVersion(data.toByteArray()) < currentVersion)
                     {
                         mToc->unsetAssets(index);
                     }
@@ -613,11 +617,11 @@ void UBDocument::scan(bool tocPresent)
     else if (!paths.empty())
     {
         // start reading the UUIDs in background, but make sure it is completed when the UBDocument is deleted
-        mSceneHeaderLoader = new UBBackgroundLoader;
+        mSceneHeaderLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
         mSceneHeaderLoader->setKeepAlive(shared_from_this());
 
-        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QByteArray& data){
-            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data);
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QVariant& data){
+            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
             mToc->setUuid(index, uuid);
             mSceneHeaderLoader->resultProcessed();
         });

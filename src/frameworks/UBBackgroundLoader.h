@@ -24,6 +24,7 @@
 
 #include <QFuture>
 #include <QObject>
+#include <QVariant>
 
 // forward
 class UBBlockingBuffer;
@@ -34,7 +35,12 @@ class UBBackgroundLoader : public QObject
     Q_OBJECT
 
 public:
-    UBBackgroundLoader(QObject* parent = nullptr);
+    enum ResultType {
+        ByteArray,
+        Pixmap
+    };
+
+    UBBackgroundLoader(ResultType resultType, QObject* parent = nullptr);
     virtual ~UBBackgroundLoader();
 
     void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1, std::function<void(int,QString)> preCheck = nullptr);
@@ -46,27 +52,29 @@ public slots:
     void resultProcessed();
 
 signals:
-    void resultAvailable(int index, const QByteArray& data);
+    void resultAvailable(int index, const QVariant& data);
     void finished();
 
 private:
     class ReadData
     {
     public:
-        typedef std::pair<int, QByteArray> result_type;
+        typedef std::pair<int, QVariant> result_type;
 
-        ReadData(int maxBytes, std::function<void(int,QString)> preCheck);
+        ReadData(ResultType resultType, int maxBytes, std::function<void(int,QString)> preCheck);
         result_type operator()(const std::pair<int, QString>& path);
 
     private:
+        const ResultType mResultType{ByteArray};
         const int mMaxBytes{-1};
         std::function<void(int,QString)> mPreCheck{};
     };
 
 private:
-    QFuture<std::pair<int, QByteArray>> mFuture;
+    const ResultType mResultType{ByteArray};
+    QFuture<std::pair<int, QVariant>> mFuture;
     int mIndex{0};
-    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher{nullptr};
+    QFutureWatcher<std::pair<int, QVariant>>* mWatcher{nullptr};
     std::shared_ptr<void> mKeepAlive;
     UBBlockingBuffer* mBlockingBuffer{nullptr};
     QThread* mWatcherThread{nullptr};

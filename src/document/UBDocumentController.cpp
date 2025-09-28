@@ -3399,7 +3399,6 @@ bool UBDocumentController::isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> p
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
             || docVersion.startsWith("4.6") || docVersion.startsWith("4.8") || docVersion.startsWith("4.9"))
     {
-        UBDocument::getDocument(proxy)->scanAssets();
         // Invoke widget upgrader
         widgetUpgradeAdaptor.upgradeWidgets(proxy);
         return true;
