@@ -25,6 +25,7 @@
 #include <QFutureWatcher>
 #include <QSemaphore>
 #include <QThread>
+#include <QVariant>
 
 #include <deque>
 

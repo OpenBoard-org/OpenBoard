@@ -22,7 +22,6 @@
 
 #include "UBBlockingBuffer.h"
 
-#include <QVariant>
 
 UBBlockingBuffer::UBBlockingBuffer(QObject* parent)
     : QThread{parent}
