@@ -54,9 +54,20 @@ void UBPersistenceWorker::saveMetadata(std::shared_ptr<UBDocumentProxy> proxy)
     mSemaphore.release();
 }
 
+void UBPersistenceWorker::waitForAllSaved()
+{
+    QMutexLocker locker(&mSaving);
+
+    if (!saves.isEmpty())
+    {
+        mNoMoreSaves.wait(&mSaving);
+    }
+}
+
 void UBPersistenceWorker::applicationWillClose()
 {
     qDebug() << "application Will close signal received";
+    waitForAllSaved();
     mReceivedApplicationClosing = true;
     mSemaphore.release();
 }
@@ -65,22 +76,37 @@ void UBPersistenceWorker::process()
 {
     qDebug() << "process starts";
     mSemaphore.acquire();
-    do{
-        PersistenceInformation info;
+
+    while (!mReceivedApplicationClosing)
+    {
         {
-            QMutexLocker locker(&mMutex);
-            info = saves.takeFirst();
+            QMutexLocker saving(&mSaving);
+            PersistenceInformation info;
+
+            {
+                QMutexLocker locker(&mMutex);
+                info = saves.takeFirst();
+            }
+
+            if (info.action == WriteScene)
+            {
+                UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.sceneIndex);
+                emit scenePersisted(info.scene);
+            }
+            else if (info.action == WriteMetadata)
+            {
+                UBMetadataDcSubsetAdaptor::persist(info.proxy);
+                emit metadataPersisted(info.proxy);
+            }
+
+            if (saves.isEmpty())
+            {
+                mNoMoreSaves.notify_all();
+            }
         }
-        if(info.action == WriteScene){
-            UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.sceneIndex);
-            emit scenePersisted(info.scene);
-        }
-        else if (info.action == WriteMetadata) {
-            UBMetadataDcSubsetAdaptor::persist(info.proxy);
-            emit metadataPersisted(info.proxy);
-        }
+
         mSemaphore.acquire();
-    }while(!mReceivedApplicationClosing);
+    }
     qDebug() << "process will stop";
     emit finished();
 }

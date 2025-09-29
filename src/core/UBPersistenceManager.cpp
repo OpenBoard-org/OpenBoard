@@ -879,6 +879,14 @@ void UBPersistenceManager::cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> p
     }
 }
 
+void UBPersistenceManager::waitForAllSaved() const
+{
+    if (mWorker)
+    {
+        mWorker->waitForAllSaved();
+    }
+}
+
 void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId,
                                                 bool isAnAutomaticBackup, bool forceImmediateSaving, bool addToCache)
 {

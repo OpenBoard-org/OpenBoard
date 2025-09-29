@@ -31,6 +31,8 @@
 
 #include <QObject>
 #include <QSemaphore>
+#include <QWaitCondition>
+
 #include "document/UBDocumentProxy.h"
 #include "domain/UBGraphicsScene.h"
 
@@ -55,6 +57,8 @@ public:
     void saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageIndex);
     void saveMetadata(std::shared_ptr<UBDocumentProxy> proxy);
 
+    void waitForAllSaved();
+
 signals:
    void finished();
    void error(QString string);
@@ -69,6 +73,8 @@ protected:
    bool mReceivedApplicationClosing;
    QSemaphore mSemaphore;
    QMutex mMutex;
+   QMutex mSaving;
+   QWaitCondition mNoMoreSaves;
    QList<PersistenceInformation> saves;
 };
 

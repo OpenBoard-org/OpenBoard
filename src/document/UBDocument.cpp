@@ -423,6 +423,7 @@ void UBDocument::scanAssets()
     // create a list of page IDs and paths of pages without asset info for background loading
     QList<std::pair<int, QString>> paths;
     const auto persistenceManager = UBPersistenceManager::persistenceManager();
+    persistenceManager->waitForAllSaved();
 
     for (int index = 0; index < mToc->pageCount(); ++index)
     {

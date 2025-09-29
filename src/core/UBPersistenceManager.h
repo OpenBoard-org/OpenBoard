@@ -113,6 +113,8 @@ class UBPersistenceManager : public QObject
         bool copyAsset(std::shared_ptr<UBDocumentProxy> proxy, const QString& fromRelativePath, const QString& toRelativePath);
         void cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> proxy, QSet<QString> referencedMediaAssets);
 
+        void waitForAllSaved() const;
+
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
         UBDocumentTreeNode *mDocumentTreeStructure;
         UBDocumentTreeModel *mDocumentTreeStructureModel;
