@@ -754,6 +754,8 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
 
     for (auto pageId : pageIds)
     {
+        mWorker->removePendingSaves(proxy, pageId);
+
         QString svgFileName = proxy->persistencePath() + sceneFilenameForId(pageId);
         QFile::remove(svgFileName);
 
@@ -902,6 +904,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
     if(forceImmediateSaving)
     {
+        mWorker->removePendingSaves(pDocumentProxy, pageId);
         UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pageId);
     }
     else
