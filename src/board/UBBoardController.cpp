@@ -2627,10 +2627,13 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
     {
         const QStringList formats = pMimeData->formats();
         QString selectedFormat;
+        UBMimeType::Enum ubMimeType{UBMimeType::UNKNOWN};
 
         for (const QString& format : formats)
-        {
-            if (format.startsWith("image/"))
+        {            
+            ubMimeType = UBFileSystemUtils::mimeTypeFromString(format);
+
+            if (ubMimeType == UBMimeType::VectorImage || ubMimeType == UBMimeType::RasterImage)
             {
                 selectedFormat = format;
                 break;
@@ -2641,9 +2644,11 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         if (selectedFormat.isEmpty())
         {
+            // should never happen, but just in case
             // create an image and fill the buffer with PNG data
             QImage img = qvariant_cast<QImage> (pMimeData->imageData());
             img.save(&buffer, "png");
+            ubMimeType = UBMimeType::RasterImage;
         }
         else
         {
@@ -2651,11 +2656,19 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             buffer.setData(pMimeData->data(selectedFormat));
         }
 
-        // validate that the image is really an image, webkit does not fill properly the image mime data
-        if (!buffer.data().isEmpty())
+        if (ubMimeType == UBMimeType::VectorImage)
         {
-            mActiveScene->addImage(buffer.data(), NULL, pPos, 1.);
+            mActiveScene->addSvg({}, pPos, buffer.data());
             return;
+        }
+        else if (ubMimeType == UBMimeType::RasterImage)
+        {
+            // validate that the image is really an image, webkit does not fill properly the image mime data
+            if (!buffer.data().isEmpty())
+            {
+                mActiveScene->addImage(buffer.data(), nullptr, pPos, 1.);
+                return;
+            }
         }
     }
 
