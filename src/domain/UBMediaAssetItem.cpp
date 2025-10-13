@@ -21,6 +21,7 @@
 
 #include "UBMediaAssetItem.h"
 
+#include <QDomDocument>
 #include <QRegularExpression>
 
 QUuid UBMediaAssetItem::mediaAssetUuid() const
@@ -58,20 +59,35 @@ QUuid UBMediaAssetItem::createMediaAssetUuid(const QString& path)
 
     if (fileInfo.isDir())
     {
-        const auto widgetFiles = fileInfo.dir().entryInfoList({"*.xml", "*.html"}, QDir::Files, QDir::Name);
-        QByteArray data;
+        // check for a config.xml and read the id
+        QFile configFile(path + "/config.xml");
 
-        for (const auto fileInfo : widgetFiles)
+        if (configFile.open(QFile::ReadOnly))
         {
-            QFile file(fileInfo.absoluteFilePath());
+            QDomDocument doc;
+            doc.setContent(configFile.readAll());
+            QDomNodeList widgetDomList = doc.elementsByTagName("widget");
 
-            if (file.open(QFile::ReadOnly))
+            if (widgetDomList.count() > 0)
             {
-                data.append(file.readAll());
+                QDomElement widgetElement = widgetDomList.item(0).toElement();
+                const auto id = widgetElement.attribute("id", "");
+
+                if (id.startsWith("urn:uuid:"))
+                {
+                    const auto uuid = QUuid{id.mid(9)};
+
+                    if (uuid.version() == QUuid::Sha1)
+                    {
+                        return uuid;
+                    }
+                }
+                else
+                {
+                    return createMediaAssetUuid(id.toUtf8());
+                }
             }
         }
-
-        return createMediaAssetUuid(data);
     }
 
     return {};
