@@ -6,6 +6,7 @@ UBSortFilterProxyModel::UBSortFilterProxyModel():
 {
     setDynamicSortFilter(false);
     setSortCaseSensitivity(Qt::CaseInsensitive);
+    setRecursiveFilteringEnabled(true);
 }
 
 bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -32,14 +33,18 @@ bool UBSortFilterProxyModel::filterAcceptsRow(int sourceRow,
     {
         return false;
     }
-
-    if(model->isCatalog(model->index(sourceRow, 0, sourceParent)))
-    {
-        // Always show the catalog folders
-        return true;
-    }
     else
     {
+        QModelIndex idx = model->index(sourceRow, 0, sourceParent);
+
+        if (idx.isValid())
+        {
+            if (idx == model->myDocumentsIndex() || idx == model->trashIndex())
+            {
+                return true;
+            }
+        }
+
         // Filter the documents
         return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
     }
