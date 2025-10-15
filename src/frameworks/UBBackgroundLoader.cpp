@@ -85,11 +85,6 @@ void UBBackgroundLoader::abort()
     mFuture.cancel();
 }
 
-void UBBackgroundLoader::waitForFinished()
-{
-    mFuture.waitForFinished();
-}
-
 void UBBackgroundLoader::setKeepAlive(std::shared_ptr<void> keepAlive)
 {
     mKeepAlive = keepAlive;

@@ -87,7 +87,7 @@ private:
     void scan(bool tocPresent);
     void copyPage(int fromIndex, UBDocument* to, int toIndex);
     void deleteUnreferencedAssets();
-    void assureLoaderFinished();
+    void assureHeaderLoaderFinished(bool visualFeedback = true);
 
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 

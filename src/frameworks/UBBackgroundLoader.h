@@ -45,7 +45,6 @@ public:
 
     void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1, std::function<void(int,QString)> preCheck = nullptr);
     void abort();
-    void waitForFinished();
     void setKeepAlive(std::shared_ptr<void> keepAlive);
 
 public slots:
