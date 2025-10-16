@@ -1895,6 +1895,8 @@ UBDocumentController::~UBDocumentController()
 
 void UBDocumentController::createNewDocument()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
@@ -1953,6 +1955,8 @@ void UBDocumentController::selectDocument(std::shared_ptr<UBDocumentProxy> proxy
 
 void UBDocumentController::createNewDocumentGroup()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
@@ -3095,6 +3099,8 @@ void UBDocumentController::documentZoomSliderValueChanged (int value)
 
 void UBDocumentController::importFile()
 {
+    mDocumentUI->filterText->clear();
+
     UBDocumentManager *docManager = UBDocumentManager::documentManager();
 
     QString defaultPath = UBSettings::settings()->lastImportFilePath->get().toString();
@@ -3929,6 +3935,8 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
 
 void UBDocumentController::createNewDocumentInUntitledFolder()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
 
