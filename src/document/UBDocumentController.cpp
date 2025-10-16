@@ -2366,6 +2366,15 @@ void UBDocumentController::onFilterTextChanged(const QString& filter)
 {
     mSortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
     mSortFilterProxyModel->setFilterRegularExpression(filter);
+
+    if (filter.isEmpty())
+    {
+        collapseAll();
+    }
+    else
+    {
+        expandAll();
+    }
 }
 
 void UBDocumentController::onSplitterMoved(int size, int index)
