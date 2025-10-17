@@ -874,17 +874,15 @@ void UBBoardPaletteManager::addItemToCurrentPage()
 {
     UBApplication::applicationController->showBoard();
     mAddItemPalette->hide();
-    if(mPixmap.isNull())
+
+    if (mPixmap.isNull())
+    {
         UBApplication::boardController->downloadURL(mItemUrl);
+    }
     else
     {
         UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
 
-        QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
-        QString fileName = UBPersistenceManager::imageDirectory + "/" + item->uuid().toString() + ".png";
-        QString path = documentPath + "/" + fileName;
-
-        item->setSourceUrl(QUrl(path));
         item->setSelected(true);
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);

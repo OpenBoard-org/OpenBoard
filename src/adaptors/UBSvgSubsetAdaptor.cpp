@@ -2488,11 +2488,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
             ubItem->setUuid(QUuid(ubUuid.toString()));
         else
             ubItem->setUuid(QUuid::createUuid());
-
-        auto ubSource = mXmlReader.attributes().value(mNamespaceUri, "source");
-
-        if (!ubSource.isNull())
-            ubItem->setSourceUrl(QUrl(ubSource.toString()));
     }
 
     auto ubLocked = mXmlReader.attributes().value(mNamespaceUri, "locked");
@@ -2590,11 +2585,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     if (ubItem)
     {
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(ubItem->uuid()));
-
-        QUrl sourceUrl = ubItem->sourceUrl();
-
-        if (!sourceUrl.isEmpty())
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.path());
     }
 
     QVariant layer = item->data(UBGraphicsItemData::ItemLayerType);

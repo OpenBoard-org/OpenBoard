@@ -692,104 +692,46 @@ void UBBoardController::duplicateScene()
 UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 {
     if (!item)
-        return NULL;
+    {
+        return {};
+    }
 
-    UBGraphicsItem *retItem = NULL;
+    UBGraphicsItem* retItem{nullptr};
 
-    mLastCreatedItem = NULL;
-
-    QUrl sourceUrl;
-    QByteArray pData;
+    mLastCreatedItem = nullptr;
 
     //common parameters for any item
     QPointF itemPos;
     QSizeF itemSize;
 
-    QGraphicsItem *commonItem = dynamic_cast<QGraphicsItem*>(item);
+    QGraphicsItem* commonItem = dynamic_cast<QGraphicsItem*>(item);
+
     if (commonItem)
     {
         qreal shifting = UBSettings::settings()->objectFrameWidth;
         itemPos = commonItem->pos() + QPointF(shifting,shifting);
         itemSize = commonItem->boundingRect().size();
         commonItem->setSelected(false);
-
     }
 
-    UBMimeType::Enum itemMimeType;
-
-    QString srcFile = item->sourceUrl().toLocalFile();
-    if (srcFile.isEmpty())
-        srcFile = item->sourceUrl().toString();
-
-    QString contentTypeHeader;
-    if (!srcFile.isEmpty())
-        contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
-
-    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
-        itemMimeType = UBMimeType::Group;
-    else
-        itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
-
-    switch(static_cast<int>(itemMimeType))
-    {
-    case UBMimeType::AppleWidget:
-    case UBMimeType::W3CWidget:
-        {
-            UBGraphicsWidgetItem *witem = dynamic_cast<UBGraphicsWidgetItem*>(item);
-            if (witem)
-            {
-                sourceUrl = witem->getOwnFolder();
-            }
-        }break;
-
-    case UBMimeType::Video:
-    case UBMimeType::Audio:
-        {
-            UBGraphicsMediaItem *mitem = dynamic_cast<UBGraphicsMediaItem*>(item);
-            if (mitem)
-            {
-                sourceUrl = mitem->mediaFileUrl();
-                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
-                return NULL; // async operation
-            }
-        }break;
-
-    case UBMimeType::VectorImage:
-        {
-            UBGraphicsSvgItem *viitem = dynamic_cast<UBGraphicsSvgItem*>(item);
-            if (viitem)
-            {
-                pData = viitem->fileData();
-                sourceUrl = item->sourceUrl();
-            }
-        }break;
-
-    case UBMimeType::RasterImage:
-        {
-            UBGraphicsPixmapItem *pixitem = dynamic_cast<UBGraphicsPixmapItem*>(item);
-            if (pixitem)
-            {
-                 QBuffer buffer(&pData);
-                 buffer.open(QIODevice::WriteOnly);
-                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toString(QUrl::DecodeReserved));
-                 pixitem->pixmap().save(&buffer, format.toLatin1());
-            }
-        }break;
-
-    case UBMimeType::Group:
+    if (commonItem->type() == UBGraphicsItemType::groupContainerType)
     {
         UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-        UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
+        UBGraphicsGroupContainerItem* duplicatedGroup{nullptr};
 
         QList<QGraphicsItem*> duplicatedItems;
-        QList<QGraphicsItem*> children = groupItem->childItems();
+        const QList<QGraphicsItem*> children = groupItem->childItems();
 
         mActiveScene->setURStackEnable(false);
-        foreach(QGraphicsItem* pIt, children){
+
+        for (QGraphicsItem* pIt : children)
+        {
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-            if(pItem)
+
+            if (pItem)
             {
-                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem));
+                QGraphicsItem* itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem));
+
                 if (itemToGroup)
                 {
                     itemToGroup->setZValue(pIt->zValue());
@@ -798,70 +740,54 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
                 }
             }
         }
+
         duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
         duplicatedGroup->setTransform(groupItem->transform());
         groupItem->copyItemParameters(duplicatedGroup);
         groupItem->setSelected(false);
 
+        mActiveScene->addItem(duplicatedGroup);
+        duplicatedGroup->setSelected(true);
 
-        retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
-
-        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
-        if (itemToAdd)
-        {
-            mActiveScene->addItem(itemToAdd);
-            itemToAdd->setSelected(true);
-        }
         mActiveScene->setURStackEnable(true);
-    }break;
 
-    case UBMimeType::UNKNOWN:
+        retItem = duplicatedGroup;
+    }
+    else
+    {
+        QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
+        QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
+
+        if (gitem)
         {
-            QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
-            QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
-            if (gitem)
+            mActiveScene->addItem(gitem);
+
+            if (copiedItem)
             {
-                mActiveScene->addItem(gitem);
-
-                if (copiedItem)
+                if (mActiveScene->tools().contains(copiedItem))
                 {
-                    if (mActiveScene->tools().contains(copiedItem))
-                    {
-                        mActiveScene->registerTool(gitem);
-                    }
+                    mActiveScene->registerTool(gitem);
                 }
-                gitem->setPos(itemPos);
-
-                mLastCreatedItem = gitem;
-                gitem->setSelected(true);
             }
-            retItem = dynamic_cast<UBGraphicsItem *>(gitem);
-        }break;
+            gitem->setPos(itemPos);
+
+            mLastCreatedItem = gitem;
+            gitem->setSelected(true);
+        }
+
+        retItem = dynamic_cast<UBGraphicsItem *>(gitem);
     }
 
     if (retItem)
     {
         QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *>(retItem);
-        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+
+        if (mActiveScene->isURStackIsEnabled())
+        {
+            //should be deleted after scene own undo stack implemented
              UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
              UBApplication::undoStack->push(uc);
         }
-        return retItem;
-    }
-
-    UBItem *createdItem = downloadFinished(true, sourceUrl, QUrl::fromLocalFile(srcFile), contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
-    if (createdItem)
-    {
-        createdItem->setSourceUrl(item->sourceUrl());
-        item->copyItemParameters(createdItem);
-
-        QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
-        if (createdGitem)
-            createdGitem->setPos(itemPos);
-        mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
-        mLastCreatedItem->setSelected(true);
-
-        retItem = dynamic_cast<UBGraphicsItem *>(createdItem);
     }
 
     return retItem;
@@ -1283,20 +1209,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         UBGraphicsPixmapItem* pixItem = mActiveScene->addImage(pData, nullptr, pPos, 1.);
 
-        if (scheme == "data")
-        {
-            // create a shorter, but still unique URL using a hash function
-            QCryptographicHash hash(QCryptographicHash::Md5);
-            hash.addData(sourceUrl.toString().toLatin1());
-            QByteArray result = hash.result();
-            QString hashedUrl = "md5:" + result.toBase64();
-            pixItem->setSourceUrl(hashedUrl);
-        }
-        else
-        {
-            pixItem->setSourceUrl(sourceUrl);
-        }
-
         if (isBackground)
         {
             mActiveScene->setAsBackgroundObject(pixItem, true);
@@ -1314,7 +1226,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as vector image";
 
         UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos, pData);
-        svgItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
         {
@@ -1340,8 +1251,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
 
         UBGraphicsWidgetItem* appleWidgetItem = mActiveScene->addAppleWidget(widgetUrl, pPos);
-
-        appleWidgetItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
         {
@@ -1407,11 +1316,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             mediaVideoItem = addVideo(sourceUrl, false, pPos);
         }
 
-        if(mediaVideoItem){
-            if (contentUrl.isEmpty())
-                mediaVideoItem->setSourceUrl(sourceUrl);
-            else
-                mediaVideoItem->setSourceUrl(contentUrl);
+        if (mediaVideoItem)
+        {
             connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
         }
 
@@ -1448,11 +1354,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             audioMediaItem = addAudio(sourceUrl, false, pPos);
         }
 
-        if(audioMediaItem){
-            if (contentUrl.isEmpty())
-                audioMediaItem->setSourceUrl(sourceUrl);
-            else
-                audioMediaItem->setSourceUrl(contentUrl);
+        if (audioMediaItem)
+        {
             connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
         }
 
@@ -1489,7 +1392,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
             widgetItem->setUuid(QUuid::createUuid());
-            widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
             qDebug() << widgetItem->getOwnFolder();
             qDebug() << widgetItem->getSnapshotPath();
 
@@ -1805,14 +1707,14 @@ void UBBoardController::ClearUndoStack()
     // This ensures that we can cut and paste a media item, widget, etc. from one page to the next.
     QClipboard *clipboard = QApplication::clipboard();
     const QMimeData* data = clipboard->mimeData();
-    QList<QUrl> sourceURLs;
+    QList<QUuid> sourceUUIDs;
 
     if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
         const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
 
         if (mimeDataGI) {
             foreach (UBItem* sourceItem, mimeDataGI->items()) {
-                sourceURLs << sourceItem->sourceUrl();
+                sourceUUIDs << sourceItem->uuid();
             }
         }
     }
@@ -1830,7 +1732,7 @@ void UBBoardController::ClearUndoStack()
 
         bool inClipboard = false;
         UBItem* ubi = dynamic_cast<UBItem*>(item);
-        if (ubi && sourceURLs.contains(ubi->sourceUrl()))
+        if (ubi && sourceUUIDs.contains(ubi->uuid()))
             inClipboard = true;
 
         if(!scene && !inClipboard)
@@ -2347,7 +2249,6 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
     if (vi) {
         vi->setUuid(uuid);
-        vi->setSourceUrl(pSourceUrl);
     }
 
     return vi;
@@ -2363,9 +2264,9 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
-    if (ai){
+    if (ai)
+    {
         ai->setUuid(uuid);
-        ai->setSourceUrl(pSourceUrl);
     }
 
     return ai;
@@ -2394,7 +2295,6 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 
     if (w3cWidgetItem) {
         w3cWidgetItem->setOwnFolder(newUrl);
-        w3cWidgetItem->setSourceUrl(pUrl);
 
         QString struuid = w3cWidgetItem->uuid().toString(QUuid::WithoutBraces);
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";

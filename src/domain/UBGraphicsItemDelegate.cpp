@@ -719,13 +719,7 @@ void UBGraphicsItemDelegate::setAsBackground()
 
 void UBGraphicsItemDelegate::gotoContentSource()
 {
-    UBItem* item = dynamic_cast<UBItem*>(mDelegated);
-
-    if(item && !item->sourceUrl().isEmpty())
-    {
-        UBApplication::applicationController->showInternet();
-        UBApplication::webController->loadUrl(item->sourceUrl());
-    }
+    // only used in UBGraphicsWidgetItemDelegate
 }
 
 void UBGraphicsItemDelegate::startUndoStep()

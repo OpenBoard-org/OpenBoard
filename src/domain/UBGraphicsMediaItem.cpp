@@ -354,11 +354,6 @@ void UBGraphicsMediaItem::setSelected(bool selected)
     QGraphicsRectItem::setSelected(selected);
 }
 
-void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
-{
-    UBItem::setSourceUrl(pSourceUrl);
-}
-
 void UBGraphicsMediaItem::toggleMute()
 {
     mMuted = !mMuted;
@@ -523,7 +518,6 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
-        cp->setSourceUrl(this->sourceUrl());
         cp->setSize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());

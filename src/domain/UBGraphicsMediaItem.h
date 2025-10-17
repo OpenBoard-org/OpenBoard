@@ -104,7 +104,6 @@ public:
     virtual void setMediaFileUrl(QUrl url);
     void setInitialPos(qint64 p);
     void setMediaPos(qint64 p);
-    virtual void setSourceUrl(const QUrl &pSourceUrl) override;
     void setSelected(bool selected);
     void setMinimumSize(const QSize& size);
 
