@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 # OpenBoard cmake build file
 #
 # Most important configuration variables:
-#   CMAKE_INSTALL_PREFIX   
+#   CMAKE_INSTALL_PREFIX
 #       Path to install prefix, defaults to /usr/local (see cmake documentation)
 #       Typically set to /usr or /opt
 #   QT_VERSION
@@ -75,7 +75,9 @@ set(OPENBOARD_ICON_FILE     resources/images/ch.openboard.OpenBoard.svg)
 set(OPENBOARD_DESKTOP_FILE  resources/linux/ch.openboard.OpenBoard.desktop)
 set(OPENBOARD_MIMETYPE_FILE resources/linux/ch.openboard.openboard-ubz.xml)
 set(OPENBOARD_MIMEICON_FILE resources/linux/ch.openboard.application-ubz.svg)
+set(OPENBOARD_METAINFO_FILE resources/linux/ch.openboard.OpenBoard.metainfo.xml)
 
+configure_file("${OPENBOARD_METAINFO_FILE}.in" ${OPENBOARD_METAINFO_FILE})
 
 # ==========================================================================
 # Basic compiler settings
@@ -86,7 +88,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS 
+list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS
     ${OPENBOARD_FORMS_DIR}
 )
 
@@ -225,6 +227,7 @@ install(FILES     ${OPENBOARD_ICON_FILE}        DESTINATION ${CMAKE_INSTALL_DATA
 install(FILES     ${OPENBOARD_DESKTOP_FILE}     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
 install(FILES     ${OPENBOARD_MIMETYPE_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages)
 install(FILES     ${OPENBOARD_MIMEICON_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes)
+install(FILES     ${CMAKE_BINARY_DIR}/${OPENBOARD_METAINFO_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo)
 
 
 # ==========================================================================
