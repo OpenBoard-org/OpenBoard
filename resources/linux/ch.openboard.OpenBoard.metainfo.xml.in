@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 Jonah Brüchert -->
+<component type="desktop-application">
+  <id>ch.openboard.OpenBoard</id>
+  <name>OpenBoard</name>
+  <summary>Interactive whiteboard for schools and universities</summary>
+  <summary xml:lang="es">Cuadro blanco interactivo para escuelas y universidades</summary>
+  <summary xml:lang="nb">Interaktiv tavle for skoler og universiteter</summary>
+  <summary xml:lang="pt_BR">Quadro branco interativo para escolas e universidades</summary>
+  <summary xml:lang="de">Interaktives Whiteboard für Schulen und Universitäten</summary>
+  <summary xml:lang="fr">Tableau blanc interactif pour écoles et universités</summary>
+  <summary xml:lang="it">Lavagna interattiva per la scuola e l'università</summary>
+  <project_license>GPL-3.0-only</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer id="ch.ge.edu">
+    <name>Département de l'Instruction Publique (DIP-SEM)</name>
+  </developer>
+  <description>
+    <p>OpenBoard is an open source cross-platform teaching software for interactive whiteboard designed primarily for use in schools and universities. It can be used both with interactive whiteboards or in a dual-screen setup with a pen-tablet display and a projector. It can also be used on your computer without any additional hardware.</p>
+    <p xml:lang="es">OpenBoard es un software de enseñanza de plataforma cruzada de código abierto para cuadros interactivos diseñado principalmente para uso en escuelas y universidades. Se puede utilizar con marcos interactivos o en una configuración de pantalla dual con un monitor de escritorio gráfico y un proyector.</p>
+    <p xml:lang="nb">OpenBoard er et kryssplattform og åpen kildekode undervisningsprogram for interaktive tavler, spesielt designet for bruk i skoler og universiteter. Det kan brukes både med interaktive tavler eller i et dobbelt skjermoppsett med tegnebrett med skjerm og projektor.</p>
+    <p xml:lang="pt_BR">O OpenBoard é um software de ensino de plataforma cruzada de código aberto para quadros interativos projetado principalmente para uso em escolas e universidades. Ele pode ser usado com quadros interativos ou em uma configuração de tela dupla com um monitor de mesa gráfica e um projetor.</p>
+    <p xml:lang="de">OpenBoard ist ein interaktives Open-Source-Whiteboard für den Einsatz in Schulen oder Universitäten. Es kann entweder mit einem interaktiven Whiteboard oder in einer Dual-Screen-Konfiguration mit einem digitalen Tablet und einem Beamer verwendet werden. Auch der Einsatz ohne zusätzliche externe Hardware ist möglich.</p>
+    <p xml:lang="fr">OpenBoard est un logiciel d’enseignement interactif pour TNI open source conçu pour être utilisé dans les écoles ou universités. Il peut être utilisé indifféremment avec un tableau blanc interactif ou dans une configuration à double écran avec tablette numérique et un beamer. Il peut aussi être utilisé sur votre ordinateur, sans aucun matériel supplémentaire.</p>
+    <p xml:lang="it">OpenBoard è un'applicazione di lavagna interattiva open source e multipiattaforma progettata principalmente per l'uso nelle scuole e nelle università. Può essere usata sia con lavagne interattive che con uno schermo tavoletta a penna, con o senza un'impostazione a doppio schermo, ed un proiettore.</p>
+  </description>
+  <url type="homepage">https://www.openboard.ch</url>
+  <url type="bugtracker">https://github.com/OpenBoard-org/OpenBoard/issues</url>
+  <url type="help">https://openboard.ch/support.en.html</url>
+  <url type="translate">https://github.com/OpenBoard-org/openboard/pulls</url>
+  <content_rating type="oars-1.0"/>
+  <translation type="qt">OpenBoard</translation>
+  <launchable type="desktop-id">ch.openboard.OpenBoard.desktop</launchable>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+    <control>tablet</control>
+  </supports>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Board mode</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-227c6881013a1d904aca1a358400f3bd.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>Web browser</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-b93e95fc23edb6b9f70e571bc3e17b87.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>File browser</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-5d3ef7e025a1a382c1ed92fba185087a.png?raw=true</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="${VERSION}" date="20${RELEASE_YEAR}-${RELEASE_MONTH}-${RELEASE_DAY}">
+      <description>
+        <p>See <a href="https://github.com/OpenBoard-org/OpenBoard/releases/tag/v${VERSION}">Release notes</a> for details about this version.</p>
+      </description>
+    </release>
+  </releases>
+  <provides>
+    <binary>openboard</binary>
+  </provides>
+</component>
