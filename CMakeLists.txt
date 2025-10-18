@@ -74,6 +74,7 @@ set(OPENBOARD_ICON_FILE     resources/images/ch.openboard.OpenBoard.svg)
 set(OPENBOARD_DESKTOP_FILE  resources/linux/ch.openboard.OpenBoard.desktop)
 set(OPENBOARD_MIMETYPE_FILE resources/linux/ch.openboard.openboard-ubz.xml)
 set(OPENBOARD_MIMEICON_FILE resources/linux/ch.openboard.application-ubz.svg)
+set(OPENBOARD_METAINFO_FILE resources/linux/ch.openboard.OpenBoard.metainfo.xml)
 
 
 # ==========================================================================
@@ -223,6 +224,7 @@ install(FILES     ${OPENBOARD_ICON_FILE}        DESTINATION ${CMAKE_INSTALL_DATA
 install(FILES     ${OPENBOARD_DESKTOP_FILE}     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
 install(FILES     ${OPENBOARD_MIMETYPE_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages)
 install(FILES     ${OPENBOARD_MIMEICON_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes)
+install(FILES     ${OPENBOARD_METAINFO_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo)
 
 
 # ==========================================================================
