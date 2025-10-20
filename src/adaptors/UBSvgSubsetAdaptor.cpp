@@ -3459,3 +3459,8 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgReaderContext::scene()
 {
     return reader->scene();
 }
+
+std::shared_ptr<UBDocumentProxy> UBSvgSubsetAdaptor::UBSvgReaderContext::proxy() const
+{
+    return reader->mProxy;
+}

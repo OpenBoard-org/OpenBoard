@@ -100,6 +100,12 @@ bool UBExportPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentPro
     for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++) {
 
         std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
+
+        if (!scene)
+        {
+            continue;
+        }
+
         UBApplication::showMessage(tr("Exporting page %1 of %2").arg(pageIndex + 1).arg(existingPageCount));
 
         // set background to white, no crossing for PDF output

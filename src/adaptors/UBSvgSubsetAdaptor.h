@@ -78,6 +78,7 @@ class UBSvgSubsetAdaptor
             bool isFinished() const;
             void step();
             std::shared_ptr<UBGraphicsScene> scene() const;
+            std::shared_ptr<UBDocumentProxy> proxy() const;
 
         private:
             UBSvgSubsetReader* reader = nullptr;
@@ -135,6 +136,7 @@ class UBSvgSubsetAdaptor
                 std::shared_ptr<UBGraphicsScene> scene();
 
             private:
+                friend class UBSvgReaderContext;
 
                 UBGraphicsPolygonItem* polygonItemFromLineSvg(const QColor& pDefaultBrushColor);
 

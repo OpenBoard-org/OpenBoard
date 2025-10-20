@@ -349,66 +349,69 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
 {
     mLoaderHandles.erase(handle);
 
-    const auto persistenceManager = UBPersistenceManager::persistenceManager();
-    auto index = mToc->findUuid(scene->uuid());
-
-    if (index >= 0 && !mToc->hasAssetsEntry(index))
+    if (scene)
     {
-        const auto mediaAssetItems = scene->mediaAssetItems();
+        const auto persistenceManager = UBPersistenceManager::persistenceManager();
+        auto index = mToc->findUuid(scene->uuid());
 
-        for (auto item : mediaAssetItems)
+        if (index >= 0 && !mToc->hasAssetsEntry(index))
         {
-            // Check the media asset UUIDs.
-            // Convert it to a SHA-1 based UUIDv5 if needed. Copy the asset file in this case.
-            QUuid assetUuid = item->mediaAssetUuid();
+            const auto mediaAssetItems = scene->mediaAssetItems();
 
-            if (assetUuid.version() != QUuid::Sha1)
+            for (auto item : mediaAssetItems)
             {
-                // lookup UUIDv5 in cache or create from content
-                const auto source = item->mediaAssets().at(0);
-                const auto sourcePath = mProxy->persistencePath() + "/" + source;
+                // Check the media asset UUIDs.
+                // Convert it to a SHA-1 based UUIDv5 if needed. Copy the asset file in this case.
+                QUuid assetUuid = item->mediaAssetUuid();
 
-                QUuid assetUuidV5;
-                bool needsCopy = false;
-
-                if (mUuidV5Map.contains(assetUuid))
+                if (assetUuid.version() != QUuid::Sha1)
                 {
-                    assetUuidV5 = mUuidV5Map.value(assetUuid);
-                }
-                else
-                {
-                    assetUuidV5 = UBMediaAssetItem::createMediaAssetUuid(sourcePath);
-                    mUuidV5Map[assetUuid] = assetUuidV5;
-                    needsCopy = true;
-                }
+                    // lookup UUIDv5 in cache or create from content
+                    const auto source = item->mediaAssets().at(0);
+                    const auto sourcePath = mProxy->persistencePath() + "/" + source;
 
-                auto target = source;
-                target.replace(assetUuid.toString(QUuid::WithoutBraces), assetUuidV5.toString(QUuid::WithoutBraces));
+                    QUuid assetUuidV5;
+                    bool needsCopy = false;
 
-                // copy assets
-                if (needsCopy)
-                {
-                    persistenceManager->copyAsset(mProxy, source, target);
+                    if (mUuidV5Map.contains(assetUuid))
+                    {
+                        assetUuidV5 = mUuidV5Map.value(assetUuid);
+                    }
+                    else
+                    {
+                        assetUuidV5 = UBMediaAssetItem::createMediaAssetUuid(sourcePath);
+                        mUuidV5Map[assetUuid] = assetUuidV5;
+                        needsCopy = true;
+                    }
+
+                    auto target = source;
+                    target.replace(assetUuid.toString(QUuid::WithoutBraces), assetUuidV5.toString(QUuid::WithoutBraces));
+
+                    // copy assets
+                    if (needsCopy)
+                    {
+                        persistenceManager->copyAsset(mProxy, source, target);
+                    }
+
+                    item->setMediaAsset(mProxy->persistencePath(), target);
+                    scene->setModified(true);
                 }
-
-                item->setMediaAsset(mProxy->persistencePath(), target);
-                scene->setModified(true);
             }
+
+            mToc->setAssets(index, scene->relativeDependencies());
         }
 
-        mToc->setAssets(index, scene->relativeDependencies());
-    }
+        if (scene->isModified())
+        {
+            persistenceManager->persistDocumentScene(mProxy, scene->shared_from_this(), mToc->pageId(index));
+        }
 
-    if (scene->isModified())
-    {
-        persistenceManager->persistDocumentScene(mProxy, scene->shared_from_this(), mToc->pageId(index));
+        // generate and load thumbnail from scene if not already existing and loaded
+        mThumbnailScene->ensureThumbnail(index, scene);
     }
-
-    // generate and load thumbnail from scene if not already existing and loaded
-    mThumbnailScene->ensureThumbnail(index, scene);
 
     // prepare next scene
-    QTimer::singleShot(5, mSceneAssetLoader, [this, index](){
+    QTimer::singleShot(5, mSceneAssetLoader, [this](){
         if (mSceneAssetLoader)
         {
             mSceneAssetLoader->resultProcessed();
