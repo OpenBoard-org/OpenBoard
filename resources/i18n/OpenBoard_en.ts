@@ -3791,7 +3791,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/preferences.ui" line="1103"/>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>Licenses</translation>
     </message>
     <message>
         <location filename="../forms/preferences.ui" line="3104"/>
