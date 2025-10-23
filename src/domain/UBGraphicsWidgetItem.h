@@ -263,10 +263,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void sendJSEnterEvent() override;
         virtual void sendJSLeaveEvent() override;
 
-        static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
-        static QString createNPAPIWrapperInDir(const QString& url, const QDir& pDir, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createHtmlWrapperInDir(const QString& html, const QDir& pDir, const QSize& sizeHint,  const QString& pName);
-        static bool hasNPAPIWrapper(const QString& pMimeType);
 
         Metadata mMetadatas;
 
@@ -274,15 +271,10 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void registerAPI() override;
 
     private:
-        static void loadNPAPIWrappersTemplates();
         static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);
 
         UBW3CWidgetAPI* mW3CWidgetAPI;
         QMap<QString, PreferenceValue> mPreferences;
-
-        static bool sTemplateLoaded;
-        static QString sNPAPIWrappperConfigTemplate;
-        static QMap<QString, QString> sNPAPIWrapperTemplates;
 };
 
 #endif // UBGRAPHICSWIDGETITEM_H

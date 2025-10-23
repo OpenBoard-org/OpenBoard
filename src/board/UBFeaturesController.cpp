@@ -369,7 +369,6 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     connect(&mCThread, SIGNAL(maxFilesCountEvaluated(int)), this, SIGNAL(maxFilesCountEvaluated(int)));
     connect(&mCThread, SIGNAL(scanCategory(QString)), this, SIGNAL(scanCategory(QString)));
     connect(&mCThread, SIGNAL(scanPath(QString)), this, SIGNAL(scanPath(QString)));
-    connect(UBApplication::boardController, SIGNAL(npapiWidgetCreated(QString)), this, SLOT(createNpApiFeature(QString)));
 
     QTimer::singleShot(0, this, SLOT(startThread()));
 }
@@ -394,15 +393,6 @@ void UBFeaturesController::startThread()
             <<  QPair<QUrl, UBFeature>(mLibSearchDirectoryPath, webSearchElement);
 
     mCThread.compute(computingData, favoriteSet);
-}
-
-void UBFeaturesController::createNpApiFeature(const QString &str)
-{
-    Q_ASSERT(QFileInfo(str).exists() && QFileInfo(str).isDir());
-
-    QString widgetName = QFileInfo(str).fileName();
-
-    featuresModel->addItem(UBFeature(QString(appPath + "/Web/" + widgetName), QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(str))), widgetName, QUrl::fromLocalFile(str), FEATURE_INTERACTIVE));
 }
 
 void UBFeaturesController::scanFS()

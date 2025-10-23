@@ -246,7 +246,6 @@ signals:
 private slots:
     void addNewFolder(QString name);
     void startThread();
-    void createNpApiFeature(const QString &str);
 
 private:
 
