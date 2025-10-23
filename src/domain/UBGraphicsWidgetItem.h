@@ -53,7 +53,7 @@ struct UBWidgetType
 {
     enum Enum
     {
-        W3C = 0, Apple, Other
+        W3C = 0, Other
     };
 };
 
@@ -211,20 +211,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBMediaAssetIte
 
         static bool sInlineJavaScriptLoaded;
         static QStringList sInlineJavaScripts;
-};
-
-// NOTE @letsfindaway obsolete
-class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
-{
-    Q_OBJECT
-
-    public:
-        UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
-        ~UBGraphicsAppleWidgetItem();
-
-        virtual void copyItemParameters(UBItem *copy) const override;
-        virtual UBItem* deepCopy() const override;
-        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 };
 
 class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem

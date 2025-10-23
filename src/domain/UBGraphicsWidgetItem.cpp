@@ -484,9 +484,7 @@ int UBGraphicsWidgetItem::widgetType(const QUrl& pUrl)
 {
     QString mime = UBFileSystemUtils::mimeTypeFromFileName(pUrl.toString());
 
-    if (mime == "application/vnd.apple-widget") // NOTE @letsfindaway obsolete
-        return UBWidgetType::Apple;
-    else if (mime == "application/widget")
+    if (mime == "application/widget")
         return UBWidgetType::W3C;
     else
         return UBWidgetType::Other;
@@ -497,7 +495,6 @@ QString UBGraphicsWidgetItem::widgetName(const QUrl& widgetPath)
     QString name;
     QString version;
     QFile w3CConfigFile(widgetPath.toLocalFile() + "/config.xml");
-    QFile appleConfigFile(widgetPath.toLocalFile() + "/Info.plist");
 
     if (w3CConfigFile.exists() && w3CConfigFile.open(QFile::ReadOnly)) {
         QDomDocument doc;
@@ -511,43 +508,7 @@ QString UBGraphicsWidgetItem::widgetName(const QUrl& widgetPath)
         }
         w3CConfigFile.close();
     }
-    else if (appleConfigFile.exists() && appleConfigFile.open(QFile::ReadOnly)) {
-        QDomDocument doc;
-        doc.setContent(appleConfigFile.readAll());
-        QDomElement root = doc.firstChildElement("plist");
-        if (!root.isNull()) {
-            QDomElement dictElement = root.firstChildElement("dict");
-            if (!dictElement.isNull()) {
-                QDomNodeList childNodes  = dictElement.childNodes();
 
-                /* looking for something like
-                 * ..
-                 * <key>CFBundleDisplayName</key>
-                 * <string>brain scans</string>
-                 * ..
-                 */
-
-                for(int i = 0; i < childNodes.count() - 1; i++) {
-                    if (childNodes.at(i).isElement()) {
-                        QDomElement elKey = childNodes.at(i).toElement();
-                        if (elKey.text() == "CFBundleDisplayName") {
-                            if (childNodes.at(i + 1).isElement()) {
-                               QDomElement elValue = childNodes.at(i + 1).toElement();
-                               name = elValue.text();
-                            }
-                        }
-                        else if (elKey.text() == "CFBundleShortVersionString") {
-                            if (childNodes.at(i + 1).isElement()) {
-                               QDomElement elValue = childNodes.at(i + 1).toElement();
-                               version = elValue.text();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        appleConfigFile.close();
-    }
     QString result;
 
     if (name.length() > 0) {
@@ -949,90 +910,6 @@ QSizeF UBGraphicsWidgetItem::size() const
 {
     return mWebEngineView->size();
 }
-
-
-// NOTE @letsfindaway obsolete
-UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
-    : UBGraphicsWidgetItem(pWidgetUrl, parent)
-{
-    QString path = pWidgetUrl.toLocalFile();
-
-    if (!path.endsWith(".wdgt") && !path.endsWith(".wdgt/")) {
-        int lastSlashIndex = path.lastIndexOf("/");
-        if (lastSlashIndex > 0)
-            path = path.mid(0, lastSlashIndex + 1);
-    }
-
-    QFile plistFile(path + "/Info.plist");
-    QString plist;
-    if (plistFile.open(QFile::ReadOnly))
-    {
-        QByteArray plistBin = plistFile.readAll();
-        plist = QString::fromUtf8(plistBin);
-    }
-
-    int mainHtmlIndex = plist.indexOf("MainHTML");
-    int mainHtmlIndexStart = plist.indexOf("<string>", mainHtmlIndex);
-    int mainHtmlIndexEnd = plist.indexOf("</string>", mainHtmlIndexStart);
-
-    if (mainHtmlIndex > -1 && mainHtmlIndexStart > -1 && mainHtmlIndexEnd > -1)
-        mMainHtmlFileName = plist.mid(mainHtmlIndexStart + 8, mainHtmlIndexEnd - mainHtmlIndexStart - 8);
-
-    mMainHtmlUrl = pWidgetUrl;
-    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
-
-    mWebEngineView->load(mMainHtmlUrl);
-
-    QPixmap defaultPixmap(pWidgetUrl.toLocalFile() + "/Default.png");
-
-    setMaximumSize(defaultPixmap.size());
-
-    mNominalSize = defaultPixmap.size();
-
-    initialize();
-}
-
-
-UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
-{
-    /* NOOP */
-}
-
-UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
-{
-    UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebEngineView->url(), parentItem());
-
-    copyItemParameters(appleWidget);
-
-    return appleWidget;
-
-}
-
-void UBGraphicsAppleWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
-{
-}
-
-void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
-{
-    UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
-    if (cp)
-    {
-        foreach(QString key, mPreferences.keys())
-        {
-            cp->setPreference(key, mPreferences.value(key));
-        }
-
-        foreach(QString key, mDatastore.keys())
-        {
-            cp->setDatastoreEntry(key, mDatastore.value(key));
-        }
-
-        cp->setZValue(this->zValue());
-    }
-
-}
-
-
 
 
 bool UBGraphicsW3CWidgetItem::sTemplateLoaded = false;

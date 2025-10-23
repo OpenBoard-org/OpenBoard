@@ -43,7 +43,6 @@ class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
-class UBGraphicsAppleWidgetItem;
 class UBToolWidget;
 class UBGraphicsPDFItem;
 class UBGraphicsTextItem;
@@ -153,7 +152,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void removeItems(const QSet<QGraphicsItem*>& item);
 
         UBGraphicsWidgetItem* addWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
-        UBGraphicsAppleWidgetItem* addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
 

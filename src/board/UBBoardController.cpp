@@ -1239,30 +1239,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         return svgItem;
     }
-    else if (UBMimeType::AppleWidget == itemMimeType) //mime type invented by us :-(
-    {
-        qDebug() << "accepting mime type" << mimeType << "as Apple widget";
-
-        QUrl widgetUrl = sourceUrl;
-
-        if (pData.length() > 0)
-        {
-            widgetUrl = expandWidgetToTempDir(pData, "wdgt");
-        }
-
-        UBGraphicsWidgetItem* appleWidgetItem = mActiveScene->addAppleWidget(widgetUrl, pPos);
-
-        if (isBackground)
-        {
-            mActiveScene->setAsBackgroundObject(appleWidgetItem);
-        }
-        else
-        {
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        }
-
-        return appleWidgetItem;
-    }
     else if (UBMimeType::W3CWidget == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as W3C widget";

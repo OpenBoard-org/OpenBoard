@@ -479,8 +479,6 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     // W3C widget
     if (ext == "wgt") return "application/widget";
     if (ext == "wgs") return "application/search";
-    // Apple widget
-    if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-( // NOTE @letsfindaway obsolete
     if (ext == "rdf") return "application/openboard-document";
 
     return "";
@@ -553,7 +551,6 @@ QString UBFileSystemUtils::fileExtensionFromMimeType(const QString& pMimeType)
     if (pMimeType == "video/x-flv") return "flv";
     if (pMimeType == "video/x-m4v") return "m4v";
     if (pMimeType == "application/widget") return "wgt";
-    if (pMimeType == "application/vnd.apple-widget") return "wdgt"; //mime type invented by us :-(
 
     return "";
 
@@ -580,10 +577,6 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     else if (typeString == "text/html")
     {
         type = UBMimeType::Html;
-    }
-    else if (typeString == "application/vnd.apple-widget")
-    {
-        type = UBMimeType::AppleWidget;
     }
     else if (typeString == "application/widget")
     {
