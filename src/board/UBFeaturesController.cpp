@@ -31,23 +31,25 @@
 #include <QPointF>
 #include <QtGui>
 
-#include "core/UBApplication.h"
-#include "board/UBBoardController.h"
-#include "document/UBDocumentController.h"
 #include "UBFeaturesController.h"
-#include "core/UBSettings.h"
-#include "tools/UBToolsManager.h"
-#include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBPlatformUtils.h"
 
-#include "core/UBDownloadManager.h"
+#include "board/UBBoardController.h"
+
+#include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBSettings.h"
+
+#include "document/UBDocumentController.h"
+
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
+#include "frameworks/UBFileSystemUtils.h"
+
 #include "gui/UBFeaturesWidget.h"
+
+#include "tools/UBToolsManager.h"
+
 
 const QString UBFeaturesController::virtualRootName = "root";
 const QString UBFeaturesController::rootPath  = "/" + virtualRootName;

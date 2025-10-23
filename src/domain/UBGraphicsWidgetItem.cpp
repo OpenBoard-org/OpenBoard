@@ -52,7 +52,6 @@
 #include "core/UBSettings.h"
 
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBPlatformUtils.h"
 
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
