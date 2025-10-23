@@ -166,7 +166,7 @@ public:
 
         /**
          * add any supported objects (pictures/video/widget) centered at scene position x/y.
-         * width and height may be supplied, this is useful for flash (.swf) objects
+         * width and height may be supplied
          * if background is true, the object is not selectable and sits in the lowest z pos possible
          *
          */

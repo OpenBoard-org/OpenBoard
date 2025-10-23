@@ -49,7 +49,6 @@ struct UBMimeType
         W3CWidget,
         Video,
         Audio,
-        Flash,
         PDF,
         OpenboardTool,
         Group,

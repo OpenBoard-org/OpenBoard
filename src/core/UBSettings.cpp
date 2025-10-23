@@ -1164,16 +1164,6 @@ QString UBSettings::applicationImageLibraryDirectory()
     }
 }
 
-QString UBSettings::userAnimationDirectory()
-{
-    static QString animationDirectory = "";
-    if(animationDirectory.isEmpty()){
-        animationDirectory = userDataDirectory() + "/animationUserDirectory";
-        checkDirectory(animationDirectory);
-    }
-    return animationDirectory;
-}
-
 QString UBSettings::userInteractiveDirectory()
 {
     static QString interactiveDirectory = "";
@@ -1241,20 +1231,6 @@ QString UBSettings::applicationVideosLibraryDirectory()
     QString defaultRelativePath = QString("./library/videos");
 
     QString configPath = value("Library/VideosDirectory", QVariant(defaultRelativePath)).toString();
-
-    if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
-    }
-    else {
-        return configPath;
-    }
-}
-
-QString UBSettings::applicationAnimationsLibraryDirectory()
-{
-    QString defaultRelativePath = QString("./library/animations");
-
-    QString configPath = value("Library/AnimationsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);

@@ -56,7 +56,6 @@ const QString UBFeaturesController::appPath = rootPath + "/Applications";
 const QString UBFeaturesController::audiosPath = rootPath + "/Audios";
 const QString UBFeaturesController::moviesPath = rootPath + "/Movies";
 const QString UBFeaturesController::picturesPath = rootPath + "/Pictures";
-const QString UBFeaturesController::flashPath = rootPath + "/Animations";
 const QString UBFeaturesController::interactPath = rootPath + "/Interactivities";
 const QString UBFeaturesController::shapesPath = rootPath + "/Shapes";
 const QString UBFeaturesController::trashPath = rootPath + "/Trash";
@@ -299,7 +298,6 @@ bool UBFeature::isDeletable() const
             || elementType == FEATURE_AUDIO
             || elementType == FEATURE_VIDEO
             || elementType == FEATURE_IMAGE
-            || elementType == FEATURE_FLASH
             || elementType == FEATURE_INTERACTIVE
             || elementType == FEATURE_FOLDER
     //Ilia. Just a hotfix. Permission mechanism for UBFeatures should be reworked
@@ -321,12 +319,10 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     mUserVideoDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userVideoDirectory());
     mUserPicturesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userImageDirectory());
     mUserInteractiveDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userInteractiveDirectory());
-    mUserAnimationDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userAnimationDirectory());
 
     mLibPicturesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationImageLibraryDirectory());
     mLibAudiosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAudiosLibraryDirectory());
     mLibVideosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationVideosLibraryDirectory());
-    mLibAnimationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAnimationsLibraryDirectory());
     mLibInteractiveDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationInteractivesDirectory());
     mLibApplicationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationApplicationsLibraryDirectory());
     mLibShapesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationShapeLibraryDirectory());
@@ -337,7 +333,6 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     audiosElement = UBFeature( audiosPath, QImage(":images/libpalette/AudiosCategory.svg"), tr("Audios") , mUserAudioDirectoryPath, FEATURE_CATEGORY);
     moviesElement = UBFeature( moviesPath, QImage(":images/libpalette/MoviesCategory.svg"), tr("Movies") , mUserVideoDirectoryPath, FEATURE_CATEGORY);
     picturesElement = UBFeature( picturesPath, QImage(":images/libpalette/PicturesCategory.svg"), tr("Pictures") , mUserPicturesDirectoryPath, FEATURE_CATEGORY);
-    //flashElement = UBFeature( flashPath, QImage(":images/libpalette/FlashCategory.svg"), tr("Animations") , mUserAnimationDirectoryPath, FEATURE_CATEGORY);
     interactElement = UBFeature( interactPath, QImage(":images/libpalette/InteractivesCategory.svg"), tr("Interactivities") ,  mLibInteractiveDirectoryPath, FEATURE_CATEGORY);
     applicationsElement = UBFeature( appPath, QImage(":images/libpalette/ApplicationsCategory.svg"), tr("Applications") , mUserInteractiveDirectoryPath, FEATURE_CATEGORY);
     shapesElement = UBFeature( shapesPath, QImage(":images/libpalette/ShapesCategory.svg"), tr("Shapes") , mLibShapesDirectoryPath, FEATURE_CATEGORY );
@@ -385,14 +380,12 @@ void UBFeaturesController::startThread()
 
     computingData << QPair<QUrl, UBFeature>(mLibAudiosDirectoryPath, audiosElement)
             <<  QPair<QUrl, UBFeature>(mLibVideosDirectoryPath, moviesElement)
-            <<  QPair<QUrl, UBFeature>(mLibAnimationsDirectoryPath, flashElement)
             <<  QPair<QUrl, UBFeature>(mLibPicturesDirectoryPath, picturesElement)
 
             <<  QPair<QUrl, UBFeature>(mUserInteractiveDirectoryPath, applicationsElement)
             <<  QPair<QUrl, UBFeature>(mUserAudioDirectoryPath, audiosElement)
             <<  QPair<QUrl, UBFeature>(mUserPicturesDirectoryPath, picturesElement)
             <<  QPair<QUrl, UBFeature>(mUserVideoDirectoryPath, moviesElement)
-            <<  QPair<QUrl, UBFeature>(mUserAnimationDirectoryPath, flashElement)
 
             <<  QPair<QUrl, UBFeature>(mLibApplicationsDirectoryPath, applicationsElement)
             <<  QPair<QUrl, UBFeature>(mLibShapesDirectoryPath, shapesElement)
@@ -420,7 +413,6 @@ void UBFeaturesController::scanFS()
     *featuresList << audiosElement
                     << moviesElement
                     << picturesElement
-                    << flashElement
                     << interactElement
                     << applicationsElement
                     << shapesElement
@@ -799,10 +791,6 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
         {
             fileType = FEATURE_SEARCH;
         }
-        else if (mimeString.contains("application/x-shockwave-flash"))
-        {
-            fileType = FEATURE_FLASH;
-        }
         else if (mimeString.contains("application/openboard-document"))
         {
             fileType = FEATURE_DOCUMENT;
@@ -836,8 +824,6 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     } else if (pFType == FEATURE_INTERNAL) {
         return QImage(UBToolsManager::manager()->iconFromToolId(path));
-    } else if (pFType == FEATURE_FLASH) {
-        return QImage(":images/libpalette/FlashIcon.svg");
     } else if (pFType == FEATURE_AUDIO) {
         return QImage(":images/libpalette/soundIcon.svg");
     } else if (pFType == FEATURE_VIDEO) {
@@ -1026,10 +1012,7 @@ UBFeature UBFeaturesController::getDestinationFeatureForMimeType(const QString &
         return picturesElement;
     else if ( pMmimeType.contains("application") )
     {
-        if ( pMmimeType.contains( "x-shockwave-flash") )
-            return flashElement;
-        else
-            return interactElement;
+        return interactElement;
     }
     return UBFeature();
 }

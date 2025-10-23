@@ -140,7 +140,6 @@ class UBSettings : public QObject
         static QString userVideoDirectory();
         static QString userAudioDirectory();
         static QString userSearchDirectory();
-        static QString userAnimationDirectory();
         static QString userInteractiveDirectory();
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
@@ -156,7 +155,6 @@ class UBSettings : public QObject
         QString applicationCustomFontDirectory();
         QString applicationAudiosLibraryDirectory();
         QString applicationVideosLibraryDirectory();
-        QString applicationAnimationsLibraryDirectory();
         QString applicationStartupHintsDirectory();
 
         QNetworkProxy* httpProxy();
