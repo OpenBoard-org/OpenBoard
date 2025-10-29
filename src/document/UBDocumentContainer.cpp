@@ -51,15 +51,10 @@ void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document,
 {
     if (mCurrentDocument != document || forceReload)
     {
-        pureSetDocument(document);
+        mCurrentDocument = document;
+        mActiveDocument = UBDocument::getDocument(mCurrentDocument);
         emit documentSet(document);
     }
-}
-
-void UBDocumentContainer::pureSetDocument(std::shared_ptr<UBDocumentProxy> document)
-{
-    mCurrentDocument = document;
-    mActiveDocument = UBDocument::getDocument(mCurrentDocument);
 }
 
 std::shared_ptr<UBDocument> UBDocumentContainer::activeDocument()
