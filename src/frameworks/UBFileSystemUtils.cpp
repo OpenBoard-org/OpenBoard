@@ -802,7 +802,11 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
         root.mkpath(newFileInfo.absolutePath());
 
         out.setFileName(newFileName);
-        out.open(QIODevice::WriteOnly);
+        if (!out.open(QIODevice::WriteOnly))
+        {
+            qWarning() << "ZIP write failed. Cause: file.open(): " << out.fileName();
+            return false;
+        }
 
         // Slow like hell (on GNU/Linux at least), but it is not my fault.
         // Not ZIP/UNZIP package's fault either.
