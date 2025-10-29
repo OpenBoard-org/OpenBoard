@@ -1058,10 +1058,19 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     int height = 150;
 
     QFile configFile(path + "config.xml");
-    configFile.open(QFile::ReadOnly);
+    QByteArray widgetContent;
+    if (configFile.open(QFile::ReadOnly))
+    {
+        widgetContent = configFile.readAll();
+        configFile.close();
+    }
+    else
+    {
+        qDebug() << "Could not open widget configuration at " << configFile.fileName();
+    }
 
     QDomDocument doc;
-    doc.setContent(configFile.readAll());
+    doc.setContent(widgetContent);
     QDomNodeList widgetDomList = doc.elementsByTagName("widget");
 
     if (widgetDomList.count() > 0) {
