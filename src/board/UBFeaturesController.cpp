@@ -564,9 +564,8 @@ void UBFeaturesController::loadFavoriteList()
 {
     favoriteSet = new QSet<QUrl>();
     QFile file( UBSettings::userDataDirectory() + "/favorites.dat" );
-    if ( file.exists() )
+    if ( file.open(QIODevice::ReadOnly) )
     {
-        file.open(QIODevice::ReadOnly);
         QDataStream in(&file);
         int elementsNumber;
         in >> elementsNumber;
@@ -577,21 +576,31 @@ void UBFeaturesController::loadFavoriteList()
             favoriteSet->insert( path );
         }
     }
+    else
+    {
+        qDebug() << "Could not open favorites list";
+    }
 }
 
 void UBFeaturesController::saveFavoriteList()
 {
     QFile file( UBSettings::userDataDirectory() + "/favorites.dat" );
     file.resize(0);
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    int elementsNumber = favoriteSet->size();
-    out << elementsNumber;
-    for ( QSet<QUrl>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
+    if (file.open(QIODevice::WriteOnly))
     {
-        out << (*it);
+        QDataStream out(&file);
+        int elementsNumber = favoriteSet->size();
+        out << elementsNumber;
+        for ( QSet<QUrl>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
+        {
+            out << (*it);
+        }
+        file.close();
     }
-    file.close();
+    else
+    {
+        qDebug() << "Could not write favorites list";
+    }
 }
 
 QString UBFeaturesController::uniqNameForFeature(const UBFeature &feature, const QString &pName, const QString &pExtention) const
