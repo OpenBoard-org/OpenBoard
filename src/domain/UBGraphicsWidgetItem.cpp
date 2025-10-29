@@ -964,10 +964,12 @@ UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGr
     }
 
     QFile plistFile(path + "/Info.plist");
-    plistFile.open(QFile::ReadOnly);
-
-    QByteArray plistBin = plistFile.readAll();
-    QString plist = QString::fromUtf8(plistBin);
+    QString plist;
+    if (plistFile.open(QFile::ReadOnly))
+    {
+        QByteArray plistBin = plistFile.readAll();
+        plist = QString::fromUtf8(plistBin);
+    }
 
     int mainHtmlIndex = plist.indexOf("MainHTML");
     int mainHtmlIndexStart = plist.indexOf("<string>", mainHtmlIndex);
