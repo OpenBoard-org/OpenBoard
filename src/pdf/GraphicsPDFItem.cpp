@@ -41,7 +41,12 @@ GraphicsPDFItem::GraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphic
     , mPageNumber(pageNumber)
     , mIsCacheAllowed(true)
 {
+    // Using NoCache on Windows to avoid PDF rendering issues when a DPI scaling is applied (e.g. if a 150% scaling is applied to the screen in the OS screen config).
+#ifdef Q_OS_WIN
+    setCacheMode(QGraphicsItem::NoCache);
+#else
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+#endif
     mRenderer->attach();
     connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
 }
