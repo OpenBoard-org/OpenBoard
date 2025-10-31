@@ -7,6 +7,7 @@ UBSortFilterProxyModel::UBSortFilterProxyModel():
     setDynamicSortFilter(false);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setRecursiveFilteringEnabled(true);
+    setAutoAcceptChildRows(true);
 }
 
 bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -28,24 +29,5 @@ bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 bool UBSortFilterProxyModel::filterAcceptsRow(int sourceRow,
                                               const QModelIndex &sourceParent) const
 {
-    UBDocumentTreeModel *model = dynamic_cast<UBDocumentTreeModel*>(sourceModel());
-    if(model == nullptr)
-    {
-        return false;
-    }
-    else
-    {
-        QModelIndex idx = model->index(sourceRow, 0, sourceParent);
-
-        if (idx.isValid())
-        {
-            if (idx == model->myDocumentsIndex() || idx == model->trashIndex())
-            {
-                return true;
-            }
-        }
-
-        // Filter the documents
-        return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
-    }
+    return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
 }
