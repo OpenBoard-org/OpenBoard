@@ -1895,6 +1895,8 @@ UBDocumentController::~UBDocumentController()
 
 void UBDocumentController::createNewDocument()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
@@ -1953,6 +1955,8 @@ void UBDocumentController::selectDocument(std::shared_ptr<UBDocumentProxy> proxy
 
 void UBDocumentController::createNewDocumentGroup()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
@@ -2257,6 +2261,7 @@ void UBDocumentController::setupViews()
 
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
         connect(mDocumentUI->sortOrder, SIGNAL(toggled(bool)), this, SLOT(onSortOrderChanged(bool)));
+        connect(mDocumentUI->filterText, &QLineEdit::textChanged, this, &UBDocumentController::onFilterTextChanged);
 
         connect(mDocumentUI->splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved(int, int)));
 
@@ -2361,6 +2366,21 @@ void UBDocumentController::onSortKindChanged(int index)
     UBSettings::settings()->documentSortKind->setInt(index);
 }
 
+void UBDocumentController::onFilterTextChanged(const QString& filter)
+{
+    mSortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
+    mSortFilterProxyModel->setFilterRegularExpression(filter);
+
+    if (filter.isEmpty())
+    {
+        collapseAll();
+    }
+    else
+    {
+        expandAll();
+    }
+}
+
 void UBDocumentController::onSplitterMoved(int size, int index)
 {
     Q_UNUSED(index);
@@ -2406,6 +2426,8 @@ void UBDocumentController::show()
 
     if(!mToolsPalette)
         setupPalettes();
+
+    mDocumentUI->filterText->clear();
 }
 
 
@@ -3077,6 +3099,8 @@ void UBDocumentController::documentZoomSliderValueChanged (int value)
 
 void UBDocumentController::importFile()
 {
+    mDocumentUI->filterText->clear();
+
     UBDocumentManager *docManager = UBDocumentManager::documentManager();
 
     QString defaultPath = UBSettings::settings()->lastImportFilePath->get().toString();
@@ -3910,6 +3934,8 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
 
 void UBDocumentController::createNewDocumentInUntitledFolder()
 {
+    mDocumentUI->filterText->clear();
+
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
 
