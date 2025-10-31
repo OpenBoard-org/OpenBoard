@@ -964,10 +964,12 @@ UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGr
     }
 
     QFile plistFile(path + "/Info.plist");
-    plistFile.open(QFile::ReadOnly);
-
-    QByteArray plistBin = plistFile.readAll();
-    QString plist = QString::fromUtf8(plistBin);
+    QString plist;
+    if (plistFile.open(QFile::ReadOnly))
+    {
+        QByteArray plistBin = plistFile.readAll();
+        plist = QString::fromUtf8(plistBin);
+    }
 
     int mainHtmlIndex = plist.indexOf("MainHTML");
     int mainHtmlIndexStart = plist.indexOf("<string>", mainHtmlIndex);
@@ -1057,10 +1059,19 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     int height = 150;
 
     QFile configFile(path + "config.xml");
-    configFile.open(QFile::ReadOnly);
+    QByteArray widgetContent;
+    if (configFile.open(QFile::ReadOnly))
+    {
+        widgetContent = configFile.readAll();
+        configFile.close();
+    }
+    else
+    {
+        qDebug() << "Could not open widget configuration at " << configFile.fileName();
+    }
 
     QDomDocument doc;
-    doc.setContent(configFile.readAll());
+    doc.setContent(widgetContent);
     QDomNodeList widgetDomList = doc.elementsByTagName("widget");
 
     if (widgetDomList.count() > 0) {

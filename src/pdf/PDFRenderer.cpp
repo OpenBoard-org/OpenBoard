@@ -63,9 +63,15 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
         newRenderer->setFileUuid(uuid);
 
         QFile file(filename);
-        file.open(QIODevice::ReadOnly);
-        newRenderer->setFileData(file.readAll());
-        file.close();
+        if (file.open(QIODevice::ReadOnly))
+        {
+            newRenderer->setFileData(file.readAll());
+            file.close();
+        }
+        else
+        {
+            qDebug() << "Could not open PDF at " << file.fileName();
+        }
 
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 
