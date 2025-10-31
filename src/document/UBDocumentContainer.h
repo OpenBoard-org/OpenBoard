@@ -45,7 +45,6 @@ class UBDocumentContainer : public QObject
         virtual ~UBDocumentContainer();
 
         void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
-        void pureSetDocument(std::shared_ptr<UBDocumentProxy> document);
 
         std::shared_ptr<UBDocumentProxy> selectedDocument(){return mCurrentDocument;}
         std::shared_ptr<UBDocument> activeDocument();
