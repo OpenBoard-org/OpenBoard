@@ -24,10 +24,10 @@
 
 #include <QHash>
 #include <QList>
-#include <QSet>
 #include <QUuid>
 
 #include <memory>
+#include <unordered_set>
 
 
 // forward
@@ -63,13 +63,14 @@ public:
     void duplicatePage(int index);
     void movePage(int fromIndex, int toIndex);
     void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
-    std::shared_ptr<UBGraphicsScene> createPage(int index, bool useUndoRedoStack = true);
+    std::shared_ptr<UBGraphicsScene> createPage(int index, bool saveToc = true, bool cached = true,
+                                                bool useUndoRedoStack = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
-                     bool forceImmediateSaving = false);
+                     bool forceImmediateSaving = false, bool persistThumbnail = true, bool addToCache = true);
     std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
-    UBThumbnailScene* thumbnailScene();
+    UBThumbnailScene* thumbnailScene(bool startLoader = true);
     UBDocumentToc* toc();
 
     int pageCount();
@@ -86,7 +87,7 @@ private:
     void scan(bool tocPresent);
     void copyPage(int fromIndex, UBDocument* to, int toIndex);
     void deleteUnreferencedAssets();
-    void assureLoaderFinished();
+    void assureHeaderLoaderFinished(bool visualFeedback = true);
 
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
@@ -97,7 +98,7 @@ private:
     UBBackgroundLoader* mSceneHeaderLoader{nullptr};
     UBBackgroundLoader* mSceneAssetLoader{nullptr};
     QHash<QUuid, QUuid> mUuidV5Map{};
-    QSet<std::shared_ptr<void>> mLoaderHandles;
+    std::unordered_set<std::shared_ptr<void>> mLoaderHandles;
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
 };

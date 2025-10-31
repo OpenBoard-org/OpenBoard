@@ -25,14 +25,16 @@
 #include <QDebug>
 #include <QFile>
 #include <QFutureWatcher>
+#include <QPixmap>
 #include <QtConcurrentMap>
 
 #include "frameworks/UBBlockingBuffer.h"
 
-UBBackgroundLoader::UBBackgroundLoader(QObject* parent)
+UBBackgroundLoader::UBBackgroundLoader(ResultType resultType, QObject* parent)
     : QObject{parent}
+    , mResultType{resultType}
 {
-    mWatcher = new QFutureWatcher<std::pair<int, QByteArray>>;
+    mWatcher = new QFutureWatcher<std::pair<int, QVariant>>;
     mWatcher->setPendingResultsLimit(2);
     mWatcherThread = new QThread{this};
     mWatcher->moveToThread(mWatcherThread);
@@ -62,15 +64,15 @@ UBBackgroundLoader::~UBBackgroundLoader()
     delete mWatcher;
 }
 
-void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes)
+void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes, std::function<void(int,QString)> preCheck)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
+    mFuture = QtConcurrent::mapped(paths, ReadData{mResultType, maxBytes, preCheck});
 #else
     // use a separate thread pool for each loader so that tasks are interwoven between loaders
     auto threadPool = new QThreadPool{this};
     threadPool->setMaxThreadCount(4);
-    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{maxBytes});
+    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{mResultType, maxBytes, preCheck});
 #endif
 
     mWatcher->setFuture(mFuture);
@@ -83,43 +85,62 @@ void UBBackgroundLoader::abort()
     mFuture.cancel();
 }
 
-void UBBackgroundLoader::waitForFinished()
-{
-    mFuture.waitForFinished();
-}
-
 void UBBackgroundLoader::setKeepAlive(std::shared_ptr<void> keepAlive)
 {
     mKeepAlive = keepAlive;
 }
 
-void UBBackgroundLoader::resultProcessed(int index)
+void UBBackgroundLoader::resultProcessed()
 {
-    mBlockingBuffer->resultProcessed(index);
+    mBlockingBuffer->resultProcessed();
 }
 
-UBBackgroundLoader::ReadData::ReadData(int maxBytes)
-    : mMaxBytes{maxBytes}
+UBBackgroundLoader::ReadData::ReadData(ResultType resultType, int maxBytes, std::function<void (int, QString)> preCheck)
+    : mResultType{resultType}
+    , mMaxBytes{maxBytes}
+    , mPreCheck{preCheck}
 {
 }
 
 UBBackgroundLoader::ReadData::result_type UBBackgroundLoader::ReadData::operator()(const std::pair<int, QString>& path)
 {
+    if (mPreCheck)
+    {
+        mPreCheck(path.first, path.second);
+    }
+
     QFile file{path.second};
-    QByteArray result;
+    QVariant result;
 
     if (file.open(QFile::ReadOnly))
     {
+        QByteArray data;
+
         if (mMaxBytes < 0)
         {
-            result = file.readAll();
+            data = file.readAll();
         }
         else
         {
-            result = file.read(mMaxBytes);
+            data = file.read(mMaxBytes);
         }
 
         file.close();
+
+        switch (mResultType)
+        {
+        case ByteArray:
+            result = data;
+            break;
+
+        case Pixmap:
+        {
+            QPixmap pixmap;
+            pixmap.loadFromData(data);
+            result = pixmap;
+            break;
+        }
+        }
     }
 
     return {path.first, result};

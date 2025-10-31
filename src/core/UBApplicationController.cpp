@@ -708,7 +708,8 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     bool success = false;
 
-    std::shared_ptr<UBDocumentProxy> document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
+    std::shared_ptr<UBDocument> doc = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
+    std::shared_ptr<UBDocumentProxy> document = doc->proxy();
 
     success = (document != 0);
 

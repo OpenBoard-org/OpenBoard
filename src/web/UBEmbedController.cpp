@@ -36,7 +36,7 @@
 
 #include "core/UBApplication.h"
 
-#include "domain/UBGraphicsScene.h"
+#include "domain/UBMediaAssetItem.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -198,15 +198,19 @@ void UBEmbedController::createWidget()
 
     widgetDir.mkpath(widgetDir.path());
     UBEmbedContent content;
+    QString widgetId;
 
     if (selectedIndex == 0)
     {
         generateFullPageHtml(mUrl, widgetDir.path(), true);
+        widgetId = mUrl.toString();
     }
     else
     {
         content = mAvailableContent.at(selectedIndex - 1);
-        generateHtml(content, widgetDir.path(), true);
+        const auto data = generateHtml(content, widgetDir.path(), true);
+        const auto mediaAssertUuid = UBMediaAssetItem::createMediaAssetUuid(data);
+        widgetId = "urn:uuid:" + mediaAssertUuid.toString(QUuid::WithoutBraces);
     }
 
     generateIcon(widgetDir.path());
@@ -216,11 +220,11 @@ void UBEmbedController::createWidget()
 
     if (heigth && width)
     {
-        generateConfig(width+20, heigth+20, widgetDir.path());
+        generateConfig(widgetId, width+20, heigth+20, widgetDir.path());
     }
     else
     {
-        generateConfig(800, 600, widgetDir.path());
+        generateConfig(widgetId, 800, 600, widgetDir.path());
     }
 
     importWidgetInLibrary(widgetDir);
@@ -301,7 +305,7 @@ QString UBEmbedController::generateIcon(const QString& pDirPath) const
 }
 
 
-void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& pDestinationPath) const
+void UBEmbedController::generateConfig(QString widgetId, int pWidth, int pHeight, const QString& pDestinationPath) const
 {
     QFile configFile(pDestinationPath + "/" + "config.xml");
 
@@ -323,7 +327,7 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << '\n';
     out << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << '\n';
     out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << '\n';
-    out << "        id=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<'\n';
+    out << "        id=\"" << widgetId << "\"" <<'\n';
 
     out << "        version=\"2.0\"" << '\n';
     out << "        width=\"" << pWidth << "\"" << '\n';

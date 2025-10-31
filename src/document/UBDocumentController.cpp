@@ -3107,7 +3107,7 @@ void UBDocumentController::importFile()
 
             if (filePath.length() > 0)
             {
-                std::shared_ptr<UBDocumentProxy> createdDocument = nullptr;
+                std::shared_ptr<UBDocument> createdDocument = nullptr;
                 QApplication::processEvents();
                 QFile selectedFile(filePath);
 
@@ -3127,7 +3127,7 @@ void UBDocumentController::importFile()
                 createdDocument = docManager->importFile(selectedFile, groupName);
 
                 if (createdDocument && !multipleFilesImported) {
-                    selectDocument(createdDocument, true, true, true);
+                    selectDocument(createdDocument->proxy(), true, true, true);
                     pageSelectionChanged();
 
                 } else {
@@ -3399,7 +3399,6 @@ bool UBDocumentController::isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> p
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
             || docVersion.startsWith("4.6") || docVersion.startsWith("4.8") || docVersion.startsWith("4.9"))
     {
-        UBDocument::getDocument(proxy)->scanAssets();
         // Invoke widget upgrader
         widgetUpgradeAdaptor.upgradeWidgets(proxy);
         return true;

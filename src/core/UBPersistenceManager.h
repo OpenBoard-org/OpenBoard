@@ -101,9 +101,10 @@ class UBPersistenceManager : public QObject
 
         virtual QUuid copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromPageId, std::shared_ptr<UBDocumentProxy>to, int toPageId, QList<QString> dependencies);
 
-        virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
+        virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId,
+                                          bool isAnAutomaticBackup = false, bool forceImmediateSaving = false, bool addToCache = true);
 
-        virtual std::shared_ptr<UBGraphicsScene> createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId, bool useUndoRedoStack = true);
+        virtual std::shared_ptr<UBGraphicsScene> createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId, bool cached = true, bool useUndoRedoStack = true);
 
         virtual std::shared_ptr<UBGraphicsScene> loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId);
         std::shared_ptr<void> prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent = {}, bool cached = true);
@@ -111,6 +112,8 @@ class UBPersistenceManager : public QObject
 
         bool copyAsset(std::shared_ptr<UBDocumentProxy> proxy, const QString& fromRelativePath, const QString& toRelativePath);
         void cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> proxy, QSet<QString> referencedMediaAssets);
+
+        void waitForAllSaved() const;
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
         UBDocumentTreeNode *mDocumentTreeStructure;
@@ -142,7 +145,7 @@ class UBPersistenceManager : public QObject
         }
 
         bool addGraphicsWidgetToDocument(std::shared_ptr<UBDocumentProxy> mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
-        bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
+        QUuid addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir, QString& destinationPath, QByteArray* data = NULL);
 
         bool mayHaveVideo(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         bool mayHaveAudio(std::shared_ptr<UBDocumentProxy> pDocumentProxy);

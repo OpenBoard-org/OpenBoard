@@ -56,18 +56,38 @@ UBThumbnail::UBThumbnail()
     // smooth transformation
     mPixmapItem->setTransformationMode(Qt::SmoothTransformation);
 
+    // create a reasonably sized empty pixmap, which is later replaced
+    const auto pageSize = UBSettings::settings()->pageSize->get().toSize();
+    const auto pixmapSize = pageSize.scaled(UBSettings::maxThumbnailWidth, 0, Qt::KeepAspectRatioByExpanding);
+    QPixmap pixmap{pixmapSize};
+    pixmap.fill(qApp->palette().color(QPalette::Mid));
+    mPixmapItem->setPixmap(pixmap);
+
     // do not draw anything
     setPen(QPen(QColor(Qt::transparent)));
 }
 
 void UBThumbnail::setPixmap(const QPixmap& pixmap)
 {
+    const auto needsAdjust = pixmap.size() != mPixmapItem->pixmap().size();
+
     mPixmapItem->setPixmap(pixmap);
+    mLoaded = true;
+
+    if (needsAdjust)
+    {
+        adjustThumbnail();
+    }
 }
 
 QPixmap UBThumbnail::pixmap() const
 {
     return mPixmapItem->pixmap();
+}
+
+bool UBThumbnail::isLoaded() const
+{
+    return mLoaded;
 }
 
 void UBThumbnail::setSceneIndex(int sceneIndex)

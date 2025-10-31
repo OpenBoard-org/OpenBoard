@@ -36,6 +36,7 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "core/memcheck.h"
@@ -257,11 +258,13 @@ void UBSceneCache::SceneCacheEntry::startLoading()
             if (mContext->isFinished())
             {
                 mScene = mContext->scene();
+                auto document = UBDocument::getDocument(mContext->proxy());
                 mContext = nullptr;
                 mTimer->stop();
                 delete mTimer;
                 mTimer = nullptr;
-                mScene->loadingCompleted(shared_from_this());
+
+                document->sceneLoaded(mScene.get(), shared_from_this());
             }
         }
     });
@@ -292,7 +295,8 @@ std::shared_ptr<UBGraphicsScene> UBSceneCache::SceneCacheEntry::scene()
         }
 
         mScene = mContext->scene();
-        mScene->loadingCompleted(shared_from_this());
+        auto document = UBDocument::getDocument(mContext->proxy());
+        document->sceneLoaded(mScene.get(), shared_from_this());
         mContext = nullptr;
     }
 

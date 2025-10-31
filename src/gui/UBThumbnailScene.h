@@ -63,15 +63,16 @@ public:
 protected:
     // only to be called from UBDocument
     friend class UBDocument;
-    void insertThumbnail(int pageIndex, std::shared_ptr<UBGraphicsScene> pageScene = nullptr);
+    void insertThumbnail(int pageIndex, bool loadThumbnail = true);
     void deleteThumbnail(int pageIndex, bool rearrange = true);
     void moveThumbnail(int fromIndex, int toIndex);
     void reloadThumbnail(int pageIndex);
+    void ensureThumbnail(int pageIndex, UBGraphicsScene* scene);
 
 private:
     friend class UBThumbnail;
     UBThumbnailArranger* currentThumbnailArranger();
-    void loadThumbnail(int index, const QByteArray& data);
+    void loadThumbnail(int index, const QVariant& data);
     void renumberThumbnails(int fromIndex = 0, int toIndex = -1) const;
 
 private:

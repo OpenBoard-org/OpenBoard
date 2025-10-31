@@ -126,7 +126,7 @@ private:
     QString generateFullPageHtml(const QUrl& url, const QString& pDirPath = QString(), bool pGenerateFile = false) const;
     QString generateHtml(const UBEmbedContent& pObject, const QString& pDirPath = QString(), bool pGenerateFile = false) const;
     QString generateIcon(const QString& pDirPath) const;
-    void generateConfig(int pWidth, int pHeight, const QString& pDestinationPath) const;
+    void generateConfig(QString widgetId, int pWidth, int pHeight, const QString& pDestinationPath) const;
 
     QString widgetNameForObject(const UBEmbedContent& pObject) const;
 

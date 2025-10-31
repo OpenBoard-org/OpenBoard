@@ -31,7 +31,7 @@
 #define UBITEM_H
 
 #include <QtGui>
-#include "core/UB.h"
+
 #include "domain/UBGraphicsItemDelegate.h"
 
 class UBGraphicsScene;
@@ -92,23 +92,11 @@ class UBItem
             return 0;
         }
 
-        virtual QUrl sourceUrl() const
-        {
-            return mSourceUrl;
-        }
-
-        virtual void setSourceUrl(const QUrl& pSourceUrl)
-        {
-            mSourceUrl = pSourceUrl;
-        }
-
     protected:
 
         QUuid mUuid;
 
         RenderingQuality mRenderingQuality;
-
-        QUrl mSourceUrl;
 
         CacheBehavior mCacheBehavior;
 };

@@ -31,6 +31,7 @@
 #include "domain/UBMediaAssetItem.h"
 #include "frameworks/UBBackgroundLoader.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBThumbnail.h"
 #include "gui/UBThumbnailScene.h"
 
 QList<std::weak_ptr<UBDocument>> UBDocument::sDocuments;
@@ -53,7 +54,7 @@ UBDocument::~UBDocument()
     {
         if (mSceneHeaderLoader)
         {
-            mSceneHeaderLoader->waitForFinished();
+            assureHeaderLoaderFinished(false);
             delete mSceneHeaderLoader;
         }
 
@@ -131,12 +132,12 @@ void UBDocument::deletePages(QList<int> indexes)
     }
 
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, pageIds);
-    assureLoaderFinished();
+    assureHeaderLoaderFinished();
 
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
-        thumbnailScene()->deleteThumbnail(indexes.at(i), false);
         mToc->remove(indexes.at(i));
+        thumbnailScene()->deleteThumbnail(indexes.at(i), false);
         emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(this, indexes.at(i));
     }
 
@@ -160,7 +161,7 @@ void UBDocument::movePage(int fromIndex, int toIndex)
         persistPage(scene, fromIndex);
     }
 
-    assureLoaderFinished();
+    assureHeaderLoaderFinished();
     thumbnailScene()->moveThumbnail(fromIndex, toIndex);
     mToc->move(fromIndex, toIndex);
     mToc->save();
@@ -172,37 +173,54 @@ void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toI
     copyPage(fromIndex, to.get(), toIndex);
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool cached, bool useUndoRedoStack)
 {
     // create a new TOC entry for the page
-    assureLoaderFinished();
+    assureHeaderLoaderFinished();
     auto pageId = mToc->insert(index);
-    auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, useUndoRedoStack);
+    auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, cached, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
-    mToc->save();
 
-    thumbnailScene()->insertThumbnail(index, scene);
+    if (saveToc)
+    {
+        mToc->save();
+    }
+
+    thumbnailScene()->insertThumbnail(index, false);
 
     return scene;
 }
 
 void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup,
-                             bool forceImmediateSaving)
+                             bool forceImmediateSaving, bool persistThumbnail, bool addToCache)
 {
     const auto pageId = mToc->pageId(index);
-    UBThumbnailAdaptor::persistScene(this, scene, index);
+
+    if (persistThumbnail)
+    {
+        const auto pixmap = UBThumbnailAdaptor::persistScene(this, scene, index);
+
+        if (!pixmap.isNull())
+        {
+            thumbnailScene()->thumbnailAt(index)->setPixmap(pixmap);
+        }
+    }
+
     UBPersistenceManager::persistenceManager()->persistDocumentScene(mProxy, scene, pageId, isAutomaticBackup,
-                                                                     forceImmediateSaving);
+                                                                     forceImmediateSaving, addToCache);
 
     const auto assets = scene->relativeDependencies();
 
     if (assets != mToc->assets(index))
     {
         mToc->setAssets(index, assets);
-        mToc->save();
-    }
 
-    thumbnailScene()->reloadThumbnail(index);
+        if (addToCache)
+        {
+            // when scene is cached it is also time to save the TOC
+            mToc->save();
+        }
+    }
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes)
@@ -254,12 +272,16 @@ QList<QString> UBDocument::pageRelativeDependencies(int index)
     return {};
 }
 
-UBThumbnailScene* UBDocument::thumbnailScene()
+UBThumbnailScene* UBDocument::thumbnailScene(bool startLoader)
 {
     if (!mThumbnailScene)
     {
         mThumbnailScene = std::unique_ptr<UBThumbnailScene>(new UBThumbnailScene(this));
-        mThumbnailScene->createThumbnails();
+
+        if (startLoader)
+        {
+            mThumbnailScene->createThumbnails();
+        }
     }
 
     return mThumbnailScene.get();
@@ -278,6 +300,16 @@ UBDocumentToc* UBDocument::toc()
         {
             scan(tocPresent);
             mToc->save();
+        }
+
+        // scan assets if missing
+        for (int index = 0; index < mToc->pageCount(); ++index)
+        {
+            if (!mToc->hasAssetsEntry(index))
+            {
+                scanAssets();
+                break;
+            }
         }
     }
 
@@ -315,84 +347,93 @@ QString UBDocument::thumbnailFile(int index)
 
 void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handle)
 {
-    mLoaderHandles.remove(handle);
+    mLoaderHandles.erase(handle);
 
-    const auto persistenceManager = UBPersistenceManager::persistenceManager();
-    auto index = mToc->findUuid(scene->uuid());
-
-    if (index >= 0 && !mToc->hasAssetsEntry(index))
+    if (scene)
     {
-        const auto mediaAssetItems = scene->mediaAssetItems();
+        const auto persistenceManager = UBPersistenceManager::persistenceManager();
+        auto index = mToc->findUuid(scene->uuid());
 
-        for (auto item : mediaAssetItems)
+        if (index >= 0 && !mToc->hasAssetsEntry(index))
         {
-            // Check the media asset UUIDs.
-            // Convert it to a SHA-1 based UUIDv5 if needed. Copy the asset file in this case.
-            QUuid assetUuid = item->mediaAssetUuid();
+            const auto mediaAssetItems = scene->mediaAssetItems();
 
-            if (assetUuid.version() != QUuid::Sha1)
+            for (auto item : mediaAssetItems)
             {
-                // lookup UUIDv5 in cache or create from content
-                const auto source = item->mediaAssets().at(0);
-                const auto sourcePath = mProxy->persistencePath() + "/" + source;
+                // Check the media asset UUIDs.
+                // Convert it to a SHA-1 based UUIDv5 if needed. Copy the asset file in this case.
+                QUuid assetUuid = item->mediaAssetUuid();
 
-                QUuid assetUuidV5;
-                bool needsCopy = false;
-
-                if (mUuidV5Map.contains(assetUuid))
+                if (assetUuid.version() != QUuid::Sha1)
                 {
-                    assetUuidV5 = mUuidV5Map.value(assetUuid);
-                }
-                else
-                {
-                    assetUuidV5 = UBMediaAssetItem::createMediaAssetUuid(sourcePath);
-                    mUuidV5Map[assetUuid] = assetUuidV5;
-                    needsCopy = true;
-                }
+                    // lookup UUIDv5 in cache or create from content
+                    const auto source = item->mediaAssets().at(0);
+                    const auto sourcePath = mProxy->persistencePath() + "/" + source;
 
-                auto target = source;
-                target.replace(assetUuid.toString(QUuid::WithoutBraces), assetUuidV5.toString(QUuid::WithoutBraces));
+                    QUuid assetUuidV5;
+                    bool needsCopy = false;
 
-                // copy assets
-                if (needsCopy)
-                {
-                    persistenceManager->copyAsset(mProxy, source, target);
+                    if (mUuidV5Map.contains(assetUuid))
+                    {
+                        assetUuidV5 = mUuidV5Map.value(assetUuid);
+                    }
+                    else
+                    {
+                        assetUuidV5 = UBMediaAssetItem::createMediaAssetUuid(sourcePath);
+                        mUuidV5Map[assetUuid] = assetUuidV5;
+                        needsCopy = true;
+                    }
+
+                    auto target = source;
+                    target.replace(assetUuid.toString(QUuid::WithoutBraces), assetUuidV5.toString(QUuid::WithoutBraces));
+
+                    // copy assets
+                    if (needsCopy)
+                    {
+                        persistenceManager->copyAsset(mProxy, source, target);
+                    }
+
+                    item->setMediaAsset(mProxy->persistencePath(), target);
+                    scene->setModified(true);
                 }
-
-                item->setMediaAsset(mProxy->persistencePath(), target);
-                scene->setModified(true);
             }
+
+            mToc->setAssets(index, scene->relativeDependencies());
         }
 
-        mToc->setAssets(index, scene->relativeDependencies());
-    }
+        if (scene->isModified())
+        {
+            persistenceManager->persistDocumentScene(mProxy, scene->shared_from_this(), mToc->pageId(index));
+        }
 
-    if (scene->isModified())
-    {
-        persistenceManager->persistDocumentScene(mProxy, scene->shared_from_this(), mToc->pageId(index));
+        // generate and load thumbnail from scene if not already existing and loaded
+        mThumbnailScene->ensureThumbnail(index, scene);
     }
 
     // prepare next scene
-    if (mSceneAssetLoader)
-    {
-        mSceneAssetLoader->resultProcessed(index);
-    }
+    QTimer::singleShot(5, mSceneAssetLoader, [this](){
+        if (mSceneAssetLoader)
+        {
+            mSceneAssetLoader->resultProcessed();
+        }
+    });
 }
 
 void UBDocument::scanAssets()
 {
-    assureLoaderFinished();
+    assureHeaderLoaderFinished();
 
     // create a list of page IDs and paths of pages without asset info for background loading
     QList<std::pair<int, QString>> paths;
     const auto persistenceManager = UBPersistenceManager::persistenceManager();
+    persistenceManager->waitForAllSaved();
 
     for (int index = 0; index < mToc->pageCount(); ++index)
     {
         if (!mToc->hasAssetsEntry(index))
         {
             int pageId = mToc->pageId(index);
-            paths.append({index, mProxy->persistencePath() + persistenceManager->sceneFilenameForId(pageId)});
+            paths.append({pageId, mProxy->persistencePath() + persistenceManager->sceneFilenameForId(pageId)});
         }
     }
 
@@ -400,35 +441,54 @@ void UBDocument::scanAssets()
     {
         qDebug() << "Scan" << paths.count() << "scenes for assets";
         // load scenes for scanning
-        mSceneAssetLoader = new UBBackgroundLoader;
+        mSceneAssetLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
 
-        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int index, const QByteArray& data){
-            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(index).arg(mToc->pageCount()), true);
+        QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int pageId, const QVariant& data){
+            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(pageId).arg(mToc->pageCount()), true);
 
-            const auto pageId = mToc->pageId(index);
-
-            if (pageId >= 0 && !data.isEmpty())
+            if (pageId >= 0 && !data.isNull())
             {
-                const auto handle = UBPersistenceManager::persistenceManager()->prepareSceneLoading(mProxy, pageId, data, false);
+                auto scene = UBPersistenceManager::persistenceManager()->getDocumentScene(mProxy, pageId);
+
+                if (scene)
+                {
+                    sceneLoaded(scene.get(), nullptr);
+                    return;
+                }
+
+                const auto handle = UBPersistenceManager::persistenceManager()->prepareSceneLoading(mProxy, pageId, data.toByteArray(), false);
 
                 if (handle)
                 {
                     // loading started, keep handle until finished
-                    mLoaderHandles << handle;
+                    mLoaderHandles.insert(handle);
                     return;
                 }
             }
 
             // page deleted or already in cache, loading not necessary
-            mSceneAssetLoader->resultProcessed(index);
+            mSceneAssetLoader->resultProcessed();
         });
 
         QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::finished, mSceneAssetLoader, [this](){
-            UBApplication::showMessage(UBDocumentController::tr("Scan completed"));
             qDebug() << "Asset scan completed";
+            mSceneAssetLoader->deleteLater();
+            mSceneAssetLoader = nullptr;
         });
 
-        mSceneAssetLoader->load(paths);
+        QObject::connect(mSceneAssetLoader, &QObject::destroyed, [](){
+            // loader either completed or aborted
+            UBApplication::showMessage(UBDocumentController::tr("Scan terminated"));
+        });
+
+        mSceneAssetLoader->load(paths, -1, [this](int pageId, QString path){
+            // check that the scene file actually exists to avoid a race condition
+            // with saving scene files during import
+            while (!QFile::exists(path))
+            {
+                QThread::msleep(10);
+            }
+        });
     }
 }
 
@@ -502,14 +562,14 @@ void UBDocument::scan(bool tocPresent)
         }
 
         // load the first 300 bytes of each file in background, enough to get version and UUID
-        UBBackgroundLoader loader;
+        mSceneHeaderLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
         int pageProcessed = -1;
         int currentPage = 0;
         const auto currentVersion = QVersionNumber::fromString(UBSettings::currentFileVersion);
 
-        QObject::connect(&loader, &UBBackgroundLoader::resultAvailable, &loader, [&](int index, const QByteArray& data){
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [&](int index, const QVariant& data){
             UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(++currentPage).arg(pages.count()), true);
-            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data);
+            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
 
             // Check whether the tocSceneUuids already contains this scene.
             // If yes, locate and update the TOC entry
@@ -523,7 +583,7 @@ void UBDocument::scan(bool tocPresent)
                     tocSceneUuids.remove(uuid);
 
                     // invalidate assets if scene was modified by an earlier version
-                    if (UBSvgSubsetAdaptor::sceneVersion(data) < currentVersion)
+                    if (UBSvgSubsetAdaptor::sceneVersion(data.toByteArray()) < currentVersion)
                     {
                         mToc->unsetAssets(index);
                     }
@@ -539,10 +599,10 @@ void UBDocument::scan(bool tocPresent)
                 mToc->setPageId(pageProcessed, index);
             }
 
-            loader.resultProcessed(index);
+            mSceneHeaderLoader->resultProcessed();
         });
 
-        QObject::connect(&loader, &UBBackgroundLoader::finished, &loader, [&](){
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::finished, mSceneHeaderLoader, [&](){
             // When finished, remove all scenes still in tocSceneUuids from the TOC.
             // Those scenes might have been deleted using a previous version of OpenBoard.
             for (const auto uuid : tocSceneUuids)
@@ -552,22 +612,24 @@ void UBDocument::scan(bool tocPresent)
             }
 
             UBApplication::showMessage(UBDocumentController::tr("Scan completed"));
+            mSceneHeaderLoader->deleteLater();
+            mSceneHeaderLoader = nullptr;
             mToc->save();
         });
 
-        loader.load(paths, 300);
-        loader.waitForFinished();
+        mSceneHeaderLoader->load(paths, 300);
+        assureHeaderLoaderFinished();
     }
     else if (!paths.empty())
     {
         // start reading the UUIDs in background, but make sure it is completed when the UBDocument is deleted
-        mSceneHeaderLoader = new UBBackgroundLoader;
+        mSceneHeaderLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
         mSceneHeaderLoader->setKeepAlive(shared_from_this());
 
-        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QByteArray& data){
-            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data);
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QVariant& data){
+            const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
             mToc->setUuid(index, uuid);
-            mSceneHeaderLoader->resultProcessed(index);
+            mSceneHeaderLoader->resultProcessed();
         });
 
         QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::finished, mSceneHeaderLoader, [this](){
@@ -599,7 +661,7 @@ void UBDocument::copyPage(int fromIndex, UBDocument* to, int toIndex)
     const auto dependencies = pageRelativeDependencies(fromIndex);
 
     // copy scene
-    to->assureLoaderFinished();
+    to->assureHeaderLoaderFinished();
     const auto pageId = to->mToc->insert(toIndex);
     const auto uuid = UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, mToc->pageId(fromIndex), to->proxy(), pageId, dependencies);
 
@@ -637,15 +699,26 @@ void UBDocument::deleteUnreferencedAssets()
     UBPersistenceManager::persistenceManager()->cleanupMediaAssets(mProxy, referencedMediaAssets);
 }
 
-void UBDocument::assureLoaderFinished()
+void UBDocument::assureHeaderLoaderFinished(bool visualFeedback)
 {
     if (mSceneHeaderLoader)
     {
-        UBApplication::setOverrideCursor(Qt::WaitCursor);
-        UBApplication::showMessage(UBDocumentController::tr("Wait for the document scan to finish"), true);
-        mSceneHeaderLoader->waitForFinished();
-        UBApplication::showMessage(UBDocumentController::tr("Document scan finished"));
-        UBApplication::restoreOverrideCursor();
+        if (visualFeedback)
+        {
+            UBApplication::setOverrideCursor(Qt::WaitCursor);
+            UBApplication::showMessage(UBDocumentController::tr("Wait for the document scan to finish"), true);
+        }
+
+        while (mSceneHeaderLoader)
+        {
+            QApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+
+        if (visualFeedback)
+        {
+            UBApplication::showMessage(UBDocumentController::tr("Document scan finished"));
+            UBApplication::restoreOverrideCursor();
+        }
     }
 }
 
