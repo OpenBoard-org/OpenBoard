@@ -68,6 +68,8 @@ class UBApplication : public SingleApplication
 
         void cleanup();
 
+        void enableEditingShortcuts(bool enable);
+
         static QPointer<QUndoStack> undoStack;
 
         static UBDisplayManager* displayManager;
