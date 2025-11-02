@@ -48,19 +48,19 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         enum { Type = UBGraphicsItemType::TextItemType };
 
-        virtual int type() const
+        virtual int type() const override
         {
             return Type;
         }
 
-        virtual UBItem* deepCopy() const;
+        virtual UBItem* deepCopy() const override;
 
-        virtual void copyItemParameters(UBItem *copy) const;
+        virtual void copyItemParameters(UBItem *copy) const override;
 
-        virtual std::shared_ptr<UBGraphicsScene> scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene() override;
 
-        virtual QRectF boundingRect() const;
-        virtual QPainterPath shape() const;
+        virtual QRectF boundingRect() const override;
+        virtual QPainterPath shape() const override;
 
         void setTextWidth(qreal width);
         void setTextHeight(qreal height);
@@ -69,9 +69,9 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         void contentsChanged();
 
-        virtual void resize(qreal w, qreal h);
+        virtual void resize(qreal w, qreal h) override;
 
-        virtual QSizeF size() const;
+        virtual QSizeF size() const override;
 
         static QColor lastUsedTextColor;
 
@@ -112,18 +112,21 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void documentSizeChanged(const QSizeF & newSize);
 
     private:
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-        virtual void keyPressEvent(QKeyEvent *event);
-        virtual void keyReleaseEvent(QKeyEvent *event);
+        virtual void keyPressEvent(QKeyEvent *event) override;
+        virtual void keyReleaseEvent(QKeyEvent *event) override;
 
-        virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+        virtual void focusInEvent(QFocusEvent* event) override;
+        virtual void focusOutEvent(QFocusEvent* event) override;
 
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
 
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
         qreal mTextHeight;
 
