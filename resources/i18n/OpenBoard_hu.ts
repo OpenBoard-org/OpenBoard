@@ -1309,10 +1309,8 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="880"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1007"/>
         <source>Remove Page</source>
-        <translation>Oldal eltávolítása</translation>
+        <translation type="vanished">Oldal eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -1339,10 +1337,8 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation>Gyorsítótárazott jelenetek áthelyezése (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="881"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1008"/>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation>Biztosan eltávolítja a(z) %1. oldalt?</translation>
+        <translation type="vanished">Biztosan eltávolítja a(z) %1. oldalt?</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="46"/>
@@ -1391,19 +1387,19 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="569"/>
+        <location filename="../../src/core/UBApplication.cpp" line="573"/>
         <source>Page Size</source>
         <translation>Oldal méret</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="590"/>
+        <location filename="../../src/core/UBApplication.cpp" line="594"/>
         <source>Podcast</source>
         <translation>Podcast</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="356"/>
-        <location filename="../../src/core/UBApplication.cpp" line="402"/>
-        <location filename="../../src/core/UBApplication.cpp" line="645"/>
+        <location filename="../../src/core/UBApplication.cpp" line="358"/>
+        <location filename="../../src/core/UBApplication.cpp" line="404"/>
+        <location filename="../../src/core/UBApplication.cpp" line="649"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation>Az UBX-fájl közvetlenül nem nyitható meg. Inkább dokumentumok üzemmódban importálja</translation>
     </message>
@@ -1416,22 +1412,22 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>New update available, would you go to the web page ?</source>
         <translation>Új frissítés elérhető. Szeretne ellátogatni a weboldalra?</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>No update available</source>
         <translation>Nincs elérhető frissítés</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>Update available</source>
         <translation>Frissítés elérhető</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>Update</source>
         <translation>Frissítés</translation>
     </message>
@@ -1452,55 +1448,55 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1198"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1294"/>
         <source>Downloading content %1 failed</source>
         <translation>%1 tartalom letöltése sikertelen</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1207"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1303"/>
         <source>Download finished</source>
         <translation>Letöltés befejezve</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1534"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1630"/>
         <source>Unknown tool type %1</source>
         <translation>Ismeretlen eszköz típus: %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1579"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1675"/>
         <source>Unknown content type %1</source>
         <translation>Ismeretlen tartalom típus: %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2723"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2791"/>
         <source>Add Item</source>
         <translation>Elem hozzáadása</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2725"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2793"/>
         <source>All Supported (%1)</source>
         <translation>Mind támogatott (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="865"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="927"/>
         <source>Page %1 deleted</source>
         <translation>%1. oldal törölve</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1338"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1383"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2328"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2364"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1434"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1479"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2396"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2432"/>
         <source>Add file operation failed: file copying error</source>
         <translation>Fájl hozzáadása sikertelen: Fájl másolási hiba</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="112"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="109"/>
         <source>Group</source>
         <translation>Csoportosítás</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="113"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
         <source>Ungroup</source>
         <translation>Csoport bontás</translation>
     </message>
@@ -1515,7 +1511,7 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation>Dokumentum éppen most mentve…</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="847"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="915"/>
         <source>Deleting page %1</source>
         <translation>%1. oldal törlése</translation>
     </message>
@@ -1525,12 +1521,12 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation>Szín</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1547"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1643"/>
         <source>Untitled</source>
         <translation>Névtelen</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1574"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1670"/>
         <source>Could not find document.</source>
         <translation>A dokumentum nem található.</translation>
     </message>
@@ -1538,12 +1534,12 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="948"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="934"/>
         <source>Error Adding Image to Library</source>
         <translation>Hiba a kép könyvtárhoz adásakor</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="943"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="929"/>
         <source>CapturedImage</source>
         <translation>KépMetszet</translation>
     </message>
@@ -1558,12 +1554,12 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBBoardView</name>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1774"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1809"/>
         <source>Is it for Board or Widget ?</source>
         <translation>Táblára vagy vezérlőre való?</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1775"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1810"/>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation>Megpróbálja leejteni a tárgy(oka)t a vezérlőbe?</translation>
     </message>
@@ -1632,50 +1628,49 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2025"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1997"/>
         <source>New Folder</source>
         <translation>Új mappa</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4181"/>
         <source>Page %1</source>
-        <translation>%1. oldal</translation>
+        <translation type="vanished">%1. oldal</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2197"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2169"/>
         <source>Add Folder of Images</source>
         <translation>Képeket tartalmazó mappa hozzáadása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2198"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2170"/>
         <source>Add Images</source>
         <translation>Képek hozzáadása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2199"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2171"/>
         <source>Add Pages from File</source>
         <translation>Oldalak hozzáadása fájlból</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2489"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2501"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3466"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2465"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2477"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3329"/>
         <source>Opening document in Board. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2507"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3472"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2483"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3335"/>
         <source>Document opened successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2566"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2537"/>
         <source>Duplicating Document %1</source>
         <translation>%1 dokumentum megkettőzve</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2570"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2541"/>
         <source>Document %1 copied</source>
         <translation>%1 dokumentum átmásolva</translation>
     </message>
@@ -1720,71 +1715,71 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation type="vanished">Nincs dokumentum kiválasztva!</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3275"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3228"/>
         <source>Open Supported File</source>
         <translation>Támogatott fájl megnyitása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3290"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3156"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3243"/>
         <source>Importing file %1...</source>
         <translation>%1 fájl importálása…</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3194"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3332"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3165"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3260"/>
         <source>Failed to import file ... </source>
         <translation>Fájl importálása sikertelen ... </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3221"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
         <source>Import all Images from Folder</source>
         <translation>Minden kép importálása  mappából</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3873"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3874"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3894"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3895"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3729"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3730"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3750"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3751"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3888"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3889"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3900"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3901"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3744"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3745"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3756"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3757"/>
         <source>Empty</source>
         <translation>Üres</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1933"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3848"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3849"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3869"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3870"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3905"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3906"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1909"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3725"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3726"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3761"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3762"/>
         <source>Trash</source>
         <translation>Törölt elemek</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3574"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3439"/>
         <source>Open Document</source>
         <translation>Dokumentum megnyitása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3630"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3495"/>
         <source>Add all Images to Document</source>
         <translation>Minden kép hozzáadása a Dokumentumhoz</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3631"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3496"/>
         <source>All Images (%1)</source>
         <translation>Minden kép (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3661"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3517"/>
         <source>Selection does not contain any image files!</source>
         <translation>A kiválasztásban nincs egyetlen kép sem!</translation>
     </message>
@@ -1793,17 +1788,17 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation type="vanished">Biztosan szeretné eltávolítani %n oldalt a kiválasztott „%1” dokumentumból?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3253"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3206"/>
         <source>Folder does not contain any image files</source>
         <translation>A mappa nem tartalmaz egyetlen képet sem</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1934"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1910"/>
         <source>Untitled Documents</source>
         <translation>Névtelen dokumentumok</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3575"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3440"/>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>A(z) „%1” dokumentum az OpenBoard újabb verziójával (%2) készült. Megnyitásával néhány információ elveszhet. Szeretné folytatni?</translation>
     </message>
@@ -1816,7 +1811,7 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation type="vanished">Több dokumentum eltávolítása</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2556"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2527"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation>
@@ -1832,131 +1827,115 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation type="vanished">Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4183"/>
         <source>Title page</source>
-        <translation>Címlap</translation>
+        <translation type="vanished">Címlap</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
         <translation type="vanished">Dokumentum előképek nézetének frissítése (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2613"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2584"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation>%1 dokumentum/mappa teljes törlése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2614"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2585"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation>%1 dokumentum és/vagy mappa végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2698"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2669"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation>„%1” mappa teljes törlése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2699"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation>„%1” mappa végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2675"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation>„%1” dokumentum teljes törlése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2676"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation>„%1” dokumentum végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2722"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2693"/>
         <source>Emptying My Documents</source>
         <translation>Saját dokumentumok kiürítése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2723"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2694"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation>Arra készül, hogy teljesen kiürítse a „Saját dokumentumok” mappát. Minden dokumentuma a kukába kerül. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2759"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2730"/>
         <source>Emptying Trash</source>
         <translation>Kuka ürítése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2760"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2731"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation>Arra készül, hogy teljesen kiürítse a kukát. A benne lévő összes dokumentum és mappa véglegesen törlődik. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2776"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2747"/>
         <source>Moving %1 elements to trash</source>
         <translation>%1 elem áthelyezése a kukába</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2777"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2748"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation>Arra készül, hogy %1 dokumentumot és/vagy mappát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2785"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2756"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation>„%1” mappa áthelyezése a kukába</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2786"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2757"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation>Arra készül, hogy a(z) „%1” mappát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2792"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2763"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation>„%1” dokumentum áthelyezése a kukába</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2793"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2764"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation>Arra készül, hogy a(z) „%1” dokumentumot a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3145"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3116"/>
         <source>Open Supported File(s)</source>
         <translation>Támogatott fájl(ok) megnyitása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3404"/>
-        <source>Refreshing Document Thumbnails View (%1 pages)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3408"/>
-        <source>Refreshing Document Thumbnails View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3412"/>
-        <source>Document Thumbnails View up-to-date. Repainting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3972"/>
+        <location filename="../../src/document/UBDocument.cpp" line="64"/>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
         <translation>„%2” dokumentum %1 oldalának áthelyezése a kukába</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3973"/>
+        <location filename="../../src/document/UBDocument.cpp" line="66"/>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
         <translation>Arra készül, hogy a(z) „%2” dokumentum %1 oldalát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3979"/>
+        <location filename="../../src/document/UBDocument.cpp" line="73"/>
         <source>Remove page %1</source>
         <translation>%1 oldal eltávolítása</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3980"/>
+        <location filename="../../src/document/UBDocument.cpp" line="74"/>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
         <translation>„%2” dokumentum %1 oldalának eltávolítására készül. Biztos benne?</translation>
     </message>
@@ -1964,57 +1943,57 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
 <context>
     <name>UBDocumentManager</name>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="75"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
         <source>images</source>
         <translation>képek</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="76"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
         <source>videos</source>
         <translation>videók</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="79"/>
         <source>objects</source>
         <translation>objektumok</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="80"/>
         <source>widgets</source>
         <translation>vezérlők</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="132"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="134"/>
         <source>All supported files (*.%1)</source>
         <translation>Minden támogatott fájl (*.%1)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="216"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="219"/>
         <source>Creating %1 pages. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="338"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="350"/>
         <source>File %1 saved</source>
         <translation>%1 fájl mentve</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="287"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="297"/>
         <source>Inserting page %1 of %2</source>
         <translation>Oldal beszúrása: %1/%2</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="230"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="234"/>
         <source>Import successful.</source>
         <translation>Importálás sikeres.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="295"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="305"/>
         <source>Import of file %1 successful.</source>
         <translation>%1 fájl importálása sikeres.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="248"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="255"/>
         <source>Importing file %1</source>
         <translation>%1 fájl importálása</translation>
     </message>
@@ -2033,17 +2012,17 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
         <translation type="vanished">Elfogadás</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="112"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="105"/>
         <source>Replace</source>
         <translation>Csere</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="113"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="106"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="192"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="185"/>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
@@ -2052,22 +2031,22 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 Új név megadása új dokumentumot hoz létre.</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="111"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="104"/>
         <source>Rename</source>
         <translation>Átnevezés</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="140"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="133"/>
         <source>Replace all</source>
         <translation>Az összes cserése</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="141"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="134"/>
         <source>Skip</source>
         <translation>Kihagyás</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="142"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="135"/>
         <source>Skip all</source>
         <translation>Az összes kihagyása</translation>
     </message>
@@ -2075,17 +2054,17 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="397"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="390"/>
         <source>My documents</source>
         <translation>Saját dokumentumok</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="401"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="394"/>
         <source>Trash</source>
         <translation>Törölt elemek</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="757"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="749"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>%1 oldal másolva</numerusform>
@@ -2095,12 +2074,12 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 <context>
     <name>UBDocumentTreeView</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1657"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1650"/>
         <source>Copying page %1/%2</source>
         <translation>Oldal másolása: %1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1713"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1690"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>%1 oldal másolva</numerusform>
@@ -2146,11 +2125,8 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 <context>
     <name>UBDraggableLivePixmapItem</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="593"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="596"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="598"/>
         <source>Page %0</source>
-        <translation>%0. oldal</translation>
+        <translation type="vanished">%0. oldal</translation>
     </message>
 </context>
 <context>
@@ -2658,7 +2634,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1241"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1248"/>
         <source>Web</source>
         <translation>Web</translation>
     </message>
@@ -2666,7 +2642,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="830"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="837"/>
         <source>Loading ...</source>
         <translation>Betöltés folyamatban van…</translation>
     </message>
@@ -2720,19 +2696,20 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     <name>UBImportDocument</name>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="180"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="200"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="202"/>
         <source>Importing file %1...</source>
         <translation>%1 fájl importálása…</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="219"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="194"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="221"/>
         <source>Import successful.</source>
         <translation>Importálás sikeres.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="188"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="207"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="213"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="209"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="215"/>
         <source>Import of file %1 failed.</source>
         <translation>%1 fájl importálása sikertelen.</translation>
     </message>
@@ -2906,12 +2883,22 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
 <context>
     <name>UBPersistenceManager</name>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="742"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="266"/>
+        <source>Retrieved - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="280"/>
+        <source>Broken - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="748"/>
         <source>(copy)</source>
         <translation>(másolás)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>Document Repository Loss</source>
         <translation>Dokumentum repository veszteség</translation>
     </message>
@@ -2924,17 +2911,17 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <translation type="vanished">Oldal áthelyezése a törölt elemek mappába…</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Az OpenBoard elvesztette a hozzáférést a(z) „%1” dokumentumtárához. Sajnos az alkalmazást le kell állítani az adatvesztés elkerülése érdekében. A legújabb változások is elveszhetnek.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1161"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1172"/>
         <source>Renaming pages (%1/%2)</source>
         <translation>Oldalak átnevezése (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="231"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="227"/>
         <source>Retrieving all your documents (found : %1)</source>
         <translation>Az összes dokumentum lekérése (találva: %1)</translation>
     </message>
@@ -3301,7 +3288,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <translation>%1 előkép létrehozva…</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="107"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="128"/>
         <source>Loading thumbnails (%1 pages)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3313,8 +3300,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="219"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="261"/>
+        <location filename="../../src/gui/UBThumbnailTextItem.cpp" line="74"/>
         <source>Page %0</source>
         <translation>oldal %0</translation>
     </message>
