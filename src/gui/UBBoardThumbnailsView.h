@@ -64,10 +64,12 @@ public slots:
 protected:
     virtual bool event(QEvent* event);
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
 
     virtual void dragEnterEvent(QDragEnterEvent* event);
     virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual void dropEvent(QDropEvent* event);
+    virtual void dragLeaveEvent(QDragLeaveEvent* event) override;
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -89,7 +91,8 @@ private:
 
     UBThumbnail* mDropSource;
     UBThumbnail* mDropTarget;
-    QGraphicsRectItem *mDropBar;
+    bool mDropIndicatorVisible{false};
+    QRectF mDropIndicatorRect;
 
     int mLongPressInterval;
     QTimer mLongPressTimer;
