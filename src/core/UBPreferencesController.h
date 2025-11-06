@@ -70,7 +70,6 @@ class UBPreferencesController : public QObject
         UBPreferencesController(QWidget *parent);
         virtual ~UBPreferencesController();
 
-        bool handleKeyEvent(QKeyEvent *event);
         bool handleMouseEvent(QMouseEvent *event);
         bool handleTabletEvent(QTabletEvent *event);
 
@@ -82,8 +81,6 @@ class UBPreferencesController : public QObject
 
         void wire();
         void init();
-
-        virtual bool eventFilter(QObject* obj, QEvent* event) Q_DECL_OVERRIDE;
 
         UBPreferencesDialog* mPreferencesWindow;
         Ui::preferencesDialog* mPreferencesUI;

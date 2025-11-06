@@ -133,6 +133,11 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
                    mainWindow->actionQuit
                }, mainWindow);
 
+    // Don't allow to modify these shortcuts
+    mainWindow->actionCut->setProperty("builtIn", true);
+    mainWindow->actionCopy->setProperty("builtIn", true);
+    mainWindow->actionPaste->setProperty("builtIn", true);
+
     addActions(tr("Board"), {
                    mainWindow->actionUndo,
                    mainWindow->actionRedo,
@@ -574,7 +579,9 @@ bool UBShortcutManager::checkData(const QModelIndex &index, const QVariant &valu
 
     for (int row = 0; row < rowCount(); ++row)
     {
-        if (data(index.siblingAtRow(row)).toString().split(", ").contains(value.toString()))
+        if (row != index.row() &&
+                !value.toString().isEmpty() &&
+                data(index.siblingAtRow(row)).toString().split(", ").contains(value.toString()))
         {
             // duplicate value
             return false;

@@ -1239,10 +1239,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="keySequence">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
+           <widget class="QKeySequenceEdit" name="keySequence">
            </widget>
           </item>
           <item row="2" column="2">
