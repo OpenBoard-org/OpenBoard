@@ -3298,7 +3298,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     <message>
         <location filename="../../src/tools/UBToolsManager.cpp" line="113"/>
         <source>Cache</source>
-        <translation>Zwischenspeicher</translation>
+        <translation>Guckloch</translation>
     </message>
     <message>
         <location filename="../../src/tools/UBToolsManager.cpp" line="73"/>
