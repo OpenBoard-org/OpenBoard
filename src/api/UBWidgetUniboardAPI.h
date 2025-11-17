@@ -87,6 +87,11 @@ class UBWidgetUniboardAPI : public QObject
 
     Q_PROPERTY(QString dropData MEMBER mDropData WRITE setDropData NOTIFY dropDataChanged SCRIPTABLE true)
 
+    /**
+     * Returns true if the application is currently in dark mode
+     */
+    Q_PROPERTY(bool isDarkMode READ isDarkMode NOTIFY themeChanged SCRIPTABLE true)
+
 public:
         UBWidgetUniboardAPI(std::shared_ptr<UBGraphicsScene> pScene, UBGraphicsWidgetItem *widget = 0);
         ~UBWidgetUniboardAPI();
@@ -264,6 +269,7 @@ public:
 
 signals:
         void dropDataChanged(const QString& data);
+        void themeChanged(bool isDark);
 
 private slots:
         void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
@@ -275,6 +281,8 @@ private:
         QString uuid() const;
 
         QString lang() const;
+
+        bool isDarkMode() const;
 
         void setDropData(const QString& data);
 

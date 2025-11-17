@@ -226,6 +226,8 @@
         <file>images/save.svg</file>
         <file>images/libpalette/social.png</file>
         <file>images/navig_arrow.png</file>
+        <file>darkTheme.qss</file>
+        <file>lightTheme.qss</file>
         <file>images/flags/ar.png</file>
         <file>images/flags/bg.png</file>
         <file>images/flags/ca.png</file>

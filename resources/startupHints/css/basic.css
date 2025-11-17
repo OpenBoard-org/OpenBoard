@@ -1,3 +1,21 @@
+:root {
+    /* Default light theme colors */
+    --bg-outer: #aaaaaa;
+    --bg-main: #eeeeee;
+    --border-color: #999999;
+    --separator-color: #ccc;
+    --text-color: #000000;
+}
+
+:root[data-theme="dark"] {
+    /* Dark theme colors */
+    --bg-outer: #555555;
+    --bg-main: #3a3a3a;
+    --border-color: #666666;
+    --separator-color: #555;
+    --text-color: #e0e0e0;
+}
+
 html, body{
     width: 100%;
     height: 100%;
@@ -8,17 +26,18 @@ html, body{
 }
 
 body{
-    background-color: #aaaaaa;
+    background-color: var(--bg-outer);
 }
 
 #main{
-    background-color: #eeeeee;
+    background-color: var(--bg-main);
+    color: var(--text-color);
     width: 99%;
     margin: 0px;
     margin-left:1px;
     padding: 0px;
     height: 99%;
-    border-color:#999999;
+    border-color: var(--border-color);
     border-width:2px;
     border-radius:10px;
     border-style:solid;
@@ -39,7 +58,7 @@ iframe{
 #separator{
     width: 96%;
     margin: 0 auto;
-    border: 2px solid #ccc;
+    border: 2px solid var(--separator-color);
 }
 
 #controls{

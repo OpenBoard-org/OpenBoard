@@ -9,24 +9,29 @@ QWidget#UBFeaturesNavigatorWidget,
 QWidget#PathList,
 QWidget#UBFeaturesCentralWidget
 {
-	background: #EEEEEE;
+	background: palette(window);
 	border-radius: 10px;
-	border: 2px solid #999999;
+	border: 2px solid palette(mid);
+	color: palette(window-text);
 }
 
 QTextEdit,
 QLineEdit,
 QComboBox#DockPaletteWidgetComboBox QAbstractItemView
 {
-    selection-background-color: lightgreen;
-    selection-color: black;
+    selection-background-color: palette(highlight);
+    selection-color: palette(highlighted-text);
+    background-color: palette(base);
+    color: palette(text);
 }
 
 
 QWidget#mAdditionalDataContainer
 {
 	border-radius: 10px;
-	border: 2px solid #999999;
+	border: 2px solid palette(mid);
+	background: palette(window);
+	color: palette(window-text);
 }
 
 QWidget#UBMediaVideoContainer
@@ -38,9 +43,10 @@ QWidget#UBMediaVideoContainer
 
 QWidget#UBLibWebView
 {
-	background: #EEEEEE;
+	background: palette(window);
 	border-radius : 10px;
-	border: 2px solid #999999;
+	border: 2px solid palette(mid);
+	color: palette(window-text);
 }
 
 QListView
@@ -55,17 +61,19 @@ QWidget#UBFeatureProperties
 
 QWebView#SearchEngineView
 {
-	background:white;
+	background: palette(base);
+	color: palette(text);
 }
 
 QColorDialog
 {
-	background: #EEEEEE;
+	background: palette(window);
+	color: palette(window-text);
 }
 
 QLabel#DockPaletteWidgetTitle
 {
-	color: #FFFFFF;
+	color: palette(bright-text);
 	font-size : 18px;
 	font-weight:bold;
 }
@@ -73,22 +81,24 @@ QLabel#DockPaletteWidgetTitle
 QLineEdit#UBTGLineEdit,
 QLabel#UBTGMediaDropMeLabel
 {
-	background: white;
-	border: 1 solid #999999;
+	background: palette(base);
+	color: palette(text);
+	border: 1 solid palette(mid);
 	border-radius : 10px;
 	padding: 2px;
 }
 
 QComboBox#DockPaletteWidgetComboBox
 {
-	background: white;
+	background: palette(base);
+	color: palette(text);
 	border-radius : 10px;
 	padding: 2px;
 }
 
 QComboBox#DockPaletteWidgetComboBox:drop-down
 {
-	background: white;
+	background: palette(base);
 	width:1px;
 	height:1px;
 	margin: 9px 5px 0px 0px;
@@ -97,8 +107,8 @@ QComboBox#DockPaletteWidgetComboBox:drop-down
 QComboBox#DockPaletteWidgetComboBox::down-arrow
 {
 	image:url(:/images/down_arrow.png);
-	background:#BBBBBB;
-	border: 2px solid #999999;
+	background: palette(button);
+	border: 2px solid palette(mid);
 	height:16px;
 	width:16px;
 	padding: 0px 0px 0px 0px;
@@ -108,8 +118,8 @@ QComboBox#DockPaletteWidgetComboBox::down-arrow
 
 QPushButton#DockPaletteWidgetButton
 {
-	background-color : #DDDDDD;
-	color : #555555;
+	background-color : palette(button);
+	color : palette(button-text);
 	border-radius : 6px;
 	padding : 5px;
 	font-weight : bold;
@@ -118,14 +128,15 @@ QPushButton#DockPaletteWidgetButton
 
 QTextEdit#TeacherStudentBox
 {
-	background: white;
-	border: 2px solid #999999;
+	background: palette(base);
+	color: palette(text);
+	border: 2px solid palette(mid);
 	border-radius: 10px;
 }
 
 QPushButton#DockPaletteWidgetButton::checked
 {
-	background-color: #BBBBBB;
+	background-color: palette(light);
 }
 
 QScrollBar::vertical
@@ -136,9 +147,9 @@ QScrollBar::vertical
 
 QScrollBar::handle:vertical
 {
-	border: 2px solid #999999;
+	border: 2px solid palette(mid);
 	border-radius:6px;
-	background:#BBBBBB;
+	background: palette(button);
 	min-height:40px;
 }
 
@@ -146,8 +157,8 @@ QScrollBar::add-line:vertical
 {
 	image:url(:/images/down_arrow.png);
 	height:16px;
-	background:#BBBBBB;
-	border:2px solid #999999;
+	background: palette(button);
+	border: 2px solid palette(mid);
 	border-radius:6px;
 	margin: 1px 1px 4px 1px;
 	subcontrol-position:bottom;
@@ -158,8 +169,8 @@ QScrollBar::sub-line:vertical
 {
 	image:url(:/images/up_arrow.png);
 	height:16px;
-	background:#BBBBBB;
-	border:2px solid #999999;
+	background: palette(button);
+	border: 2px solid palette(mid);
 	border-radius:6px;
 	margin: 2px 1px 1px 1px;
 	subcontrol-position:top;
@@ -179,9 +190,9 @@ QScrollBar::horizontal
 
 QScrollBar::handle:horizontal
 {
-	border: 2px solid #999999;
+	border: 2px solid palette(mid);
 	border-radius:6px;
-	background:#BBBBBB;
+	background: palette(button);
 	min-width:40px;
 }
 
@@ -189,8 +200,8 @@ QScrollBar::add-line:horizontal
 {
 	image:url(:/images/right_arrow.png);
 	width:16px;
-	background:#BBBBBB;
-	border:2px solid #999999;
+	background: palette(button);
+	border: 2px solid palette(mid);
 	border-radius:6px;
 	margin: 1px 1px 1px 4px;
 	subcontrol-position:right;
@@ -201,8 +212,8 @@ QScrollBar::sub-line:horizontal
 {
 	image:url(:/images/left_arrow.png);
 	width:16px;
-	background:#BBBBBB;
-	border:2px solid #999999;
+	background: palette(button);
+	border: 2px solid palette(mid);
 	border-radius:6px;
 	margin: 1px 2px 1px 1px;
 	subcontrol-position:left;
@@ -216,40 +227,40 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
 
 QSlider::handle::horizontal
 {
-	background-color:#EEEEEE;
+	background-color: palette(button);
 	margin-top:-5px;
 	margin-bottom:-5px;
 	height:20px;
 	width:18px;
 	border-radius:10px;
-	border:1px solid #555555;
+	border: 1px solid palette(dark);
 }
 
 QSlider::groove::horizontal
 {
-	background-color:#999999;
+	background-color: palette(mid);
 	height:10px;
 	border-radius:5px;
-	border:1px solid #555555;
+	border: 1px solid palette(dark);
 }
 
 QLabel#UBTGEditionDocumentTitle
 {
-    color: black;
+    color: palette(text);
     font-size : 14px;
     font-weight:bold;
 }
 
 QLabel#UBTGPresentationDocumentTitle
 {
-    color: black;
+    color: palette(text);
     font-size : 12px;
     font-weight:bold;
 }
 
 QLabel#UBTGPageNumberLabel
 {
-    color: black;
+    color: palette(text);
     font-size : 12px;
     font-weight:bold;
 }
@@ -257,13 +268,13 @@ QLabel#UBTGPageNumberLabel
 UBTGAdaptableText#UBTGEditionPageTitle,
 UBTGAdaptableText#UBTGEditionComment
 { 
-    color: black;
+    color: palette(text);
     font-size : 12px;
 }
 
 UBTGAdaptableText#UBTGPresentationPageTitle
 {
-    color: black;
+    color: palette(text);
     font-size:16px;
     font-weight:bold;
     border : none;
@@ -271,19 +282,59 @@ UBTGAdaptableText#UBTGPresentationPageTitle
 
 UBTGAdaptableText#UBTGPresentationComment
 {
-    color: black;
+    color: palette(text);
     font-size:12px;
     border : none;
 }
   
 QFrame#UBTGSeparator
 {
-    background-color: #cccccc;
+    background-color: palette(mid);
 }
 
 UBTGAdaptableText {
-   background-color: white; 
-   border:1 solid #999999; 
+   background-color: palette(base); 
+   color: palette(text);
+   border: 1 solid palette(mid); 
    border-radius : 10px; 
    padding: 2px;
+}
+
+/* Features Action Bar and Widgets */
+QWidget#UBFeaturesActionBar {
+    background: palette(window);
+    border-radius: 10px;
+    border: 2px solid palette(mid);
+}
+
+QLineEdit#FeaturesSearchBar {
+    background-color: palette(base);
+    color: palette(text);
+    border-radius: 10px;
+    padding: 2px;
+    border: 1px solid palette(mid);
+}
+
+QPushButton#UBFeatureItemButton {
+    background-color: palette(button);
+    color: palette(button-text);
+    border-radius: 6px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    border: 1px solid palette(mid);
+}
+
+QLabel#UBFeatureInfoLabel {
+    color: palette(mid);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QLineEdit[invalid="true"] {
+    background: #FFB3C8;
+}
+
+QLineEdit[invalid="false"] {
+    background: palette(base);
 }

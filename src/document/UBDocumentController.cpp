@@ -513,12 +513,14 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
     }
 
     if(role == Qt::BackgroundRole){
-        if (isConstant(index)) {
-            return QBrush(0xD9DFEB);
+        if (isConstant(index))
+        {
+            return QBrush(QApplication::palette().color(QPalette::AlternateBase));
         }
 
-        if (mHighLighted.isValid() && index == mHighLighted) {
-            return QBrush(0x6682B5);
+        if (mHighLighted.isValid() && index == mHighLighted)
+        {
+            return QBrush(QApplication::palette().color(QPalette::Highlight));
         }
     }
 
@@ -564,7 +566,7 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
             break;
         case (Qt::ForegroundRole) :
             if (isConstant(index)) {
-                return QColor(Qt::darkGray);
+                return QColor(QApplication::palette().color(QPalette::WindowText));
             }
             break;
         }

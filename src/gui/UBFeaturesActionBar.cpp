@@ -54,13 +54,12 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     , mpNewFolderBtn(NULL)
 {
     setObjectName(name);
-    setStyleSheet(QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;"));
 
     setAcceptDrops(true);
 
     mButtonGroup = new QButtonGroup(this);
     mSearchBar = new QLineEdit(this);
-    mSearchBar->setStyleSheet(QString("background-color:white; border-radius : 10px; padding : 2px;"));
+    mSearchBar->setObjectName("FeaturesSearchBar");
 
     mLayout = new QHBoxLayout();
     setLayout(mLayout);
@@ -331,7 +330,7 @@ UBActionButton::UBActionButton(QWidget *parent, QAction* action, const char *nam
     setDefaultAction(action);
     setIconSize(QSize(BUTTON_SIZE, BUTTON_SIZE));
     setToolButtonStyle(Qt::ToolButtonIconOnly);
-    setStyleSheet(QString("QToolButton {color: white; font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
+    setStyleSheet(QString("QToolButton {color: palette(button-text); font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
     setFocusPolicy(Qt::NoFocus);
 }
 

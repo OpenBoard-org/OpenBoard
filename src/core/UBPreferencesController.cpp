@@ -37,6 +37,7 @@
 #include "core/UBSetting.h"
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
+#include "core/UBThemeManager.h"
 
 #include "frameworks/UBStringUtils.h"
 
@@ -191,6 +192,11 @@ void UBPreferencesController::wire()
     });
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
 
+    connect(mPreferencesUI->themeComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
+        settings->appThemeMode->setInt(index);
+        UBThemeManager::instance()->applyUserThemePreference();
+    });
+
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
     connect(mPreferencesUI->displayBrowserPageCheckBox, SIGNAL(clicked(bool)), settings->webShowPageImmediatelyOnMirroredScreen, SLOT(setBool(bool)));
 
@@ -320,6 +326,7 @@ void UBPreferencesController::init()
     mPreferencesUI->emptyTrashDaysValue->setValue(settings->emptyTrashDaysValue->get().toInt());
 
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
+    mPreferencesUI->themeComboBox->setCurrentIndex(settings->appThemeMode->get().toInt());
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
