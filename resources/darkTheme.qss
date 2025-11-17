@@ -611,7 +611,7 @@ QToolButton#desktop-ubButtonGroupRight
 {
     background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #505050, stop: 1 #3a3a3a);
     color: #ffffff;
-    border-radius: 0px; /* Reset the global QToolButton border-radius */;
+    border-radius: 0px; /* Reset the global QToolButton border-radius */
     border-left: none;
     border-right: none;
 }
