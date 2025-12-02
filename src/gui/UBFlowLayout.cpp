@@ -156,7 +156,7 @@ QSize UBFlowLayout::minimumSize() const
 {
     QSize size;
 
-    for (const auto item : qAsConst(mItemList))
+    for (const auto item : std::as_const(mItemList))
     {
         size = size.expandedTo(item->minimumSize());
     }
@@ -175,7 +175,7 @@ int UBFlowLayout::doLayout(const QRect& rect, bool testOnly) const
     auto y = effectiveRect.y();
     int lineHeight = 0;
 
-    for (auto item : qAsConst(mItemList))
+    for (auto item : std::as_const(mItemList))
     {
         const auto wid = item->widget();
         auto spaceX = horizontalSpacing();

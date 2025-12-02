@@ -75,16 +75,21 @@ void UBPreferredBackgroundWidget::dragEnterEvent(QDragEnterEvent* event)
 
 void UBPreferredBackgroundWidget::dragMoveEvent(QDragMoveEvent* event)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const auto p = event->position().toPoint();
+#else
+    const auto p = event->pos();
+#endif
+
     // auto-scroll if widget is in a scroll area
     auto scrollArea = dynamic_cast<QScrollArea*>(parentWidget()->parentWidget());
 
     if (scrollArea)
     {
-        const auto p = event->pos();
         scrollArea->ensureVisible(p.x(), p.y(), 15);
     }
 
-    auto child = childAt(event->pos());
+    auto child = childAt(p);
 
     // walk up to a direct child
     while (child && child->parentWidget() != this)
@@ -117,7 +122,13 @@ void UBPreferredBackgroundWidget::dragMoveEvent(QDragMoveEvent* event)
 
 void UBPreferredBackgroundWidget::dropEvent(QDropEvent* event)
 {
-    auto child = childAt(event->pos());
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const auto p = event->position().toPoint();
+#else
+    const auto p = event->pos();
+#endif
+
+    auto child = childAt(p);
 
     // is the child the trash?
     if (child == mTrash)

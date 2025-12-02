@@ -154,7 +154,7 @@ void UBBackgroundManager::updateAction(QAction *action, bool dark) const
 
 const UBBackgroundRuling* UBBackgroundManager::background(const QUuid &uuid) const
 {
-    for (auto& background : qAsConst(mBackgrounds))
+    for (auto& background : std::as_const(mBackgrounds))
     {
         if (background.uuid() == uuid)
         {
@@ -167,7 +167,7 @@ const UBBackgroundRuling* UBBackgroundManager::background(const QUuid &uuid) con
 
 const UBBackgroundRuling* UBBackgroundManager::guessBackground(bool crossed, bool ruled, bool intermediateLines) const
 {
-    for (auto& background : qAsConst(mBackgrounds))
+    for (auto& background : std::as_const(mBackgrounds))
     {
         if (background.isCrossed() == crossed
                 && background.isRuled() == ruled
