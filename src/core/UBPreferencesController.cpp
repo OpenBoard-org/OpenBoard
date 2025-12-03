@@ -410,10 +410,12 @@ void UBPreferencesController::wire()
     // shortcut tab
     connect(mPreferencesUI->shortcutTableView, &QTableView::clicked, this, &UBPreferencesController::actionSelected);
     connect(mPreferencesUI->shortcutTableView, &QTableView::doubleClicked, this, [this](){
+        mPreferencesUI->recordButton->setChecked(true);
         mPreferencesUI->keySequence->setFocus();
     });
     connect(mPreferencesUI->filter, &QLineEdit::textChanged, this, [this](const QString& text){applyShortcutFilter(text);});
     connect(mPreferencesUI->recordButton, &QPushButton::clicked, this, &UBPreferencesController::recordingClicked);
+    connect(mPreferencesUI->recordButton, &QPushButton::toggled, mPreferencesUI->shortcutScrollArea, &QScrollArea::setDisabled);
     connect(mPreferencesUI->abortButton, &QPushButton::clicked, this, &UBPreferencesController::abortClicked);
     connect(mPreferencesUI->resetButton, &QPushButton::clicked, this, &UBPreferencesController::resetClicked);
     connect(mPreferencesUI->noCtrl, &QCheckBox::toggled, UBShortcutManager::shortcutManager(), &UBShortcutManager::ignoreCtrl);
@@ -903,7 +905,7 @@ void UBPreferencesController::recordingClicked(bool checked)
     }
 
     mPreferencesUI->shortcutTableView->setSelectionMode(checked ? QTableView::NoSelection : QTableView::SingleSelection);
-    mPreferencesUI->recordButton->setText(checked ? tr("Accept", "preferencesDialog") : tr("Record", "preferencesDialog"));
+//    mPreferencesUI->recordButton->setText(checked ? tr("Accept", "preferencesDialog") : tr("Record", "preferencesDialog"));
 }
 
 void UBPreferencesController::abortClicked()
@@ -912,7 +914,7 @@ void UBPreferencesController::abortClicked()
 
     mPreferencesUI->recordButton->setEnabled(true);
     mPreferencesUI->recordButton->setChecked(false);
-    mPreferencesUI->recordButton->setText(tr("Record", "preferencesDialog"));
+//    mPreferencesUI->recordButton->setText(tr("Record", "preferencesDialog"));
     mPreferencesUI->shortcutTableView->setSelectionMode(QTableView::SingleSelection);
     mPreferencesUI->report->setText("");
     mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
