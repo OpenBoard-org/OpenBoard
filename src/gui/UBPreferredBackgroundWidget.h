@@ -44,7 +44,6 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
-    void updateStyle() const;
     void savePreferrdBackgrounds() const;
 
 private slots:

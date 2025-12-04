@@ -1,6 +1,7 @@
 #include "UBBackgroundPalette.h"
 
 #include "gui/UBBackgroundManager.h"
+#include "gui/UBFlowLayout.h"
 #include "gui/UBMainWindow.h"
 
 UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
@@ -18,7 +19,6 @@ void UBBackgroundPalette::init()
     UBActionPalette::clearLayout();
     delete layout();
 
-
     m_customCloseProcessing = false;
 
     mButtonSize = QSize(32, 32);
@@ -28,10 +28,20 @@ void UBBackgroundPalette::init()
     mButtons.clear();
 
     mVLayout = new QVBoxLayout(this);
-    mTopLayout = new QHBoxLayout();
+    mTopLayout = new UBFlowLayout{0, 0, 0};
+    mTopLayout->setSizeConstraint(QLayout::SetMaximumSize);
     mBottomLayout = new QHBoxLayout();
 
-    mVLayout->addLayout(mTopLayout);
+    mButtonScrollArea = new QScrollArea{this};
+    mButtonScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    mButtonScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    mButtonScrollArea->setWidgetResizable(true);
+
+    QWidget* bgWidget = new QWidget{mButtonScrollArea};
+    bgWidget->setLayout(mTopLayout);
+    mButtonScrollArea->setWidget(bgWidget);
+
+    mVLayout->addWidget(mButtonScrollArea);
     mVLayout->addLayout(mBottomLayout);
 
     mSlider = new QSlider(Qt::Horizontal);
@@ -69,7 +79,7 @@ void UBBackgroundPalette::init()
     mBottomLayout->addWidget(mLightDarkModeSwitch);
     mBottomLayout->addSpacing(16);
 
-    updateLayout();
+    UBBackgroundPalette::updateLayout();
 }
 
 void UBBackgroundPalette::createActions()
@@ -89,12 +99,12 @@ void UBBackgroundPalette::createActions()
         delete action;
     }
 
-    // then add actions for the first 6 backgrounds from the background manager
+    // then add actions for the backgrounds from the background manager
     const QList<const UBBackgroundRuling*> backgrounds = UBApplication::boardController->backgroundManager()->backgrounds();
-    const auto dark = false; //UBApplication::boardController->activeScene()->isDarkBackground();
+    const auto dark = false;  // starting value, updated later with updateActions()
     const auto bgManager = UBApplication::boardController->backgroundManager();
 
-    for (int i = 0; i < backgrounds.size() && i < 6; ++i)
+    for (int i = 0; i < backgrounds.size(); ++i)
     {
         const auto background = backgrounds.at(i);
         auto action = bgManager->backgroundAction(*background, dark);
@@ -143,6 +153,16 @@ void UBBackgroundPalette::addAction(QAction* action)
 
     mTopLayout->addWidget(button);
     mActions << action;
+
+    const auto size = action->icon().availableSizes().at(0);
+
+    if (mButtonScrollArea->height() < size.height())
+    {
+        // make part of the second row visible
+        mButtonScrollArea->setFixedHeight(size.height() * 3 / 2);
+        // account for the width of the scrollbar
+        mButtonScrollArea->setFixedWidth(6 * size.width() + 40);
+    }
 }
 
 void UBBackgroundPalette::setActions(QList<QAction*> actions)

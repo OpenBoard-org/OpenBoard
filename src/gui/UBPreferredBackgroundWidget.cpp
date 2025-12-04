@@ -61,7 +61,6 @@ UBPreferredBackgroundWidget::UBPreferredBackgroundWidget(QWidget* parent)
     mTrash->setVisible(false);
 
     updateBackgroundButtons();
-    updateStyle();
 
     connect(UBApplication::boardController->backgroundManager(), &UBBackgroundManager::backgroundListChanged, this,
             &UBPreferredBackgroundWidget::updateBackgroundButtons);
@@ -116,7 +115,7 @@ void UBPreferredBackgroundWidget::dragMoveEvent(QDragMoveEvent* event)
     {
         auto plItem = mLayout->takeAt(pl);
         mLayout->insertItem(ix, plItem);
-        updateStyle();
+        mLayout->update();
     }
 }
 
@@ -174,7 +173,6 @@ void UBPreferredBackgroundWidget::dropEvent(QDropEvent* event)
     mLayout->removeWidget(mPlaceholder);
     mPlaceholder->setVisible(false);
     mTrash->setVisible(false);
-    updateStyle();
 
     event->acceptProposedAction();
 }
@@ -241,20 +239,6 @@ void UBPreferredBackgroundWidget::mousePressEvent(QMouseEvent* event)
     if (mDraggedItem && mDraggedItem->widget())
     {
         mDraggedItem->widget()->setVisible(true);
-    }
-}
-
-void UBPreferredBackgroundWidget::updateStyle() const
-{
-    for (int i = 0; i < mLayout->count(); ++i)
-    {
-        auto widget = mLayout->itemAt(i)->widget();
-        auto icon = widget->findChild<QLabel*>("backgroundIcon");
-
-        if (icon)
-        {
-            icon->setStyleSheet(i < 6 ? "background-color: #bbddff" : "");
-        }
     }
 }
 

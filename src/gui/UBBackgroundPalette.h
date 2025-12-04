@@ -8,6 +8,7 @@
 
 // forward
 class UBBackgroundManager;
+class UBFlowLayout;
 
 class UBBackgroundPalette : public UBActionPalette
 {
@@ -40,8 +41,9 @@ class UBBackgroundPalette : public UBActionPalette
 
     private:
         QVBoxLayout* mVLayout;
-        QHBoxLayout* mTopLayout;
+        UBFlowLayout* mTopLayout;
         QHBoxLayout* mBottomLayout;
+        QScrollArea* mButtonScrollArea;
 
         QSlider* mSlider;
         QLabel* mSliderLabel;
