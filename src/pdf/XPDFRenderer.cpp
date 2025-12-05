@@ -62,7 +62,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
 #if POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
-    mDocument = new PDFDoc(std::make_unique<GooString>(filename.toLocal8Bit()));
+    mDocument = new PDFDoc(std::make_unique<GooString>(filename.toLocal8Bit().constData()));
 #else
     mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
 #endif
