@@ -82,7 +82,6 @@ class UBBoardController : public UBDocumentContainer
 
         std::shared_ptr<UBGraphicsScene> activeScene() const;
         int activeSceneIndex() const;
-        void setActiveSceneIndex(int i);
         void closing();
 
         int currentPage() const;
@@ -181,7 +180,6 @@ class UBBoardController : public UBDocumentContainer
 
         void duplicateScene(int index);
         UBGraphicsItem *duplicateItem(UBItem *item);
-        void deleteScene(int index);
 
         bool cacheIsVisible() const {return mCacheWidgetIsEnabled;}
 
