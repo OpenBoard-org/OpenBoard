@@ -284,7 +284,13 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
             Q_ASSERT(qFuzzyCompare(xscale, yscale)); // Zoom equal in all axes expected.
             Q_ASSERT(xscale > 0.0); // Potential Div0 later if this assert fail.
 
-            qreal zoomRequested = xscale;
+            qreal devicePixelRatio = 1.0;
+            if (p && p->device())
+            {
+                devicePixelRatio = p->device()->devicePixelRatio();
+            }
+            qreal zoomRequested = xscale * devicePixelRatio;
+
             int zoomIndex = 0;
 
             // Choose a zoom which is superior or equivalent than the user choice (= no loss, upscaling).
