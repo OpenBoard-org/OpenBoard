@@ -937,7 +937,6 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        centerRestore();
         updateActionStates();
     }
 }
