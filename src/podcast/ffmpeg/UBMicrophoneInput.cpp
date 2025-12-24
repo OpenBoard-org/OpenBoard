@@ -291,6 +291,11 @@ void UBMicrophoneInput::onAudioInputStateChanged(QAudio::State state)
             }
             break;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 11, 0))
+        case QAudio::IdleState:
+            qWarning() << "Audio buffer full. Further input might not get processed.";
+            break;
+#endif
         // handle other states?
 
         default:
@@ -385,8 +390,10 @@ QString UBMicrophoneInput::getErrorString(QAudio::Error errorCode)
         case QAudio::IOError :
             return "Error reading from audio device";
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 11, 0))
         case QAudio::UnderrunError :
             return "Underrun error";
+#endif
 
         case QAudio::FatalError :
             return "Fatal error; audio device unusable";
