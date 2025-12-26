@@ -33,12 +33,8 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/UBSettings.h"
-#include "core/UBSetting.h"
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
-
-#include "board/UBDrawingController.h"
 
 #include "gui/UBMainWindow.h"
 
@@ -171,10 +167,6 @@ void UBDesktopPalette::minimizeMe(eMinimizedLocation location)
     setActions(actions);
 
     adjustSizeAndPosition();
-
-#ifdef UB_REQUIRES_MASK_UPDATE
-        emit refreshMask();
-#endif
 }
 
 //  Called when the user wants to maximize the palette
@@ -202,9 +194,6 @@ void UBDesktopPalette::maximizeMe()
 
     // Notify that the maximization has been done
     emit maximized();
-#ifdef UB_REQUIRES_MASK_UPDATE
-        emit refreshMask();
-#endif
 }
 
 void UBDesktopPalette::showEvent(QShowEvent *event)
