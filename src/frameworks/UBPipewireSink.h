@@ -23,6 +23,7 @@
 #pragma once
 
 #include <QObject>
+#include <QImage>
 
 #include <pipewire/pipewire.h>
 #include <spa/param/video/format.h>
