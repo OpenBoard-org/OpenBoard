@@ -31,12 +31,15 @@
 
 #include "UBSettings.h"
 #include "UBApplication.h"
+#include <QPainter>
+#include <QScreen>
 
 #include "gui/UBCircleFrame.h"
 
 #include "core/UBSetting.h"
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
+#include "frameworks/UBPlatformUtils.h"
 
 #include "frameworks/UBStringUtils.h"
 
@@ -136,6 +139,11 @@ void UBPreferencesController::adjustScreensPreferences()
         QVariant value = UBSettings::settings()->value(path);
         UBSettings::settings()->appScreenList->set(value);
         mPreferencesUI->screenList->loadScreenList(value.toStringList());
+    }
+
+    if (mPreferencesUI->screenLayoutPreview)
+    {
+        mPreferencesUI->screenLayoutPreview->refreshScreens();
     }
 }
 
@@ -795,7 +803,10 @@ void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusInEvent(focusEvent);
-    UBApplication::displayManager->showScreenLabels(true);
+    if (UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
+    {
+        UBApplication::displayManager->showScreenLabels(true);
+    }
 
     if (!mValidator)
     {
@@ -811,7 +822,8 @@ void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
 
-    if (focusEvent->reason() != Qt::ActiveWindowFocusReason)
+    if (focusEvent->reason() != Qt::ActiveWindowFocusReason &&
+        UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
     {
         UBApplication::displayManager->showScreenLabels(false);
     }
@@ -901,4 +913,86 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
 void UBStringListValidator::setValidationStringList(const QStringList &list)
 {
     mList = list;
+}
+
+UBScreenLayoutPreview::UBScreenLayoutPreview(QWidget* parent)
+    : QWidget(parent)
+{
+    setMinimumSize(QSize(480, 260));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (UBApplication::displayManager)
+    {
+        connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged,
+                this, &UBScreenLayoutPreview::refreshScreens);
+        connect(UBApplication::displayManager, &UBDisplayManager::screenLayoutChanged,
+                this, &UBScreenLayoutPreview::refreshScreens);
+    }
+
+    refreshScreens();
+}
+
+void UBScreenLayoutPreview::refreshScreens()
+{
+    mScreens = UBApplication::displayManager ? UBApplication::displayManager->availableScreens() : QList<QScreen*>();
+    update();
+}
+
+void UBScreenLayoutPreview::paintEvent(QPaintEvent* event)
+{
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    if (mScreens.isEmpty())
+    {
+        painter.drawText(rect(), Qt::AlignCenter, tr("No displays detected"));
+        return;
+    }
+
+    const int margin = 10;
+    QRectF availableRect = QRectF(rect()).adjusted(margin, margin, -margin, -margin);
+
+    QRectF bounding;
+    for (QScreen* screen : mScreens)
+    {
+        bounding = bounding.isNull() ? QRectF(screen->geometry()) : bounding.united(QRectF(screen->geometry()));
+    }
+
+    if (bounding.width() <= 0 || bounding.height() <= 0)
+    {
+        painter.drawText(rect(), Qt::AlignCenter, tr("Invalid display layout"));
+        return;
+    }
+
+    const qreal scale = std::min(availableRect.width() / bounding.width(),
+                                 availableRect.height() / bounding.height());
+
+    const QPointF offset = availableRect.topLeft() - bounding.topLeft() * scale;
+
+    const QColor screenColor = palette().alternateBase().color();
+    const QColor primaryColor = palette().mid().color();
+    const QColor borderColor = palette().mid().color().darker(120);
+    const QFont font = painter.font();
+
+    int index = 1;
+    for (QScreen* screen : mScreens)
+    {
+        QRectF g(screen->geometry());
+        QRectF mapped(g.topLeft() * scale + offset, g.size() * scale);
+
+        QColor fill = (screen == QGuiApplication::primaryScreen()) ? primaryColor : screenColor;
+        painter.setBrush(fill);
+        painter.setPen(QPen(borderColor, 1.0));
+        painter.drawRoundedRect(mapped, 6, 6);
+
+        painter.setPen(palette().windowText().color());
+        QFont f = font;
+        f.setBold(true);
+        painter.setFont(f);
+        painter.drawText(mapped, Qt::AlignCenter, QString::number(index));
+
+        ++index;
+    }
 }

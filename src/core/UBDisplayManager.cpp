@@ -120,7 +120,6 @@ void UBDisplayManager::createScreenLabels()
 
     const static QSize labelSize{300, 150};
     const auto screens = availableScreens();
-    QStringList availableScreenIndexes;
     int screenIndex = 1;
     QFont font;
     font.setPointSize(48);
@@ -128,7 +127,6 @@ void UBDisplayManager::createScreenLabels()
     for (QScreen* screen : screens)
     {
         QString index = QString::number(screenIndex);
-        availableScreenIndexes << index;
 
         QPushButton* button = new QPushButton{mLabelParent};
         button->setWindowFlag(Qt::FramelessWindowHint, true);
@@ -137,6 +135,7 @@ void UBDisplayManager::createScreenLabels()
         button->setWindowFlag(Qt::Window, true);
         button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
         button->setAttribute(Qt::WA_ShowWithoutActivating, true);
+
         button->setProperty("screenIndex", index);
 #ifdef QT_DEBUG
         button->setText(index + "(" + screen->name() + ")");
@@ -584,49 +583,17 @@ void UBDisplayManager::showScreenLabels(bool show)
 
     if (show)
     {
-        if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND)
+        for (auto label : mScreenLabels)
         {
-            constexpr int positioningDelay{300};
-
-            // workaround: wayland window positioning only works for fullscreen
-            for (auto label : mScreenLabels)
+            if (label)
             {
-                if (label)
-                {
-                    label->showFullScreen();
-                }
-
-                // we can however go back to normal later, when OS window positioning is finished
-                QTimer::singleShot(positioningDelay, this, [label](){
-                    if (label)
-                    {
-                        label->showNormal();
-                    }
-                });
-            }
-
-            auto parent = mScreenLabels.first()->parentWidget();
-
-            // make sure focus is on label's parent (screen list line edit) after labels are displayed
-            QTimer::singleShot(positioningDelay + 100, this, [parent](){
-                parent->activateWindow();
-            });
-        }
-        else
-        {
-            for (auto label : mScreenLabels)
-            {
-                if (label)
-                {
-                    label->showNormal();
-                }
+                label->showNormal();
             }
         }
     }
     else
     {
-        // workaround for wayland not supporting WindowDoesNotAcceptFocus
-        for (const auto label : mScreenLabels)
+        for (const auto &label : mScreenLabels)
         {
             if (label && label->rect().contains(QCursor::pos()))
             {

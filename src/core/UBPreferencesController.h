@@ -130,6 +130,7 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
 
 // forward
 class UBStringListValidator;
+class UBScreenLayoutPreview;
 
 class UBScreenListLineEdit : public QLineEdit
 {
@@ -172,6 +173,24 @@ public:
 
 private:
     QStringList mList;
+};
+
+class UBScreenLayoutPreview : public QWidget
+{
+    Q_OBJECT;
+
+public:
+    explicit UBScreenLayoutPreview(QWidget* parent = nullptr);
+    ~UBScreenLayoutPreview() override = default;
+
+public slots:
+    void refreshScreens();
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    QList<QScreen*> mScreens;
 };
 
 #endif /* UBPREFERENCESCONTROLLER_H_ */
