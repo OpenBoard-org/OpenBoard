@@ -230,6 +230,7 @@ public:
 #ifdef Q_OS_LINUX
         static SessionType sessionType();
         static void keepOnTop();
+        static void setAlwaysOnTop(WId windowId, const QString& title, bool enable);
 #else
         static SessionType sessionType() { return UNKNOWN; }
 #endif

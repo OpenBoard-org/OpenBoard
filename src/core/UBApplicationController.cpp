@@ -487,6 +487,8 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     UBDrawingController::drawingController()->setInDesktopMode(true);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+    mUninoteController->setAlwaysOnTop();
 }
 
 

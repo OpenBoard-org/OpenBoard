@@ -605,6 +605,22 @@ void UBPlatformUtils::keepOnTop()
     }
 }
 
+void UBPlatformUtils::setAlwaysOnTop(WId windowId, const QString& title, bool enable)
+{
+    if (sessionType() == WAYLAND)
+    {
+        QDBusInterface iface("org.gnome.Shell.Extensions.OpenBoard",
+                             "/org/gnome/Shell/Extensions/OpenBoard",
+                             "org.gnome.Shell.Extensions.OpenBoard",
+                             QDBusConnection::sessionBus());
+
+        if (iface.isValid())
+        {
+            iface.call("SetAlwaysOnTop", title, enable);
+        }
+    }
+}
+
 OnboardListener::OnboardListener(const QDBusConnection& connection, QObject* parent)
         : QObject{parent}
         , mConnection{connection}

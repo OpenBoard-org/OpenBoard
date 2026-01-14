@@ -177,7 +177,10 @@ void UBDockPalette::resizeEvent(QResizeEvent *event)
     switch(mOrientation)
     {
     case eUBDockOrientation_Right:
-        origin.setX(parentWidget()->width() - this->width());
+        if (parentWidget())
+        {
+            origin.setX(parentWidget()->width() - this->width());
+        }
         origin.setY(0);
         break;
     case eUBDockOrientation_Bottom:

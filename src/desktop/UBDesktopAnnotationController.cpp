@@ -306,6 +306,66 @@ UBBoardView* UBDesktopAnnotationController::drawingView()
     return mTransparentDrawingView;
 }
 
+void UBDesktopAnnotationController::setAlwaysOnTop()
+{
+    // Set always on top for desktop palette, transparent view and right palette under Wayland
+    if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND)
+    {
+        // Desktop main palette
+        if (mDesktopPalette)
+        {
+            //detaching desktop palette so it exists and is seen in the window system
+            mDesktopPalette->setParent(nullptr);
+            mDesktopPalette->setWindowTitle("OpenBoard Desktop Palette");
+            mDesktopPalette->setWindowFlag(Qt::Tool, true);
+            mDesktopPalette->setWindowFlag(Qt::FramelessWindowHint, true);
+            mDesktopPalette->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+            mDesktopPalette->show();
+            mDesktopPalette->raise();
+        }
+/*
+        if (mTransparentDrawingView)
+        {
+            //detaching desktop palette so it exists for and can be seen by the window system
+            mTransparentDrawingView->setParent(nullptr);
+            mTransparentDrawingView->setWindowTitle("DesktopView");
+            //mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
+            mTransparentDrawingView->setWindowFlag(Qt::Window, true);
+            //mTransparentDrawingView->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
+            //mTransparentDrawingView->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+            mTransparentDrawingView->show();
+            mTransparentDrawingView->raise();
+        }
+*/
+        QWidget *rightPal = UBApplication::boardController->paletteManager()->rightPalette();
+/*
+        if (rightPal)
+        {
+            //detaching desktop palette so it exists for and can be seen by the window system
+            // Position the right palette at the right edge of the desktop
+            QRect desktopRect = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
+            int rx = desktopRect.x() + desktopRect.width() - rightPal->width() - 5; // 5px margin
+            int ry = desktopRect.y() + 350;
+            qDebug() << "rx = " << rx;
+            rightPal->move(rx, ry);
+
+            rightPal->setParent(nullptr);
+            rightPal->setWindowTitle("OpenBoard Library Palette");
+            rightPal->setWindowFlag(Qt::Window, true);
+            rightPal->setWindowFlag(Qt::FramelessWindowHint, false);
+            rightPal->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+
+            rightPal->hide();
+            rightPal->raise();
+        }
+*/
+        QTimer::singleShot(300, [=]() {
+            UBPlatformUtils::setAlwaysOnTop(mTransparentDrawingView->winId(), mTransparentDrawingView->windowTitle(), true);
+            UBPlatformUtils::setAlwaysOnTop(rightPal->winId(), rightPal->windowTitle(), true);
+            UBPlatformUtils::setAlwaysOnTop(mDesktopPalette->winId(), mDesktopPalette->windowTitle(), true);
+        });
+    }
+}
 
 void UBDesktopAnnotationController::showWindow()
 {
@@ -353,7 +413,7 @@ void UBDesktopAnnotationController::showWindow()
 #endif // UB_REQUIRES_MASK_UPDATE
 
 #ifdef Q_OS_LINUX
-    UBPlatformUtils::keepOnTop();
+    UBPlatformUtils::keepOnTop();    
 #endif
 }
 
@@ -387,6 +447,12 @@ void UBDesktopAnnotationController::stylusToolChanged(int tool)
 #endif
 
     updateBackground();
+
+    qDebug() << "stylusToolChanged";
+    if (UBDrawingController::drawingController()->isInDesktopMode())
+    {
+        setAlwaysOnTop();
+    }
 }
 
 

@@ -71,6 +71,7 @@ class UBDesktopAnnotationController : public QObject
         UBBoardView *drawingView();
 
         void TransparentWidgetResized();
+        void setAlwaysOnTop();
 
 
     public slots:

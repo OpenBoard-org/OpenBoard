@@ -104,9 +104,12 @@ void UBRightPalette::resizeEvent(QResizeEvent *event)
  */
 void UBRightPalette::updateMaxWidth()
 {
-    setMaximumWidth((int)(parentWidget()->width() * 0.45));
-    setMaximumHeight(parentWidget()->height());
-    setMinimumHeight(parentWidget()->height());
+    if (parentWidget())
+    {
+        setMaximumWidth((int)(parentWidget()->width() * 0.45));
+        setMaximumHeight(parentWidget()->height());
+        setMinimumHeight(parentWidget()->height());
+    }
 }
 
 bool UBRightPalette::switchMode(eUBDockPaletteWidgetMode mode)

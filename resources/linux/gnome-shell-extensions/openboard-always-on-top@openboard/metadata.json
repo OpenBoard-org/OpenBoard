@@ -1,0 +1,7 @@
+{
+  "uuid": "openboard-always-on-top@openboard",
+  "name": "OpenBoard AlwaysOnTop",
+  "description": "Allow OpenBoard to request GNOME Shell to set palette always-on-top",
+  "shell-version": ["43", "44", "45", "46", "47", "48"],
+  "version": 1
+}

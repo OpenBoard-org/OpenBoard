@@ -33,6 +33,7 @@
 #include <QMap>
 #include <QPointer>
 #include <QPushButton>
+#include <QScreen>
 
 class UBBlackoutWidget;
 class UBBoardView;
