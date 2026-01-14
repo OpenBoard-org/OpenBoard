@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QRect>
 #include <QVariantMap>
+#include <QPixmap>
 
 // forward
 class QDBusInterface;
