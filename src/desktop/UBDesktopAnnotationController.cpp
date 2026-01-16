@@ -29,6 +29,9 @@
 
 #include "UBDesktopAnnotationController.h"
 
+#include <QClipboard>
+#include <QGuiApplication>
+
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
@@ -185,6 +188,26 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
     delete mTransparentDrawingView;
+}
+
+QPixmap UBDesktopAnnotationController::clipboardScreenshot()
+{
+    QClipboard* clipboard = QGuiApplication::clipboard();
+
+    if (!clipboard)
+    {
+        return {};
+    }
+
+    const QImage image = clipboard->image();
+
+    if (!image.isNull())
+    {
+        return QPixmap::fromImage(image);
+    }
+
+    const QPixmap pixmap = clipboard->pixmap();
+    return pixmap.isNull() ? QPixmap{} : pixmap;
 }
 
 void UBDesktopAnnotationController::updateColors(){
@@ -449,19 +472,32 @@ void UBDesktopAnnotationController::customCapture()
         mDesktopPalette->disappearForCapture();
 
         getScreenPixmap([this](QPixmap pixmap){
+            auto finishCapture = [this](){
+                mDesktopPalette->appear();
+                mCustomCaptureClicked = false;
+                mIsFullyTransparent = false;
+                updateBackground();
+            };
+
+            QPixmap screenshot = pixmap.isNull() ? clipboardScreenshot() : pixmap;
+
+            // On Wayland with xdg-desktop-portal, the user already chose the area.
+            if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND && !screenshot.isNull())
+            {
+                emit imageCaptured(screenshot, false);
+                finishCapture();
+                return;
+            }
+
             UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
 
-            if (customCaptureWindow.execute(pixmap) == QDialog::Accepted)
+            if (customCaptureWindow.execute(screenshot) == QDialog::Accepted)
             {
                 QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
                 emit imageCaptured(selectedPixmap, false);
             }
 
-            mDesktopPalette->appear();
-
-            mCustomCaptureClicked = false;
-            mIsFullyTransparent = false;
-            updateBackground();
+            finishCapture();
         });
     }
 }
@@ -476,13 +512,23 @@ void UBDesktopAnnotationController::screenCapture()
     mDesktopPalette->disappearForCapture();
 
     getScreenPixmap([this](QPixmap pixmap){
-        mDesktopPalette->appear();
+        auto finishCapture = [this](){
+            mDesktopPalette->appear();
+            mIsFullyTransparent = false;
+            updateBackground();
+        };
 
-        emit imageCaptured(pixmap, false);
+        QPixmap screenshot = pixmap.isNull() ? clipboardScreenshot() : pixmap;
 
-        mIsFullyTransparent = false;
+        if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND && !screenshot.isNull())
+        {
+            emit imageCaptured(screenshot, false);
+            finishCapture();
+            return;
+        }
 
-        updateBackground();
+        emit imageCaptured(screenshot, false);
+        finishCapture();
     });
 }
 

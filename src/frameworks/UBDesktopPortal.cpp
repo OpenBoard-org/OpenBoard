@@ -22,9 +22,17 @@
 
 #include "UBDesktopPortal.h"
 
+#include <QDBusArgument>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDBusUnixFileDescriptor>
+#include <QDBusConnection>
+#include <QDBusMetaType>
+#include <QDBusVariant>
+#include <QGuiApplication>
+#include <QClipboard>
+#include <QTimer>
+#include <QMetaType>
 #include <QDebug>
 
 #include "board/UBBoardView.h"
@@ -42,6 +50,77 @@ enum : uint { TRANSIENT = 0, APPLICATION = 1, PERSISTENT = 2 } PersistMode;
 Q_DECLARE_METATYPE(UBDesktopPortal::Stream)
 Q_DECLARE_METATYPE(UBDesktopPortal::Streams)
 
+QPixmap UBDesktopPortal::loadScreenshotFromUri(const QUrl& uri) const
+{
+    if (uri.isEmpty())
+    {
+        return {};
+    }
+
+    QFile file(uri.toLocalFile());
+
+    if (!file.exists())
+    {
+        qDebug() << "Screenshot image file does not exist" << uri;
+        return {};
+    }
+
+    QPixmap pixmap{file.fileName()};
+    file.remove();
+    qDebug() << "DesktopPortal: loaded screenshot file" << uri;
+    return pixmap;
+}
+
+QPixmap UBDesktopPortal::readClipboardScreenshot() const
+{
+    auto clipboard = QGuiApplication::clipboard();
+
+    if (!clipboard)
+    {
+        qDebug() << "DesktopPortal: no clipboard available";
+        return {};
+    }
+
+    QImage cbImage = clipboard->image();
+
+    if (!cbImage.isNull())
+    {
+        QPixmap fromImage = QPixmap::fromImage(cbImage);
+        qDebug() << "DesktopPortal: clipboard image found" << "size" << fromImage.size();
+        return fromImage;
+    }
+
+    QPixmap cbPixmap = clipboard->pixmap();
+
+    if (!cbPixmap.isNull())
+    {
+        qDebug() << "DesktopPortal: clipboard pixmap found" << "size" << cbPixmap.size();
+        return cbPixmap;
+    }
+
+    qDebug() << "DesktopPortal: clipboard empty";
+    return {};
+}
+
+
+QDBusArgument &operator << (QDBusArgument &arg, const UBDesktopPortal::Stream &stream)
+{
+    arg.beginStructure();
+    arg << stream.node_id;
+
+    arg.beginMap(qMetaTypeId<QString>(), qMetaTypeId<QDBusVariant>());
+    for (auto it = stream.map.cbegin(); it != stream.map.cend(); ++it)
+    {
+        arg.beginMapEntry();
+        arg << it.key() << QDBusVariant(it.value());
+        arg.endMapEntry();
+    }
+    arg.endMap();
+
+    arg.endStructure();
+    return arg;
+}
+
 const QDBusArgument &operator >> (const QDBusArgument &arg, UBDesktopPortal::Stream &stream)
 {
     arg.beginStructure();
@@ -52,11 +131,11 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, UBDesktopPortal::Str
     while (!arg.atEnd())
     {
         QString key;
-        QVariant value;
+        QDBusVariant value;
         arg.beginMapEntry();
         arg >> key >> value;
         arg.endMapEntry();
-        stream.map.insert(key, value);
+        stream.map.insert(key, value.variant());
     }
 
     arg.endMap();
@@ -65,9 +144,37 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, UBDesktopPortal::Str
     return arg;
 }
 
+QDBusArgument &operator << (QDBusArgument &arg, const UBDesktopPortal::Streams &streams)
+{
+    arg.beginArray(qMetaTypeId<UBDesktopPortal::Stream>());
+    for (const auto &stream : streams)
+    {
+        arg << stream;
+    }
+    arg.endArray();
+    return arg;
+}
+
+
+const QDBusArgument &operator >> (const QDBusArgument &arg, UBDesktopPortal::Streams &streams)
+{
+    streams.clear();
+    arg.beginArray();
+    while (!arg.atEnd())
+    {
+        UBDesktopPortal::Stream stream;
+        arg >> stream;
+        streams.append(stream);
+    }
+    arg.endArray();
+    return arg;
+}
+
 UBDesktopPortal::UBDesktopPortal(QObject* parent)
     : QObject{parent}
 {
+    qDBusRegisterMetaType<Stream>();
+    qDBusRegisterMetaType<Streams>();
 }
 
 UBDesktopPortal::~UBDesktopPortal()
@@ -81,11 +188,17 @@ UBDesktopPortal::~UBDesktopPortal()
 void UBDesktopPortal::grabScreen(QScreen* screen, const QRect& rect)
 {
     mScreenRect = screen->geometry();
+    mInteractiveScreenshot = false;
 
     if (!rect.isNull())
     {
         mScreenRect = rect.translated(mScreenRect.topLeft());
     }
+
+    qDebug() << "DesktopPortal: grabScreen"
+             << "screen" << (screen ? screen->name() : QStringLiteral("<null>"))
+             << "geom" << mScreenRect
+             << "rect" << rect;
 
     QDBusInterface screenshotPortal("org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop", "org.freedesktop.portal.Screenshot");
 
@@ -93,10 +206,21 @@ void UBDesktopPortal::grabScreen(QScreen* screen, const QRect& rect)
     {
         QMap<QString, QVariant> options;
         options["handle_token"] = createRequestToken();
+        options["interactive"] = true; // required by some portals (e.g. GNOME)
+        mInteractiveScreenshot = true;
         QDBusReply<QDBusObjectPath> reply = screenshotPortal.call("Screenshot", "", options);
         QDBusObjectPath objectPath = reply.value();
         QString path = objectPath.path();
-        QDBusConnection::sessionBus().connect(
+        qDebug() << "DesktopPortal: Screenshot reply valid" << reply.isValid() << "path" << path << "options" << options;
+
+        if (!reply.isValid())
+        {
+            qWarning() << "DesktopPortal: Screenshot call failed" << reply.error();
+            emit screenGrabbed(QPixmap{});
+            return;
+        }
+
+        const bool connected = QDBusConnection::sessionBus().connect(
                             "",
                             path,
                             "org.freedesktop.portal.Request",
@@ -104,6 +228,11 @@ void UBDesktopPortal::grabScreen(QScreen* screen, const QRect& rect)
                             "ua{sv}",
                             this,
                             SLOT(handleScreenshotResponse(uint,QMap<QString,QVariant>)));
+
+        if (!connected)
+        {
+            qWarning() << "DesktopPortal: failed to connect to screenshot response signal";
+        }
     }
     else
     {
@@ -168,23 +297,62 @@ void UBDesktopPortal::stopScreenCast()
 
 void UBDesktopPortal::handleScreenshotResponse(uint code, const QMap<QString, QVariant>& results)
 {
-    QUrl uri(results["uri"].toUrl());
-    QFile file(uri.toLocalFile());
+    qDebug() << "DesktopPortal: handleScreenshotResponse code" << code << "results" << results;
 
-    if (!file.exists())
+    QPixmap pixmap;
+    auto finalizeScreenshot = [this](const QPixmap& pixmap){
+        if (pixmap.isNull())
+        {
+            qDebug() << "DesktopPortal: screenshot pixmap still null, aborting";
+            emit screenGrabbed(QPixmap{});
+            return;
+        }
+
+        QPixmap screenshot;
+
+        if (mInteractiveScreenshot)
+        {
+            // portal already applied the selection
+            screenshot = pixmap;
+        }
+        else
+        {
+            QRect targetRect = mScreenRect;
+            targetRect.moveTo(0, 0); // portal images are local to the grab
+            targetRect &= pixmap.rect();
+            screenshot = pixmap.copy(targetRect);
+            qDebug() << "DesktopPortal: cropping screenshot" << "targetRect" << targetRect;
+        }
+
+        qDebug() << "DesktopPortal: emitting screenshot"
+                 << "interactive" << mInteractiveScreenshot
+                 << "source size" << pixmap.size()
+                 << "final size" << screenshot.size();
+        emit screenGrabbed(screenshot);
+    };
+
+    const QUrl uri(results.value("uri").toUrl());
+    qDebug() << "DesktopPortal: screenshot URI" << uri;
+
+    pixmap = loadScreenshotFromUri(uri);
+
+    // GNOME may only place the shot on the clipboard when capturing a full screen
+    if (pixmap.isNull())
     {
-        qDebug() << "Screenshot image file does not exist";
-        emit screenGrabbed(QPixmap{});
+        pixmap = readClipboardScreenshot();
+    }
+
+    if (pixmap.isNull())
+    {
+        // Clipboard might not be populated yet on some portals (e.g. GNOME fullscreen); retry shortly.
+        QTimer::singleShot(500, this, [this, finalizeScreenshot](){
+            QPixmap delayed = readClipboardScreenshot();
+            finalizeScreenshot(delayed);
+        });
         return;
     }
 
-    QPixmap pixmap{file.fileName()};
-    file.remove();
-
-    // cut requested screen
-    QPixmap screenshot = pixmap.copy(mScreenRect);
-
-    emit screenGrabbed(screenshot);
+    finalizeScreenshot(pixmap);
 }
 
 void UBDesktopPortal::handleCreateSessionResponse(uint response, const QVariantMap& results)
@@ -192,6 +360,7 @@ void UBDesktopPortal::handleCreateSessionResponse(uint response, const QVariantM
     if (response != 0)
     {
         qWarning() << "Failed to create session: " << response << results;
+        mSession.clear();
         emit screenCastAborted();
         return;
     }
@@ -212,13 +381,17 @@ void UBDesktopPortal::handleCreateSessionResponse(uint response, const QVariantM
     options["types"] = MONITOR;
     options["cursor_mode"] = mWithCursor ? EMBEDDED : HIDDEN;
     options["handle_token"] = requestToken;
-    options["persist_mode"] = PERSISTENT;   // restore token valid across application restart
 
-    auto restoreToken = UBSettings::settings()->value("App/ScreenCastRestoreToken");
-
-    if (restoreToken.isValid())
+    if (mSupportsPersistentScreencast)
     {
-        options["restore_token"] = restoreToken;
+        options["persist_mode"] = PERSISTENT;   // restore token valid across application restart
+
+        auto restoreToken = UBSettings::settings()->value("App/ScreenCastRestoreToken");
+
+        if (restoreToken.isValid())
+        {
+            options["restore_token"] = restoreToken;
+        }
     }
 
     // connect before call
@@ -243,6 +416,7 @@ void UBDesktopPortal::handleSelectSourcesResponse(uint response, const QVariantM
     if (response != 0)
     {
         qWarning() << "Failed to select sources: " << response;
+        mSession.clear();
         emit screenCastAborted();
         return;
     }
@@ -278,8 +452,6 @@ void UBDesktopPortal::handleSelectSourcesResponse(uint response, const QVariantM
 
 void UBDesktopPortal::handleStartResponse(uint response, const QVariantMap& results)
 {
-    Q_UNUSED(results);
-
     // Show annotation drawing view in desktop mode after portal dialog was closed
     showGlassPane(true);
 
@@ -287,12 +459,25 @@ void UBDesktopPortal::handleStartResponse(uint response, const QVariantMap& resu
     {
         // The system Desktop dialog was canceled
         qDebug() << "Failed to start or cancel dialog: " << response;
+        mSession.clear();
         emit screenCastAborted();
         return;
     }
 
     // save restore token
-    UBSettings::settings()->setValue("App/ScreenCastRestoreToken", results.value("restore_token"));
+    const QVariant restoreTokenVariant = results.value("restore_token");
+    QString restoreToken;
+
+    if (restoreTokenVariant.canConvert<QDBusVariant>())
+    {
+        restoreToken = restoreTokenVariant.value<QDBusVariant>().variant().toString();
+    }
+    else
+    {
+        restoreToken = restoreTokenVariant.toString();
+    }
+
+    UBSettings::settings()->setValue("App/ScreenCastRestoreToken", restoreToken);
 
     // invalidate token when screen configuration changes
     static bool connected{false};
@@ -341,8 +526,17 @@ QDBusInterface* UBDesktopPortal::screencastPortal()
                                                "org.freedesktop.portal.ScreenCast");
         mScreencastPortal->setParent(this);
 
-        mRequestPath = "/org/freedesktop/portal/desktop/request/" + mScreencastPortal->connection().baseService().remove(0, 1).replace('.', '_') + "/";
-        qDebug() << "request path" << mRequestPath;
+        QString baseService = QDBusConnection::sessionBus().baseService();
+        baseService.remove(0, 1);
+        baseService.replace('.', '_');
+        mRequestPath = "/org/freedesktop/portal/desktop/request/" + baseService + "/";
+
+        const QVariant version = mScreencastPortal->property("version");
+        mScreencastPortalVersion = version.isValid() ? version.toUInt() : 0;
+        mSupportsPersistentScreencast = mScreencastPortalVersion >= 4;
+
+        qDebug() << "request path" << mRequestPath << "portal version" << mScreencastPortalVersion
+                 << "persistent support" << mSupportsPersistentScreencast;
     }
 
     if (mScreencastPortal->isValid())
