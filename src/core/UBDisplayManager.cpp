@@ -678,6 +678,11 @@ void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callb
 
     if (scr)
     {
+        if (!rect.isValid())
+        {
+            rect = QRect(QPoint(0, 0), scr->geometry().size());
+        }
+
         UBPlatformUtils::grabScreen(scr, callback, rect);
     }
     else
