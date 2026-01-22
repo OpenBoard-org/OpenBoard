@@ -457,6 +457,7 @@ void UBPodcastController::stop()
         if (mRecordingProgressTimerEventID != 0)
             killTimer(mRecordingProgressTimerEventID);
 
+#ifdef Q_OS_LINUX
         if (mPortal)
         {
             delete mPortal;
@@ -465,6 +466,7 @@ void UBPodcastController::stop()
             mPortal = nullptr;
             mPipewireSink = nullptr;
         }
+#endif
 
         sendLatestPixmapToEncoder();
 
