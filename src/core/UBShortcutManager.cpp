@@ -43,7 +43,7 @@ UBShortcutManager* UBShortcutManager::sShortcutManager = nullptr;
 
 UBShortcutManager::UBShortcutManager() : mIgnoreCtrl(false)
 {
-    actionsOfGroup(QObject::tr("Common"));
+    actionsOfGroup(tr("Common"));
 }
 
 UBShortcutManager *UBShortcutManager::shortcutManager()
@@ -132,6 +132,11 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
                    mainWindow->actionPaste,
                    mainWindow->actionQuit
                }, mainWindow);
+
+    // Don't allow to modify these shortcuts
+    mainWindow->actionCut->setProperty("builtIn", true);
+    mainWindow->actionCopy->setProperty("builtIn", true);
+    mainWindow->actionPaste->setProperty("builtIn", true);
 
     addActions(tr("Board"), {
                    mainWindow->actionUndo,
@@ -568,7 +573,9 @@ bool UBShortcutManager::checkData(const QModelIndex &index, const QVariant &valu
 
     for (int row = 0; row < rowCount(); ++row)
     {
-        if (data(index.siblingAtRow(row)).toString().split(", ").contains(value.toString()))
+        if (row != index.row() &&
+                !value.toString().isEmpty() &&
+                data(index.siblingAtRow(row)).toString().split(", ").contains(value.toString()))
         {
             // duplicate value
             return false;
