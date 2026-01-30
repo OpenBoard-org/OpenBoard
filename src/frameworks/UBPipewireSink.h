@@ -27,6 +27,7 @@
 
 #include <pipewire/pipewire.h>
 #include <spa/param/video/format.h>
+#include <QImage>
 
 
 class UBPipewireSink : public QObject
