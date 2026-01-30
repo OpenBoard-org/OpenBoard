@@ -110,15 +110,19 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     connect(UBApplication::webController, SIGNAL(activeWebPageChanged(WebView*)),
             this, SLOT(webActiveWebPageChanged(WebView*)));
 
-    connect(UBApplication::app(), SIGNAL(lastWindowClosed()),
-            this, SLOT(applicationAboutToQuit()));
-
+    connect(UBApplication::mainWindow, &UBMainWindow::closeEvent_Signal, this, &UBPodcastController::applicationAboutToQuit);
 }
 
 
 UBPodcastController::~UBPodcastController()
 {
-    // NOOP
+    QElapsedTimer elapsed;
+    elapsed.start();
+
+    while (mRecordingState != Stopped && elapsed.elapsed() < 1000)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 
