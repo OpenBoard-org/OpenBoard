@@ -327,9 +327,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
-    mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
-    mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
-    mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
+    enableEditingShortcuts(true);
 
     UBThumbnailUI::_private::initCatalog();
 
@@ -777,6 +775,22 @@ void UBApplication::cleanup()
     boardController = NULL;
     webController = NULL;
     documentController = NULL;
+}
+
+void UBApplication::enableEditingShortcuts(bool enable)
+{
+    if (enable)
+    {
+        mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
+        mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
+        mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
+    }
+    else
+    {
+        mainWindow->actionCopy->setShortcuts({});
+        mainWindow->actionPaste->setShortcuts({});
+        mainWindow->actionCut->setShortcuts({});
+    }
 }
 
 QString UBApplication::urlFromHtml(QString html)
