@@ -7,7 +7,33 @@
         <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript">
-            var current = 1, files_count = 0;
+            var current = 1, files_count = 0, currentTheme = 'light';
+
+            function applyTheme(isDark) {
+                // Update current theme and reload current page with ?theme=
+                currentTheme = isDark ? 'dark' : 'light';
+                // Reflect theme on outer frame (basic.css uses data-theme on :root)
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                if (typeof current !== 'undefined' && current > 0) {
+                    var lang = (window.sankore) ? sankore.lang.substr(0,2) : 'en';
+                    loadPage(lang, current);
+                }
+            }
+
+            function initTheme() {
+                if (window.sankore && typeof window.sankore.isDarkMode !== 'undefined') {
+                    // Initialize and listen for theme changes from C++
+                    applyTheme(window.sankore.isDarkMode);
+                    if (window.sankore.themeChanged && typeof window.sankore.themeChanged.connect === 'function') {
+                        window.sankore.themeChanged.connect(applyTheme);
+                    }
+                }
+            }
+
+            function loadPage(lang, pageNumber) {
+                $("#source").attr("src", "locales/" + lang + "/" + pageNumber + ".html?theme=" + currentTheme);
+            }
+            
             async function init(){
                 var lang = (window.sankore)?sankore.lang.substr(0,2):"en", tmp = false;
 
@@ -27,18 +53,14 @@
                 }
 
                 if(files_count > 0){
-
-                    // to have random hints
-                    //current = Math.floor((Math.random()*files_count)+1);
-
-                    $("#source").attr("src", "locales/" + lang + "/1.html");
+                    loadPage(lang, 1);
+                    
                     $("#right").click(function(){
                         if(current < files_count){
                             current++;
                         } else
                             current = 1;
-
-                        $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
+                        loadPage(lang, current);
                     })
 
                     $("#left").click(function(){
@@ -46,12 +68,10 @@
                             current--;
                         } else
                             current = files_count;
-
-                        $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
+                        loadPage(lang, current);
                     })
                 } else
                     $("#source").attr("src", "locales/" + lang + "/error.html");
-
             }
 
             function makeRequest(url) {
@@ -72,13 +92,15 @@
             function setTitle(){
                 var iframe = document.getElementById("source");
                 var title = iframe.contentWindow.document.getElementsByTagName("title");
-
                 if (title.length) {
                     $("#title span").html(current + "/" + files_count + ": " + title[0].innerHTML);
                 }
             }
 
             $(document).ready(function(){
+                // Ensure default before init (light by default)
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                initTheme();
                 init();
             });
         </script>

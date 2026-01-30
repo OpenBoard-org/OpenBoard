@@ -246,6 +246,7 @@ void UBSettings::init()
     appHideCheckForSoftwareUpdate = new UBSetting(this, "App", "HideCheckForSoftwareUpdate", false);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
+    appThemeMode = new UBSetting(this, "App", "ThemeMode", 0);
 
     // removed in version 1.7.0
     mUserSettings->remove("App/HideSwapDisplayScreens");

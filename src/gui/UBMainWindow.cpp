@@ -57,11 +57,6 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     mpDownloadWidget = new UBDownloadWidget();
     mpDownloadWidget->setWindowModality(Qt::ApplicationModal);
 
-    //Setting tooltip colors staticly, since they look not quite well on different color themes
-    QPalette toolTipPalette;
-    toolTipPalette.setColor(QPalette::ToolTipBase, QColor("#FFFFDC"));
-    toolTipPalette.setColor(QPalette::ToolTipText, Qt::black);
-    QToolTip::setPalette(toolTipPalette);
 
     QWidget* centralWidget = new QWidget(this);
     mStackedLayout = new QStackedLayout(centralWidget);

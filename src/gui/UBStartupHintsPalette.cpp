@@ -35,6 +35,7 @@
 #include <QWebChannel>
 #include "UBStartupHintsPalette.h"
 #include "core/UBApplication.h"
+#include "core/UBThemeManager.h"
 #include "web/UBWebController.h"
 
 #include "globals/UBGlobals.h"
@@ -49,6 +50,7 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
 {
     setObjectName("UBStartupHintsPalette");
     setFixedSize(800,600);
+    
     mLayout = new QVBoxLayout();
     mLayout->setContentsMargins(10,28,10,10);
     setLayout(mLayout);
@@ -67,6 +69,9 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
     mShowNextTime = new QCheckBox(tr("Visible next time"),this);
     mShowNextTime->setChecked(UBSettings::settings()->appStartupHintsEnabled->get().toBool());
     connect(mShowNextTime,SIGNAL(stateChanged(int)),this,SLOT(onShowNextTimeStateChanged(int)));
+    
+    connect(UBThemeManager::instance(), &UBThemeManager::themeChanged, mpSankoreAPI, &UBWidgetUniboardAPI::themeChanged);
+    
     mButtonLayout->addStretch();
     mButtonLayout->addWidget(mShowNextTime);
     hide();

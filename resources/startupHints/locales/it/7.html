@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
+﻿<!DOCTYPE html>
+<html><head>
     <meta charset="UTF-8">
     <title>Cattura Schermo</title>
+    
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <meta name="viewport" content="width=device-width" />
+     <script>
+         var params = new URLSearchParams(window.location.search);
+         var theme = params.get('theme') || 'light';
+         document.write('<link rel="stylesheet" href="css/' + theme + '.css" type="text/css">');
+     </script>
+     <meta name="viewport" content="width=device-width" />
 </head>
 
 <body>

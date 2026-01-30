@@ -258,6 +258,7 @@ class UBSettings : public QObject
         UBSetting* appHideCheckForSoftwareUpdate;
         UBSetting* appToolBarOrientationVertical;
         UBSetting* appPreferredLanguage;
+        UBSetting* appThemeMode;
         UBSetting* appRunInWindow;
 
         UBSetting* appIsInSoftwareUpdateProcess;
