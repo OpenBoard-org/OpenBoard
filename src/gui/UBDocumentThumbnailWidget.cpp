@@ -107,7 +107,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         drag->setPixmap(sceneItem->pixmap().scaledToWidth(100));
         drag->setHotSpot(QPoint(drag->pixmap().width()/2, drag->pixmap().height() / 2));
 
-        drag->exec(Qt::MoveAction);
+        drag->exec({Qt::MoveAction, Qt::CopyAction});
     }
 
     UBDocumentThumbnailsView::mouseMoveEvent(event);
