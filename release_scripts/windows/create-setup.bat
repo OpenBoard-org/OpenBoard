@@ -34,19 +34,24 @@ set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations\Qt6
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 
-REM call "%VS_BIN%\vcvars32.bat"
-
 echo %PATH%
 
 cd %PROJECT_ROOT%
 
-call "%INNO_EXE%" "%SCRIPT_PATH%\%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%"
+set /p VERSION= < build\win32\release\version
+REM remove the last character that is a space
+set VERSION=%VERSION: =%
 
-GOTO END
+echo "VERSION :  %VERSION%"
+
+call "%INNO_EXE%" "%SCRIPT_PATH%\%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%"
 
 :EXIT_WITH_ERROR
 echo "Error found"
+cd %SCRIPT_PATH%
 GOTO EOF
+
+GOTO END
 
 :END
 echo "%APPLICATION_NAME% setup created"

@@ -826,7 +826,6 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        centerRestore();
         updateActionStates();
     }
 }
@@ -2214,13 +2213,22 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
 {
     if (mActiveScene)
     {
-        QImage image(pSceneRect.width(), pSceneRect.height(), QImage::Format_ARGB32);
+        /*
+         * To get the pixel size on screen for the screenshot
+         * we use the system scale factor to align to the pixels
+         * and use an additional factor of two to provide more details
+         */
+        const auto scalingFactor = 2. * mSystemScaleFactor;
+        const auto pixelSize = pSceneRect.size() * scalingFactor;
+        QImage image(pixelSize.toSize(), QImage::Format_ARGB32);
         image.fill(Qt::transparent);
 
-        QRectF targetRect(0, 0, pSceneRect.width(), pSceneRect.height());
+        QRectF targetRect{{0, 0}, pixelSize};
         QPainter painter(&image);
         painter.setRenderHint(QPainter::SmoothPixmapTransform);
         painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::TextAntialiasing);
+        painter.setRenderHint(QPainter::LosslessImageRendering);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::NonScreen);
         mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
@@ -2231,8 +2239,7 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
 //        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
         mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheAllowed);
 
-
-        mPaletteManager->addItem(QPixmap::fromImage(image));
+        mPaletteManager->addItem(QPixmap::fromImage(image), QPointF{}, 1. / scalingFactor);
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
     }

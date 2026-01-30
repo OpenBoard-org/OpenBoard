@@ -458,8 +458,8 @@ linux-g++* {
     LIBS += -lX11
 
     greaterThan(QT_MAJOR_VERSION, 5) {
-        LIBS += -lquazip6
-        INCLUDEPATH += "/usr/include/quazip6"
+        LIBS += -lquazip1-qt6
+        INCLUDEPATH += "/usr/include/QuaZip-Qt6-1.4/quazip"
     } else {
         LIBS += -lquazip5
         INCLUDEPATH += "/usr/include/quazip5"

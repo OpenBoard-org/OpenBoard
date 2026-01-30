@@ -1317,10 +1317,8 @@ Do you wish to override the security check and continue ?   </source>
         <translation>內容格式不支援。</translation>
     </message>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="880"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1007"/>
         <source>Remove Page</source>
-        <translation>移除頁面</translation>
+        <translation type="vanished">移除頁面</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -1334,12 +1332,6 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/core/UBSceneCache.cpp" line="243"/>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="881"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1008"/>
-        <source>Are you sure you want to remove page %1 ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1389,19 +1381,19 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="569"/>
+        <location filename="../../src/core/UBApplication.cpp" line="573"/>
         <source>Page Size</source>
         <translation>頁面大小</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="590"/>
+        <location filename="../../src/core/UBApplication.cpp" line="594"/>
         <source>Podcast</source>
         <translation>Podcast</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="356"/>
-        <location filename="../../src/core/UBApplication.cpp" line="402"/>
-        <location filename="../../src/core/UBApplication.cpp" line="645"/>
+        <location filename="../../src/core/UBApplication.cpp" line="358"/>
+        <location filename="../../src/core/UBApplication.cpp" line="404"/>
+        <location filename="../../src/core/UBApplication.cpp" line="649"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1414,22 +1406,22 @@ Do you wish to override the security check and continue ?   </source>
         <translation>網頁</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>New update available, would you go to the web page ?</source>
         <translation>有可用更新，要前往網頁下載嗎？</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>No update available</source>
         <translation>目前並無更新</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>Update available</source>
         <translation>有可用更新</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
@@ -1450,55 +1442,55 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1198"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1294"/>
         <source>Downloading content %1 failed</source>
         <translation>目前 %1 下載失敗</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1207"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1303"/>
         <source>Download finished</source>
         <translation>下載完成</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1534"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1630"/>
         <source>Unknown tool type %1</source>
         <translation>未知工具類型 %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2723"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2791"/>
         <source>Add Item</source>
         <translation>新增項目</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2725"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2793"/>
         <source>All Supported (%1)</source>
         <translation>全部已支援 (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1579"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1675"/>
         <source>Unknown content type %1</source>
         <translation>未知內容類型 %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="865"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="927"/>
         <source>Page %1 deleted</source>
         <translation>已刪除第 %1 頁</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1338"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1383"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2328"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2364"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1434"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1479"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2396"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2432"/>
         <source>Add file operation failed: file copying error</source>
         <translation>新增檔案失敗：檔案複製錯誤</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="112"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="109"/>
         <source>Group</source>
         <translation>群組</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="113"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
         <source>Ungroup</source>
         <translation>取消群組</translation>
     </message>
@@ -1513,7 +1505,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>檔案已被儲存...</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="847"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="915"/>
         <source>Deleting page %1</source>
         <translation>正在刪除第 %1 頁</translation>
     </message>
@@ -1523,12 +1515,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation>顏色</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1547"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1643"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1574"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1670"/>
         <source>Could not find document.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1536,12 +1528,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="948"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="934"/>
         <source>Error Adding Image to Library</source>
         <translation>新增圖像至圖書館時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="943"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="929"/>
         <source>CapturedImage</source>
         <translation>圖像擷取</translation>
     </message>
@@ -1556,12 +1548,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardView</name>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1774"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1809"/>
         <source>Is it for Board or Widget ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1775"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1810"/>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1630,134 +1622,133 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2025"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1997"/>
         <source>New Folder</source>
         <translation>新檔案夾</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4181"/>
         <source>Page %1</source>
-        <translation>第 %1 頁</translation>
+        <translation type="vanished">第 %1 頁</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2197"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2169"/>
         <source>Add Folder of Images</source>
         <translation>新增圖像資料夾</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2198"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2170"/>
         <source>Add Images</source>
         <translation>新增圖像</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2199"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2171"/>
         <source>Add Pages from File</source>
         <translation>從檔案新增頁面</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2489"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2501"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3466"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2465"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2477"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3329"/>
         <source>Opening document in Board. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2507"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3472"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2483"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3335"/>
         <source>Document opened successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2566"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2537"/>
         <source>Duplicating Document %1</source>
         <translation>文件 %1 複製中</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2570"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2541"/>
         <source>Document %1 copied</source>
         <translation>文件 %1 已複製</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3275"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3228"/>
         <source>Open Supported File</source>
         <translation>開啟支援的檔案</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3290"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3156"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3243"/>
         <source>Importing file %1...</source>
         <translation>檔案 %1 匯入中...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3194"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3332"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3165"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3260"/>
         <source>Failed to import file ... </source>
         <translation>匯入檔案失敗...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3221"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
         <source>Import all Images from Folder</source>
         <translation>從檔案夾匯入所有圖像</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3873"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3874"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3894"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3895"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3729"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3730"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3750"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3751"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3888"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3889"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3900"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3901"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3744"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3745"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3756"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3757"/>
         <source>Empty</source>
         <translation>清空</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1933"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3848"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3849"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3869"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3870"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3905"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3906"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1909"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3725"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3726"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3761"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3762"/>
         <source>Trash</source>
         <translation>回收桶</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3574"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3439"/>
         <source>Open Document</source>
         <translation>開啟文件</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3630"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3495"/>
         <source>Add all Images to Document</source>
         <translation>新增所有圖像至文件</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3631"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3496"/>
         <source>All Images (%1)</source>
         <translation>所有圖像( %1 )</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3661"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3517"/>
         <source>Selection does not contain any image files!</source>
         <translation>所選內容並沒有圖像檔！</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3253"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3206"/>
         <source>Folder does not contain any image files</source>
         <translation>檔案夾並沒有圖像檔</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1934"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1910"/>
         <source>Untitled Documents</source>
         <translation>未命名文件</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2556"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2527"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation type="unfinished">
@@ -1773,132 +1764,116 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">您確定要刪除所選項目嗎？</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3575"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3440"/>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>檔案 &apos;%1&apos; 是由新版的 OpenBoard (%2) 建立的。開啟後可能會遺失資料。您確定要繼續嗎？</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4183"/>
         <source>Title page</source>
-        <translation>標題頁</translation>
+        <translation type="vanished">標題頁</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2613"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2584"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2614"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2585"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2698"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2669"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2699"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2675"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2676"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2722"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2693"/>
         <source>Emptying My Documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2723"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2694"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2759"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2730"/>
         <source>Emptying Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2760"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2731"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2776"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2747"/>
         <source>Moving %1 elements to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2777"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2748"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2785"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2756"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2786"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2757"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2792"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2763"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2793"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2764"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3145"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3116"/>
         <source>Open Supported File(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3404"/>
-        <source>Refreshing Document Thumbnails View (%1 pages)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3408"/>
-        <source>Refreshing Document Thumbnails View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3412"/>
-        <source>Document Thumbnails View up-to-date. Repainting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3972"/>
+        <location filename="../../src/document/UBDocument.cpp" line="64"/>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3973"/>
+        <location filename="../../src/document/UBDocument.cpp" line="66"/>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3979"/>
+        <location filename="../../src/document/UBDocument.cpp" line="73"/>
         <source>Remove page %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3980"/>
+        <location filename="../../src/document/UBDocument.cpp" line="74"/>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1906,57 +1881,57 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBDocumentManager</name>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="75"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
         <source>images</source>
         <translation>圖像</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="76"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
         <source>videos</source>
         <translation>影片</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="79"/>
         <source>objects</source>
         <translation>物件</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="80"/>
         <source>widgets</source>
         <translation>小工具</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="132"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="134"/>
         <source>All supported files (*.%1)</source>
         <translation>所有支援的檔案 (*.%1)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="216"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="219"/>
         <source>Creating %1 pages. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="338"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="350"/>
         <source>File %1 saved</source>
         <translation>已儲存檔案 %1 </translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="287"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="297"/>
         <source>Inserting page %1 of %2</source>
         <translation>頁面 %2 的 %1 插入中</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="230"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="234"/>
         <source>Import successful.</source>
         <translation>匯入成功。</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="295"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="305"/>
         <source>Import of file %1 successful.</source>
         <translation>檔案 %1 匯入成功。</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="248"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="255"/>
         <source>Importing file %1</source>
         <translation>匯入檔案 %1</translation>
     </message>
@@ -1975,39 +1950,39 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">接受</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="113"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="106"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="112"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="105"/>
         <source>Replace</source>
         <translation>取代</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="192"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="185"/>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="111"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="104"/>
         <source>Rename</source>
         <translation type="unfinished">重新命名</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="140"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="133"/>
         <source>Replace all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="141"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="134"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="142"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="135"/>
         <source>Skip all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2015,19 +1990,19 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="401"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="394"/>
         <source>Trash</source>
         <translation>回收桶</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="757"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="749"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>已複製 %1 個頁面</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="397"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="390"/>
         <source>My documents</source>
         <translation>我的檔案</translation>
     </message>
@@ -2035,7 +2010,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1713"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1690"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>已複製 %1 個頁面</numerusform>
@@ -2050,7 +2025,7 @@ Providing a new name will create a new document.</source>
         <translation type="vanished">您確定要刪除所選項目嗎？</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1657"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1650"/>
         <source>Copying page %1/%2</source>
         <translation>頁面 %1/%2 複製中</translation>
     </message>
@@ -2071,11 +2046,8 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBDraggableLivePixmapItem</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="593"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="596"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="598"/>
         <source>Page %0</source>
-        <translation type="unfinished">第 %0 頁</translation>
+        <translation type="obsolete">第 %0 頁</translation>
     </message>
 </context>
 <context>
@@ -2582,7 +2554,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1241"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1248"/>
         <source>Web</source>
         <translation>網路</translation>
     </message>
@@ -2590,7 +2562,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="830"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="837"/>
         <source>Loading ...</source>
         <translation>載入中...</translation>
     </message>
@@ -2644,19 +2616,20 @@ Providing a new name will create a new document.</source>
     <name>UBImportDocument</name>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="180"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="200"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="202"/>
         <source>Importing file %1...</source>
         <translation>檔案 %1 匯入中...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="219"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="194"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="221"/>
         <source>Import successful.</source>
         <translation>匯入成功。</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="188"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="207"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="213"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="209"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="215"/>
         <source>Import of file %1 failed.</source>
         <translation>檔案 %1 匯入失敗。</translation>
     </message>
@@ -2808,27 +2781,37 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBPersistenceManager</name>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="742"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="266"/>
+        <source>Retrieved - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="280"/>
+        <source>Broken - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="748"/>
         <source>(copy)</source>
         <translation>(複製)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>Document Repository Loss</source>
         <translation>文件資料庫遺失</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1161"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1172"/>
         <source>Renaming pages (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="231"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="227"/>
         <source>Retrieving all your documents (found : %1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3188,7 +3171,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>已產生縮圖 %1...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="107"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="128"/>
         <source>Loading thumbnails (%1 pages)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3196,8 +3179,7 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="219"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="261"/>
+        <location filename="../../src/gui/UBThumbnailTextItem.cpp" line="74"/>
         <source>Page %0</source>
         <translation>第 %0 頁</translation>
     </message>

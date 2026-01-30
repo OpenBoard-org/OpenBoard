@@ -13,13 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
+set -o pipefail
+
 
 SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$SCRIPT_PATH/../.."
 
 
 APPLICATION_NAME="OpenBoard"
-BASE_QT_DIR=/Users/dev/Qt/6.5.2/macos
+BASE_QT_DIR=/Users/dev/Qt/6.9.3/macos
 # Executables
 QMAKE=$BASE_QT_DIR/bin/qmake
 MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
@@ -91,7 +93,22 @@ DMG="$APPLICATION_NAME.dmg"
 
 VOLUME="/Volumes/$APPLICATION_NAME"
 APP="$PRODUCT_DIR/$APPLICATION_NAME.app"
-DSYM_NAME="$APPLICATION_NAME (r$SVN_REVISION).dSYM"
+
+VERSION_FILE="$PROJECT_ROOT/version.txt"
+
+if [ ! -f "$VERSION_FILE" ]; then
+    abort "version.txt not found"
+fi
+
+VERSION_MAJ=$(awk -F= '/VERSION_MAJ/   {gsub(/ /,"",$2); sub(/#.*/,"",$2); print $2}' "$VERSION_FILE")
+VERSION_MIN=$(awk -F= '/VERSION_MIN/   {gsub(/ /,"",$2); sub(/#.*/,"",$2); print $2}' "$VERSION_FILE")
+VERSION_PATCH=$(awk -F= '/VERSION_PATCH/ {gsub(/ /,"",$2); sub(/#.*/,"",$2); print $2}' "$VERSION_FILE")
+VERSION_TYPE=$(awk -F= '/VERSION_TYPE/  {gsub(/ /,"",$2); sub(/#.*/,"",$2); print $2}' "$VERSION_FILE")
+VERSION_BUILD=$(awk -F= '/VERSION_BUILD/ {gsub(/ /,"",$2); sub(/#.*/,"",$2); print $2}' "$VERSION_FILE")
+
+FULL_VERSION="$VERSION_MAJ.$VERSION_MIN.$VERSION_PATCH${VERSION_TYPE}-${VERSION_BUILD}"
+
+DSYM_NAME="$APPLICATION_NAME-$FULL_VERSION.dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$APPLICATION_NAME i386.sym"
 INFO_PLIST="$APP/Contents/Info.plist"
@@ -121,12 +138,29 @@ if [ "$1" == "pkg" ]; then
     exit 0
 fi
 
-notify "Creating dmg ..."
+notify "Creating a resizable DMG (2 GB) volume"
+# Unmount if already there
 umount "$VOLUME" 2> /dev/null
-$DMGUTIL --open --volume="$APPLICATION_NAME" "$DMG"
 
-#cp *.pdf "$VOLUME"
-cp -R "$APP" "$VOLUME"
+# Create a 2Go sparse image
+SPARSE_IMAGE="${DMG%.dmg}.sparseimage"
+hdiutil create -size 2g -type SPARSE -fs HFS+ -volname "$APPLICATION_NAME" "$SPARSE_IMAGE"
+
+# attach sparse image to volume
+hdiutil attach "$SPARSE_IMAGE" -mountpoint "$VOLUME"
+
+notify "Copying app to volume"
+rsync -a "$APP" "$VOLUME"/
+RSYNC_STATUS=$?
+
+if [ $RSYNC_STATUS -ne 0 ]; then
+    error "Copy failed (likely out of space). DMG will remain mounted for inspection."
+    error "Volume contents:"
+    ls -lh "$VOLUME"
+    error "Free space:"
+    df -h "$VOLUME"
+    exit 1
+fi
 ln -s /Applications "$VOLUME"
 
 $DMGUTIL --set --iconsize=96 --toolbar=false --icon=resources/macx/OpenBoard.icns "$VOLUME"
@@ -134,7 +168,20 @@ $DMGUTIL --set --x=20 --y=60 --width=580 --height=440 "$VOLUME"
 $DMGUTIL --set --x=180 --y=120 "$VOLUME/`basename \"$APP\"`"
 $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
 
-$DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
+if mount | grep -q "$VOLUME"; then
+    notify "Closing DMG..."
+    $DMGUTIL --close --volume="$APPLICATION_NAME" "$SPARSE_IMAGE"
+else
+    warn "DMG volume already unmounted or copy failed — skipping close"
+fi
+
+# Convert sparseImage to compressed DMG
+DMG="$PRODUCT_DIR/$APPLICATION_NAME-$FULL_VERSION.dmg"
+notify "Converting sparseimage to compressed DMG..."
+hdiutil convert "$SPARSE_IMAGE" -format UDZO -o "$DMG"
+
+# Delete sparseImage
+rm "$SPARSE_IMAGE"
 
 PRODUCT_DIR="install/mac/"
 
@@ -142,12 +189,7 @@ if [ ! -d "${PRODUCT_DIR}" ]; then
     mkdir -p "${PRODUCT_DIR}"
 fi
 
-
-if [ "$1" == "1010" ]; then
-   mv "$DMG" "${PRODUCT_DIR}/OpenBoard_for_1010.dmg"
-else
-   mv "$DMG" "${PRODUCT_DIR}"
-fi
+mv "$DMG" "${PRODUCT_DIR}"
 
 notify "$APPLICATION_NAME is now packaged. You can submit this dmg file to notarization using notarize.sh"
 
