@@ -50,6 +50,7 @@
 #include "UBWidgetMessageAPI.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBDownloadManager.h"
+#include "gui/UBBackgroundManager.h"
 
 #include "core/memcheck.h"
 
@@ -234,10 +235,9 @@ void UBWidgetUniboardAPI::setBackground(bool pIsDark, bool pIsCrossed)
     auto scene = mScene.lock();
 
     if (scene) {
-        if (pIsCrossed)
-            scene->setBackground(pIsDark, UBPageBackground::crossed);
-        else
-            scene->setBackground(pIsDark, UBPageBackground::plain);
+        const auto backgroundManager = UBApplication::boardController->backgroundManager();
+        const auto background = backgroundManager->guessBackground(pIsCrossed, false, false);
+        scene->setSceneBackground(pIsDark, background);
     }
 }
 

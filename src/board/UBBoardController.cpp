@@ -68,6 +68,7 @@
 #include "domain/UBItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 
+#include "gui/UBBackgroundManager.h"
 #include "gui/UBFeaturesWidget.h"
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBMagnifer.h"
@@ -110,6 +111,8 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mActionUngroupText(tr("Ungroup"))
     , mAutosaveTimer(0)
 {
+    mBgManager = new UBBackgroundManager(this);
+
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
     int penColorIndex = UBSettings::settings()->penColorIndex();
@@ -1532,13 +1535,15 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         adjustDisplayViews();
 
         UBSettings::settings()->setDarkBackground(mActiveScene->isDarkBackground());
-        UBSettings::settings()->setPageBackground(mActiveScene->pageBackground());
+
+        if (mActiveScene->background())
+        {
+            UBSettings::settings()->setPageBackgroundUuid(mActiveScene->background()->uuid());
+        }
 
         freezeW3CWidgets(false);
 
         selectionChanged();
-
-        updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
         if (documentChange)
         {
@@ -1702,20 +1707,14 @@ int UBBoardController::autosaveTimeoutFromSettings() const
     return value * minute;
 }
 
-void UBBoardController::changeBackground(bool isDark, UBPageBackground pageBackground)
+void UBBoardController::setBackground(bool isDark, const UBBackgroundRuling* background)
 {
-    bool currentIsDark = mActiveScene->isDarkBackground();
-    UBPageBackground currentBackgroundType = mActiveScene->pageBackground();
+    UBSettings::settings()->setDarkBackground(isDark);
+    UBSettings::settings()->setPageBackgroundUuid(background ? background->uuid() : QUuid{});
 
-    if ((isDark != currentIsDark) || (currentBackgroundType != pageBackground))
-    {
-        UBSettings::settings()->setDarkBackground(isDark);
-        UBSettings::settings()->setPageBackground(pageBackground);
+    mActiveScene->setSceneBackground(isDark, background);
 
-        mActiveScene->setBackground(isDark, pageBackground);
-
-        emit backgroundChanged();
-    }
+    emit backgroundChanged();
 }
 
 void UBBoardController::boardViewResized(QResizeEvent* event)
@@ -2522,45 +2521,6 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
     mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
 
     toolWidget->remove();
-}
-
-
-void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground)
-{
-    switch (pageBackground) {
-
-        case UBPageBackground::crossed:
-            if (isDark)
-                mMainWindow->actionCrossedDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionCrossedLightBackground->setChecked(true);
-        break;
-
-        case UBPageBackground::ruled:
-        {
-            QAction* actionRuledBackground = nullptr;
-            if(UBSettings::settings()->isSeyesRuledBackground())
-                if(isDark)
-                    actionRuledBackground = mMainWindow->actionSeyesRuledDarkBackground;
-                else
-                    actionRuledBackground = mMainWindow->actionSeyesRuledLightBackground;
-            else
-                if(isDark)
-                    actionRuledBackground = mMainWindow->actionRuledDarkBackground;
-                else
-                    actionRuledBackground = mMainWindow->actionRuledLightBackground;
-            if(actionRuledBackground)
-                actionRuledBackground->setChecked(true);
-        }
-        break;
-
-        default:
-            if (isDark)
-                mMainWindow->actionPlainDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionPlainLightBackground->setChecked(true);
-        break;
-    }
 }
 
 

@@ -68,7 +68,7 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
-    mActionGroup = 0;
+    mActionGroup = nullptr;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
@@ -113,6 +113,27 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
             this, &UBActionPalette::actionChanged);
 
     return button;
+}
+
+QAction* UBActionPalette::removePaletteButton(UBActionPaletteButton* button)
+{
+    if (!button)
+    {
+        return nullptr;
+    }
+
+    QAction* action = button->defaultAction();
+
+    mButtons.removeAll(button);
+    mActions.removeAll(action);
+    mMapActionToButton.remove(action);
+
+    if (mActionGroup)
+    {
+        mActionGroup->removeAction(action);
+    }
+
+    return action;
 }
 
 void UBActionPalette::addAction(QAction* action)
@@ -165,10 +186,15 @@ void UBActionPalette::groupActions()
             action->setProperty("id", i);
             mActionGroup->addAction(action);
             ++i;
+
+            connect(action, &QAction::triggered, this, [this,action](bool checked){
+                if (checked)
+                {
+                    emit buttonGroupClicked(action);
+                }
+            });
         }
     }
-
-    connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
 }
 
 

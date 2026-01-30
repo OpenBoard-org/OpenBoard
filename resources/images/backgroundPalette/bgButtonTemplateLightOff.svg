@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:ns="&amp;#38;#38;#38;#38;ns_sfw;" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.2" x="0px" y="0px" width="128px" height="128px" viewBox="0 0 128 128" xml:space="preserve" id="svg2">
+  <defs id="defs37">
+    <linearGradient y2="101.9506" x2="63.4995" y1="24.5024" x1="63.4995" gradientUnits="userSpaceOnUse" id="SVGID_1_">
+      <stop id="stop8" style="stop-color:#FCFCFC" offset="0" />
+      <stop id="stop10" style="stop-color:#E6E6E6" offset="1" />
+      <a:midPointStop style="stop-color:#FCFCFC" offset="0" />
+      <a:midPointStop style="stop-color:#FCFCFC" offset="0.5" />
+      <a:midPointStop style="stop-color:#E6E6E6" offset="1" />
+    </linearGradient>
+    <linearGradient y2="77.0022" x2="66.1289" y1="104.8428" x1="66.1289" gradientUnits="userSpaceOnUse" id="SVGID_2_">
+      <stop id="stop17" style="stop-color:#E0E0E0" offset="0" />
+      <stop id="stop19" style="stop-color:#999999" offset="1" />
+      <a:midPointStop style="stop-color:#E0E0E0" offset="0" />
+      <a:midPointStop style="stop-color:#E0E0E0" offset="0.5" />
+      <a:midPointStop style="stop-color:#999999" offset="1" />
+    </linearGradient>
+  </defs>
+  <metadata id="metadata4">
+    <ns:sfw>
+      <ns:slices />
+      <ns:sliceSourceBounds x="8.255" y="22.924" width="110.488" height="82.884" bottomLeftOrigin="true" />
+    </ns:sfw>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="g1053">
+    <path d="M 104.906,102.468 H 22.091 c -6.19,0 -11.227,-5.038 -11.227,-11.231 V 36.028 c 0,-6.191 5.036,-11.227 11.227,-11.227 h 82.815 c 6.19,0 11.229,5.036 11.229,11.227 v 55.208 c 0,6.194 -5.038,11.232 -11.229,11.232 z" id="path12" style="fill:url(#SVGID_1_)" />
+    <g id="g1033" transform="translate(17,30)">
+      <g id="placeholder" fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"></g>
+    </g>
+    <path d="m 113.525,71.782 c 0,0 0.02,-0.042 0.052,-0.114 -0.018,0.041 -0.034,0.074 -0.052,0.114 z m 0,0 c -5.221,11.31 -14.791,12.181 -14.791,12.181 l -81.273,13.92 -3.946,4.193 c 2.36,1.872 5.337,3 8.577,3 h 82.815 c 7.629,0 13.837,-6.207 13.837,-13.84 V 71.782 Z" id="path21" style="fill:url(#SVGID_2_)" />
+    <path d="m 104.906,22.192 c 7.629,0 13.837,6.207 13.837,13.836 v 55.208 c 0,7.633 -6.208,13.84 -13.837,13.84 H 22.091 c -7.629,0 -13.836,-6.207 -13.836,-13.84 V 36.028 c 0,-7.629 6.207,-13.836 13.836,-13.836 h 82.815 m 0,5.22 H 22.091 c -4.751,0 -8.616,3.865 -8.616,8.616 v 55.208 c 0,4.753 3.865,8.619 8.616,8.619 h 82.815 c 4.751,0 8.617,-3.866 8.617,-8.619 V 36.028 c 0,-4.751 -3.866,-8.616 -8.617,-8.616 z" id="path23" style="fill:#ffffff" />
+    <path d="m 104.906,22.192 c 7.629,0 13.837,6.207 13.837,13.836 v 55.208 c 0,7.633 -6.208,13.84 -13.837,13.84 H 22.091 c -7.629,0 -13.836,-6.207 -13.836,-13.84 V 36.028 c 0,-7.629 6.207,-13.836 13.836,-13.836 h 82.815 m 0,3.48 H 22.091 c -5.71,0 -10.356,4.646 -10.356,10.356 v 55.208 c 0,5.713 4.646,10.359 10.356,10.359 h 82.815 c 5.711,0 10.357,-4.646 10.357,-10.359 V 36.028 c 10e-4,-5.71 -4.646,-10.356 -10.357,-10.356 z" id="path25" style="fill:#b0b9c4" />
+    <g id="Layer_1">
+      <linearGradient y2="78.9319" x2="63.4618" y1="92.851601" x1="68.681602" gradientUnits="userSpaceOnUse" id="SVGID_3_">
+        <stop id="stop29" style="stop-color:#657180" offset="0" />
+        <stop id="stop31" style="stop-color:#AFB9C5" offset="1" />
+        <a:midPointStop style="stop-color:#657180" offset="0" />
+        <a:midPointStop style="stop-color:#657180" offset="0.5" />
+        <a:midPointStop style="stop-color:#AFB9C5" offset="1" />
+      </linearGradient>
+      <path id="path33" d="M 96.125,87.346 C 79.1,91.045 17.461,97.883 17.461,97.883 L 88.003,71.217 c 0,0 20.494,17.185 25.521,-0.401 0.001,-0.001 -0.376,12.83 -17.399,16.53 z" style="fill:url(#SVGID_3_)" />
+    </g>
+  </g>
+</svg>
