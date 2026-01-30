@@ -79,6 +79,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
+    mTransparentDrawingView->setWindowTitle("DesktopView");
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     // didn't find the equivalent in Qt6
@@ -350,6 +351,10 @@ void UBDesktopAnnotationController::showWindow()
 #ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
 #endif // UB_REQUIRES_MASK_UPDATE
+
+#ifdef Q_OS_LINUX
+    UBPlatformUtils::keepOnTop();
+#endif
 }
 
 
@@ -442,25 +447,22 @@ void UBDesktopAnnotationController::customCapture()
         updateBackground();
 
         mDesktopPalette->disappearForCapture();
-        UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-        // need to show the window before execute it to avoid some glitch on windows.
 
-    #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-        UBPlatformUtils::showFullScreen(&customCaptureWindow);
-    #endif
+        getScreenPixmap([this](QPixmap pixmap){
+            UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
 
-        if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
-        {
-            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-            emit imageCaptured(selectedPixmap, false);
-        }
+            if (customCaptureWindow.execute(pixmap) == QDialog::Accepted)
+            {
+                QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+                emit imageCaptured(selectedPixmap, false);
+            }
 
+            mDesktopPalette->appear();
 
-        mDesktopPalette->appear();
-
-        mCustomCaptureClicked = false;
-        mIsFullyTransparent = false;
-        updateBackground();
+            mCustomCaptureClicked = false;
+            mIsFullyTransparent = false;
+            updateBackground();
+        });
     }
 }
 
@@ -473,21 +475,21 @@ void UBDesktopAnnotationController::screenCapture()
 
     mDesktopPalette->disappearForCapture();
 
-    QPixmap originalPixmap = getScreenPixmap();
+    getScreenPixmap([this](QPixmap pixmap){
+        mDesktopPalette->appear();
 
-    mDesktopPalette->appear();
+        emit imageCaptured(pixmap, false);
 
-    emit imageCaptured(originalPixmap, false);
+        mIsFullyTransparent = false;
 
-    mIsFullyTransparent = false;
-
-    updateBackground();
+        updateBackground();
+    });
 }
 
 
-QPixmap UBDesktopAnnotationController::getScreenPixmap()
+void UBDesktopAnnotationController::getScreenPixmap(std::function<void(QPixmap)> callback)
 {
-    return UBApplication::displayManager->grab(ScreenRole::Control);
+    UBApplication::displayManager->grab(ScreenRole::Control, callback);
 }
 
 

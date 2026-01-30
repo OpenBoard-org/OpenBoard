@@ -87,6 +87,7 @@ class UBPreferencesController : public QObject
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
         QString mScreenConfigurationPath;
+        QStringList mScreenList;
 
     protected slots:
 
@@ -149,11 +150,10 @@ signals:
     void screenListChanged(QStringList screenList);
 
 private slots:
-    void addScreen();
+    void addScreen(const QString& screenIndex);
     void onTextChanged(const QString& input);
 
 private:
-    QList<QPushButton*> mScreenLabels;
     UBStringListValidator* mValidator;
 };
 

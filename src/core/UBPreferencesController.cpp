@@ -158,7 +158,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
     connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
-        settings->appScreenList->set(screenList);
+        mScreenList = screenList;
 
         if (!mScreenConfigurationPath.isEmpty())
         {
@@ -361,6 +361,12 @@ void UBPreferencesController::close()
     UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
+
+    // screen settings
+    if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
+    {
+        UBSettings::settings()->appScreenList->set(mScreenList);
+    }
 
     mPreferencesWindow->accept();
 }
@@ -770,6 +776,10 @@ UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)
     , mValidator(nullptr)
 {
     connect(this, &QLineEdit::textChanged, this, &UBScreenListLineEdit::onTextChanged);
+    UBApplication::displayManager->setScreenLabelParent(this);
+
+    connect(UBApplication::displayManager, &UBDisplayManager::screenLabelPressed, this, &UBScreenListLineEdit::addScreen);
+    connect(this, &UBScreenListLineEdit::screenListChanged, UBApplication::displayManager, &UBDisplayManager::disableScreenLabels);
 }
 
 void UBScreenListLineEdit::setDefault()
@@ -785,85 +795,42 @@ void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusInEvent(focusEvent);
+    UBApplication::displayManager->showScreenLabels(true);
 
-    if (mScreenLabels.empty())
+    if (!mValidator)
     {
-        QStringList screenList = UBStringUtils::trimmed(text().split(','));
-
-        QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-        QStringList availableScreenIndexes;
-        int screenIndex = 1;
-        QFont font;
-        font.setPointSize(48);
-
-        for (QScreen* screen : screens)
-        {
-            QString index = QString::number(screenIndex);
-            availableScreenIndexes << index;
-
-            QPushButton* button = new QPushButton(this);
-            button->setWindowFlag(Qt::FramelessWindowHint, true);
-            button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
-            button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
-            button->setWindowFlag(Qt::Window, true);
-            button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
-            button->setAttribute(Qt::WA_ShowWithoutActivating, true);
-            button->setProperty("screenIndex", index);
-#ifdef QT_DEBUG
-            button->setText(index + "(" + screen->name() + ")");
-#else
-            button->setText(index);
-#endif
-            button->setFont(font);
-            button->move(screen->geometry().topLeft());
-            button->setMinimumSize(300, 150);
-            button->setDisabled(screenList.contains(index));
-            button->setCursor(Qt::PointingHandCursor);
-            button->show();
-
-            connect(button, &QPushButton::pressed, this, &UBScreenListLineEdit::addScreen);
-
-            mScreenLabels << button;
-            ++screenIndex;
-        }
-
-        if (!mValidator)
-        {
-            mValidator = new UBStringListValidator(this);
-            setValidator(mValidator);
-        }
-
-        mValidator->setValidationStringList(availableScreenIndexes);
+        mValidator = new UBStringListValidator(this);
+        setValidator(mValidator);
     }
+
+    mValidator->setValidationStringList(UBApplication::displayManager->availableScreenIndexes());
+
 }
 
 void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
-    qDeleteAll(mScreenLabels);
-    mScreenLabels.clear();
+
+    if (focusEvent->reason() != Qt::ActiveWindowFocusReason)
+    {
+        UBApplication::displayManager->showScreenLabels(false);
+    }
 }
 
-void UBScreenListLineEdit::addScreen()
+void UBScreenListLineEdit::addScreen(const QString& screenIndex)
 {
-    QPushButton* button = dynamic_cast<QPushButton*>(sender());
+    qDebug() << "addScreen" << screenIndex;
 
-    if (button)
+    QString list = text();
+    mValidator->fixup(list);
+
+    if (list.isEmpty())
     {
-        QString list = text();
-        mValidator->fixup(list);
-        QString screenIndex = button->property("screenIndex").toString();
-
-        if (list.isEmpty())
-        {
-            setText(screenIndex);
-        }
-        else
-        {
-            setText(list + "," + screenIndex);
-        }
-
-        button->setEnabled(false);
+        setText(screenIndex);
+    }
+    else
+    {
+        setText(list + "," + screenIndex);
     }
 }
 
@@ -871,30 +838,16 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
     const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : std::as_const(mScreenLabels))
-    {
-        button->setDisabled(screenList.contains(button->property("screenIndex").toString()));
-    }
-
-    if (input.isEmpty() || input.right(1) == ',')
-    {
-        // create and attach a new QCompleter
-        QStringList model;
-
-        for (QPushButton* button : std::as_const(mScreenLabels))
-        {
-            if (button->isEnabled())
-            {
-                model << input + button->property("screenIndex").toString();
-            }
-        }
-    }
-
     // user indication of acceptable input
     if (hasAcceptableInput())
     {
         setStyleSheet("");
         emit screenListChanged(screenList);
+
+        QTimer::singleShot(100, this, [this](){
+            // keep focus
+            activateWindow();
+        });
     }
     else
     {

@@ -553,17 +553,20 @@ void UBWebController::customCapture()
     mToolsCurrentPalette->setVisible(false);
     qApp->processEvents();
 
-    UBCustomCaptureWindow customCaptureWindow(mCurrentWebBrowser);
+    UBApplication::displayManager->grab(ScreenRole::Control, [this](QPixmap pixmap){
+        UBCustomCaptureWindow customCaptureWindow(mCurrentWebBrowser);
+        customCaptureWindow.show();
 
-    customCaptureWindow.show();
+        qDebug() << "before execute";
+        if (customCaptureWindow.execute(pixmap) == QDialog::Accepted)
+        {
+            qDebug() << "after execute";
+            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+            emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTab()->url());
+        }
 
-    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
-    {
-        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTab()->url());
-    }
-
-    mToolsCurrentPalette->setVisible(true);
+        mToolsCurrentPalette->setVisible(true);
+    });
 }
 
 
@@ -575,7 +578,9 @@ void UBWebController::toogleMirroring(bool checked)
 
 QPixmap UBWebController::getScreenPixmap()
 {
-    return UBApplication::displayManager->grab(ScreenRole::Control);
+    // FIXME implement
+    return {};
+//    return UBApplication::displayManager->grab(ScreenRole::Control);
 }
 
 

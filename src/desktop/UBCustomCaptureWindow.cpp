@@ -79,16 +79,8 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 {
     mWholeScreenPixmap = pScreenPixmap;
 
-    // necessary so that changing geometry really affects the widget
-    showNormal();
-    const auto geo = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
-    setGeometry(geo);
-
-    // for some Qt versions it is also necessary to do explicit move and resize
-    move(geo.topLeft());
-    resize(geo.size());
-
-    this->show();
+    setGeometry(UBApplication::displayManager->screenGeometry(ScreenRole::Desktop));
+    showFullScreen();
     setWindowOpacity(1.0);
 
     return exec();

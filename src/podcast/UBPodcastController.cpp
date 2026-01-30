@@ -30,7 +30,6 @@
 #include "UBPodcastController.h"
 
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBStringUtils.h"
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
@@ -65,6 +64,8 @@
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
     #include "ffmpeg/UBMicrophoneInput.h"
 #elif defined(Q_OS_LINUX)
+    #include "frameworks/UBDesktopPortal.h"
+    #include "frameworks/UBPipewireSink.h"
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
     #include "ffmpeg/UBMicrophoneInput.h"
 #endif
@@ -250,7 +251,9 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
 
                 startNextChapter();
 
-                if (mIsDesktopMode || UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
+                // no timer for wayland desktop mode
+                if ((mIsDesktopMode && UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND) ||
+                        UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
                 {
                     mScreenGrabingTimerEventID  = startTimer(1000 / mVideoFramesPerSecondAtStart);
                 }
@@ -454,6 +457,15 @@ void UBPodcastController::stop()
         if (mRecordingProgressTimerEventID != 0)
             killTimer(mRecordingProgressTimerEventID);
 
+        if (mPortal)
+        {
+            delete mPortal;
+            delete mPipewireSink;
+
+            mPortal = nullptr;
+            mPipewireSink = nullptr;
+        }
+
         sendLatestPixmapToEncoder();
 
         setRecordingState(Stopping);
@@ -631,6 +643,19 @@ void UBPodcastController::applicationMainModeChanged(UBApplicationController::Ma
 {
     mIsDesktopMode = false;
 
+#ifdef Q_OS_LINUX
+    if (mPortal)
+    {
+        qDebug() << "Stop ScreenCast";
+        mPortal->stopScreenCast();
+
+        delete mPipewireSink;
+        mPipewireSink = nullptr;
+
+        mInitialized = false;
+    }
+#endif
+
     if (pMode == UBApplicationController::Internet)
     {
         setSourceWidget(UBApplication::webController->controlView());
@@ -649,6 +674,44 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
     if (displayed)
     {
         setSourceWidget(UBApplication::displayManager->widget(ScreenRole::Desktop));
+
+#ifdef Q_OS_LINUX
+        if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND && !mPipewireSink)
+        {
+            // create a ScreenCast session
+            if (!mPortal)
+            {
+                mPortal = new UBDesktopPortal{this};
+
+                // delete portal if screencast was aborted
+                connect(mPortal, &UBDesktopPortal::screenCastAborted, this, [this](){
+                    mPortal->deleteLater();
+                    mPortal = nullptr;
+                });
+            }
+
+            if (mRecordingState == Recording)
+            {
+                mPipewireSink = new UBPipewireSink{this};
+
+                disconnect(mPortal, &UBDesktopPortal::streamStarted, mPortal, &UBDesktopPortal::stopScreenCast);
+                connect(mPortal, &UBDesktopPortal::streamStarted, mPipewireSink, &UBPipewireSink::start);
+                connect(mPipewireSink, &UBPipewireSink::gotImage, this, [this](QImage image){
+                    if (mPipewireSink)
+                    {
+                        encodeWidgetContent(QPixmap::fromImage(image));
+                    }
+                });
+            }
+            else
+            {
+                // stop stream, we just selected the screen
+                connect(mPortal, &UBDesktopPortal::streamStarted, mPortal, &UBDesktopPortal::stopScreenCast);
+            }
+
+            mPortal->startScreenCast(true);
+        }
+#endif
     }
     else
     {
@@ -748,7 +811,10 @@ void UBPodcastController::processScreenGrabingTimerEvent()
 
     if (mIsDesktopMode)
     {
-        widgetContent = UBApplication::displayManager->grab(ScreenRole::Control);
+        // TODO implement screencast based on screencast portal
+        UBApplication::displayManager->grab(ScreenRole::Control, [this](QPixmap pixmap){
+            encodeWidgetContent(pixmap);
+        });
     }
     else
     {
@@ -756,8 +822,12 @@ void UBPodcastController::processScreenGrabingTimerEvent()
         widgetContent = QPixmap(mSourceWidget->size());
         QPainter p(&widgetContent);
         mSourceWidget->render(&p);
+        encodeWidgetContent(widgetContent);
     }
+}
 
+void UBPodcastController::encodeWidgetContent(QPixmap pixmap)
+{
     QPainter p(&mLatestCapture);
 
     if (!mInitialized)
@@ -766,11 +836,11 @@ void UBPodcastController::processScreenGrabingTimerEvent()
         mInitialized = true;
     }
 
-    QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, widgetContent.width(), widgetContent.height()));
+    QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, pixmap.width(), pixmap.height()));
 
     p.setRenderHints(QPainter::Antialiasing);
     p.setRenderHints(QPainter::SmoothPixmapTransform);
-    p.drawPixmap(targetRect.left(), targetRect.top(), widgetContent.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    p.drawPixmap(targetRect.left(), targetRect.top(), pixmap.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     sendLatestPixmapToEncoder();
 }
