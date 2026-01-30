@@ -34,6 +34,8 @@
 #include <QtXml>
 #include <QGraphicsItem>
 
+#include <optional>
+
 #include "frameworks/UBGeometryUtils.h"
 
 class UBGraphicsSvgItem;
