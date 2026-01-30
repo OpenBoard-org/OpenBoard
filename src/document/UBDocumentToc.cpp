@@ -67,20 +67,18 @@ int UBDocumentToc::insert(int index)
 
 void UBDocumentToc::move(int fromIndex, int toIndex)
 {
-    if (fromIndex < 0 || fromIndex >= mToc.count() || toIndex < 0 || toIndex >= mToc.count())
+    if (isValidIndex(fromIndex) && isValidIndex(toIndex))
     {
-        return;
+        auto entry = mToc.at(fromIndex);
+        mToc.removeAt(fromIndex);
+        mToc.insert(toIndex, entry);
+        mModified = true;
     }
-
-    auto entry = mToc.at(fromIndex);
-    mToc.removeAt(fromIndex);
-    mToc.insert(toIndex, entry);
-    mModified = true;
 }
 
 void UBDocumentToc::remove(int index)
 {
-    if (index >= 0 && index < mToc.count())
+    if (isValidIndex(index))
     {
         mToc.remove(index);
         mModified = true;
@@ -89,12 +87,12 @@ void UBDocumentToc::remove(int index)
 
 QUuid UBDocumentToc::uuid(int index) const
 {
-    if (index < 0 || index >= mToc.count())
+    if (isValidIndex(index))
     {
-        return {};
+        return mToc.at(index).value(UUID).toUuid();
     }
 
-    return mToc.at(index).value(UUID).toUuid();
+    return {};
 }
 
 void UBDocumentToc::setUuid(int index, const QUuid& uuid)
@@ -124,12 +122,12 @@ int UBDocumentToc::findUuid(const QUuid& sceneUuid) const
 
 int UBDocumentToc::pageId(int index) const
 {
-    if (index < 0 || index >= mToc.count())
+    if (isValidIndex(index))
     {
-        return -1;
+        return mToc.at(index).value(PAGE_ID).toInt();
     }
 
-    return mToc.at(index).value(PAGE_ID).toInt();
+    return -1;
 }
 
 void UBDocumentToc::setPageId(int index, int pageId)
@@ -146,12 +144,12 @@ void UBDocumentToc::setPageId(int index, int pageId)
 
 QStringList UBDocumentToc::assets(int index) const
 {
-    if (index < 0 || index >= mToc.count())
+    if (isValidIndex(index))
     {
-        return {};
+        return mToc.at(index).value(ASSETS).toStringList();
     }
 
-    return mToc.at(index).value(ASSETS).toStringList();
+    return {};
 }
 
 void UBDocumentToc::setAssets(int index, const QStringList& assets)
@@ -168,17 +166,15 @@ void UBDocumentToc::setAssets(int index, const QStringList& assets)
 
 void UBDocumentToc::unsetAssets(int index)
 {
-    mToc[index].remove(ASSETS);
+    if (isValidIndex(index))
+    {
+        mToc[index].remove(ASSETS);
+    }
 }
 
 bool UBDocumentToc::hasAssetsEntry(int index) const
 {
-    if (index < 0 || index >= mToc.count())
-    {
-        return false;
-    }
-
-    return mToc.at(index).contains(ASSETS);
+    return isValidIndex(index) && mToc.at(index).contains(ASSETS);
 }
 
 bool UBDocumentToc::load()
@@ -208,6 +204,11 @@ void UBDocumentToc::save()
 int UBDocumentToc::nextAvailablePageId()
 {
     return mNextAvailablePageId++;
+}
+
+bool UBDocumentToc::isValidIndex(int index) const
+{
+    return index >= 0 && index < mToc.count();
 }
 
 void UBDocumentToc::assureSize(int index)

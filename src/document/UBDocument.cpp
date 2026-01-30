@@ -73,42 +73,59 @@ std::shared_ptr<UBDocumentProxy> UBDocument::proxy() const
     return mProxy;
 }
 
-void UBDocument::deletePages(QList<int> indexes)
+bool UBDocument::deletePages(QList<int> indexes, bool approve)
 {
     if (indexes.isEmpty())
     {
-        return;
+        return true;
     }
 
-    bool accepted{false};
+    if (approve)
+    {
+        bool accepted{false};
 
-    if (indexes.size() > 1)
-    {
-        accepted = UBApplication::mainWindow->yesNoQuestion(
-            UBDocumentController::tr("Moving %1 pages of the document \"%2\" to trash")
-                .arg(QString::number(indexes.size()), mProxy->name()),
-            UBDocumentController::tr("You are about to move %1 pages of the document \"%2\" to trash. Are you sure ?")
-                .arg(QString::number(indexes.size()), mProxy->name()),
-            QPixmap(":/images/trash-document-page.png"));
-    }
-    else
-    {
-        accepted = UBApplication::mainWindow->yesNoQuestion(
-            UBDocumentController::tr("Remove page %1").arg(indexes.at(0) + 1),
-            UBDocumentController::tr("You are about to remove page %1 of the document \"%2\". Are you sure ?")
-                .arg(indexes.at(0) + 1)
-                .arg(mProxy->name()),
-            QPixmap(":/images/trash-document-page.png"));
-    }
+        if (indexes.size() > 1)
+        {
+            accepted = UBApplication::mainWindow->yesNoQuestion(
+                UBDocumentController::tr("Moving %1 pages of the document \"%2\" to trash")
+                    .arg(QString::number(indexes.size()), mProxy->name()),
+                UBDocumentController::tr("You are about to move %1 pages of the document \"%2\" to trash. Are you sure ?")
+                    .arg(QString::number(indexes.size()), mProxy->name()),
+                QPixmap(":/images/trash-document-page.png"));
+        }
+        else
+        {
+            accepted = UBApplication::mainWindow->yesNoQuestion(
+                UBDocumentController::tr("Remove page %1").arg(indexes.at(0) + 1),
+                UBDocumentController::tr("You are about to remove page %1 of the document \"%2\". Are you sure ?")
+                    .arg(indexes.at(0) + 1)
+                    .arg(mProxy->name()),
+                QPixmap(":/images/trash-document-page.png"));
+        }
 
-    if (!accepted)
-    {
-        return;
+        if (!accepted)
+        {
+            return false;
+        }
     }
 
     // sort list, remove duplicates
     std::sort(indexes.begin(), indexes.end());
     indexes.erase(std::unique(indexes.begin(), indexes.end()), indexes.end());
+
+    // check bounds
+    if (indexes.first() < 0 || indexes.last() >= pageCount())
+    {
+        return false;
+    }
+
+    // decline attempt to remove all pages
+    if (indexes.count() == pageCount())
+    {
+        // deleting all pages is blocked in the UI. Just log if it happens anyway
+        qWarning() << "UBDocument::deletePages: declined attempt to remove all pages of a document";
+        return false;
+    }
 
     // copy to-be-deleted pages to trash document
     QString sourceName = mProxy->metaData(UBSettings::documentName).toString();
@@ -124,53 +141,59 @@ void UBDocument::deletePages(QList<int> indexes)
     }
 
     // delete the scenes
-    if (pageIds.count() == pageCount())
-    {
-        // deleting all pages is blocked in the UI. Just log if it happens anyway
-        qWarning() << "UBDocument::deletePages: declined attempt to remove all pages of a document";
-        return;
-    }
-
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, pageIds);
     assureHeaderLoaderFinished();
 
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
-        mToc->remove(indexes.at(i));
-        thumbnailScene()->deleteThumbnail(indexes.at(i), false);
-        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(this, indexes.at(i));
+        const auto index{indexes.at(i)};
+        mToc->remove(index);
+        thumbnailScene()->deleteThumbnail(index, false);
+        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(this, index);
     }
 
     thumbnailScene()->renumberThumbnails(indexes.first());
     thumbnailScene()->arrangeThumbnails(indexes.first());
     mToc->save();
+    return true;
 }
 
-void UBDocument::duplicatePage(int index)
+bool UBDocument::duplicatePage(int index)
 {
-    copyPage(index, this, index + 1);
-    emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(this, index + 1);
-}
-
-void UBDocument::movePage(int fromIndex, int toIndex)
-{
-    auto scene = getScene(fromIndex);
-
-    if (scene && scene->isModified())
+    if (copyPage(index, this, index + 1))
     {
-        persistPage(scene, fromIndex);
+        emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(this, index + 1);
+        return true;
     }
 
-    assureHeaderLoaderFinished();
-    thumbnailScene()->moveThumbnail(fromIndex, toIndex);
-    mToc->move(fromIndex, toIndex);
-    mToc->save();
-    emit UBPersistenceManager::persistenceManager()->documentSceneMoved(this, fromIndex, toIndex);
+    return false;
 }
 
-void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex)
+bool UBDocument::movePage(int fromIndex, int toIndex)
 {
-    copyPage(fromIndex, to.get(), toIndex);
+    if (mToc->isValidIndex(fromIndex) && mToc->isValidIndex(toIndex))
+    {
+        auto scene = getScene(fromIndex);
+
+        if (scene && scene->isModified())
+        {
+            persistPage(scene, fromIndex);
+        }
+
+        assureHeaderLoaderFinished();
+        thumbnailScene()->moveThumbnail(fromIndex, toIndex);
+        mToc->move(fromIndex, toIndex);
+        mToc->save();
+        emit UBPersistenceManager::persistenceManager()->documentSceneMoved(this, fromIndex, toIndex);
+        return true;
+    }
+
+    return false;
+}
+
+bool UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex)
+{
+    return copyPage(fromIndex, to.get(), toIndex);
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool cached, bool useUndoRedoStack)
@@ -178,8 +201,15 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
     // create a new TOC entry for the page
     assureHeaderLoaderFinished();
     auto pageId = mToc->insert(index);
+
+    if (pageId < 0)
+    {
+        return nullptr;
+    }
+
     auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, cached, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
+    mToc->setAssets(index, {});
 
     if (saveToc)
     {
@@ -187,6 +217,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
     }
 
     thumbnailScene()->insertThumbnail(index, false);
+    mThumbnailScene->ensureThumbnail(index, scene.get());
 
     return scene;
 }
@@ -303,7 +334,7 @@ UBDocumentToc* UBDocument::toc()
         }
 
         // scan assets if missing
-        for (int index = 0; index < mToc->pageCount(); ++index)
+        for (int index = 0; index < pageCount(); ++index)
         {
             if (!mToc->hasAssetsEntry(index))
             {
@@ -428,7 +459,7 @@ void UBDocument::scanAssets()
     const auto persistenceManager = UBPersistenceManager::persistenceManager();
     persistenceManager->waitForAllSaved();
 
-    for (int index = 0; index < mToc->pageCount(); ++index)
+    for (int index = 0; index < pageCount(); ++index)
     {
         if (!mToc->hasAssetsEntry(index))
         {
@@ -444,7 +475,7 @@ void UBDocument::scanAssets()
         mSceneAssetLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
 
         QObject::connect(mSceneAssetLoader, &UBBackgroundLoader::resultAvailable, mSceneAssetLoader, [this](int pageId, const QVariant& data){
-            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(pageId).arg(mToc->pageCount()), true);
+            UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(pageId).arg(pageCount()), true);
 
             if (pageId >= 0 && !data.isNull())
             {
@@ -656,22 +687,28 @@ void UBDocument::scan(bool tocPresent)
     QApplication::restoreOverrideCursor();
 }
 
-void UBDocument::copyPage(int fromIndex, UBDocument* to, int toIndex)
+bool UBDocument::copyPage(int fromIndex, UBDocument* to, int toIndex)
 {
-    const auto dependencies = pageRelativeDependencies(fromIndex);
+    if (mToc->isValidIndex(fromIndex) && to->mToc->isValidIndex(toIndex))
+    {
+        const auto dependencies = pageRelativeDependencies(fromIndex);
 
-    // copy scene
-    to->assureHeaderLoaderFinished();
-    const auto pageId = to->mToc->insert(toIndex);
-    const auto uuid = UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, mToc->pageId(fromIndex), to->proxy(), pageId, dependencies);
+        // copy scene
+        to->assureHeaderLoaderFinished();
+        const auto pageId = to->mToc->insert(toIndex);
+        const auto uuid = UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, mToc->pageId(fromIndex), to->proxy(), pageId, dependencies);
 
-    // add thumbnail
-    to->thumbnailScene()->insertThumbnail(toIndex);
+        // update target TOC
+        to->mToc->setUuid(toIndex, uuid);
+        to->mToc->setAssets(toIndex, dependencies);
+        to->mToc->save();
 
-    // update target TOC
-    to->mToc->setUuid(toIndex, uuid);
-    to->mToc->setAssets(toIndex, dependencies);
-    to->mToc->save();
+        // add thumbnail
+        to->thumbnailScene()->insertThumbnail(toIndex);
+        return true;
+    }
+
+    return false;
 }
 
 void UBDocument::deleteUnreferencedAssets()
@@ -679,7 +716,7 @@ void UBDocument::deleteUnreferencedAssets()
     // Go through the TOC and create a set of all referenced media assets.
     QSet<QString> referencedMediaAssets;
 
-    for (int index = 0; index < mToc->pageCount(); ++index)
+    for (int index = 0; index < pageCount(); ++index)
     {
         if (!mToc->hasAssetsEntry(index))
         {
