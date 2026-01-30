@@ -26,6 +26,7 @@
 #include <QRect>
 #include <QVariantMap>
 #include <QPixmap>
+#include <QUrl>
 
 // forward
 class QDBusInterface;
@@ -68,11 +69,16 @@ private:
     QString createSessionToken() const;
     QString createRequestToken() const;
     void showGlassPane(bool show) const;
+    QPixmap loadScreenshotFromUri(const QUrl& uri) const;
+    QPixmap readClipboardScreenshot() const;
 
 private:
     QRect mScreenRect;
     bool mWithCursor{false};
+    bool mInteractiveScreenshot{false};
     QString mSession;
     QString mRequestPath;
+    uint mScreencastPortalVersion{0};
+    bool mSupportsPersistentScreencast{false};
     QDBusInterface* mScreencastPortal{nullptr};
 };
