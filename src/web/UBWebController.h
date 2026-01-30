@@ -92,8 +92,10 @@ class UBWebController : public QObject
         QWebEngineProfile* webProfile() const;
         QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view) const;
         BrowserWindow* browserWindow() const;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 8, 0))
         QWebEnginePage::PermissionPolicy hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
         void setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy);
+#endif
 
         static void injectScripts(QWebEngineView* view);
 
@@ -163,7 +165,9 @@ private:
         QMenu* mHistoryBackMenu;
         QMenu* mHistoryForwardMenu;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 8, 0))
         QMap<QPair<QUrl,QWebEnginePage::Feature>,QWebEnginePage::PermissionPolicy> mFeaturePermissions;
+#endif
 
         bool cookieAutoDelete;
         QStringList cookieKeepDomains;

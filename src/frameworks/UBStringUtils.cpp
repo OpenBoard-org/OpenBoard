@@ -152,7 +152,7 @@ QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
     QString nonConstDateString = dateString;
     nonConstDateString.replace("ZZ", "Z");
     QDateTime date = QDateTime::fromString(nonConstDateString, Qt::ISODate);
-    date.setTimeSpec(Qt::UTC);
+    date.setTimeZone(QTimeZone::utc());
     return date.toLocalTime();
 }
 

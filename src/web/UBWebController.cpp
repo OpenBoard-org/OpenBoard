@@ -408,6 +408,7 @@ BrowserWindow* UBWebController::browserWindow() const
     return mCurrentWebBrowser;
 }
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 8, 0))
 QWebEnginePage::PermissionPolicy UBWebController::hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature)
 {
     QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
@@ -425,6 +426,7 @@ void UBWebController::setFeaturePermission(const QUrl &securityOrigin, QWebEngin
     QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
     mFeaturePermissions[featurePermission] = policy;
 }
+#endif // QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
 
 void UBWebController::injectScripts(QWebEngineView *view)
 {
