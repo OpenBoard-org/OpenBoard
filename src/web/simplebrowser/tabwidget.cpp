@@ -120,7 +120,11 @@ void TabWidget::handleCurrentChanged(int index)
 void TabWidget::handleContextMenuRequested(const QPoint &pos)
 {
     QMenu menu;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 3, 0))
+    menu.addAction(tr("New &Tab"), QKeySequence::AddTab, this, &TabWidget::createTab);
+#else
     menu.addAction(tr("New &Tab"), this, &TabWidget::createTab, QKeySequence::AddTab);
+#endif
     int index = tabBar()->tabAt(pos);
     if (index != -1) {
         QAction *action = menu.addAction(tr("Clone Tab"));
