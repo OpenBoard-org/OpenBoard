@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,6 +35,7 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsItemDelegate.h"
 
+#include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
 UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphicsItem* parent)
@@ -51,6 +52,21 @@ UBGraphicsPDFItem::~UBGraphicsPDFItem()
 {
 }
 
+QList<QString> UBGraphicsPDFItem::mediaAssets() const
+{
+    return {UBPersistenceManager::objectDirectory + "/" + fileUuid().toString() + ".pdf"};
+}
+
+void UBGraphicsPDFItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    if (mediaAsset.at(0) != mediaAsset)
+    {
+        // exchange renderer for new asset
+        const auto uuid = uuidFromPath(mediaAsset);
+        auto newRenderer = PDFRenderer::rendererForUuid(uuid, documentPath + "/" + mediaAsset);
+        switchRenderer(newRenderer);
+    }
+}
 
 QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -58,10 +74,14 @@ QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant
     return GraphicsPDFItem::itemChange(change, newValue);
 }
 
-void UBGraphicsPDFItem::setUuid(const QUuid &pUuid)
+void UBGraphicsPDFItem::updateChild()
 {
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+    CacheMode prevCacheMode = cacheMode();
+
+    GraphicsPDFItem::update();
+
+    // Workaround: Necessary, otherwise only the control scene is updated, the display scene refresh is ignored for an unknown reason.
+    setCacheMode(prevCacheMode);
 }
 
 void UBGraphicsPDFItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -120,10 +140,11 @@ void UBGraphicsPDFItem::copyItemParameters(UBItem *copy) const
     {
         cp->setPos(this->pos());
         cp->setTransform(this->transform());
+        cp->setScale(this->scale());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-        cp->setSourceUrl(this->sourceUrl());
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setZValue(this->zValue());
     }
 }
@@ -132,6 +153,10 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 {
     UBItem::setRenderingQuality(pRenderingQuality);
 
+    // Using NoCache on Windows to avoid PDF rendering issues when a DPI scaling is applied (e.g. if a 150% scaling is applied to the screen in the OS screen config).
+#ifdef Q_OS_WIN
+    setCacheMode(QGraphicsItem::NoCache);
+#else
     if (pRenderingQuality == RenderingQualityHigh)
     {
         setCacheMode(QGraphicsItem::NoCache);
@@ -140,12 +165,19 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
     {
         setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     }
+#endif
 }
 
-
-UBGraphicsScene* UBGraphicsPDFItem::scene()
+void UBGraphicsPDFItem::setCacheBehavior(UBItem::CacheBehavior cacheBehavior)
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    UBItem::setCacheBehavior(cacheBehavior);
+    GraphicsPDFItem::setCacheAllowed(cacheBehavior == UBItem::CacheAllowed);
+}
+
+std::shared_ptr<UBGraphicsScene> UBGraphicsPDFItem::scene()
+{
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 
@@ -153,7 +185,7 @@ UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
 {   
     QPixmap pixmap(mRenderer->pageSizeF(mPageNumber).toSize());
     QPainter painter(&pixmap);
-    mRenderer->render(&painter, mPageNumber);
+    mRenderer->render(&painter, mPageNumber, false /* Cache allowed */);
 
     UBGraphicsPixmapItem *pixmapItem =  new UBGraphicsPixmapItem();
     pixmapItem->setPixmap(pixmap);

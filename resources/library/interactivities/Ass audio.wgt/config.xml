@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" 
-		xmlns:ub="http://uniboard.mnemis.com/widgets"
-        id="http://uniboard.mnemis.com/widgets/notes" 
-        version="1.2"
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.openboard.org/widget/interactivity/assaudio"
+        version="2.0"
         width="950"
         height="560" 
-		minimum_height="300"
-		minimum_width="710"
-        ub:resizable="false">     
-		<name>Notes</name>
-		<author href="http://www.getuniboard.com"
-	            email="info@mnemis.com">Mnemis SA</author>
-		<description>Associer images</description>
-		
-		<content src="index.html"/>
+        minimum_height="300"
+        minimum_width="710"
+        ub:resizable="false">
+
+        <name>Ass audio</name>
+        <author href="http://www.getuniboard.com"
+                email="info@mnemis.com">Mnemis SA</author>
+        <description>Associer images</description>
+        <content src="index.html"/>
 </widget>

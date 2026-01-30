@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -61,7 +61,11 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         virtual void showHide(bool show);
 
         void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        void mediaStateChanged(QMediaPlayer::PlaybackState state);
+#else
         void mediaStateChanged(QMediaPlayer::State state);
+#endif
 
     protected slots:
 

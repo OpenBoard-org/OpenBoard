@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -73,6 +73,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+        virtual void   keyPressEvent (QKeyEvent *event);
         virtual void   mousePressEvent (QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent (QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent *event);
@@ -81,8 +82,9 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
-        void paintGraduations(QPainter *painter);        
 
+        void paintGraduations(QPainter *painter);
+        void paintHelp(QPainter *painter);
 
     private:
         // Helpers
@@ -90,7 +92,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         void paintAngleMarker (QPainter *painter);
         Tool toolFromPos (QPointF pos);
         qreal antiScale () const;
-        UBGraphicsScene*            scene() const;
+        std::shared_ptr<UBGraphicsScene>            scene() const;
         QBrush                  fillBrush() const;
 
         QSizeF buttonSizeReference () const{return QSizeF(radius() / 10, mCloseSvgItem->boundingRect().height() * radius()/(10 * mCloseSvgItem->boundingRect().width()));}
@@ -112,6 +114,8 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         qreal   mSpan;
         qreal   mStartAngle;
         qreal   mScaleFactor;
+        qreal   mCursorRotationAngle;
+        qreal   mItemRotationAngle;
 
         QGraphicsSvgItem* mResetSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;

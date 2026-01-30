@@ -29,10 +29,13 @@
 #include "MacUtils.h"
 #include "UBPlatformUtils.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "gui/UBMainWindow.h"
 
 #include <QWidget>
+#include <QRegularExpression>
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Cocoa/Cocoa.h>
@@ -84,10 +87,11 @@ void UBPlatformUtils::init()
 }
 
 
-void UBPlatformUtils::setDesktopMode(bool desktop)
+void UBPlatformUtils::hideMenuBarAndDock()
 {
 
     @try {
+#if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         // temporarily disabled due to bug: when switching to desktop mode (and calling this),
         // openboard switches right back to the board mode. clicking again on desktop mode works.
         /*if (desktop) {
@@ -95,6 +99,9 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
         }
         else*/
             [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+#else // QT_VERSION_CHECK(5, 10, 0)
+        [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+#endif // QT_VERSION_CHECK(5, 10, 0)
     }
 
     @catch(NSException * exception) {
@@ -114,6 +121,16 @@ QString UBPlatformUtils::applicationResourcesDirectory()
     [pool drain];
 
     return path;
+}
+
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
+}
+
+QString UBPlatformUtils::applicationTemplateDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)
@@ -199,16 +216,21 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
+bool UBPlatformUtils::hasSystemOnScreenKeyboard()
+{
+    return true;
+}
+
 QStringList UBPlatformUtils::availableTranslations()
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSString *lprojPath = [[NSBundle mainBundle] resourcePath];
     QString translationsPath =  QString::fromUtf8([lprojPath UTF8String], strlen([lprojPath UTF8String]));
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath, false);
-    QRegExp sankoreTranslationFiles(".*lproj");
+    QRegularExpression sankoreTranslationFiles(".*lproj");
     translationsList=translationsList.filter(sankoreTranslationFiles);
     [pool drain];
-    return translationsList.replaceInStrings(QRegExp("(.*)/(.*).lproj"),"\\2");
+    return translationsList.replaceInStrings(QRegularExpression("(.*)/(.*).lproj"),"\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix, QString pLanguage)
@@ -524,6 +546,22 @@ QString UBPlatformUtils::urlFromClipboard()
     return qsRet;
 }
 
+void UBPlatformUtils::toggleFinder(const bool on)
+{
+#if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    if (on)
+    {
+        [NSApp setPresentationOptions:NSApplicationPresentationDefault];
+    }
+    else
+    {
+        [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+    }
+#else // QT_VERSION_CHECK(5, 10, 0)
+    Q_UNUSED(on);
+#endif //QT_VERSION_CHECK(5, 10, 0)
+}
+
 
 void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {
@@ -586,51 +624,136 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
      * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
      * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
     */
-    
-    pWidget->showMaximized();
 
-    /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
-     * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
-     * screen area minus the menu bar and dock area). So we have to manually resize it to the
-     * total screen height, and move it up to the top of the screen (y=0 position). */
+    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
+            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
+        pWidget->show();
+    } else {
+        pWidget->showMaximized();
 
-    QRect currentScreenRect = QApplication::desktop()->screenGeometry(pWidget);
-    pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
-    pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+        /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
+         * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
+         * screen area minus the menu bar and dock area). So we have to manually resize it to the
+         * total screen height, and move it up to the top of the screen (y=0 position). */
+
+        QRect currentScreenRect = QGuiApplication::screenAt(pWidget->geometry().topLeft())->geometry();
+        pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
+        pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+    }
 }
 
 
 void UBPlatformUtils::showOSK(bool show)
 {
-    @autoreleasepool {
-        CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
-                      dictionaryWithObject: @"com.apple.KeyboardViewer"
-                      forKey: (NSString *)kTISPropertyInputSourceID];
+    if (QOperatingSystemVersion::current().majorVersion() == 10 && QOperatingSystemVersion::current().minorVersion() < 15) /* < Catalina */
+    {
+        @autoreleasepool {
+            CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
+                          dictionaryWithObject: @"com.apple.KeyboardViewer"
+                          forKey: (NSString *)kTISPropertyInputSourceID];
 
-        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
+            NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
 
-        if ([sources count] > 0) {
-            TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
+            if ([sources count] > 0) {
+                TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
 
-            OSStatus result;
-            if (show) {
-                TISEnableInputSource(osk);
-                result = TISSelectInputSource(osk);
+                OSStatus result;
+                if (show) {
+                    TISEnableInputSource(osk);
+                    result = TISSelectInputSource(osk);
+                }
+                else {
+                    TISDisableInputSource(osk);
+                    result = TISDeselectInputSource(osk);
+                }
+
+                if (result == paramErr) {
+                    qWarning() << "Unable to select input source";
+                    UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+                }
             }
+
             else {
-                TISDisableInputSource(osk);
-                result = TISDeselectInputSource(osk);
+                qWarning() << "System OSK not found";
+                UBApplication::showMessage(tr("System on-screen keyboard not found"));
             }
-
-            if (result == paramErr) {
-                qWarning() << "Unable to select input source";
-                UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
-            }
-        }
-
-        else {
-            qWarning() << "System OSK not found";
-            UBApplication::showMessage(tr("System on-screen keyboard not found"));
         }
     }
+    else
+    {
+        NSString *source =
+            @"tell application \"System Events\"\n\
+                if application process \"TextInputMenuAgent\" exists then\n\
+                    tell application process \"TextInputMenuAgent\"\n\
+                        tell menu bar item 1 of menu bar 2\n\
+                            ignoring application responses\n\
+                                click\n\
+                                delay 0.5\n\
+                            end ignoring\n\
+                        end tell\n\
+                    end tell\n\
+                end if\n\
+            end tell\n\
+            do shell script \"killall 'System Events'\"\n";
+
+            source = [source stringByAppendingString:@"if application \"Assistive Control\" is"];
+
+            if (show)
+            {
+                source = [source stringByAppendingString:@" not"];
+            }
+
+            source = [source stringByAppendingString:@" running then\n\
+                tell application \"System Events\"\n\
+                    tell application process \"TextInputMenuAgent\"\n\
+                        tell menu 1 of menu bar item 1 of menu bar 2\n\
+                            set nbItems to count menu items\n\
+                            if (nbItems = 4)\n\
+                                -- only one language so items are\n\
+                                -- 1. emojis&symbols n-2. keyboard n-1. separator n.preferences\n\
+                                click menu item (nbItems-2)\n\
+                            else\n\
+                                -- items are ... n-4. access keyboard n-3. separator n-2 display names n-1. separator n. preferences\n\
+                                -- target is in fourth position from bottom\n\
+                                click menu item (nbItems - 4)\n\
+                            end if\n\
+                        end tell\n\
+                    end tell\n\
+                end tell\n\
+            end if"];
+
+        NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:source] autorelease];
+        NSDictionary  *errorInfo   = nil;
+        [script executeAndReturnError:&errorInfo];
+
+        if(errorInfo!=nil)
+        {
+            errorOpeningVirtualKeyboard = true;
+
+            NSAlert *alert = [[NSAlert alloc] init];
+
+            if (alert != nil)
+            {
+                alert.messageText = errorInfo.allValues[0];
+                [alert runModal];
+                [alert release];
+
+                //restore action state to previous one as it failed
+                if (show)
+                    UBApplication::mainWindow->actionVirtualKeyboard->setChecked(false);
+                else
+                    UBApplication::mainWindow->actionVirtualKeyboard->setChecked(true);
+            }
+        }
+        else
+        {
+            errorOpeningVirtualKeyboard = false;
+        }
+    }
+}
+
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+{
+    QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    callback(pixmap);
 }

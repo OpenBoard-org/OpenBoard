@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -53,15 +53,13 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         void initialize();
 
-        void setUuid(const QUuid &pUuid);
-
         void setStrokesGroup(UBGraphicsStrokesGroup* group);
         UBGraphicsStrokesGroup* strokesGroup() const{return mpGroup;}
         void setColor(const QColor& color);
 
         QColor color() const;
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         inline void subtract(UBGraphicsPolygonItem *pi)
         {

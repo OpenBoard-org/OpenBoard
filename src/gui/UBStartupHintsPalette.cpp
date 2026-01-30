@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,8 +31,11 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QCheckBox>
-#include <QWebFrame>
+#include <QWebEnginePage>
+#include <QWebChannel>
 #include "UBStartupHintsPalette.h"
+#include "core/UBApplication.h"
+#include "web/UBWebController.h"
 
 #include "globals/UBGlobals.h"
 #include "core/UBSettings.h"
@@ -42,32 +45,31 @@
 
 
 UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
-    UBFloatingPalette(Qt::TopRightCorner,parent)
+    UBFloatingPalette(Qt::BottomRightCorner,parent)
 {
     setObjectName("UBStartupHintsPalette");
-    if(UBSettings::settings()->appStartupHintsEnabled->get().toBool()){
-        setFixedSize(700,450);
-        mLayout = new QVBoxLayout();
-        mLayout->setContentsMargins(10,28,10,10);
-        setLayout(mLayout);
-        QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
-        mpWebView = new QWebView(this);
-        mpSankoreAPI = new UBWidgetUniboardAPI(0);
-        mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-        connect(mpWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-        mpWebView->setUrl(QUrl::fromLocalFile(url));
-        mpWebView->setAcceptDrops(false);
-        mLayout->addWidget(mpWebView);
-        mButtonLayout = new QHBoxLayout();
-        mLayout->addLayout(mButtonLayout);
-        mShowNextTime = new QCheckBox(tr("Visible next time"),this);
-        mShowNextTime->setCheckState(Qt::Checked);
-        connect(mShowNextTime,SIGNAL(stateChanged(int)),this,SLOT(onShowNextTimeStateChanged(int)));
-        mButtonLayout->addStretch();
-        mButtonLayout->addWidget(mShowNextTime);
-    }
-    else
-        hide();
+    setFixedSize(800,600);
+    mLayout = new QVBoxLayout();
+    mLayout->setContentsMargins(10,28,10,10);
+    setLayout(mLayout);
+    QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
+    mpWebView = new UBWebEngineView(this);
+    mpSankoreAPI = new UBWidgetUniboardAPI(0);
+    QWebChannel* channel = new QWebChannel(this);
+    mpWebView->page()->setWebChannel(channel);
+    mpWebView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
+    UBWebController::injectScripts(mpWebView);
+    mpWebView->setUrl(QUrl::fromLocalFile(url));
+    mpWebView->setAcceptDrops(false);
+    mLayout->addWidget(mpWebView);
+    mButtonLayout = new QHBoxLayout();
+    mLayout->addLayout(mButtonLayout);
+    mShowNextTime = new QCheckBox(tr("Visible next time"),this);
+    mShowNextTime->setChecked(UBSettings::settings()->appStartupHintsEnabled->get().toBool());
+    connect(mShowNextTime,SIGNAL(stateChanged(int)),this,SLOT(onShowNextTimeStateChanged(int)));
+    mButtonLayout->addStretch();
+    mButtonLayout->addWidget(mShowNextTime);
+    hide();
 }
 
 UBStartupHintsPalette::~UBStartupHintsPalette()
@@ -119,9 +121,4 @@ void UBStartupHintsPalette::showEvent(QShowEvent *event)
 int UBStartupHintsPalette::border()
 {
     return 40;
-}
-
-void UBStartupHintsPalette::javaScriptWindowObjectCleared()
-{
-    mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }

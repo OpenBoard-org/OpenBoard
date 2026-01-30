@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -37,32 +37,54 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 {
 }
 
-void UBPersistenceWorker::saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex)
+void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene *scene, const int pageId)
 {
-    PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
+    PersistenceInformation entry = {WriteScene, proxy, scene, pageId};
 
+    QMutexLocker locker(&mMutex);
     saves.append(entry);
     mSemaphore.release();
 }
 
-void UBPersistenceWorker::readScene(UBDocumentProxy* proxy, const int pageIndex)
-{
-    PersistenceInformation entry = {ReadScene, proxy, 0, pageIndex};
-
-    saves.append(entry);
-    mSemaphore.release();
-}
-
-void UBPersistenceWorker::saveMetadata(UBDocumentProxy *proxy)
+void UBPersistenceWorker::saveMetadata(std::shared_ptr<UBDocumentProxy> proxy)
 {
     PersistenceInformation entry = {WriteMetadata, proxy, NULL, 0};
+    QMutexLocker locker(&mMutex);
     saves.append(entry);
     mSemaphore.release();
+}
+
+void UBPersistenceWorker::removePendingSaves(std::shared_ptr<UBDocumentProxy> proxy, const int pageId)
+{
+    QMutexLocker savingLocker(&mSaving);
+    QMutexLocker locker(&mMutex);
+
+    for (auto& info : saves)
+    {
+        if (info.action == WriteScene && info.proxy == proxy && info.pageId == pageId)
+        {
+            // deactivate entry, release scene
+            qDebug() << "removed pending save for page id" << pageId;
+            info.action = Noop;
+            emit scenePersisted(info.scene);
+        }
+    }
+}
+
+void UBPersistenceWorker::waitForAllSaved()
+{
+    QMutexLocker locker(&mSaving);
+
+    if (!saves.isEmpty())
+    {
+        mNoMoreSaves.wait(&mSaving);
+    }
 }
 
 void UBPersistenceWorker::applicationWillClose()
 {
-    qDebug() << "applicaiton Will close signal received";
+    qDebug() << "application Will close signal received";
+    waitForAllSaved();
     mReceivedApplicationClosing = true;
     mSemaphore.release();
 }
@@ -71,23 +93,37 @@ void UBPersistenceWorker::process()
 {
     qDebug() << "process starts";
     mSemaphore.acquire();
-    do{
-        PersistenceInformation info = saves.takeFirst();
-        if(info.action == WriteScene){
-            UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene, info.sceneIndex);
-            emit scenePersisted(info.scene);
-        }
-        else if (info.action == ReadScene){
-            emit sceneLoaded(UBSvgSubsetAdaptor::loadSceneAsText(info.proxy,info.sceneIndex), info.proxy, info.sceneIndex);
-        }
-        else if (info.action == WriteMetadata) {
-            if (info.proxy->isModified()) {
+
+    while (!mReceivedApplicationClosing)
+    {
+        {
+            QMutexLocker saving(&mSaving);
+            PersistenceInformation info;
+
+            {
+                QMutexLocker locker(&mMutex);
+                info = saves.takeFirst();
+            }
+
+            if (info.action == WriteScene)
+            {
+                UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.pageId);
+                emit scenePersisted(info.scene);
+            }
+            else if (info.action == WriteMetadata)
+            {
                 UBMetadataDcSubsetAdaptor::persist(info.proxy);
                 emit metadataPersisted(info.proxy);
             }
+
+            if (saves.isEmpty())
+            {
+                mNoMoreSaves.notify_all();
+            }
         }
+
         mSemaphore.acquire();
-    }while(!mReceivedApplicationClosing);
+    }
     qDebug() << "process will stop";
     emit finished();
 }

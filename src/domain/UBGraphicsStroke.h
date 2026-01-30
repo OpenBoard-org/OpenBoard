@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -44,7 +44,7 @@ class UBGraphicsStroke
     friend class UBGraphicsPolygonItem;
 
     public:
-        UBGraphicsStroke(UBGraphicsScene* scene = NULL);
+        UBGraphicsStroke(std::shared_ptr<UBGraphicsScene> scene = NULL);
         virtual ~UBGraphicsStroke();
 
         bool hasPressure();
@@ -70,7 +70,7 @@ class UBGraphicsStroke
 
     private:
 
-        UBGraphicsScene * mScene;
+        std::weak_ptr<UBGraphicsScene> mScene;
 
         QList<UBGraphicsPolygonItem*> mPolygons;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -32,7 +32,7 @@
 
 #include <QtGui>
 #include <QPoint>
-#include <QButtonGroup>
+#include <QActionGroup>
 #include <QToolButton>
 
 #include "UBFloatingPalette.h"
@@ -83,7 +83,7 @@ class UBActionPalette : public UBFloatingPalette
 
     signals:
         void closed();
-        void buttonGroupClicked(int id);
+        void buttonGroupClicked(QAction* action);
         void customMouseReleased();
 
     protected:
@@ -94,7 +94,7 @@ class UBActionPalette : public UBFloatingPalette
         virtual void updateLayout();
 
         QList<UBActionPaletteButton*> mButtons;
-        QButtonGroup* mButtonGroup;
+        QActionGroup* mActionGroup;
         QList<QAction*> mActions;
         QMap<QAction*, UBActionPaletteButton*> mMapActionToButton;
 
@@ -104,6 +104,7 @@ class UBActionPalette : public UBFloatingPalette
         QSize mButtonSize;
         QPoint mMousePos;
         UBActionPaletteButton *createPaletteButton(QAction* action, QWidget *parent);
+        QAction* removePaletteButton(UBActionPaletteButton* button);
 
     protected slots:
         void buttonClicked();

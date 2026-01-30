@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -38,14 +38,14 @@ class UBItem;
 struct UBMimeDataItem
 {
     public:
-        UBMimeDataItem(UBDocumentProxy* proxy, int sceneIndex);
+        UBMimeDataItem(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex);
         virtual ~UBMimeDataItem();
 
-        UBDocumentProxy* documentProxy() const { return mProxy; }
+        std::shared_ptr<UBDocumentProxy> documentProxy() const { return mProxy; }
         int sceneIndex() const { return mSceneIndex; }
 
     private:
-        UBDocumentProxy* mProxy;
+        std::shared_ptr<UBDocumentProxy> mProxy;
         int mSceneIndex;
 };
 

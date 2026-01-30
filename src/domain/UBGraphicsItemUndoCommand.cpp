@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -41,7 +41,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
     , mScene(pScene)
     , mRemovedItems(pRemovedItems - pAddedItems)
     , mAddedItems(pAddedItems - pRemovedItems)
@@ -62,7 +62,7 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, co
     }
 }
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem, QGraphicsItem* pAddedItem) : UBUndoCommand()
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, QGraphicsItem* pRemovedItem, QGraphicsItem* pAddedItem) : UBUndoCommand()
     , mScene(pScene)
 {
 
@@ -128,7 +128,7 @@ void UBGraphicsItemUndoCommand::undo()
         QGraphicsItem* item = itRemoved.next();
         if (item)
         {
-            if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
                 mScene->setAsBackgroundObject(item);
             else
                 mScene->addItem(item);
@@ -148,7 +148,7 @@ void UBGraphicsItemUndoCommand::undo()
         }
     }
 
-    QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+    GroupDataTableIterator curMapElement(mExcludedFromGroup);
     UBGraphicsGroupContainerItem *nextGroup = NULL;
     UBGraphicsGroupContainerItem *previousGroupItem = NULL;
     bool groupChanged = false;
@@ -194,7 +194,7 @@ void UBGraphicsItemUndoCommand::redo()
             return;
         }
 
-        QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+        GroupDataTableIterator curMapElement(mExcludedFromGroup);
         UBGraphicsGroupContainerItem *nextGroup = NULL;
         UBGraphicsGroupContainerItem *previousGroupItem = NULL;
         bool groupChanged = false;
@@ -246,7 +246,11 @@ void UBGraphicsItemUndoCommand::redo()
 
                 polygonItem->strokesGroup()->removeFromGroup(polygonItem);
             }
-            mScene->removeItem(item);
+
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
+                mScene->setAsBackgroundObject(nullptr);
+            else
+                mScene->removeItem(item);
 
             if (bApplyTransform)
                 item->setTransform(t);

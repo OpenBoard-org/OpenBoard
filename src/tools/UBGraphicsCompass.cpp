@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -61,8 +61,11 @@ UBGraphicsCompass::UBGraphicsCompass()
     , mDrewCircle(false)
     , mCloseSvgItem(0)
     , mResizeSvgItem(0)
+    , mMoveToolSvgItem(0)
     , mAntiScaleRatio(1.0)
     , mDrewCenterCross(false)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
 {
     setRect(sDefaultRect);
 
@@ -80,6 +83,10 @@ UBGraphicsCompass::UBGraphicsCompass()
     mResizeSvgItem->setVisible(false);
     mResizeSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
+    mMoveToolSvgItem = new QGraphicsSvgItem(":/images/moveTool.svg", this);
+    mMoveToolSvgItem->setVisible(false);
+    mMoveToolSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
     updateResizeCursor();
     updateDrawCursor();
 
@@ -87,6 +94,7 @@ UBGraphicsCompass::UBGraphicsCompass()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
 
     connect(UBApplication::boardController, SIGNAL(penColorChanged()), this, SLOT(penColorChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(lineWidthChanged()));
@@ -141,6 +149,20 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
         resizeButtonRect().center().x() - mResizeSvgItem->boundingRect().width() * mAntiScaleRatio / 2,
         resizeButtonRect().center().y() - mResizeSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
 
+    if (hasFocus() && !mDrawing && !mRotating)
+    {
+        mMoveToolSvgItem->setVisible(true);
+        mMoveToolSvgItem->setTransform(antiScaleTransform);
+        mMoveToolSvgItem->setPos(
+            rect().center().x() - mMoveToolSvgItem->boundingRect().width() * mAntiScaleRatio / 2,
+            rect().center().y() - mMoveToolSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
+
+
     painter->setPen(drawColor());
     painter->drawRoundedRect(hingeRect(), sCornerRadius, sCornerRadius);
     painter->fillPath(hingeShape(), middleFillColor());
@@ -160,7 +182,7 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
     QRectF hingeGripRect(rect().center().x() - 16, rect().center().y() - 16, 32, 32);
     painter->drawEllipse(hingeGripRect);
-    if (mShowButtons)
+    if (mShowButtons && (!hasFocus() || mDrawing || mRotating))
         paintAngleDisplay(painter);
 
     QLinearGradient pencilArmLinearGradient(
@@ -190,9 +212,37 @@ QVariant UBGraphicsCompass::itemChange(GraphicsItemChange change, const QVariant
     {
         mCloseSvgItem->setParentItem(this);
         mResizeSvgItem->setParentItem(this);
+        mMoveToolSvgItem->setParentItem(this);
     }
 
     return QGraphicsRectItem::itemChange(change, value);
+}
+
+void UBGraphicsCompass::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    if (!mDrawing && !mRotating)
+    {
+        switch (event->key())
+        {
+        case Qt::Key_Up:
+            moveBy(0, -1);
+            event->accept();
+            break;
+        case Qt::Key_Down:
+            moveBy(0, 1);
+            event->accept();
+            break;
+        case Qt::Key_Left:
+            moveBy(-1, 0);
+            event->accept();
+            break;
+        case Qt::Key_Right:
+            moveBy(1, 0);
+            event->accept();
+            break;
+        }
+    }
 }
 
 void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -214,6 +264,8 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         mRotating = true;
         mResizing = false;
+        mCursorRotationAngle = 0;
+        mItemRotationAngle = angleInDegrees();
         event->accept();
         qDebug() << "hinge";
     }
@@ -236,6 +288,7 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         closing = true;
 
     mResizeSvgItem->setVisible(mShowButtons && mResizing);
+    mMoveToolSvgItem->setVisible(hasFocus());
     mCloseSvgItem->setVisible(mShowButtons && closing);
 }
 
@@ -249,25 +302,74 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsRectItem::mouseMoveEvent(event);
         mDrewCenterCross = false;
+
+        // snap to grid
+        if (scene()->isSnapping()) {
+            // snap needle position to grid
+            QPointF rotCenter = mapToScene(needlePosition());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
         if (mResizing)
         {
-            QPointF delta = event->pos() - event->lastPos();
-            if (rect().width() + delta.x() < sMinRadius)
-                delta.setX(sMinRadius - rect().width());
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            // snap to grid
+            if (scene()->isSnapping())
+            {
+                // snap cursor position to grid
+                QPointF cursorPos = mapToScene(event->pos());
+                QPointF snapPos = cursorPos + scene()->snap(cursorPos);
+
+                // now resize so that the pencil goes through the snap point
+                QPointF needlePos = mapToScene(needlePosition());
+                double length = QLineF(needlePos, snapPos).length();
+
+                if (length >= sMinRadius)
+                {
+                    setRect(QRectF(rect().topLeft(), QSizeF(length, rect().height())));
+
+                    // rotate so that pencil is on snap point
+                    QLineF currentLine(needlePosition(), mapFromScene(snapPos));
+                    QLineF lastLine(needlePosition(), pencilPosition());
+                    qreal deltaAngle = currentLine.angleTo(lastLine);
+                    rotateAroundNeedle(deltaAngle);
+                }
+            }
+            else
+            {
+                QPointF delta = event->pos() - event->lastPos();
+                if (rect().width() + delta.x() < sMinRadius)
+                    delta.setX(sMinRadius - rect().width());
+                setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            }
         }
         else
         {
             QLineF currentLine(needlePosition(), event->pos());
             QLineF lastLine(needlePosition(), event->lastPos());
-            qreal deltaAngle = currentLine.angleTo(lastLine);
+            mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
+            qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
+
+            if (scene()->isSnapping())
+            {
+                qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+                newAngle = qRound(newAngle / step) * step;
+            }
+
+            newAngle = std::fmod(newAngle, 360.);
+
+            QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+            QPointF topRight = sceneTransform().map(boundingRect().topRight());
+            qreal currentAngle = QLineF(topLeft, topRight).angle();
+            qreal deltaAngle = currentAngle - newAngle;
+
             if (deltaAngle > 180)
                 deltaAngle -= 360;
             else if (deltaAngle < -180)
                 deltaAngle += 360;
+
             rotateAroundNeedle(deltaAngle);
 
             if (mDrawing)
@@ -413,9 +515,9 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
     painter->rotate(angle);
         painter->drawText(
         QRectF(
-            - fm.width(angleText) / 2,
+            - fm.horizontalAdvance(angleText) / 2,
             - fm.height() / 2,
-            fm.width(angleText),
+            fm.horizontalAdvance(angleText),
             fm.height()),
         Qt::AlignTop,
         angleText);
@@ -438,7 +540,7 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
     QPointF textCenter;
 
     if (onPencilArm)
-        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.width(radiusText) / 2 - 24 - 8, rect().center().y());
+        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.horizontalAdvance(radiusText) / 2 - 24 - 8, rect().center().y());
     else
         textCenter = QPointF((rect().left() + sNeedleLength + sNeedleBaseLength + hingeRect().left()) / 2, rect().center().y());
 
@@ -452,9 +554,9 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
         painter->rotate(180);
     painter->drawText(
         QRectF(
-            - fm.width(radiusText) / 2,
+            - fm.horizontalAdvance(radiusText) / 2,
             - rect().height() / 2,
-            fm.width(radiusText),
+            fm.horizontalAdvance(radiusText),
             rect().height()),
         Qt::AlignVCenter,
         radiusText);
@@ -754,9 +856,10 @@ QPainterPath UBGraphicsCompass::pencilArmShape() const
     return path;
 }
 
-UBGraphicsScene* UBGraphicsCompass::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsCompass::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 QColor UBGraphicsCompass::drawColor() const
@@ -777,7 +880,7 @@ QColor UBGraphicsCompass::edgeFillColor() const
 QFont UBGraphicsCompass::font() const
 {
     QFont font("Arial");
-    font.setPixelSize(16);
+    font.setPixelSize(8);
     font.setBold(true);
     return font;
 }

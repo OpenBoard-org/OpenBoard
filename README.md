@@ -1,38 +1,37 @@
+![GitHub Repo stars](https://img.shields.io/github/stars/OpenBoard-org/openboard)
+![GitHub Repo forks](https://img.shields.io/github/forks/OpenBoard-org/openboard)
 # OpenBoard
+[![latest release](https://img.shields.io/github/v/release/OpenBoard-org/openboard.svg)]()
+[![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.3/dev)]()
+[![Github Repo Contributors](https://img.shields.io/github/contributors/OpenBoard-org/openboard.svg)]()
+[![downloads v1.7.3](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.3/total)]()
+[![Github All Releases](https://img.shields.io/github/downloads/OpenBoard-org/OpenBoard/total.svg)]()
+
 OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
-Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 16.04).
+### Installing
+1.7.3 installers are available for Windows, macOS and Debian on the [Download's page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
 
+### Supported platforms 
 
-## Installing
+| Version   | officially maintained platforms | branch |
+|------------|--------------------------------------------------------|----|
+| 1.7.3 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
+| 1.7.4 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12 | `dev` |
 
-Installers are available for Windows, OS X and Ubuntu on the [wiki](https://github.com/DIP-SEM/OpenBoard/wiki/Downloads). 
+### Communnity-driven packages
+On Linux, Debian is the only officially maintained platform. For other platforms, you can thank the awesome community of OpenBoard that provides community-driven packages on a number of other distributions. Check on [this page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads) to see if you find what you're looking for. If you actually want to provide support and to be referenced on this page, please open an issue with the relevant information, and we'll be glad to add your contribution.
 
-## Building from source
-First, obtain the third party libraries from the OpenBoard-ThirdParty repository, and build them (instructions are provided for each library).
+### Building from source
+If you didn't find any installer for your platform, or if you want to modify OpenBoard, you can find instructions on how to build OpenBoard from source on the [wiki](https://github.com/OpenBoard-org/OpenBoard/wiki/Build-OpenBoard-from-source).
 
-Then, you may use the build (and packaging) scripts which are provided for all three platforms. These take care of compiling OpenBoard, including the translations (for OpenBoard and for Qt), stripping the debug symbols, creating the installers etc.
-Minor modification to those scripts may be necessary depending on your configuration, to set the correct Qt path for example.
+### Qt support
+OpenBoard can be compiled with the latest open source binaries of Qt 5.15 and Qt 6. It is recommended to use Qt 6. You should also be able to compile OpenBoard using Qt 5.12, but it is not officially tested/supported.
 
-Alternatively, you can easily build OpenBoard with qmake and make:
+### Web Widgets
 
-    qmake OpenBoard.pro -spec linux-g++-64      # replace linux-g++-64 by macx or win32 for other platforms
-    make
+Even with not a single bit of knowledge in C++, you can contribute to OpenBoard. Web Widgets are websites that you can put and use directly on the board ! And to turn a website to an OpenBoard web widget is really simple !
 
-Compilers used are gcc (Linux), clang (OS X) and MSVC 2010 (Windows). Make sure that your version of Qt matches this, as it is not possible e.g to build OpenBoard with clang if Qt was built with gcc.
+Download and install OpenBoard, and develop your web app in it. You'll even find a web inspector to help you debug your site.
 
-## Dependencies
-The latest version (1.5) requires Qt 5.5. (While it has been shown to mostly work with Qt 5.2, we cannot guarantee compatibility with Qt versions other than 5.5.)
-
-### Qt 5.5 on Linux
-
-Due to a shared library conflict within Qt 5 in some distributions / some Qt versions (the Multimedia and Webkit modules were built against different versions of gstreamer by default), a specific installation of Qt5.5 may be needed for all of OpenBoard's features to work correctly.
-
-It can either be built from source, with the configure flag `-gstreamer 1.0` (see [here](http://doc.qt.io/qt-5/linux-building.html)), or installed from Stephan Binner's PPAs on Ubuntu.
-In the latter case, simply add the repositories and install Qt 5.5.1 like so (example provided for Ubuntu 14.04, aka "Trusty"):
-
-    sudo add-apt-repository ppa:beineri/opt-qt551-trusty
-    sudo apt-get update
-    sudo apt-get install qt-latest
-
-Some distributions, such as Ubuntu 16.04, provide Qt 5.5.1 packages that work perfectly with OpenBoard, so you can simply install Qt from the official repository.
+You'll find documentation on how to create a Web Widget from scratch or turning your already developped web site into an OpenBoard Web Widget [here](https://github.com/OpenBoard-org/OpenBoard/wiki/Creating-Web-Widgets).

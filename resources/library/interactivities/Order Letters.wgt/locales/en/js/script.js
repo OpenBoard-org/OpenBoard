@@ -34,7 +34,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
 
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -49,15 +49,15 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("ord_let","")){
-            var data = jQuery.parseJSON(sankore.preference("ord_let",""));
+        if(await sankore.async.preference("ord_let","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("ord_let",""));
             importData(data);
         }
         else 
             showExample();
-        if(sankore.preference("ord_let_style","")){
-            changeStyle(sankore.preference("ord_let_style",""));
-            $("#style_select").val(sankore.preference("ord_let_style",""));
+        if(await sankore.async.preference("ord_let_style","")){
+            changeStyle(await sankore.async.preference("ord_let_style",""));
+            $("#style_select").val(await sankore.async.preference("ord_let_style",""));
         } else
             changeStyle("3")
     } 
@@ -65,10 +65,10 @@ function start(){
         showExample();
     //events
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
             sankore.setPreference("ord_let_style", $("#style_select").find("option:selected").val());
-        }
+        });
     }
     
     $("#wgt_help").click(function(){
@@ -148,7 +148,7 @@ function start(){
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
-                    sankore.enableDropOnWidget(true);
+                    sankore.enableDropOnWidget(true, true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display","block");
@@ -293,7 +293,7 @@ function exportData(){
 }
 
 //import
-function importData(data){
+async function importData(data){
    
     for(var i in data){        
         var tmp_array = [];
@@ -323,8 +323,8 @@ function importData(data){
                 tmp_array.push(tmp_letter);
             }
         
-        if(sankore.preference("ord_let_state","")){
-            if(sankore.preference("ord_let_state","") == "edit")
+        if(await sankore.async.preference("ord_let_state","")){
+            if(await sankore.async.preference("ord_let_state","") == "edit")
                 tmp_array = shuffle(tmp_array);
         } else 
             tmp_array = shuffle(tmp_array);
@@ -517,7 +517,7 @@ function changeStyle(val){
 function onDropAudio(obj, event) {
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
         }
@@ -555,10 +555,10 @@ function getAnswer(obj){
 }
 
 if (window.widget) {
-    window.widget.onremove = function(){
+    window.widget.onremove.connect(() => {
         $("audio").each(function(){
             this.pause();
             $(this).parent().find(":first-child").removeClass("stop").addClass("play");
         });
-    }
+    });
 }

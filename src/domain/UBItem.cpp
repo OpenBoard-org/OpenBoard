@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -43,7 +43,7 @@
 #include "domain/UBGraphicsItemDelegate.h"
 
 UBItem::UBItem()
-    : mUuid(QUuid())
+    : mUuid(QUuid::createUuid())
     , mRenderingQuality(UBItem::RenderingQualityNormal)
 {
     // NOOP
@@ -92,10 +92,9 @@ bool UBGraphicsItem::isLocked(QGraphicsItem *item)
     return item->data(UBGraphicsItemData::ItemLocked).toBool();
 }
 
-QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
+bool UBGraphicsItem::isHiddenOnDisplay(QGraphicsItem *item)
 {
-    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
-    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
+    return item->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool();
 }
 
 void UBGraphicsItem::remove(bool canUndo)

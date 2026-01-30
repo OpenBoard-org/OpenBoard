@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -27,10 +27,12 @@
 
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QStyle>
 
 #include "UBCustomCaptureWindow.h"
+
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
 #include "gui/UBRubberBand.h"
@@ -60,7 +62,11 @@ QPixmap UBCustomCaptureWindow::getSelectedPixmap()
 {
     if (mSelectionBand)
     {
-        return mWholeScreenPixmap.copy(mSelectionBand->geometry());
+        QRect r = mSelectionBand->geometry();
+        return mWholeScreenPixmap.copy( r.x()       *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.y()       *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.width()   *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.height()  *mWholeScreenPixmap.devicePixelRatio());
     }
     else
     {
@@ -73,10 +79,8 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 {
     mWholeScreenPixmap = pScreenPixmap;
 
-    QDesktopWidget *desktop = QApplication::desktop();
-    int currentScreen = desktop->screenNumber(QCursor::pos());
-    setGeometry(desktop->screenGeometry(currentScreen));
-    this->show();
+    setGeometry(UBApplication::displayManager->screenGeometry(ScreenRole::Desktop));
+    showFullScreen();
     setWindowOpacity(1.0);
 
     return exec();
@@ -125,7 +129,7 @@ void UBCustomCaptureWindow::mouseReleaseEvent ( QMouseEvent * event )
     event->accept();
 
     // do not accept very small selection
-    if (!(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
+    if (mSelectionBand && !(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
     {
         accept();
     }

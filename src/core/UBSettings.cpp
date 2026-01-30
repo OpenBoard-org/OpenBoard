@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -60,7 +60,6 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
-QString UBSettings::documentPageCount = QString("PageCount");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
@@ -72,8 +71,9 @@ QString UBSettings::undoCommandTransactionName = "UndoTransaction";
 
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
+const char *UBSettings::sDefaultFontStyleName = "Regular";
 
-QString UBSettings::currentFileVersion = "4.8.0";
+QString UBSettings::currentFileVersion = "4.9.0";
 
 QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 80));
 QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(127, 127, 127, 80));
@@ -157,7 +157,7 @@ QSettings* UBSettings::getAppSettings()
     if (!UBSettings::sAppSettings)
     {
         QString tmpSettings = QDir::tempPath() + "/" + qApp->applicationName() + ".config";
-        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
+        QString appSettings = UBPlatformUtils::applicationEtcDirectory() + "/" + qApp->applicationName() + ".config";
 
         // tmpSettings exists when upgrading Uniboard on Mac (see UBPlatformUtils_mac.mm updater:willInstallUpdate:)
         if (QFile::exists(tmpSettings))
@@ -166,7 +166,9 @@ QSettings* UBSettings::getAppSettings()
         }
 
         UBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         UBSettings::sAppSettings->setIniCodec("utf-8");
+#endif
 
         qDebug() << "sAppSettings location: " << appSettings;
     }
@@ -242,9 +244,11 @@ void UBSettings::init()
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", false);
     appSoftwareUpdateURL = new UBSetting(this, "App", "SoftwareUpdateURL", "http://www.openboard.ch/update.json");
     appHideCheckForSoftwareUpdate = new UBSetting(this, "App", "HideCheckForSoftwareUpdate", false);
-    appHideSwapDisplayScreens = new UBSetting(this, "App", "HideSwapDisplayScreens", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
+
+    // removed in version 1.7.0
+    mUserSettings->remove("App/HideSwapDisplayScreens");
 
     rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
     rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",true);
@@ -259,12 +263,12 @@ void UBSettings::init()
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
+    appScreenList = new UBSetting(this, "App", "ScreenList", QVariant());
 
-    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",true);
-
-    appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
+    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",false);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
+    appRunInWindow = new UBSetting(this, "App", "RunInWindow", false);
 
     featureSliderPosition = new UBSetting(this, "Board", "FeatureSliderPosition", 40);
 
@@ -360,9 +364,13 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
-    webBookmarksPage = new UBSetting(this, "Web", "BookmarksPage", "http://www.myuniboard.com");
-    webAddBookmarkUrl = new UBSetting(this, "Web", "AddBookmarkURL", "http://www.myuniboard.com/bookmarks/save/?url=");
-    webShowAddBookmarkButton = new UBSetting(this, "Web", "ShowAddBookmarkButton", false);
+    webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://www.qwant.com/?q=%1");
+    alternativeUserAgent = new UBSetting(this, "Web", "AlternativeUserAgent", "Mozilla/5.0 (%1; %2; rv:91.0) Gecko/20100101 Firefox/91.0");
+    alternativeUserAgentDomains = new UBSetting(this, "Web", "AlternativeUserAgentDomains", "google.*");
+    webCookieAutoDelete = new UBSetting(this, "Web", "CookieAutoDelete", false);
+    webCookieKeepDomains = new UBSetting(this, "Web", "CookieKeepDomains", QStringList());
+    webCookiePolicy = new UBSetting(this, "Web", "CookiePolicy", "DenyThirdParty");
+    webPrivateBrowsing = new UBSetting(this, "Web", "PrivateBrowsing", false);
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
@@ -372,6 +380,11 @@ void UBSettings::init()
 
     widgetFileExtensions << "wdgt" << "wgt" << "pwgt";
     interactiveContentFileExtensions << widgetFileExtensions << "swf";
+
+    boardZoomBase = new UBSetting(this, "Board", "ZoomBase", 1.0005);
+
+    if (boardZoomBase->get().toDouble() <= 1. || boardZoomBase->get().toDouble() > 1.01)
+        boardZoomBase->set(1.0005);
 
     boardZoomFactor = new UBSetting(this, "Board", "ZoomFactor", QVariant(1.41));
 
@@ -397,8 +410,6 @@ void UBSettings::init()
     lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
     lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)));
 
-    appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
-
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
     magnifierDrawingMode = new UBSetting(this, "Board", "MagnifierDrawingMode", "0");
     autoSaveInterval = new UBSetting(this, "Board", "AutoSaveIntervalInMinutes", "3");
@@ -407,7 +418,11 @@ void UBSettings::init()
 
     pdfMargin = new UBSetting(this, "PDF", "Margin", "20");
     pdfPageFormat = new UBSetting(this, "PDF", "PageFormat", "A4");
+    pdfUsePDFMerger = new UBSetting(this, "PDF", "UsePDFMerger", "true");
     pdfResolution = new UBSetting(this, "PDF", "Resolution", "300");
+
+    exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
+    exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 
     podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 10);
     podcastVideoSize = new UBSetting(this, "Podcast", "VideoSize", "Medium");
@@ -452,16 +467,23 @@ void UBSettings::init()
     KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
-    angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
+    rotationAngleStep = new UBSetting(this, "App", "RotationAngleStep", 5.);
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 
     useSystemOnScreenKeyboard = new UBSetting(this, "App", "UseSystemOnScreenKeyboard", true);
 
+    if (!UBPlatformUtils::hasSystemOnScreenKeyboard())
+    {
+        useSystemOnScreenKeyboard->set(false);
+    }
+
     showDateColumnOnAlphabeticalSort = new UBSetting(this, "Document", "ShowDateColumnOnAlphabeticalSort", false);
     emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
     emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
+
+    pointerDiameter = value("Board/PointerDiameter", pointerDiameter).toInt();
 
     cleanNonPersistentSettings();
     checkNewSettings();
@@ -517,17 +539,32 @@ void UBSettings::save()
          * We save the setting to the user settings if
          * a) it is different from the (non-null) value stored in the user settings, or
          * b) it doesn't currently exist in the user settings AND has changed from the app settings
+         * An invalid value indicates removal of the setting
         */
         if (mUserSettings->contains(it.key())
                 && it.value() != mUserSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         else if (!mUserSettings->contains(it.key())
                  && it.value() != mAppSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         ++it;
@@ -776,18 +813,11 @@ bool UBSettings::isDarkBackground()
 }
 
 
-UBPageBackground UBSettings::pageBackground()
+QUuid UBSettings::pageBackgroundUuid()
 {
-    QString val = value("Board/PageBackground", 0).toString();
-
-    if (val == "crossed")
-        return UBPageBackground::crossed;
-    else if (val == "ruled")
-        return UBPageBackground::ruled;
-    else
-        return UBPageBackground::plain;
+    QUuid uuid = value("Board/PageBackground", 0).toUuid();
+    return uuid;
 }
-
 
 void UBSettings::setDarkBackground(bool isDarkBackground)
 {
@@ -796,20 +826,10 @@ void UBSettings::setDarkBackground(bool isDarkBackground)
 }
 
 
-void UBSettings::setPageBackground(UBPageBackground background)
+void UBSettings::setPageBackgroundUuid(const QUuid& background)
 {
-    QString val;
-
-    if (background == UBPageBackground::crossed)
-        val = "crossed";
-    else if (background == UBPageBackground::ruled)
-        val = "ruled";
-    else
-        val = "plain";
-
-    setValue("Board/PageBackground", val);
+    setValue("Board/PageBackground", background.toString());
 }
-
 
 void UBSettings::setPenPressureSensitive(bool sensitive)
 {
@@ -855,6 +875,17 @@ void UBSettings::setFontFamily(const QString &family)
     setValue("Board/FontFamily", family);
 }
 
+
+QString UBSettings::fontStyleName()
+{
+    return value("Board/FontStyleName", sDefaultFontStyleName).toString();
+}
+
+
+void UBSettings::setFontStyleName(const QString &styleName)
+{
+    setValue("Board/FontStyleName", styleName);
+}
 
 int UBSettings::fontPixelSize()
 {
@@ -916,7 +947,7 @@ QString UBSettings::userDataDirectory()
                 qCritical() << "Impossible to create datadirpath " << dataDirPath;
 
         }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         if (qApp->organizationName().size() > 0)
             dataDirPath.replace(qApp->organizationName() + "/", "");
     }
@@ -1107,16 +1138,6 @@ QString UBSettings::applicationImageLibraryDirectory()
     }
 }
 
-QString UBSettings::userAnimationDirectory()
-{
-    static QString animationDirectory = "";
-    if(animationDirectory.isEmpty()){
-        animationDirectory = userDataDirectory() + "/animationUserDirectory";
-        checkDirectory(animationDirectory);
-    }
-    return animationDirectory;
-}
-
 QString UBSettings::userInteractiveDirectory()
 {
     static QString interactiveDirectory = "";
@@ -1184,20 +1205,6 @@ QString UBSettings::applicationVideosLibraryDirectory()
     QString defaultRelativePath = QString("./library/videos");
 
     QString configPath = value("Library/VideosDirectory", QVariant(defaultRelativePath)).toString();
-
-    if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
-    }
-    else {
-        return configPath;
-    }
-}
-
-QString UBSettings::applicationAnimationsLibraryDirectory()
-{
-    QString defaultRelativePath = QString("./library/animations");
-
-    QString configPath = value("Library/AnimationsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);

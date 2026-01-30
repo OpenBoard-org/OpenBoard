@@ -1,1 +1,53 @@
-<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.84 112.84"><title>test4</title><path d="M81.54,3.16,114,35.62V81.54L81.54,114H35.62L3.16,81.54V35.62L35.62,3.16H81.54m.41-1H35.21l-33,33.05V82L35.21,115H82L115,82V35.21l-33-33Z" transform="translate(-2.16 -2.16)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Calque_1"
+   data-name="Calque 1"
+   viewBox="0 0 112.84 112.84"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="nofill_octogon.svg">
+  <metadata
+     id="metadata11">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="28.961362"
+     inkscape:cx="96.43121"
+     inkscape:cy="103.9428"
+     inkscape:current-layer="Calque_1" />
+  <title
+     id="title3">test4</title>
+  <path
+     d="M81.54,3.16,114,35.62V81.54L81.54,114H35.62L3.16,81.54V35.62L35.62,3.16H81.54m.41-1H35.21l-33,33.05V82L35.21,115H82L115,82V35.21l-33-33Z"
+     transform="translate(-2.16 -2.16)"
+     id="path5"
+     style="fill:#595959;fill-opacity:1" />
+</svg>

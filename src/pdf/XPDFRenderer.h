@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -29,20 +29,34 @@
 
 #ifndef XPDFRENDERER_H
 #define XPDFRENDERER_H
+
 #include <QImage>
+#include <QThread>
+#include <QMutexLocker>
 #include "PDFRenderer.h"
 #include <splash/SplashBitmap.h>
 
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
 #include <poppler/Object.h>
 #include <poppler/GlobalParams.h>
 #include <poppler/SplashOutputDev.h>
 #include <poppler/PDFDoc.h>
-THIRD_PARTY_WARNINGS_ENABLE
 
 class PDFDoc;
+
+
+namespace XPDFRendererZoomFactor
+{
+    const double zoomFactorStart = .25;
+    const double zoomFactorStepSquare = .25;
+    const double zoomFactorIterations = 7;
+}
+
+namespace XPDFThreadMaxTimeoutOnExit
+{
+    const double timeout_ms = 3000;
+}
 
 class XPDFRenderer : public PDFRenderer
 {
@@ -52,30 +66,104 @@ class XPDFRenderer : public PDFRenderer
         XPDFRenderer(const QString &filename, bool importingFile = false);
         virtual ~XPDFRenderer();
 
-        bool isValid() const;
+        void initPDFZoomData();
+        virtual bool isValid() const override;
+        virtual int pageCount() const override;
+        virtual QSizeF pageSizeF(int pageNumber) const override;
+        virtual int pageRotation(int pageNumber) const override;
+        virtual QSizeF pointSizeF(int pageNumber) const override;
+        virtual QString title() const override;
+        virtual void render(QPainter *p, int pageNumber, const bool cacheAllowed, const QRectF &bounds = QRectF()) override;
 
-        virtual int pageCount() const;
-
-        virtual QSizeF pageSizeF(int pageNumber) const;
-
-        virtual int pageRotation(int pageNumber) const;
-
-        virtual QString title() const;
-
-    public slots:
-        void render(QPainter *p, int pageNumber, const QRectF &bounds = QRectF());
+    signals:
+        void signalUpdateParent();
 
     private:
         void init();
-        QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
+
+        struct PdfZoomCacheData {
+            PdfZoomCacheData() : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(1.0), hasToBeProcessed(false) {};
+            PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio), hasToBeProcessed(false) {};
+            ~PdfZoomCacheData() {};
+            SplashBitmap* splashBitmap;
+            //! Note: The 'cachedImage' uses a buffer from 'splash'. Make sure it is invalidated BEFORE 'splash' deallocation.
+            QImage cachedImage;
+            int cachedPageNumber;
+            SplashOutputDev* splash;
+            double ratio;
+            bool hasToBeProcessed;
+            QList<QObject *> updateListAfterProcessing;
+
+            bool requireUpdateImage(int const pageNumber) const {
+                return (pageNumber != cachedPageNumber) || (splash == nullptr);
+            }
+
+            void prepareNewSplash(int const pageNumber, SplashColor &paperColor)
+            {
+                if(splash != nullptr)
+                {
+                    cachedImage = QImage();
+                    delete splash;
+                }
+                splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
+                cachedPageNumber = pageNumber;
+            }
+
+            void cleanup()
+            {
+                if(splash != nullptr){
+                    cachedImage = QImage();
+                    delete splash;
+                    splash = nullptr;
+                }
+            }
+        };
+
+        //! Spawned when a pdf processing is required, when no matching image is found in cache.
+        class CacheThread : public QThread
+        {
+        public:
+            struct JobData {
+                PdfZoomCacheData* cacheData;
+                PDFDoc *document;
+                int pageNumber;
+                double dpiForRendering;
+            };
+
+            CacheThread() {}
+            ~CacheThread() {}
+            void pushJob(JobData &jobData) {               
+                QMutexLocker lock(&m_jobMutex);
+                m_nextJob.push_back(jobData);
+            }
+
+            virtual void run() override;
+            bool isJobPending() { QMutexLocker lock(&m_jobMutex); return m_nextJob.size() > 0; }
+            void cancelPending() { QMutexLocker lock(&m_jobMutex); m_nextJob.clear(); }
+        private:
+            QList<JobData> m_nextJob;
+            QMutex m_jobMutex;
+        };
+
+        CacheThread m_cacheThread;
+
+        QImage &createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData);
+        QImage* createPDFImageUncached(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
+
+        QMap<int, QVector<PdfZoomCacheData>> m_perPagepdfZoomCache;
+
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashBitmap* mpSplashBitmapUncached;
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashOutputDev* mSplashUncached;
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
         qreal mSliceX;
         qreal mSliceY;
 
-        SplashBitmap* mpSplashBitmap;
-        SplashOutputDev* mSplash;
+private slots:
+        void OnThreadFinished();
 };
 
 #endif // XPDFRENDERER_H

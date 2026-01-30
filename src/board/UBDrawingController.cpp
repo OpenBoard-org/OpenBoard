@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -34,6 +34,8 @@
 
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
+#include "tools/UBAbstractDrawRuler.h"
 
 #include "gui/UBMainWindow.h"
 #include "core/memcheck.h"
@@ -58,7 +60,6 @@ void UBDrawingController::destroy()
 
 UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
-    , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
     , mIsDesktopMode(false)
@@ -120,6 +121,7 @@ void UBDrawingController::setStylusTool(int tool)
             emit colorIndexChanged(UBSettings::settings()->markerColorIndex());
         }
 
+        UBStylusTool::Enum previousTool = mStylusTool;
         mStylusTool = (UBStylusTool::Enum)tool;
 
 
@@ -148,18 +150,42 @@ void UBDrawingController::setStylusTool(int tool)
         else if (mStylusTool == UBStylusTool::Capture)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
-        emit stylusToolChanged(tool);
+
+        // workaround for #827
+        // glitches when moving objects fast
+        if (mStylusTool == UBStylusTool::Selector || mStylusTool == UBStylusTool::Play)
+        {
+            UBApplication::boardController->controlView()->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+        }
+        else
+        {
+            UBApplication::boardController->controlView()->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+        }
+
+        emit stylusToolChanged(tool, previousTool);
         if (mStylusTool != UBStylusTool::Selector)
             emit colorPaletteChanged();
     }
 }
 
 
-bool UBDrawingController::isDrawingTool()
+bool UBDrawingController::isDrawingTool(int tool)
 {
-    return (stylusTool() == UBStylusTool::Pen)
-            || (stylusTool() == UBStylusTool::Marker)
-            || (stylusTool() == UBStylusTool::Line);
+    if (tool < 0)
+    {
+        tool = stylusTool();
+    }
+
+    return (tool == UBStylusTool::Pen)
+            || (tool == UBStylusTool::Marker)
+            || (tool == UBStylusTool::Line);
+}
+
+bool UBDrawingController::isSnappingTool() const
+{
+    return (mStylusTool == UBStylusTool::Selector)
+            || (mStylusTool == UBStylusTool::Play)
+            || (mStylusTool == UBStylusTool::Line);
 }
 
 
@@ -319,6 +345,23 @@ void UBDrawingController::setMarkerAlpha(qreal alpha)
     UBSettings::settings()->boardMarkerAlpha->set(alpha);
 
     emit colorPaletteChanged();
+}
+
+void UBDrawingController::setActiveRuler(UBAbstractDrawRuler* ruler)
+{
+    mActiveRuler = ruler;
+}
+
+UBAbstractDrawRuler* UBDrawingController::activeRuler() const
+{
+    QGraphicsItem* item = dynamic_cast<QGraphicsItem*>(mActiveRuler.data());
+
+    if (item && item->isVisible())
+    {
+        return mActiveRuler;
+    }
+
+    return nullptr;
 }
 
 

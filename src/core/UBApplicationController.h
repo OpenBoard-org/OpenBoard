@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -38,8 +38,6 @@
 
 
 #include <QtNetwork/QHttpPart>
-#include <QScriptValue>
-#include <QScriptEngine>
 
 
 class UBBoardView;
@@ -48,13 +46,11 @@ class UBGraphicsScene;
 class UBDesktopAnnotationController;
 class UBScreenMirror;
 class UBMainWindow;
-class UBDisplayManager;
 class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
 class UBRightPalette;
-class UBOpenSankoreImporter;
 
 class UBApplicationController : public QObject
 {
@@ -70,7 +66,7 @@ class UBApplicationController : public QObject
 
         void adaptToolBar();
         void adjustDisplayView();
-        void adjustPreviousViews(int pActiveSceneIndex, UBDocumentProxy *pActiveDocument);
+        void adjustPreviousViews(int pActiveSceneIndex, std::shared_ptr<UBDocumentProxy> pActiveDocument);
 
         void blackout();
 
@@ -93,11 +89,6 @@ class UBApplicationController : public QObject
         void showMessage(const QString& message, bool showSpinningWheel);
 
         void importFile(const QString& pFilePath);
-
-        UBDisplayManager* displayManager()
-        {
-            return mDisplayManager;
-        }
 
         UBDesktopAnnotationController* uninotesController()
         {
@@ -158,18 +149,17 @@ class UBApplicationController : public QObject
 
 
     protected:
+        void initPreviousViews();
 
         UBDesktopAnnotationController *mUninoteController;
 
         UBMainWindow *mMainWindow;
 
-        UBOpenSankoreImporter *mOpenSankoreImporter;
-
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;
         QList<UBBoardView*> mPreviousViews;
 
-        UBGraphicsScene *mBlackScene;
+        std::shared_ptr<UBGraphicsScene> mBlackScene;
 
         UBScreenMirror* mMirror;
 
@@ -178,8 +168,6 @@ class UBApplicationController : public QObject
     private:
 
         MainMode mMainMode;
-
-        UBDisplayManager *mDisplayManager;
 
         bool mAutomaticCheckForUpdates;
         bool mCheckingForUpdates;

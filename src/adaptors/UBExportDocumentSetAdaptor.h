@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -33,10 +33,8 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
 #include "quazip.h"
 #include "quazipfile.h"
-THIRD_PARTY_WARNINGS_ENABLE
 
 class UBDocumentProxy;
 class UBDocumentTreeModel;
@@ -53,7 +51,7 @@ class UBExportDocumentSetAdaptor : public UBExportAdaptor
         virtual QString exportName();
         virtual QString exportExtention();
 
-        virtual void persist(UBDocumentProxy* pDocument);
+        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
         bool persistData(const QModelIndex &pRootIndex, QString filename);
         bool addDocumentToZip(const QModelIndex &pIndex, UBDocumentTreeModel *model, QuaZip &zip);
 

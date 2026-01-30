@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,23 +31,20 @@
 #define UBGRAPHICSMEDIAITEM_H
 
 #include <QtWidgets/QGraphicsView>
-#include "UBGraphicsProxyWidget.h"
 
-#include <QAudioOutput>
-#include <QMediaObject>
+// #include <QAudioOutput>
 #include <QMediaPlayer>
-#include <QMediaService>
 
-#include <QtMultimediaWidgets/QVideoWidget>
-#include <QtMultimedia/QVideoFrame>
+// #include <QtMultimediaWidgets/QVideoWidget>
+// #include <QtMultimedia/QVideoFrame>
 
-#include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "frameworks/UBFileSystemUtils.h"
+#include "domain/UBMediaAssetItem.h"
+#include "domain/UBResizableGraphicsItem.h"
 
 class QGraphicsVideoItem;
 
-class UBGraphicsMediaItem : public QObject, public UBItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
+class UBGraphicsMediaItem : public QObject, public UBMediaAssetItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
 {
     Q_OBJECT
 
@@ -74,7 +71,7 @@ public:
 
     virtual mediaType getMediaType() const = 0;
 
-    virtual UBGraphicsScene* scene();
+    virtual std::shared_ptr<UBGraphicsScene> scene() override;
     bool hasLinkedImage() const             { return haveLinkedImage; }
     virtual QUrl mediaFileUrl() const       { return mMediaFileUrl; }
     bool isMuted() const                    { return mMuted; }
@@ -84,30 +81,38 @@ public:
     qint64 mediaDuration() const;
     qint64 mediaPosition() const;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QMediaPlayer::PlaybackState playerState() const;
+    bool isPlaying() const { return (mMediaObject->playbackState() == QMediaPlayer::PlayingState); }
+    bool isPaused() const { return (mMediaObject->playbackState() == QMediaPlayer::PausedState); }
+#else
     QMediaPlayer::State playerState() const;
     bool isPlaying() const { return (mMediaObject->state() == QMediaPlayer::PlayingState); }
     bool isPaused() const { return (mMediaObject->state() == QMediaPlayer::PausedState); }
+#endif
+
     bool isStopped() const;
+    bool firstLoad() const;
+    void setFirstLoad(bool firstLoad);
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
-    QSizeF size() const { return rect().size(); } 
+    QSizeF size() const override { return rect().size(); }
 
     // Setters
+    virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
     virtual void setMediaFileUrl(QUrl url);
     void setInitialPos(qint64 p);
     void setMediaPos(qint64 p);
-    virtual void setSourceUrl(const QUrl &pSourceUrl);
     void setSelected(bool selected);
     void setMinimumSize(const QSize& size);
-    void setUuid(const QUuid &pUuid);
 
-    virtual void copyItemParameters(UBItem *copy) const;
+    virtual void copyItemParameters(UBItem *copy) const override;
 
     virtual void setSize(int width, int height);
-    void resize(qreal w, qreal h) { setSize(w, h); }
+    void resize(qreal w, qreal h) override { setSize(w, h); }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 
 public slots:
@@ -127,10 +132,8 @@ protected slots:
 
 protected:
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-    virtual void clearSource();
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     QMediaPlayer *mMediaObject;
 
@@ -140,6 +143,7 @@ protected:
     bool mMutedByUserAction;
     static bool sIsMutedByDefault;
     bool mStopped;
+    bool mFirstLoad;
 
     QUrl mMediaFileUrl;
     QString mMediaSource;
@@ -162,15 +166,18 @@ class UBGraphicsAudioItem: public UBGraphicsMediaItem
 
 public:
     enum { Type = UBGraphicsItemType::AudioItemType};
-    virtual int type() const
+    virtual int type() const override
     {
         return Type;
     }
 
     UBGraphicsAudioItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-    mediaType getMediaType() const { return mediaType_Audio; }
 
-    virtual UBItem* deepCopy() const;
+    virtual QList<QString> mediaAssets() const override;
+
+    mediaType getMediaType() const override { return mediaType_Audio; }
+
+    virtual UBItem* deepCopy() const override;
 };
 
 class UBGraphicsVideoItem: public UBGraphicsMediaItem
@@ -179,25 +186,33 @@ class UBGraphicsVideoItem: public UBGraphicsMediaItem
 
 public:
     enum { Type = UBGraphicsItemType::VideoItemType};
-    virtual int type() const
+    virtual int type() const override
     {
         return Type;
     }
 
     UBGraphicsVideoItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
 
-    mediaType getMediaType() const { return mediaType_Video; }
+    virtual QList<QString> mediaAssets() const override;
 
-    void setSize(int width, int height);
+    mediaType getMediaType() const override { return mediaType_Video; }
 
-    virtual UBItem* deepCopy() const;
+    void setSize(int width, int height) override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual UBItem* deepCopy() const override;
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 public slots:
     void videoSizeChanged(QSizeF newSize);
     void hasVideoChanged(bool hasVideo);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    void mediaStateChanged(QMediaPlayer::PlaybackState state);
+#else
     void mediaStateChanged(QMediaPlayer::State state);
+#endif
+
     void activeSceneChanged();
 
 protected slots:
@@ -207,10 +222,10 @@ protected:
 
     QGraphicsVideoItem *mVideoItem;
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     void setPlaceholderVisible(bool visible);
 

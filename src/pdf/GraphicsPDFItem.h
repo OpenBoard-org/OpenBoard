@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -51,10 +51,20 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
         int pageNumber() const { return mPageNumber; }
         QUuid fileUuid() const { return mRenderer->fileUuid(); }
         QByteArray fileData() const { return mRenderer->fileData(); }
+        void setCacheAllowed(bool const value) { mIsCacheAllowed = value; }
+        QSizeF pageSize() const { return mRenderer->pointSizeF(mPageNumber); }
+        virtual void updateChild() = 0;
+
+    protected:
+        void switchRenderer(PDFRenderer* newRenderer);
 
     protected:
         PDFRenderer *mRenderer;
         int mPageNumber;
+        bool mIsCacheAllowed;
+
+    private slots:
+        void OnRequireUpdate();
 };
 
 #endif // GRAPHICSPDFITEM_H

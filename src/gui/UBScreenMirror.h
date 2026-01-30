@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -33,9 +33,13 @@
 #include <QtGui>
 #include <QWidget>
 
+// forward
+class UBDesktopPortal;
+
+
 class UBScreenMirror : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBScreenMirror(QWidget* parent = 0);
@@ -48,12 +52,6 @@ class UBScreenMirror : public QWidget
 
         void setSourceWidget(QWidget *sourceWidget);
 
-        void setSourceRect(const QRect& pRect)
-        {
-            mRect = pRect;
-            mSourceWidget = 0;
-        }
-
         void start();
 
         void stop();
@@ -61,17 +59,19 @@ class UBScreenMirror : public QWidget
     private:
 
         void grabPixmap();
-
-        int mScreenIndex;
+#ifdef Q_OS_LINUX
+        void startScreenCast();
+        void playStream(int fd, int nodeId);
+#endif
 
         QWidget* mSourceWidget;
-
-        QRect mRect;
-
         QPixmap mLastPixmap;
-
         long mTimerID;
+        bool mIsStarted{false};
 
+#ifdef Q_OS_LINUX
+        UBDesktopPortal* mPortal{nullptr};
+#endif
 };
 
 #endif /* UBSCREENMIRROR_H_ */

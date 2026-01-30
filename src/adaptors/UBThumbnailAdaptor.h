@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -33,7 +33,6 @@
 #include <QtCore>
 
 class UBDocument;
-class UBDocumentProxy;
 class UBGraphicsScene;
 
 class UBThumbnailAdaptor //static class
@@ -41,16 +40,14 @@ class UBThumbnailAdaptor //static class
     Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
 public:
-    static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);
+    static QUrl thumbnailUrl(UBDocument* document, int pageIndex);
 
-    static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
+    static QPixmap persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
-    static const QPixmap* get(UBDocumentProxy* proxy, int index);
-    static void load(UBDocumentProxy* proxy, QList<const QPixmap*>& list);
+    static QPixmap get(UBDocument* document, int index);
+    static QPixmap generateMissingThumbnail(UBDocument* document, int pageIndex, UBGraphicsScene* scene = {});
 
 private:
-    static void generateMissingThumbnails(UBDocumentProxy* proxy);
-
     UBThumbnailAdaptor() {}
 };
 

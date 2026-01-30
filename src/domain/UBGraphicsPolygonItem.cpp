@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -92,12 +92,6 @@ void UBGraphicsPolygonItem::initialize()
     setUuid(QUuid::createUuid());
 }
 
-void UBGraphicsPolygonItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 void UBGraphicsPolygonItem::clearStroke()
 {
     if (mStroke!=NULL)
@@ -177,6 +171,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setColorOnLightBackground(this->colorOnLightBackground());
 
         cp->setZValue(this->zValue());
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
     }
 }
@@ -191,7 +186,8 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-UBGraphicsScene* UBGraphicsPolygonItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsPolygonItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }

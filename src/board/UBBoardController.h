@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,17 +36,22 @@
 #include <QHBoxLayout>
 #include <QUndoCommand>
 
-#include "document/UBDocumentContainer.h"
+#include "core/UB.h"
 #include "core/UBApplicationController.h"
+#include "document/UBDocumentContainer.h"
 
 class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
+class UBBackgroundRuling;
+class UBBackgroundManager;
+class UBDocument;
 class UBDocumentController;
 class UBMessageWindow;
 class UBGraphicsScene;
 class UBDocumentProxy;
+class UBEmbedController;
 class UBBlackoutWidget;
 class UBToolWidget;
 class UBVersion;
@@ -77,34 +82,31 @@ class UBBoardController : public UBDocumentContainer
         void init();
         void setupLayout();
 
-        UBGraphicsScene* activeScene() const;
+        std::shared_ptr<UBGraphicsScene> activeScene() const;
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
-        QSize displayViewport();
-        QSize controlViewport();
-        QRectF controlGeometry();
         void closing();
 
-        int currentPage();
+        int currentPage() const;
 
-        QWidget* controlContainer()
+        QWidget* controlContainer() const
         {
             return mControlContainer;
         }
 
-        UBBoardView* controlView()
+        UBBoardView* controlView() const
         {
             return mControlView;
         }
 
-        UBBoardView* displayView()
+        UBBoardView* displayView() const
         {
             return mDisplayView;
         }
 
-        UBGraphicsScene* activeScene()
+        UBBackgroundManager* backgroundManager() const
         {
-            return mActiveScene;
+            return mBgManager;
         }
 
         void setPenColorOnDarkBackground(const QColor& pColor)
@@ -135,40 +137,42 @@ class UBBoardController : public UBDocumentContainer
             mMarkerColorOnLightBackground = pColor;
         }
 
-        QColor penColorOnDarkBackground()
+        QColor penColorOnDarkBackground() const
         {
             return mPenColorOnDarkBackground;
         }
 
-        QColor penColorOnLightBackground()
+        QColor penColorOnLightBackground() const
         {
             return mPenColorOnLightBackground;
         }
 
-        QColor markerColorOnDarkBackground()
+        QColor markerColorOnDarkBackground() const
         {
             return mMarkerColorOnDarkBackground;
         }
 
-        QColor markerColorOnLightBackground()
+        QColor markerColorOnLightBackground() const
         {
             return mMarkerColorOnLightBackground;
         }
 
-        qreal systemScaleFactor()
+        qreal systemScaleFactor() const
         {
             return mSystemScaleFactor;
         }
-        qreal currentZoom();
-        void persistViewPositionOnCurrentScene();
+        qreal currentZoom() const;
+        void persistViewPositionOnCurrentScene() const;
+        void restoreViewPositionOnCurrentScene() const;
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
+        void setCursorFromAngle(qreal angle, const QPoint offset = {});
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 
         void setPageSize(QSize newSize);
-        UBBoardPaletteManager *paletteManager()
+        UBBoardPaletteManager *paletteManager() const
         {
             return mPaletteManager;
         }
@@ -177,21 +181,24 @@ class UBBoardController : public UBDocumentContainer
         void notifyPageChanged();
         void displayMetaData(QMap<QString, QString> metadatas);
 
-        void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &itms);
+        void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &items);
         void ClearUndoStack();
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(int pSceneIndex);
 
-        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
-        void setActiveDocumentScene(int pSceneIndex);
-
-        void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
         UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
 
-        bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
+        bool cacheIsVisible() const {return mCacheWidgetIsEnabled;}
 
-        QString actionGroupText(){ return mActionGroupText;}
-        QString actionUngroupText(){ return mActionUngroupText;}
+        QString actionGroupText() const { return mActionGroupText;}
+        QString actionUngroupText() const { return mActionUngroupText;}
+
+        std::shared_ptr<UBGraphicsScene> initialDocumentScene() const
+        {
+            return mInitialDocumentScene;
+        }
 
     public slots:
         void showDocumentsDialog();
@@ -199,8 +206,7 @@ class UBBoardController : public UBDocumentContainer
         void togglePodcast(bool checked);
         void blackout();
         void addScene();
-        void addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
-        void addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty = false);
+        void addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
         void clearScene();
@@ -211,7 +217,7 @@ class UBBoardController : public UBDocumentContainer
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();
         void centerRestore();
-        void centerOn(QPointF scenePoint = QPointF(0,0));
+        void centerOn(QPointF scenePoint = QPointF(0,0)) const;
         void zoom(const qreal ratio, QPointF scenePoint);
         void handScroll(qreal dx, qreal dy);
         void previousScene();
@@ -222,7 +228,7 @@ class UBBoardController : public UBDocumentContainer
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
-        void changeBackground(bool isDark, UBPageBackground pageBackground);
+        void setBackground(bool isDark, const UBBackgroundRuling* background);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
@@ -235,8 +241,8 @@ class UBBoardController : public UBDocumentContainer
         void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
-        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
-        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
+        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
         void adjustDisplayViews();
         void cut();
@@ -254,7 +260,9 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
-        //void regenerateThumbnails();
+        void documentSceneDuplicated(UBDocument* document, int index);
+        void documentSceneMoved(UBDocument* document, int fromIndex, int toIndex);
+        void documentSceneDeleted(UBDocument* document, int index);
 
     signals:
         void newPageAdded();
@@ -267,8 +275,6 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
-        void centerOnThumbnailRequired(int index);
-        void npapiWidgetCreated(const QString &Url);
 
     protected:
         void setupViews();
@@ -277,12 +283,12 @@ class UBBoardController : public UBDocumentContainer
         void initToolbarTexts();
         void updateActionStates();
         void updateSystemScaleFactor();
-        QString truncate(QString text, int maxWidth);
+        QString truncate(QString text, int maxWidth) const;
 
     protected slots:
         void selectionChanged();
         void undoRedoStateChange(bool canUndo);
-        void documentSceneChanged(UBDocumentProxy* proxy, int pIndex);
+        void documentSceneChanged(std::shared_ptr<UBDocumentProxy> proxy, int pIndex);
 
     private slots:
         void autosaveTimeout();
@@ -291,15 +297,17 @@ class UBBoardController : public UBDocumentContainer
     private:
         void initBackgroundGridSize();
         void updatePageSizeState();
-        void saveViewState();
-        int autosaveTimeoutFromSettings();
+        int autosaveTimeoutFromSettings() const;
 
         UBMainWindow *mMainWindow;
-        UBGraphicsScene* mActiveScene;
+        std::shared_ptr<UBGraphicsScene> mActiveScene;
         int mActiveSceneIndex;
+        int mSwitchToSceneIndex{-1};
         UBBoardPaletteManager *mPaletteManager;
+        UBBackgroundManager* mBgManager{nullptr};
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;
+        UBEmbedController *mEmbedController;
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;
         QWidget *mControlContainer;
@@ -319,14 +327,14 @@ class UBBoardController : public UBDocumentContainer
         int mMovingSceneIndex;
         QString mActionGroupText;
         QString mActionUngroupText;
+        std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
+        QList<std::shared_ptr<UBDocument>> mRecentDocuments;
 
         QTimer *mAutosaveTimer;
 
     private slots:
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
-        void documentWillBeDeleted(UBDocumentProxy* pProxy);
-        void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -44,19 +44,21 @@ class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
         UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType = 0);
         virtual ~UBGraphicsWidgetItemDelegate();
 
+        virtual void createControls() override;
+
     protected:
+        virtual void decorateMenu(QMenu* menu) override;
+        virtual void updateMenuActionState() override;
+        virtual void remove(bool canundo) override;
 
-        virtual void decorateMenu(QMenu* menu);
-        virtual void updateMenuActionState();
-        virtual void remove(bool canundo);
+    protected slots:
+        virtual void gotoContentSource() override;
 
-    private slots:
-
+private slots:
         void freeze(bool frozeon);
         void pin();
 
     private:
-
         int mWidgetType;
 
         UBGraphicsWidgetItem* delegated();

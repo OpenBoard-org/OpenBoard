@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -65,10 +65,10 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     mResizeItem = new QPixmap(":/images/resize.svg");
     sChangeModePixmap = new QPixmap();
 
-    qDebug() << "sClosePixmap" << sClosePixmap->size() << endl
-             << "sIncreasePixmap" << sIncreasePixmap->size() << endl
-             << "sDecreasePixmap" << sDecreasePixmap->size() << endl
-             << "mResizeItem" << mResizeItem->size() << endl;
+    qDebug() << "sClosePixmap" << sClosePixmap->size() << '\n'
+             << "sIncreasePixmap" << sIncreasePixmap->size() << '\n'
+             << "sDecreasePixmap" << sDecreasePixmap->size() << '\n'
+             << "mResizeItem" << mResizeItem->size() << '\n';
 
 
     setDrawingMode(UBSettings::settings()->magnifierDrawingMode->get().toInt());
@@ -87,7 +87,10 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
 #endif
 #ifdef Q_OS_OSX
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
-        setAttribute(Qt::WA_MacNoShadow);
+        // didn't find the equivalent in Qt6
+        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            setAttribute(Qt::WA_MacNoShadow);
+        #endif
 #endif
     }
 
@@ -194,11 +197,11 @@ void UBMagnifier::calculateButtonsPositions()
     sDecreasePixmapButtonRect = QRect(sChangeModePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sDecreasePixmap->height(), sDecreasePixmap->width(), sDecreasePixmap->height());
     sIncreasePixmapButtonRect = QRect(sDecreasePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sIncreasePixmap->height(), sIncreasePixmap->width(), sIncreasePixmap->height());
 
-    qDebug() << "mResizeItemButtonRect" << mResizeItemButtonRect << endl
-             << "sClosePixmapButtonRect" << sClosePixmapButtonRect << endl
-             << "sChangeModePixmapButtonRect" << sChangeModePixmapButtonRect << endl
-             << "sDecreasePixmapButtonRect" << sDecreasePixmapButtonRect << endl
-             << "sIncreasePixmapButtonRect" << sIncreasePixmapButtonRect << endl;
+    qDebug() << "mResizeItemButtonRect" << mResizeItemButtonRect << '\n'
+             << "sClosePixmapButtonRect" << sClosePixmapButtonRect << '\n'
+             << "sChangeModePixmapButtonRect" << sChangeModePixmapButtonRect << '\n'
+             << "sDecreasePixmapButtonRect" << sDecreasePixmapButtonRect << '\n'
+             << "sIncreasePixmapButtonRect" << sIncreasePixmapButtonRect << '\n';
 }
 
 void UBMagnifier::paintEvent(QPaintEvent * event)
@@ -259,7 +262,12 @@ void UBMagnifier::mousePressEvent ( QMouseEvent * event )
         }
 
         mMousePressPos = event->pos();
-        mMousePressDelta = (qreal)updPointGrab.x() + (qreal)size().width() / 2 - (qreal)event->globalPos().x();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF globalPosition = event->globalPosition();
+#else
+    QPointF globalPosition = event->globalPos();
+#endif
+        mMousePressDelta = (qreal)updPointGrab.x() + (qreal)size().width() / 2 - globalPosition.x();
 
         event->accept();
 
@@ -286,7 +294,11 @@ void UBMagnifier::mouseMoveEvent ( QMouseEvent * event )
         if(mShouldResizeWidget && (event->buttons() & Qt::LeftButton))
         {
 
-            QPoint currGlobalPos = event->globalPos();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            QPointF currGlobalPos = event->globalPosition();
+#else
+            QPointF currGlobalPos = event->globalPos();
+#endif
             qreal cvW = mView->width();
 
             qreal newXSize = ( currGlobalPos.x() + mMousePressDelta - updPointGrab.x() ) * 2;
@@ -374,7 +386,7 @@ void UBMagnifier::slot_refresh()
 
 void UBMagnifier::grabPoint()
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     QPointF itemPos = gView->mapFromGlobal(updPointGrab);
 
     qreal zWidth = width() / (params.zoom * transM.m11());
@@ -407,7 +419,7 @@ void UBMagnifier::grabPoint()
 
 void UBMagnifier::grabPoint(const QPoint &pGrab)
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     updPointGrab = pGrab;
     QPointF itemPos = gView->mapFromGlobal(pGrab);
 

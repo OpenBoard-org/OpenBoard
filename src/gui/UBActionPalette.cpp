@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -68,7 +68,7 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
-    mButtonGroup = 0;
+    mActionGroup = nullptr;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
@@ -98,9 +98,10 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
     UBActionPaletteButton* button = new UBActionPaletteButton(action, parent);
     button->setIconSize(mButtonSize);
     button->setToolButtonStyle(mToolButtonStyle);
+    action->setProperty("id", mButtons.length());
 
-    if (mButtonGroup)
-        mButtonGroup->addButton(button, mButtons.length());
+    if (mActionGroup)
+        mActionGroup->addAction(action);
 
     mButtons << button;
 
@@ -112,6 +113,27 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
             this, &UBActionPalette::actionChanged);
 
     return button;
+}
+
+QAction* UBActionPalette::removePaletteButton(UBActionPaletteButton* button)
+{
+    if (!button)
+    {
+        return nullptr;
+    }
+
+    QAction* action = button->defaultAction();
+
+    mButtons.removeAll(button);
+    mActions.removeAll(action);
+    mMapActionToButton.remove(action);
+
+    if (mActionGroup)
+    {
+        mActionGroup->removeAction(action);
+    }
+
+    return action;
 }
 
 void UBActionPalette::addAction(QAction* action)
@@ -155,15 +177,24 @@ void UBActionPalette::setButtonIconSize(const QSize& size)
 
 void UBActionPalette::groupActions()
 {
-    mButtonGroup = new QButtonGroup(this);
+    mActionGroup = new QActionGroup(this);
     int i = 0;
-    foreach(QToolButton* button, mButtons)
+    foreach(QAction* action, mActions)
     {
-        mButtonGroup->addButton(button, i);
-        ++i;
-    }
+        if (!action->property("ungrouped").toBool())
+        {
+            action->setProperty("id", i);
+            mActionGroup->addAction(action);
+            ++i;
 
-    connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+            connect(action, &QAction::triggered, this, [this,action](bool checked){
+                if (checked)
+                {
+                    emit buttonGroupClicked(action);
+                }
+            });
+        }
+    }
 }
 
 

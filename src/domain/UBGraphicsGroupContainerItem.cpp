@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -240,13 +240,9 @@ void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
+        cp->setZValue(this->zValue());
     }
-}
-
-void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
@@ -258,18 +254,6 @@ void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
     }
 
     remove(canUndo);
-}
-
-void UBGraphicsGroupContainerItem::clearSource()
-{
-    foreach(QGraphicsItem *child, childItems())
-    {
-        UBGraphicsItem *item = dynamic_cast<UBGraphicsItem *>(child);
-        if (item)
-        {
-            item->clearSource();
-        }
-    }
 }
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -370,10 +354,11 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
     item->setParentItem(newParent);
     item->setPos(oldPos);
 
-    UBGraphicsScene *Scene = dynamic_cast<UBGraphicsScene *>(item->scene());
-    if (Scene)
+    // here we may directly use the plain pointer returned from item->scene() as we will not use it later
+    auto scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+    if (scene)
     {
-        Scene->addItem(item);
+        scene->addItem(item);
     }
 
     // removing position from translation component of the new transform

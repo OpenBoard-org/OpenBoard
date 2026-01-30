@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -108,8 +108,12 @@ UBColorListSetting::UBColorListSetting(UBSettings* owner, const QString& pDomain
 
     foreach(QString s, get().toStringList())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(s);
+#else
         QColor color;
         color.setNamedColor(s);
+#endif
         if (mAlpha>=0)
             color.setAlphaF(mAlpha);
         mColors.append(color);
@@ -130,8 +134,12 @@ QVariant UBColorListSetting::reset()
 
     foreach(QString s, get().toStringList())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(s);
+#else
         QColor color;
         color.setNamedColor(s);
+#endif
         if (mAlpha>=0)
             color.setAlphaF(mAlpha);
 

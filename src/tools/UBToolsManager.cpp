@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -66,6 +66,14 @@ UBToolsManager::UBToolsManager(QObject *parent)
     ruler.version = "1.0";
     mToolsIcon.insert(ruler.id, ":/images/toolPalette/rulerTool.png");
     mDescriptors << ruler;
+
+
+    axes.id = "openboardtool://axes";
+    axes.icon = QPixmap(":/images/toolPalette/axesTool.png");
+    axes.label = tr("Axes");
+    axes.version = "1.0";
+    mToolsIcon.insert(axes.id, ":/images/toolPalette/axesTool.png");
+    mDescriptors << axes;
 
 
     compass.id = "openboardtool://compass";

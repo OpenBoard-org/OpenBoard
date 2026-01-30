@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -154,7 +154,7 @@ QString UBIntranetPodcastPublisher::metadata()
     QString computerName =  UBPlatformUtils::computerName();
     QString fileSize = QString("%1").arg(fi.size());
 
-    QString templatePath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/intranet-podcast-metadata.template";
+    QString templatePath = UBPlatformUtils::applicationTemplateDirectory() + "/intranet-podcast-metadata.template";
     QString templateContent = UBFileSystemUtils::readTextFile(templatePath);
 
     return templateContent.replace("{title}", mTitle)

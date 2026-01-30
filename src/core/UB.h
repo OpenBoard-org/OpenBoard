@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,20 +35,24 @@
 
 #define UB_MAX_ZOOM 9
 
+#if defined(Q_OS_LINUX) || (defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)))
+#define UB_REQUIRES_MASK_UPDATE 1
+#endif
+
 struct UBMimeType
 {
     enum Enum
     {
         RasterImage = 0,
         VectorImage,
-        AppleWidget,
         W3CWidget,
         Video,
         Audio,
-        Flash,
         PDF,
         OpenboardTool,
         Group,
+        Html,
+        Document,
         UNKNOWN
     };
 };
@@ -133,11 +137,11 @@ struct UBGraphicsItemData
         , ItemEditable//for text only
         , ItemOwnZValue
         , itemLayerType //use instead of deprecated ItemLayerType
-        , ItemUuid //storing uuid in QGraphicsItem for fast finding operations
         //Duplicating delegate's functions to make possible working with pure QGraphicsItem
         , ItemFlippable // (bool)
         , ItemRotatable // (bool)
         , ItemCanBeSetAsBackground
+        , ItemIsHiddenOnDisplay
     };
 };
 
@@ -168,6 +172,7 @@ struct UBGraphicsItemType
         ToolWidgetItemType,                             //65555
         GraphicsWidgetItemType,                         //65556
         UserTypesCount,                                 //65557
+        AxesItemType,                                   //65558
         SelectionFrameType                              // this line must be the last line in this enum because it is types counter.
     };
 };
@@ -187,7 +192,7 @@ enum UBGraphicsFlag {
     ,GF_ZORDER_MANIPULATIONS_ALLOWED = 0x0080 //0000 0000 1000 0000
     ,GF_TOOLBAR_USED                 = 0x0100 //0000 0001 0000 0000
     ,GF_SHOW_CONTENT_SOURCE          = 0x0200 //0000 0010 0000 0000
-    ,GF_RESPECT_RATIO                = 0x0418 //0000 0100 0001 1000
+    ,GF_RESPECT_RATIO                = 0x0400 //0000 0100 0000 0000
     ,GF_TITLE_BAR_USED               = 0x0800 //0000 1000 0000 0000
     ,GF_COMMON                       = 0x00F8 /*0000 0000 1111 1000   GF_SCALABLE_ALL_AXIS
                                                                      |GF_DUPLICATION_ENABLED
@@ -215,11 +220,23 @@ struct UBUndoType
     };
 };
 
-enum UBPageBackground
-{
-    plain = 0,
-    crossed,
-    ruled
-};
+/*
+ * Qt Version Compatibility
+ */
+
+namespace UB {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+typedef QEvent EnterEvent;
+#else
+typedef QEnterEvent EnterEvent;
+#endif
+
+}
 
 #endif /* UB_H_ */

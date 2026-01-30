@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -52,7 +52,8 @@ class UBDrawingController : public QObject
         int stylusTool();
         int latestDrawingTool();
 
-        bool isDrawingTool();
+        bool isDrawingTool(int tool = -1);
+        bool isSnappingTool() const;
 
         int currentToolWidthIndex();
         qreal currentToolWidth();
@@ -64,9 +65,10 @@ class UBDrawingController : public QObject
         void setMarkerColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerAlpha(qreal alpha);
 
-        UBAbstractDrawRuler* mActiveRuler;
+        void setActiveRuler(UBAbstractDrawRuler* ruler);
+        UBAbstractDrawRuler* activeRuler() const;
 
-        void setInDestopMode(bool mode){
+        void setInDesktopMode(bool mode){
             mIsDesktopMode = mode;
         }
 
@@ -82,13 +84,14 @@ class UBDrawingController : public QObject
         void setEraserWidthIndex(int index);
 
     signals:
-        void stylusToolChanged(int tool);
+        void stylusToolChanged(int tool, int previousTool = -1);
         void colorPaletteChanged();
 
         void lineWidthIndexChanged(int index);
         void colorIndexChanged(int index);
 
     private:
+        QPointer<UBAbstractDrawRuler> mActiveRuler;
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
         bool mIsDesktopMode;

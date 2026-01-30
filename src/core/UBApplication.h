@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,7 +35,7 @@
 #include <QToolBar>
 #include <QMenu>
 
-#include "qtsingleapplication.h"
+#include "singleapplication/singleapplication.h"
 
 namespace Ui
 {
@@ -51,10 +51,11 @@ class UBResources;
 class UBSettings;
 class UBPersistenceManager;
 class UBApplicationController;
+class UBDisplayManager;
 class UBDocumentController;
 class UBMainWindow;
 
-class UBApplication : public QtSingleApplication
+class UBApplication : public SingleApplication
 {
     Q_OBJECT
 
@@ -69,6 +70,7 @@ class UBApplication : public QtSingleApplication
 
         static QPointer<QUndoStack> undoStack;
 
+        static UBDisplayManager* displayManager;
         static UBApplicationController *applicationController;
         static UBBoardController* boardController;
         static UBWebController* webController;
@@ -76,15 +78,19 @@ class UBApplication : public QtSingleApplication
 
         static UBMainWindow* mainWindow;
 
+        static bool isClosing;
+
         static UBApplication* app()
         {
-            return static_cast<UBApplication*>qApp;
+            return dynamic_cast<UBApplication*>qApp;
         }
 
         static const QString mimeTypeUniboardDocument;
         static const QString mimeTypeUniboardPage;
         static const QString mimeTypeUniboardPageItem;
         static const QString mimeTypeUniboardPageThumbnail;
+
+        static QString fileToOpen;
 
         static void showMessage(const QString& message, bool showSpinningWheel = false);
         static void setDisabled(bool disable);
@@ -101,9 +107,6 @@ class UBApplication : public QtSingleApplication
         void setVerbose(bool verbose){mIsVerbose = verbose;}
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
-
-        static QScreen* controlScreen();
-        static int controlScreenIndex();
 
     signals:
 
@@ -124,7 +127,7 @@ class UBApplication : public QtSingleApplication
          * Used on Windows platform to open file in running application. On MacOS X opening file is done through the
          * FileOpen event that is handle in eventFilter method.
          */
-        bool handleOpenMessage(const QString& pMessage);
+        void handleOpenMessage(quint32 instanceId, QByteArray message);
 
     private slots:
 

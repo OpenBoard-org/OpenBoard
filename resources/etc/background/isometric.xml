@@ -1,0 +1,30 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>07187386-b012-492c-b0a8-50faa18c28a0</bg:uuid>
+    <bg:description xml:lang="en">Isometric</bg:description>
+    <bg:description xml:lang="de">Isometrisches Gitter</bg:description>
+    <bg:attributes crossed="true"/>
+    <bg:linegroup>
+        <bg:angle>30</bg:angle>
+        <bg:spacing>8.66025403784</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>90</bg:angle>
+        <bg:spacing>8.66025403784</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>150</bg:angle>
+        <bg:spacing>8.66025403784</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>

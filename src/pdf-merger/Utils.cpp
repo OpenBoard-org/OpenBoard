@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -45,7 +45,7 @@ using namespace merge_lib;
 int Utils::stringToInt(const std::string & str) //throw ConvertException
 {
    //skip zeros
-   unsigned int lastZero = 0;str.find_last_of("0");
+   unsigned int lastZero = 0;
    while(str[lastZero++] == '0')
    {
       if(lastZero == str.size())

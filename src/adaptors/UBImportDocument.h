@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -47,8 +47,8 @@ class UBImportDocument : public UBDocumentBasedImportAdaptor
         virtual QStringList supportedExtentions();
         virtual QString importFileFilter();
 
-        virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
-        virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
+        virtual std::shared_ptr<UBDocumentProxy> importFile(const QFile& pFile, const QString& pGroup);
+        virtual bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QFile& pFile);
 
     private:
         bool extractFileToDir(const QFile& pZipFile, const QString& pDir, QString& documentRoot);

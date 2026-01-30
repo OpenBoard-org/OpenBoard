@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -28,7 +28,6 @@
 
 
 #include <QtGui>
-#include <QTextCodec>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -73,7 +72,7 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
         if (logFile.open(QIODevice::Append | QIODevice::Text)) {
             QTextStream out(&logFile);
-            out << QDateTime::currentDateTime().toString(Qt::ISODate)
+            out << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
                 << "      " << msg << "\n";
             logFile.close();
         }
@@ -84,6 +83,11 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    #if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 2))
+        qputenv("QT_MEDIA_BACKEND", "ffmpeg");
+    #endif
+#endif
 
     // Uncomment next section to have memory leaks information
     // tracing in VC++ debug mode under Windows
@@ -101,6 +105,33 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(ub_message_output);
 
+    bool hasProcessFlag = false;
+
+    for (int i = 1; i < argc; ++i)
+    {
+        QString arg = QString::fromLocal8Bit(argv[i]);
+
+        if (arg == "--single-process" || arg == "--process-per-site")
+         {
+             hasProcessFlag = true;
+             break;
+         }
+    }
+
+    std::vector<const char*> argv_vector(argv, argv + argc);
+
+    /*
+    * https://stackoverflow.com/questions/43372267/how-to-append-a-value-to-the-array-of-command-line-arguments
+    */
+    if (!hasProcessFlag)
+    {
+        // add --process-per-site flag
+        argv_vector.push_back("--process-per-site");
+        argv_vector.push_back(nullptr);
+        argv = const_cast<char**>(argv_vector.data());
+        argc++;
+    }
+
     UBApplication app("OpenBoard", argc, argv);
 
     QStringList args = app.arguments();
@@ -112,32 +143,39 @@ int main(int argc, char *argv[])
 
     QString fileToOpen;
 
-    if (args.size() > 1) {
+    if (args.size() > 2) {
         // On Windows/Linux first argument is the file that has been double clicked.
         // On Mac OSX we use FileOpen QEvent to manage opening file in current instance. So we will never
         // have file to open as a parameter on OSX.
 
-        QFile f(args[1]);
+        // loop through arguments and skip flags (starting with '-')
+        for (int i = 1; i < args.size(); ++i)
+        {
+            QFile f(args[i]);
 
-        if (f.exists()) {
-            fileToOpen += args[1];
+            if (f.exists()) {
+                fileToOpen = args[i];
 
-            if (app.sendMessage(UBSettings::appPingMessage, 20000)) {
-                app.sendMessage(fileToOpen, 1000000);
-                return 0;
+                if (app.sendMessage(UBSettings::appPingMessage.toUtf8(), 20000)) {
+                    app.sendMessage(fileToOpen.toUtf8(), 1000000);
+                    return 0;
+                }
+
+                break;
             }
         }
     }
 
-    qDebug() << "file name argument" << fileToOpen;
-    int result = app.exec(fileToOpen);
+    int result = 0;
+    if (app.isPrimary())
+    {
+        qDebug() << "file name argument" << fileToOpen;
+        result = app.exec(fileToOpen);
+    }
 
     app.cleanup();
 
     qDebug() << "application is quitting";
 
-
-
     return result;
-
 }

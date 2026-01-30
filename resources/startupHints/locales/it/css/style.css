@@ -1,0 +1,36 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title
+{
+	width:100%;
+	color: #6682b5;
+	text-align: center;
+}
+
+.file-extension
+{
+	background: lightgrey;
+}
+
+.image
+{
+	text-align:center;
+}
+
+.image img
+{
+	max-width: 600px;
+}
+
+.icon
+{
+	vertical-align: middle;
+}
+
+.tip
+{
+	font-style: italic;
+	font-size: 0.8rem;
+}

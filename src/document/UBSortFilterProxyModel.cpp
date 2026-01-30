@@ -6,6 +6,8 @@ UBSortFilterProxyModel::UBSortFilterProxyModel():
 {
     setDynamicSortFilter(false);
     setSortCaseSensitivity(Qt::CaseInsensitive);
+    setRecursiveFilteringEnabled(true);
+    setAutoAcceptChildRows(true);
 }
 
 bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -22,4 +24,10 @@ bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
+}
+
+bool UBSortFilterProxyModel::filterAcceptsRow(int sourceRow,
+                                              const QModelIndex &sourceParent) const
+{
+    return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
 }

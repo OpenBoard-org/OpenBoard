@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -28,6 +28,8 @@
 #include "UBExportDocumentSetAdaptor.h"
 #include "UBExportDocument.h"
 
+#include "adaptors/UBPageMapper.h"
+
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBDocumentManager.h"
@@ -35,15 +37,17 @@
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
+#include "document/UBDocumentToc.h"
 
-#include "globals/UBGlobals.h"
 #include "core/UBPersistenceManager.h"
-#include "core/UBForeignObjectsHandler.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
-#include "quazip.h"
-#include "quazipfile.h"
-THIRD_PARTY_WARNINGS_ENABLE
+#ifdef Q_OS_OSX
+    #include <quazip.h>
+    #include <quazipfile.h>
+#else
+    #include "quazip.h"
+    #include "quazipfile.h"
+#endif
 
 #include "core/memcheck.h"
 
@@ -58,7 +62,7 @@ UBExportDocumentSetAdaptor::~UBExportDocumentSetAdaptor()
     // NOOP
 }
 
-void UBExportDocumentSetAdaptor::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportDocumentSetAdaptor::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     QModelIndex treeViewParentIndex;
     UBPersistenceManager *persistenceManager = UBPersistenceManager::persistenceManager();
@@ -83,9 +87,9 @@ void UBExportDocumentSetAdaptor::persist(UBDocumentProxy* pDocumentProxy)
         }
 
         UBDocumentTreeNode* node = treeModel->nodeFromIndex(treeViewParentIndex);
-        UBDocumentProxy proxy;
-        proxy.setMetaData(UBSettings::documentName,node->displayName());
-        filename = askForFileName(&proxy, tr("Export as UBX File"));
+        std::shared_ptr<UBDocumentProxy> proxy = std::make_shared<UBDocumentProxy>();
+        proxy->setMetaData(UBSettings::documentName, node->displayName());
+        filename = askForFileName(proxy, tr("Export as UBX File"));
     }
 
     if (filename.length() > 0)
@@ -160,20 +164,24 @@ bool UBExportDocumentSetAdaptor::addDocumentToZip(const QModelIndex &pIndex, UBD
         return false;
     }
 
-    UBDocumentProxy *pDocumentProxy = model->proxyForIndex(parentIndex);
+    std::shared_ptr<UBDocumentProxy>pDocumentProxy = model->proxyForIndex(parentIndex);
     if (pDocumentProxy) {
-
-//        Q_ASSERT(QFileInfo(pDocumentProxy->persistencePath()).exists());
-//        UBForeighnObjectsHandler cleaner;
-//        cleaner.cure(pDocumentProxy->persistencePath());
-
-        //UniboardSankoreTransition document;
         QString documentPath(pDocumentProxy->persistencePath());
-        //document.checkDocumentDirectory(documentPath);
 
         QDir documentDir = QDir(pDocumentProxy->persistencePath());
+
+        // try to load a TOC for mapping and check version number
+        UBDocumentToc toc{pDocumentProxy->persistencePath()};
+        std::unique_ptr<UBPageMapper> mapper{nullptr};
+        const auto version = QVersionNumber::fromString(pDocumentProxy->metaData(UBSettings::documentVersion).toString());
+
+        if (toc.load() && version >= QVersionNumber::fromString(UBSettings::currentFileVersion))
+        {
+            mapper = std::unique_ptr<UBPageMapper>{new UBPageMapper{pDocumentProxy->persistencePath(), &toc}};
+        }
+
         QuaZipFile zipFile(&zip);
-        UBFileSystemUtils::compressDirInZip(documentDir, QFileInfo(documentPath).fileName() + "/", &zipFile, false);
+        UBFileSystemUtils::compressDirInZip(documentDir, QFileInfo(documentPath).fileName() + "/", &zipFile, false, mapper.get());
 
         if(zip.getZipError() != 0)
         {

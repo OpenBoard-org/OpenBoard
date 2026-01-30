@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -46,7 +46,7 @@ class UBActionPalette;
 class UBMainWindow;
 class UBRightPalette;
 
-#define PROPERTY_PALETTE_TIMER      1000
+#define PROPERTY_PALETTE_TIMER      350
 
 /**
  * The uninotes controller. This object allocate a uninotes window and implements all the actions corresponding to
@@ -78,7 +78,6 @@ class UBDesktopAnnotationController : public QObject
         void screenLayoutChanged();
         void goToUniboard();
         void customCapture();
-        void windowCapture();
         void screenCapture();
         void updateShowHideState(bool pEnabled);
 
@@ -100,10 +99,10 @@ class UBDesktopAnnotationController : public QObject
         void restoreUniboard();
 
     protected:
-        QPixmap getScreenPixmap();
+        void getScreenPixmap(std::function<void (QPixmap)> callback);
 
         UBBoardView* mTransparentDrawingView;       
-        UBGraphicsScene* mTransparentDrawingScene;
+        std::shared_ptr<UBGraphicsScene> mTransparentDrawingScene;
 
     private slots:
         void updateColors();
@@ -156,6 +155,7 @@ class UBDesktopAnnotationController : public QObject
         bool mPendingMarkerButtonPressed;
         bool mPendingEraserButtonPressed;
         bool mbArrowClicked;
+        bool mCustomCaptureClicked;
 
         int mBoardStylusTool;
         int mDesktopStylusTool;

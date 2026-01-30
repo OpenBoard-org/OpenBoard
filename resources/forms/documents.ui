@@ -44,7 +44,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="opaqueResize">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="handleWidth">
          <number>6</number>
@@ -54,7 +54,7 @@
         </property>
         <widget class="QWidget" name="topLeftWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -82,9 +82,6 @@
               <property name="styleSheet">
                <string notr="true"/>
               </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-              </property>
               <property name="minimumContentsLength">
                <number>0</number>
               </property>
@@ -104,22 +101,6 @@
                </property>
               </item>
              </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>10</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item>
              <widget class="QToolButton" name="sortOrder">
@@ -149,17 +130,14 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+             <widget class="QLineEdit" name="filterText">
+              <property name="placeholderText">
+               <string>filter the documents</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
               </property>
-             </spacer>
+             </widget>
             </item>
            </layout>
           </item>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -25,27 +25,70 @@
  */
 
 
-
-
 #include "UBPlatformUtils.h"
 
 #include <QtGui>
 #include <QApplication>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QDBusMetaType>
+#include <QProcessEnvironment>
 
 #include <unistd.h>
-#include <X11/keysym.h>
 
+#include "frameworks/UBDesktopPortal.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
+#include "core/UBSettings.h"
+#include "gui/UBMainWindow.h"
 
+static OnboardListener* listener = nullptr;
 
 void UBPlatformUtils::init()
 {
     initializeKeyboardLayouts();
 }
 
+// stringification macros
+#define xstr(s) str(s)
+#define str(x) #x
+
+// base relocation for testing
+#ifdef NDEBUG
+#define OPENBOARD_BASE QString()
+#else
+#define OPENBOARD_BASE QProcessEnvironment::systemEnvironment().value("OPENBOARD_BASE", "")
+#endif
+
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_APP_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
     return QApplication::applicationDirPath();
+#endif
+}
+
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_ETC_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
+    return applicationResourcesDirectory() + "/etc";
+#endif
+}
+
+QString UBPlatformUtils::applicationTemplateDirectory()
+{
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_TPL_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
+    return applicationResourcesDirectory() + "/etc";
+#endif
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)
@@ -72,13 +115,28 @@ void UBPlatformUtils::fadeDisplayIn()
     // NOOP
 }
 
+bool UBPlatformUtils::hasSystemOnScreenKeyboard()
+{
+    if (sessionType() == X11)
+    {
+        QProcess oskTestProcess;
+        oskTestProcess.start("which", QStringList() << "onboard");
+
+        return oskTestProcess.waitForFinished() &&
+                        oskTestProcess.exitStatus() == QProcess::NormalExit &&
+                        oskTestProcess.readAll() != "";
+    }
+
+    return false;
+}
+
 QStringList UBPlatformUtils::availableTranslations()
 {
     QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
-    QRegExp sankoreTranslationFiles(".*OpenBoard_.*.qm");
-    translationsList=translationsList.filter(sankoreTranslationFiles);
-    return translationsList.replaceInStrings(QRegExp("(.*)OpenBoard_(.*).qm"),"\\2");
+    static const QRegularExpression sankoreTranslationFiles("(.*)OpenBoard_(.*).qm");
+    translationsList = translationsList.filter(sankoreTranslationFiles);
+    return translationsList.replaceInStrings(sankoreTranslationFiles, "\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
@@ -123,20 +181,14 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
 
 
 
-void UBPlatformUtils::setDesktopMode(bool desktop)
+void UBPlatformUtils::hideMenuBarAndDock()
 {
     // NOOP
-    Q_UNUSED(desktop);
 }
 
-#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
-
-#define KEYBTDECLEX1(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1))
-#define KEYBTDECLEX2(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 2), KEYCODE(cs2, code, 3))
-
-#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
-
-#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
+#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
+#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
+#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
 
 
 KEYBT ENGLISH_LOCALE[] = {
@@ -193,10 +245,10 @@ KEYBT ENGLISH_LOCALE[] = {
 
 KEYBT RUSSIAN_LOCALE [] =
 {
-        /* ё Ё */ KEYBTDECLEX2(0x451, 0x401, true, 41, XK_Cyrillic_io, XK_Cyrillic_IO),
+        /* ё Ё */ KEYBTDECL(0x451, 0x401, true, 41),
         /* 1 ! */ KEYBTDECL(0x31, 0x21, false, 2),
         /* 2 " */ KEYBTDECL(0x32, 0x5c, false, 3),
-        /* 3 № */ KEYBTDECLEX1(0x33, 0x2116, false, 4, 0x33, XK_numerosign),
+        /* 3 № */ KEYBTDECL(0x33, 0x2116, false, 4),
         /* 4 ; */ KEYBTDECL(0x34, 0x3b, false, 5),
         /* 5 % */ KEYBTDECL(0x35, 0x25, false, 6),
         /* 6 : */ KEYBTDECL(0x36, 0x3a, false, 7),
@@ -207,41 +259,41 @@ KEYBT RUSSIAN_LOCALE [] =
         /* - _ */ KEYBTDECL(0x2d, 0x4f, false, 12),
         /* = + */ KEYBTDECL(0x3d, 0x2b, false, 13),
 
-        /* й Й */ KEYBTDECLEX2(0x439, 0x419, true, 16, XK_Cyrillic_shorti, XK_Cyrillic_SHORTI),
-        /* ц Ц */ KEYBTDECLEX2(0x446, 0x426, true, 17, XK_Cyrillic_tse, XK_Cyrillic_TSE),
-        /* у У */ KEYBTDECLEX2(0x443, 0x423, true, 18, XK_Cyrillic_u, XK_Cyrillic_U),
-        /* к К */ KEYBTDECLEX2(0x43a, 0x41a, true, 19, XK_Cyrillic_ka, XK_Cyrillic_KA),
-        /* е Е */ KEYBTDECLEX2(0x435, 0x415, true, 20, XK_Cyrillic_ie, XK_Cyrillic_IE),
-        /* н Н */ KEYBTDECLEX2(0x43d, 0x41d, true, 21, XK_Cyrillic_en, XK_Cyrillic_EN),
-        /* г Г */ KEYBTDECLEX2(0x433, 0x413, true, 22, XK_Cyrillic_ghe, XK_Cyrillic_GHE),
-        /* ш Ш */ KEYBTDECLEX2(0x448, 0x428, true, 23, XK_Cyrillic_sha, XK_Cyrillic_SHA),
-        /* щ Щ */ KEYBTDECLEX2(0x449, 0x429, true, 24, XK_Cyrillic_shcha, XK_Cyrillic_SHCHA),
-        /* з З */ KEYBTDECLEX2(0x437, 0x417, true, 25, XK_Cyrillic_ze, XK_Cyrillic_ZE),
-        /* х Х */ KEYBTDECLEX2(0x445, 0x425, true, 26, XK_Cyrillic_ha, XK_Cyrillic_HA),
-        /* ъ Ъ */ KEYBTDECLEX2(0x44a, 0x42a, true, 27, XK_Cyrillic_hardsign, XK_Cyrillic_HARDSIGN),
+        /* й Й */ KEYBTDECL(0x439, 0x419, true, 16),
+        /* ц Ц */ KEYBTDECL(0x446, 0x426, true, 17),
+        /* у У */ KEYBTDECL(0x443, 0x423, true, 18),
+        /* к К */ KEYBTDECL(0x43a, 0x41a, true, 19),
+        /* е Е */ KEYBTDECL(0x435, 0x415, true, 20),
+        /* н Н */ KEYBTDECL(0x43d, 0x41d, true, 21),
+        /* г Г */ KEYBTDECL(0x433, 0x413, true, 22),
+        /* ш Ш */ KEYBTDECL(0x448, 0x428, true, 23),
+        /* щ Щ */ KEYBTDECL(0x449, 0x429, true, 24),
+        /* з З */ KEYBTDECL(0x437, 0x417, true, 25),
+        /* х Х */ KEYBTDECL(0x445, 0x425, true, 26),
+        /* ъ Ъ */ KEYBTDECL(0x44a, 0x42a, true, 27),
 
-        /* ф Ф */ KEYBTDECLEX2(0x444, 0x424, true, 30, XK_Cyrillic_ef, XK_Cyrillic_EF),
-        /* ы Ы */ KEYBTDECLEX2(0x44b, 0x42b, true, 31, XK_Cyrillic_yeru, XK_Cyrillic_YERU),
-        /* в В */ KEYBTDECLEX2(0x432, 0x412, true, 32, XK_Cyrillic_ve, XK_Cyrillic_VE),
-        /* а А */ KEYBTDECLEX2(0x430, 0x410, true, 33, XK_Cyrillic_a, XK_Cyrillic_A),
-        /* п П */ KEYBTDECLEX2(0x43f, 0x41f, true, 34, XK_Cyrillic_pe, XK_Cyrillic_PE),
-        /* р Р */ KEYBTDECLEX2(0x440, 0x420, true, 35, XK_Cyrillic_er, XK_Cyrillic_ER),
-        /* о О */ KEYBTDECLEX2(0x43e, 0x41e, true, 36, XK_Cyrillic_o, XK_Cyrillic_O),
-        /* л Л */ KEYBTDECLEX2(0x43b, 0x41b, true, 37, XK_Cyrillic_el, XK_Cyrillic_EL),
-        /* д Д */ KEYBTDECLEX2(0x434, 0x414, true, 38, XK_Cyrillic_de, XK_Cyrillic_DE),
-        /* ж Ж */ KEYBTDECLEX2(0x436, 0x416, true, 39, XK_Cyrillic_zhe, XK_Cyrillic_ZHE),
-        /* э Э */ KEYBTDECLEX2(0x44d, 0x42d, true, 40, XK_Cyrillic_e, XK_Cyrillic_E),
+        /* ф Ф */ KEYBTDECL(0x444, 0x424, true, 30),
+        /* ы Ы */ KEYBTDECL(0x44b, 0x42b, true, 31),
+        /* в В */ KEYBTDECL(0x432, 0x412, true, 32),
+        /* а А */ KEYBTDECL(0x430, 0x410, true, 33),
+        /* п П */ KEYBTDECL(0x43f, 0x41f, true, 34),
+        /* р Р */ KEYBTDECL(0x440, 0x420, true, 35),
+        /* о О */ KEYBTDECL(0x43e, 0x41e, true, 36),
+        /* л Л */ KEYBTDECL(0x43b, 0x41b, true, 37),
+        /* д Д */ KEYBTDECL(0x434, 0x414, true, 38),
+        /* ж Ж */ KEYBTDECL(0x436, 0x416, true, 39),
+        /* э Э */ KEYBTDECL(0x44d, 0x42d, true, 40),
         /* \ / */ KEYBTDECL(0x5c, 0x2f, false, 43),
 
-        /* я Я */ KEYBTDECLEX2(0x44f, 0x42f, true, 44, XK_Cyrillic_ya, XK_Cyrillic_YA),
-        /* ч Ч */ KEYBTDECLEX2(0x447, 0x427, true, 45, XK_Cyrillic_che, XK_Cyrillic_CHE),
-        /* с С */ KEYBTDECLEX2(0x441, 0x421, true, 46, XK_Cyrillic_es, XK_Cyrillic_ES),
-        /* м М */ KEYBTDECLEX2(0x43c, 0x41c, true, 47, XK_Cyrillic_em, XK_Cyrillic_EM),
-        /* и И */ KEYBTDECLEX2(0x438, 0x418, true, 48, XK_Cyrillic_i, XK_Cyrillic_I),
-        /* т Т */ KEYBTDECLEX2(0x442, 0x422, true, 49, XK_Cyrillic_te, XK_Cyrillic_TE),
-        /* ь Ь */ KEYBTDECLEX2(0x44c, 0x42c, true, 50, XK_Cyrillic_softsign, XK_Cyrillic_SOFTSIGN),
-        /* б Б */ KEYBTDECLEX2(0x431, 0x411, true, 51, XK_Cyrillic_be, XK_Cyrillic_BE),
-        /* ю Ю */ KEYBTDECLEX2(0x44e, 0x42e, true, 52, XK_Cyrillic_yu, XK_Cyrillic_YU),
+        /* я Я */ KEYBTDECL(0x44f, 0x42f, true, 44),
+        /* ч Ч */ KEYBTDECL(0x447, 0x427, true, 45),
+        /* с С */ KEYBTDECL(0x441, 0x421, true, 46),
+        /* м М */ KEYBTDECL(0x43c, 0x41c, true, 47),
+        /* и И */ KEYBTDECL(0x438, 0x418, true, 48),
+        /* т Т */ KEYBTDECL(0x442, 0x422, true, 49),
+        /* ь Ь */ KEYBTDECL(0x44c, 0x42c, true, 50),
+        /* б Б */ KEYBTDECL(0x431, 0x411, true, 51),
+        /* ю Ю */ KEYBTDECL(0x44e, 0x42e, true, 52),
         /* . , */ KEYBTDECL(0x2e, 0x2c, false, 53)};
 
 KEYBT GERMAN_LOCALE[] = {
@@ -321,7 +373,7 @@ KEYBT FRENCH_LOCALE[] = {
     /* i I */ KEYBTDECLEX6(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xef, 0xcf),
     /* o O */ KEYBTDECLEX6(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf6, 0xd6),
     /* p P */ KEYBTDECL(0x70, 0x50, true, 25),
-    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
+    /* ^ ? */ KEYBT(QChar(0x5e), QChar(0xa8), true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
     /* $ ? } */ KEYBTDECL(0x24, 0xa3, true, 27),
 
     /* q Q */ KEYBTDECL(0x71, 0x51, true, 30),
@@ -362,7 +414,7 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* 9 )*/    KEYBTDECL(0x39, 0x29, false, 10),
     /* 0 =*/    KEYBTDECL(0x30, 0x3d, false, 11),
     /* ' ?*/    KEYBTDECL(0x27, 0x5f, false, 12),
-    /* ^ `*/    KEYBT(0x5e, 0x60, false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
+    /* ^ `*/    KEYBT(QChar(0x5e), QChar(0x60), false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
 
     /* q Q*/    KEYBTDECL(0x71, 0x51, true, 16),
     /* w W*/    KEYBTDECL(0x77, 0x57, true, 17),
@@ -375,7 +427,7 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* o O*/    KEYBTDECLEX8(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf2, 0xd2, 0xf6, 0xd6),
     /* p P*/    KEYBTDECL(0x70, 0x50, true, 25),
     /* è ü*/    KEYBTDECL(0xe8, 0xfa, false, 26),
-    /* ¨ !*/    KEYBT(0xa8, 0x21, false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
+    /* ¨ !*/    KEYBT(QChar(0xa8), QChar(0x21), false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
 
     /* a A*/    KEYBTDECLEX8(0x61, 0x41, true, 30, 0x61, 0x41, 0xe2, 0xc2, 0xe0, 0xc0, 0xe4, 0xc4),
     /* s S*/    KEYBTDECL(0x73, 0x53, true, 31),
@@ -439,18 +491,145 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    pWidget->showFullScreen();
+    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
+            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
+        pWidget->show();
+    } else {
+        pWidget->showFullScreen();
+    }
 }
 
 void UBPlatformUtils::showOSK(bool show)
 {
-    QProcess oskProcess;
-
     if (show)
-        oskProcess.startDetached("/usr/bin/env onboard");
+    {
+        QDBusInterface dbus("org.onboard.Onboard", "/org/onboard/Onboard/Keyboard");
 
+        if (dbus.isValid())
+        {
+            dbus.call("Show");
+
+            if (!listener)
+            {
+                listener = new OnboardListener(dbus.connection(), qApp);
+            }
+        }
+        else
+        {
+            qDebug() << "onboard not registered/installed";
+        }
+    }
+    // avoid starting onboard just to hide it, so check first if it's running
+    else if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.onboard.Onboard"))
+    {
+        QDBusInterface dbus("org.onboard.Onboard", "/org/onboard/Onboard/Keyboard");
+
+        if (dbus.isValid())
+        {
+            dbus.call("Hide");
+        }
+    }
     else
-        /* Not exactly a great solution, but it isn't possible to just
-         * close onboard through wmctrl or xdotool */
-        oskProcess.startDetached("pkill -3 onboard");
+    {
+        qDebug() << "onboard not registered/installed";
+    }
+}
+
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+{
+    if (sessionType() == WAYLAND)
+    {
+        UBDesktopPortal* portal = new UBDesktopPortal;
+
+        QObject::connect(portal, &UBDesktopPortal::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
+            callback(screenshot);
+            portal->deleteLater();
+        });
+
+        portal->grabScreen(screen, rect);
+    }
+    else
+    {
+        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
+        // for using window id 0
+        QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        callback(pixmap);
+    }
+}
+
+UBPlatformUtils::SessionType UBPlatformUtils::sessionType()
+{
+    /*
+     * We use XDG_SESSION_TYPE here instead of QGuiApplication::platformName(), because
+     * the platformName just says what Qt plugin is used to access the platform, while
+     * XDG_SESSION_TYPE is the actual type of the session. E.g. if we're on Wayland,
+     * but use the xcb platform plugin using xwayland, then platform name returns "xdg"
+     * just as if we're running on X11. However we would still have to use the desktop
+     * portal to access screen content outside of our application.
+     */
+    QString xdgSessionType = QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE", "");
+
+    if (xdgSessionType == "x11")
+    {
+        return X11;
+    }
+    else if (xdgSessionType == "wayland")
+    {
+        return WAYLAND;
+    }
+
+    return UNKNOWN;
+}
+
+void UBPlatformUtils::keepOnTop()
+{
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.KWin"))
+    {
+        QTimer::singleShot(500, [](){
+            // keep desktop window on top for KDE environments
+            QDBusInterface scripting("org.kde.KWin", "/Scripting");
+            auto result = scripting.callWithArgumentList(QDBus::Block, "loadScript", {applicationTemplateDirectory() + "/kwinKeepAbove.js"});
+
+            if (result.type() != QDBusMessage::ReplyMessage || result.arguments().empty() || !result.arguments().first().canConvert<int>())
+            {
+                qDebug() << "Failed loading KWin script";
+                return;
+            }
+
+            auto path = "/" + result.arguments().first().toString();
+
+            QDBusInterface script("org.kde.KWin", path);
+            script.call("run");
+            script.call("stop");
+        });
+    }
+}
+
+OnboardListener::OnboardListener(const QDBusConnection& connection, QObject* parent)
+        : QObject{parent}
+        , mConnection{connection}
+{
+    qDBusRegisterMetaType<QMap<QString, QVariant>>();
+    const auto ok = mConnection.connect(
+                "org.onboard.Onboard", "/org/onboard/Onboard/Keyboard",
+                "org.freedesktop.DBus.Properties", "PropertiesChanged",
+                this, SLOT(onboardPropertiesChanged(QString,QMap<QString,QVariant>)));
+    if (!ok)
+    {
+        qDebug() << "Could not connect to DBus service listening for onboard properties";
+    }
+}
+
+void OnboardListener::onboardPropertiesChanged(QString interface, QMap<QString, QVariant> properties) const
+{
+    if (interface == "org.onboard.Onboard.Keyboard" && properties.contains("Visible"))
+    {
+        const auto onboardVisible = properties.value("Visible").toBool();
+        const auto oskAction = UBApplication::mainWindow->actionVirtualKeyboard;
+
+        if (oskAction->isChecked() != onboardVisible)
+        {
+            oskAction->trigger();
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -44,11 +44,11 @@ class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;
 class UBGraphicsVideoItem;
 class UBGraphicsAudioItem;
-class UBGraphicsAppleWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsTextItem;
 class UBGraphicsCurtainItem;
 class UBGraphicsRuler;
+class UBGraphicsAxes;
 class UBGraphicsCompass;
 class UBGraphicsProtractor;
 class UBGraphicsScene;
@@ -62,25 +62,38 @@ class UBGraphicsStrokesGroup;
 
 class UBSvgSubsetAdaptor
 {
+    class UBSvgSubsetReader;
     private:
 
         UBSvgSubsetAdaptor() {;}
         virtual ~UBSvgSubsetAdaptor() {;}
 
     public:
+        class UBSvgReaderContext
+        {
+        public:
+            UBSvgReaderContext(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pXmlData);
+            ~UBSvgReaderContext();
+            bool isFinished() const;
+            void step();
+            std::shared_ptr<UBGraphicsScene> scene() const;
+            std::shared_ptr<UBDocumentProxy> proxy() const;
 
-        static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const int pageIndex);
-        static QByteArray loadSceneAsText(UBDocumentProxy* proxy, const int pageIndex);
-        static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const QByteArray& pArray);
+        private:
+            UBSvgSubsetReader* reader = nullptr;
+        };
 
-        static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
-        static void upgradeScene(UBDocumentProxy* proxy, const int pageIndex);
+        static QByteArray loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
+        static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
+        static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, std::optional<QByteArray> xmlContent = {});
 
-        static QUuid sceneUuid(UBDocumentProxy* proxy, const int pageIndex);
-        static void setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid);
+        static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageId);
 
-        static void convertPDFObjectsToImages(UBDocumentProxy* proxy);
-        static void convertSvgImagesToImages(UBDocumentProxy* proxy);
+        static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
+        static QUuid sceneUuid(const QString& xmlContent);
+        static QVersionNumber sceneVersion(const QString& xmlContent);
+        static void setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, QUuid pUuid);
+        static void replicateScene(const QString& sourcePath, const QString& targetPath, QUuid uuid);
 
         static const QString nsSvg;
         static const QString nsXLink;
@@ -96,27 +109,33 @@ class UBSvgSubsetAdaptor
 
     private:
 
-        static QDomDocument loadSceneDocument(UBDocumentProxy* proxy, const int pPageIndex);
+        static QDomDocument loadSceneDocument(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
 
         static QString uniboardDocumentNamespaceUriFromVersion(int fileVersion);
 
         static const QString sFormerUniboardDocumentNamespaceUri;
 
-        static QString toSvgTransform(const QMatrix& matrix);
-        static QMatrix fromSvgTransform(const QString& transform);
+        static QString toSvgTransform(const QTransform& matrix);
+        static QTransform fromSvgTransform(const QString& transform);
 
 
         class UBSvgSubsetReader
         {
             public:
 
-                UBSvgSubsetReader(UBDocumentProxy* proxy, const QByteArray& pXmlData);
+                UBSvgSubsetReader(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pXmlData);
 
                 virtual ~UBSvgSubsetReader(){}
 
-                UBGraphicsScene* loadScene(UBDocumentProxy *proxy);
+                std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy);
+
+                void start();
+                bool isFinished();
+                void processElement();
+                std::shared_ptr<UBGraphicsScene> scene();
 
             private:
+                friend class UBSvgReaderContext;
 
                 UBGraphicsPolygonItem* polygonItemFromLineSvg(const QColor& pDefaultBrushColor);
 
@@ -134,8 +153,6 @@ class UBSvgSubsetAdaptor
 
                 UBGraphicsMediaItem* audioItemFromSvg();
 
-                UBGraphicsAppleWidgetItem* graphicsAppleWidgetFromSvg();
-
                 UBGraphicsW3CWidgetItem* graphicsW3CWidgetFromSvg();
 
                 UBGraphicsTextItem* textItemFromSvg();
@@ -143,6 +160,8 @@ class UBSvgSubsetAdaptor
                 UBGraphicsCurtainItem* curtainItemFromSvg();
 
                 UBGraphicsRuler* rulerFromSvg();
+
+                UBGraphicsAxes* axesFromSvg();
 
                 UBGraphicsCompass* compassFromSvg();
 
@@ -158,9 +177,11 @@ class UBSvgSubsetAdaptor
 
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 
+                qreal normalizedZValue(bool* hasValue);
+
                 QXmlStreamReader mXmlReader;
                 int mFileVersion;
-                UBDocumentProxy *mProxy;
+                std::shared_ptr<UBDocumentProxy> mProxy;
                 QString mDocumentPath;
 
                 QColor mGroupDarkBackgroundColor;
@@ -171,18 +192,23 @@ class UBSvgSubsetAdaptor
                 bool saveSceneAfterLoading;
 
                 QString mNamespaceUri;
-                UBGraphicsScene *mScene;
+                std::shared_ptr<UBGraphicsScene> mScene;
 
                 QHash<QString,UBGraphicsStrokesGroup*> mStrokesList;
+
+                UBGraphicsStrokesGroup* strokesGroup = nullptr;
+                UBGraphicsStroke* currentStroke = nullptr;
+                UBGraphicsWidgetItem *currentWidget = nullptr;
+                bool mMustFinalize = false;
         };
 
         class UBSvgSubsetWriter
         {
             public:
 
-                UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
+                UBSvgSubsetWriter(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageId);
 
-                bool persistScene(UBDocumentProxy *proxy, int pageIndex);
+                bool persistScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
 
                 virtual ~UBSvgSubsetWriter(){}
 
@@ -241,24 +267,24 @@ class UBSvgSubsetAdaptor
                 void videoItemToLinkedVideo(UBGraphicsVideoItem *videoItem);
                 void audioItemToLinkedAudio(UBGraphicsAudioItem *audioItem);
                 void graphicsItemToSvg(QGraphicsItem *item);
-                void graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem *item);
                 void graphicsW3CWidgetToSvg(UBGraphicsW3CWidgetItem *item);
                 void graphicsWidgetToSvg(UBGraphicsWidgetItem *item);
                 void textItemToSvg(UBGraphicsTextItem *item);
                 void curtainItemToSvg(UBGraphicsCurtainItem *item);
                 void rulerToSvg(UBGraphicsRuler *item);
+                void axesToSvg(UBGraphicsAxes *item);
                 void compassToSvg(UBGraphicsCompass *item);
                 void protractorToSvg(UBGraphicsProtractor *item);
                 void cacheToSvg(UBGraphicsCache* item);
                 void triangleToSvg(UBGraphicsTriangle *item);
-                void writeSvgElement(UBDocumentProxy *proxy);
+                void writeSvgElement(std::shared_ptr<UBDocumentProxy> proxy);
 
         private:
 
-                UBGraphicsScene* mScene;
+                std::shared_ptr<UBGraphicsScene> mScene;
                 QXmlStreamWriter mXmlWriter;
                 QString mDocumentPath;
-                int mPageIndex;
+                int mPageId;
 
         };
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -28,46 +28,30 @@
 
 
 #include <QtGui>
-#include <QWebView>
-#include <QWebFrame>
+#include <QWebChannel>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "UBToolWidget.h"
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
 #include "board/UBBoardController.h"
-#include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
+#include "domain/UBWebEngineView.h"
+#include "web/UBWebController.h"
+#include "web/simplebrowser/webpage.h"
+
 #include "core/memcheck.h"
 
 
 QPixmap* UBToolWidget::sClosePixmap = 0;
 QPixmap* UBToolWidget::sUnpinPixmap = 0;
 
-
-UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
-    : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
-    , mWebView(0)
-    , mToolWidget(0)
-    , mShouldMoveWidget(false)
-    , mContentMargin(0)
-    , mFrameWidth(0)
-
-{
-    int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
-    if (widgetType == UBWidgetType::Apple)
-        mToolWidget = new UBGraphicsAppleWidgetItem(pUrl);
-    else if (widgetType == UBWidgetType::W3C)
-        mToolWidget = new UBGraphicsW3CWidgetItem(pUrl);
-    else
-        qDebug() << "UBToolWidget::UBToolWidget: Unknown widget Type";
-
-    initialize();
-}
 
 UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
     : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
@@ -79,7 +63,7 @@ UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
 
 {
     initialize();
-    javaScriptWindowObjectCleared();
+    registerAPI();
 }
 
 UBToolWidget::~UBToolWidget()
@@ -95,20 +79,21 @@ void UBToolWidget::initialize()
     if(!sUnpinPixmap)
         sUnpinPixmap = new QPixmap(":/images/unpin.svg");
 
-    UBGraphicsScene *wscene = dynamic_cast<UBGraphicsScene *>(mToolWidget->scene());
+    std::shared_ptr<UBGraphicsScene> wscene = mToolWidget->scene();
     if (wscene)
     {
         wscene->removeItemFromDeletion(mToolWidget);
         wscene->removeItem(mToolWidget);
     }
 
+    mWebView = new UBWebEngineView();
 
-    mWebView = new QWebView(this);
+    // create the page using a profile
+    QWebEngineProfile* profile = UBApplication::webController->webProfile();
+    mWebView->setPage(new WebPage(profile, mWebView));
 
-    QPalette palette = mWebView->page()->palette();
-    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    mWebView->page()->setPalette(palette);
-
+    mWebView->setAttribute(Qt::WA_TranslucentBackground);
+    mWebView->page()->setBackgroundColor(QColor(Qt::transparent));
 
     mWebView->installEventFilter(this);
 
@@ -120,17 +105,11 @@ void UBToolWidget::initialize()
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
-    connect(mWebView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared,
-            this, &UBToolWidget::javaScriptWindowObjectCleared);
     mWebView->load(mToolWidget->mainHtml());
 
-
     mWebView->setAcceptDrops(false);
-    mWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 }
 
 
@@ -150,7 +129,7 @@ bool UBToolWidget::eventFilter(QObject *obj, QEvent *event)
     }
 
     // standard event processing
-    return QObject::eventFilter(obj, event);
+    return QWidget::eventFilter(obj, event);
 }
 
 void UBToolWidget::mousePressEvent(QMouseEvent *event)
@@ -175,7 +154,15 @@ void UBToolWidget::mouseMoveEvent(QMouseEvent *event)
 
 void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    mShouldMoveWidget = false;
+    if (mShouldMoveWidget)
+    {
+        // partial workaround for QTBUG-109068 to forward the position of the widget
+        // to the QWebEngineView
+        QSize actualSize = mWebView->size();
+        mWebView->resize(actualSize - QSize(1,1));
+        mWebView->resize(actualSize);
+        mShouldMoveWidget = false;
+    }
 
     if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width() && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height()) {
         UBApplication::boardController->removeTool(this);
@@ -188,6 +175,32 @@ void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
     else
         QWidget::mouseReleaseEvent(event); /* don't propgate to parent, the widget is deleted in UBApplication */
 
+}
+
+void UBToolWidget::enterEvent(UB::EnterEvent *event)
+{
+    Q_UNUSED(event)
+
+    const int tool = UBDrawingController::drawingController()->stylusTool();
+    const bool isPointing = tool == UBStylusTool::Selector || tool == UBStylusTool::Play;
+
+    if (mWidgetAPI && isPointing)
+    {
+        emit mWidgetAPI->onenter();
+    }
+}
+
+void UBToolWidget::leaveEvent(QEvent* event)
+{
+    Q_UNUSED(event)
+
+    auto pos = mapFromGlobal(QCursor::pos());
+
+    // only send leave event if cursor is actually outside of widget
+    if (mWidgetAPI && !rect().contains(pos))
+    {
+        emit mWidgetAPI->onleave();
+    }
 }
 
 void UBToolWidget::paintEvent(QPaintEvent *event)
@@ -215,18 +228,27 @@ void UBToolWidget::paintEvent(QPaintEvent *event)
     }
 }
 
-void UBToolWidget::javaScriptWindowObjectCleared()
+void UBToolWidget::registerAPI()
 {
-    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
+    UBWebController::injectScripts(mWebView);
 
-    mWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
+    QWebChannel* channel = new QWebChannel(this);
+    mWebView->page()->setWebChannel(channel);
+    mUniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
+
+    channel->registerObject("sankore", mUniboardAPI);
 
     UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mToolWidget);
     if (graphicsW3cWidgetItem)
     {
-        UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        mWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
+        mWidgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
+        channel->registerObject("widget", mWidgetAPI);
     }
+
+    // always apply API to active scene
+    connect(UBApplication::boardController, &UBBoardController::activeSceneChanged, this, [this](){
+        mUniboardAPI->setScene(UBApplication::boardController->activeScene());
+    });
 }
 
 UBGraphicsWidgetItem* UBToolWidget::toolWidget() const
@@ -244,7 +266,8 @@ QPoint UBToolWidget::naturalCenter() const
 
 void UBToolWidget::remove()
 {
-    mToolWidget = NULL;
+    mToolWidget = nullptr;
+    mWebView->closeInspector();
     hide();
     deleteLater();
 }

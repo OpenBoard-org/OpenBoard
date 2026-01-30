@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -40,7 +40,7 @@
 
 #include "core/memcheck.h"
 
-UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions)
+UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions, QString objectNameprefix)
     : QWidget(toolBar)
     , mActions(actions)
     , mCurrentIndex(-1)
@@ -77,15 +77,22 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
 
         if(i == 0)
         {
-            button->setObjectName("ubButtonGroupLeft");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupLeft")
+                : button->setObjectName("ubButtonGroupLeft");
         }
         else if (i == actions.size() - 1)
         {
-            button->setObjectName("ubButtonGroupRight");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupRight")
+                : button->setObjectName("ubButtonGroupRight");
+
         }
         else
         {
-            button->setObjectName("ubButtonGroupCenter");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupCenter")
+                : button->setObjectName("ubButtonGroupCenter");
         }
 
         connect(button, SIGNAL(triggered(QAction*)), this, SLOT(selected(QAction*)));
@@ -102,16 +109,29 @@ UBToolbarButtonGroup::~UBToolbarButtonGroup()
     // NOOP
 }
 
+void UBToolbarButtonGroup::setLabel(const QString& label)
+{
+    mLabel = label;
+}
+
 void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, mActions.at(index)->associatedObjects())
+#else
     foreach(QWidget *widget, mActions.at(index)->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
         {
-            button->setIcon(icon);
+            // change icon at action, so that updates of action do not overwrite the icon
+            for (QAction* action : button->actions())
+            {
+                action->setIcon(icon);
+            }
         }
     }
 }
@@ -126,7 +146,11 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
 
 void UBToolbarButtonGroup::selected(QAction *action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, action->associatedObjects())
+#else
     foreach(QWidget *widget, action->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)

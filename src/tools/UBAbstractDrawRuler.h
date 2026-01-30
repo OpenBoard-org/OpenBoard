@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -55,16 +55,18 @@ protected:
 
     void paint();
 
-    virtual UBGraphicsScene* scene() const = 0;
+    virtual std::shared_ptr<UBGraphicsScene> scene() const = 0;
 
     virtual void rotateAroundCenter(qreal angle) = 0;
 
     virtual QPointF rotationCenter() const = 0;
     virtual QRectF closeButtonRect() const = 0;
     virtual void paintGraduations(QPainter *painter) = 0;
+    virtual void paintHelp(QPainter *painter) = 0;
 
     bool mShowButtons;
     QGraphicsSvgItem* mCloseSvgItem;
+    QGraphicsSvgItem* mMoveToolSvgItem;
     qreal mAntiScaleRatio;
 
     QPointF startDrawPosition;

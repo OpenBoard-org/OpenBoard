@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -42,12 +42,13 @@ class UBToolbarButtonGroup : public QWidget
     Q_OBJECT;
 
     public:
-        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>());
+        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>(), QString objectNameprefix = "");
         virtual ~UBToolbarButtonGroup();
 
         void setIcon(const QIcon &icon, int index);
         void setColor(const QColor &color, int index);
         int currentIndex() const;
+        void setLabel(const QString& label);
 
     protected:
         void paintEvent(QPaintEvent *);

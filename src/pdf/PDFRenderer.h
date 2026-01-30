@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -56,6 +56,8 @@ class PDFRenderer : public QObject
 
         virtual int pageRotation(int pageNumber) const = 0;
 
+        virtual QSizeF pointSizeF(int pageNumber) const = 0;
+
         virtual QString title() const = 0;
 
         void attach();
@@ -66,8 +68,7 @@ class PDFRenderer : public QObject
 
         void setDPI(int desiredDPI) { this->dpiForRendering = desiredDPI; }
 
-    public slots:
-        virtual void render(QPainter *p, int pageNumber, const QRectF &bounds = QRectF()) = 0;
+        virtual void render(QPainter *p, int pageNumber, bool const cacheAllowed, const QRectF &bounds = QRectF()) = 0;
 
     private:
         QAtomicInt mRefCount;

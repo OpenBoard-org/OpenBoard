@@ -45,10 +45,10 @@ html, body {
 
 .theme-slate #ubwidget > .wrapper, .theme-pad #ubwidget > .wrapper {
     position: absolute;
-    top: -49px;
+/*    top: -49px;
     bottom: -5px;
     left: -5px;
-    right: -5px;
+    right: -5px;*/
     overflow: hidden;
 }
 

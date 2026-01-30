@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -37,8 +37,11 @@
 #include "core/UBApplicationController.h"
 
 class UBGraphicsScene;
-class WBWebView;
+class WebView;
 class UBPodcastRecordingPalette;
+
+class UBDesktopPortal;
+class UBPipewireSink;
 
 
 class UBPodcastController : public QObject
@@ -93,7 +96,8 @@ class UBPodcastController : public QObject
 
     private slots:
 
-        void processWidgetPaintEvent();
+        void processScreenGrabingTimerEvent();
+        void encodeWidgetContent(QPixmap pixmap);
 
         void processScenePaintEvent();
 
@@ -106,7 +110,7 @@ class UBPodcastController : public QObject
 
         void applicationDesktopMode(bool displayed);
 
-        void webActiveWebPageChanged(WBWebView* pWebView);
+        void webActiveWebPageChanged(WebView* pWebView);
 
         void encodingStatus(const QString& pStatus);
 
@@ -120,6 +124,7 @@ class UBPodcastController : public QObject
         void updateActionState();
 
     private:
+        void widgetSizeChanged(const QSizeF size);
 
         void setRecordingState(RecordingState pRecordingState);
 
@@ -133,12 +138,10 @@ class UBPodcastController : public QObject
 
         QTime mRecordStartTime;
 
-        bool mIsGrabbing;
-
-        QQueue<QRect> mWidgetRepaintRectQueue;
         QQueue<QRectF> mSceneRepaintRectQueue;
 
         bool mInitialized;
+        bool mEmptyChapter;
 
         QImage mLatestCapture;
 
@@ -149,8 +152,9 @@ class UBPodcastController : public QObject
         static unsigned int sBackgroundColor;
 
         QWidget* mSourceWidget;
+        bool mIsDesktopMode;
 
-        UBGraphicsScene* mSourceScene;
+        std::shared_ptr<UBGraphicsScene> mSourceScene;
 
         QTransform mViewToVideoTransform;
 
@@ -187,6 +191,10 @@ class UBPodcastController : public QObject
 
         QString mPodcastRecordingPath;
 
+#ifdef Q_OS_LINUX
+        UBDesktopPortal* mPortal{nullptr};
+        UBPipewireSink* mPipewireSink{nullptr};
+#endif
 };
 
 #endif /* UBPODCASTCONTROLLER_H_ */

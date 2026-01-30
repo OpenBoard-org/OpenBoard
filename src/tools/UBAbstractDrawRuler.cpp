@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -73,6 +73,10 @@ void UBAbstractDrawRuler::create(QGraphicsItem& item)
     mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", &item);
     mCloseSvgItem->setVisible(false);
     mCloseSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
+    mMoveToolSvgItem = new QGraphicsSvgItem(":/images/moveTool.svg", &item);
+    mMoveToolSvgItem->setVisible(false);
+    mMoveToolSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 }
 
 
@@ -139,10 +143,7 @@ void UBAbstractDrawRuler::EndLine()
 void UBAbstractDrawRuler::paint()
 {
     mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-    QTransform antiScaleTransform;
-    antiScaleTransform.scale(mAntiScaleRatio, mAntiScaleRatio);
 
-    mCloseSvgItem->setTransform(antiScaleTransform);
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -32,7 +32,7 @@
 #include "core/memcheck.h"
 
 UBWidgetMirror::UBWidgetMirror(QWidget* sourceWidget, QWidget* parent)
-    : QWidget(parent, 0)
+    : QWidget(parent)
     , mSourceWidget(sourceWidget)
 {
     mSourceWidget->installEventFilter(this);

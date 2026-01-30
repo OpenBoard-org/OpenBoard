@@ -6,6 +6,8 @@ HEADERS      += src/frameworks/UBGeometryUtils.h \
                 src/frameworks/UBVersion.h \
                 src/frameworks/UBCoreGraphicsScene.h \
                 src/frameworks/UBCryptoUtils.h \
+                src/frameworks/UBBackgroundLoader.h \
+                src/frameworks/UBBlockingBuffer.h \
                 src/frameworks/UBBase32.h
 
 SOURCES      += src/frameworks/UBGeometryUtils.cpp \
@@ -15,6 +17,8 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
                 src/frameworks/UBVersion.cpp \
                 src/frameworks/UBCoreGraphicsScene.cpp \
                 src/frameworks/UBCryptoUtils.cpp \
+                src/frameworks/UBBackgroundLoader.cpp \
+                src/frameworks/UBBlockingBuffer.cpp \
                 src/frameworks/UBBase32.cpp
 
 
@@ -31,15 +35,13 @@ macx {
 }       
 
 
-linux-g++ {
+linux-g++* {
+    HEADERS  += src/frameworks/UBDesktopPortal.h \
+                src/frameworks/UBPipewireSink.h
+    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
+                src/frameworks/UBDesktopPortal.cpp \
+                src/frameworks/UBPipewireSink.cpp
 
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
-}         
-linux-g++-32 {
-
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
-}
-linux-g++-64 {
-
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libpipewire-0.3
 }

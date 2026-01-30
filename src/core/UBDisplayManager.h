@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -30,11 +30,28 @@
 #ifndef UBDISPLAYMANAGER_H_
 #define UBDISPLAYMANAGER_H_
 
-#include <QtGui>
+#include <QMap>
+#include <QPointer>
+#include <QPushButton>
 
 class UBBlackoutWidget;
 class UBBoardView;
-class QDesktopWidget;
+
+namespace Ui
+{
+    class BlackoutWidget;
+}
+
+enum class ScreenRole : int
+{
+    None = 0, Control, Display, Desktop, Previous1, Previous2, Previous3, Previous4, Previous5
+};
+
+// prefix increment
+ScreenRole& operator++(ScreenRole& role);
+
+// postfix increment
+ScreenRole operator++(ScreenRole& role, int);
 
 class UBDisplayManager : public QObject
 {
@@ -52,88 +69,86 @@ class UBDisplayManager : public QObject
 
         void setDisplayWidget(QWidget* pDisplayWidget);
 
-        void setDesktopWidget(QWidget* pControlWidget);
+        void setDesktopWidget(QWidget* pDesktopWidget);
 
         void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
+        QWidget* widget(ScreenRole role) const;
+        QScreen* screen(ScreenRole role) const;
+
+        QList<QScreen*> availableScreens() const;
+
         bool hasControl()
         {
-            return mControlScreenIndex > -1;
+            return mScreensByRole.value(ScreenRole::Control);
         }
 
         bool hasDisplay()
         {
-            return mDisplayScreenIndex > -1;
+            return mUseMultiScreen && mScreensByRole.value(ScreenRole::Display);
         }
 
         bool hasPrevious()
         {
-            return !mPreviousScreenIndexes.isEmpty();
+            return mUseMultiScreen && mScreensByRole.value(ScreenRole::Previous1);
         }
 
-        enum DisplayRole
+        bool useMultiScreen()
         {
-            None = 0, Control, Display, Previous1, Previous2, Previous3, Previous4, Previous5
-        };
-
-        bool useMultiScreen() { return mUseMultiScreen; }
+            return mUseMultiScreen;
+        }
 
         void setUseMultiScreen(bool pUse);
 
-        int controleScreenIndex()
-        {
-            return mControlScreenIndex;
-        }
+        QSize screenSize(ScreenRole role) const;
+        QSize availableScreenSize(ScreenRole role) const;
+        QRect screenGeometry(ScreenRole role) const;
+        qreal physicalDpi(ScreenRole role) const;
+        qreal logicalDpi(ScreenRole role) const;
 
-        QRect controlGeometry();
-        QRect displayGeometry();
+        void grab(ScreenRole role, std::function<void(QPixmap)> callback, QRect rect = {}) const;
+        QPixmap grabGlobal(QRect rect) const;
 
-   signals:
+        void initScreensByRole();
+        void assignRoles();
+        void positionScreens();
+        void adjustScreens();
 
-           void screenLayoutChanged();
-           void adjustDisplayViewsRequired();
+        void setScreenLabelParent(QWidget* labelParent);
+        QStringList availableScreenIndexes();
 
-   public slots:
+    signals:
+        void screenRolesAssigned();
+        void screenLayoutChanged();
+        void availableScreenCountChanged(int screenCount);
+        void screenLabelPressed(const QString& screenIndex);
 
-        void reinitScreens(bool bswap);
-
-        void adjustScreens(int screen);
-
+    public slots:
         void blackout();
-
         void unBlackout();
+        void showScreenLabels(bool show);
+        void disableScreenLabels(QStringList screenList);
 
-        void setRoleToScreen(DisplayRole role, int screenIndex);
+    private slots:
 
-        void swapDisplayScreens(bool swap);
+        void addOrRemoveScreen(QScreen* screen);
+
     private:
 
-        void positionScreens();
-
         void initScreenIndexes();
-
-        int mControlScreenIndex;
-
-        int mDisplayScreenIndex;
-
-        QList<int> mPreviousScreenIndexes;
-
-        QDesktopWidget* mDesktop;
-
-        QWidget* mControlWidget;
-
-        QWidget* mDisplayWidget;
-
-        QWidget *mDesktopWidget;
-
-        QList<UBBoardView*> mPreviousDisplayWidgets;
+        void createScreenLabels();
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
+        QList<Ui::BlackoutWidget*> mBlackoutUiList;
 
-        QList<DisplayRole> mScreenIndexesRoles;
+        QList<QScreen*> mAvailableScreens;
+        QMap<ScreenRole, QPointer<QScreen>> mScreensByRole;
+        QMap<ScreenRole, QPointer<QWidget>> mWidgetsByRole;
+
+        QList<QPointer<QPushButton>> mScreenLabels;
+        QWidget* mLabelParent{nullptr};
 
         bool mUseMultiScreen;
-
 };
 
 #endif /* UBDISPLAYMANAGER_H_ */

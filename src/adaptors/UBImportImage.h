@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -47,8 +47,11 @@ class UBImportImage : public UBPageBasedImportAdaptor
         virtual QString importFileFilter();
 
         virtual QList<UBGraphicsItem*> import(const QUuid& uuid, const QString& filePath);
-        virtual void placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item);
+        virtual void placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scene, UBGraphicsItem* item);
         virtual const QString& folderToCopy();
+
+    private:
+        QString mLastFilePath;
 };
 
 #endif /* UBIMPORTIMAGE_H_ */

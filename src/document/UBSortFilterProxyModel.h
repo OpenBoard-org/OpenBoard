@@ -2,14 +2,14 @@
 #define UBSORTFILTERPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
-#include "core/UBPersistenceManager.h"
 
 class UBSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
     UBSortFilterProxyModel();
 
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+protected:
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 };
-
 #endif // UBSORTFILTERPROXYMODEL_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,18 +35,16 @@
 #include <QPdfWriter>
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPDFItem.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "pdf/GraphicsPDFItem.h"
 
 #include "core/memcheck.h"
 
@@ -61,7 +59,7 @@ UBExportPDF::~UBExportPDF()
     // NOOP
 }
 
-void UBExportPDF::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportPDF::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
@@ -77,7 +75,7 @@ bool UBExportPDF::associatedActionactionAvailableFor(const QModelIndex &selected
 }
 
 
-bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
     QPdfWriter pdfWriter(filename);
 
@@ -87,33 +85,50 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
     pdfWriter.setPageMargins(QMarginsF());
     pdfWriter.setTitle(pDocumentProxy->name());
     pdfWriter.setCreator("OpenBoard PDF export");
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_1_4);
 
-    //need to calculate screen resolution
-    QDesktopWidget* desktop = UBApplication::desktop();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    float scaleFactor = 72.0f / dpiCommon;
+    // need to calculate screen resolution
+    float dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
+    float scaleFactor = dpiCommon ? 72.0f / dpiCommon : 1.f;
 
     QPainter pdfPainter;
     bool painterNeedsBegin = true;
 
-    int existingPageCount = pDocumentProxy->pageCount();
+    auto document = UBDocument::getDocument(pDocumentProxy);
+    int existingPageCount = document->pageCount();
 
     for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++) {
 
-        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+        std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
+
+        if (!scene)
+        {
+            continue;
+        }
+
         UBApplication::showMessage(tr("Exporting page %1 of %2").arg(pageIndex + 1).arg(existingPageCount));
 
         // set background to white, no crossing for PDF output
         bool isDark = scene->isDarkBackground();
-        UBPageBackground pageBackground = scene->pageBackground();
-        scene->setBackground(false, UBPageBackground::plain);
+        const auto pageBackground = scene->background();
+
+        bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
+
+        if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
+        {
+            scene->setSceneBackground(exportDark, pageBackground);
+        }
+        else
+        {
+            scene->setSceneBackground(exportDark, nullptr);
+        }
 
         // pageSize is the output PDF page size; it is set to equal the scene's boundary size; if the contents
         // of the scene overflow from the boundaries, they will be scaled down.
         QSize pageSize = scene->sceneSize();
 
         // set high res rendering
-        scene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
         scene->setRenderingContext(UBGraphicsScene::NonScreen);
 
         // Setting output page size
@@ -132,10 +147,10 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
 
         // Restore screen rendering quality
         scene->setRenderingContext(UBGraphicsScene::Screen);
-        scene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        scene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
         // Restore background state
-        scene->setBackground(isDark, pageBackground);
+        scene->setSceneBackground(isDark, pageBackground);
     }
 
     if(!painterNeedsBegin)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,7 +35,10 @@
 #include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
-    :QGraphicsItemGroup(parent), UBGraphicsItem()
+    : QGraphicsItemGroup(parent)
+    , UBGraphicsItem()
+    , debugTextEnabled(false) // set to true to get a graphical display of strokes' Z-levels
+    , mDebugText(nullptr)
 {
     setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
                                            | GF_RESPECT_RATIO
@@ -49,19 +52,10 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-
-    mDebugText = NULL;
-    debugTextEnabled = false; // set to true to get a graphical display of strokes' Z-levels
 }
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
 {
-}
-
-void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
@@ -122,8 +116,6 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsItemGroup::mousePressEvent(event);
     event->accept();
-
-    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -132,13 +124,11 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItemGroup::mouseMoveEvent(event);
 
         event->accept();
-        setSelected(false);
     }
 }
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Delegate()->commitUndoStep();
     event->accept();
 
     Delegate()->mouseReleaseEvent(event);
@@ -159,24 +149,39 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
     const_cast<UBGraphicsStrokesGroup*>(this)->setPos(0,0);
 
     QList<QGraphicsItem*> chl = childItems();
+    QHash<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
 
-    UBGraphicsStroke* newStroke = new UBGraphicsStroke;
-
-    foreach(QGraphicsItem *child, chl)
+    foreach (QGraphicsItem* child, chl)
     {
-        UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
+        UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
-        if (polygon){
-            UBGraphicsPolygonItem *polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
+        if (polygon)
+        {
+            UBGraphicsPolygonItem* polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
+
             if (polygonCopy)
             {
-                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygonCopy);
-                copy->addToGroup(pItem);
+                copy->addToGroup(polygonCopy);
                 polygonCopy->setStrokesGroup(copy);
-                polygonCopy->setStroke(newStroke);
+
+                UBGraphicsStroke* stroke = polygon->stroke();
+
+                if (stroke)
+                {
+                    UBGraphicsStroke* cloneStroke = groupClone.value(stroke);
+
+                    if (!cloneStroke)
+                    {
+                        cloneStroke = stroke->deepCopy();
+                        groupClone.insert(stroke, cloneStroke);
+                    }
+
+                    polygonCopy->setStroke(cloneStroke);
+                }
             }
         }
     }
+
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
     const_cast<UBGraphicsStrokesGroup*>(this)->setPos(groupPos);
     copy->setTransform(groupTransform);
@@ -197,6 +202,8 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setZValue(this->zValue());
     }
 }

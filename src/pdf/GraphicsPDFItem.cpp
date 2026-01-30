@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -39,13 +39,21 @@ GraphicsPDFItem::GraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphic
     : QObject(0), QGraphicsItem(parentItem)
     , mRenderer(renderer)
     , mPageNumber(pageNumber)
+    , mIsCacheAllowed(true)
 {
+    // Using NoCache on Windows to avoid PDF rendering issues when a DPI scaling is applied (e.g. if a 150% scaling is applied to the screen in the OS screen config).
+#ifdef Q_OS_WIN
+    setCacheMode(QGraphicsItem::NoCache);
+#else
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+#endif
     mRenderer->attach();
+    connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
 }
 
 GraphicsPDFItem::~GraphicsPDFItem()
 {
+    disconnect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
     mRenderer->detach();
 }
 
@@ -70,8 +78,26 @@ void GraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     }
 
     if (option)
-        mRenderer->render(painter, mPageNumber, option->exposedRect);
-    else
+    {
+        mRenderer->render(painter, mPageNumber, mIsCacheAllowed, option->exposedRect);
+    } else
         qWarning("GraphicsPDFItem::paint: option is null, ignoring painting");
 
 }
+
+void GraphicsPDFItem::switchRenderer(PDFRenderer* newRenderer)
+{
+    disconnect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+    mRenderer->detach();
+
+    mRenderer = newRenderer;
+
+    mRenderer->attach();
+    connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+}
+
+void GraphicsPDFItem::OnRequireUpdate()
+{
+    updateChild();
+}
+

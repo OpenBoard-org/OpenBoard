@@ -1,5 +1,6 @@
 
 HEADERS      += src/core/UB.h \
+                src/core/UBShortcutManager.h \
                 src/core/UBApplication.h \
                 src/core/UBSettings.h \
                 src/core/UBSetting.h \
@@ -13,12 +14,11 @@ HEADERS      += src/core/UB.h \
                 src/core/UBApplicationController.h \
                 src/core/UBDownloadManager.h \
                 src/core/UBDownloadThread.h \
-                src/core/UBOpenSankoreImporter.h \
                 src/core/UBTextTools.h \
-    src/core/UBPersistenceWorker.h \
-    $$PWD/UBForeignObjectsHandler.h
+    src/core/UBPersistenceWorker.h
 
 SOURCES      += src/core/main.cpp \
+                src/core/UBShortcutManager.cpp \
                 src/core/UBApplication.cpp \
                 src/core/UBSettings.cpp \
                 src/core/UBSetting.cpp \
@@ -32,7 +32,5 @@ SOURCES      += src/core/main.cpp \
                 src/core/UBApplicationController.cpp \
                 src/core/UBDownloadManager.cpp \
                 src/core/UBDownloadThread.cpp \
-                src/core/UBOpenSankoreImporter.cpp \
                 src/core/UBTextTools.cpp \
-    src/core/UBPersistenceWorker.cpp \
-    $$PWD/UBForeignObjectsHandler.cpp
+    src/core/UBPersistenceWorker.cpp

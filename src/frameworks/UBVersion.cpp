@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -54,7 +54,8 @@ uint UBVersion::toUInt() const
     */
 
     uint result = 0;
-    QStringList list = mString.split(QRegExp("[-\\.]"));
+    static const QRegularExpression minusOrDot("[-\\.]");
+    QStringList list = mString.split(minusOrDot);
     switch (list.count()) {
     case 2:
         //short version  1.0

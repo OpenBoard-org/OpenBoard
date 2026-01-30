@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,11 +36,15 @@
 
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
+#ifdef Q_OS_WIN
+    #include <quazip.h>
+    #include <quazipfile.h>
+    #include <quazipfileinfo.h>
+#else
 #include "quazip.h"
-#include "quazipfile.h"
-#include "quazipfileinfo.h"
-THIRD_PARTY_WARNINGS_ENABLE
+    #include "quazipfile.h"
+    #include "quazipfileinfo.h"
+#endif
 
 #include "core/memcheck.h"
 
@@ -90,12 +94,18 @@ QFileInfoList UBImportDocumentSetAdaptor::importData(const QString &zipFile, con
 
     foreach(QFileInfo readDir, tDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name)) {
         QString newFileName = readDir.fileName();
-        if (QFileInfo(destination + "/" + readDir.fileName()).exists()) {
-            newFileName = QFileInfo(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath(tmpDir)).fileName();
+        if (QFileInfo(destination + "/" + newFileName).exists())
+        {
+            //if the generateUniqueDocumentPath is called twice in the same millisecond, the destination files are overwritten
+            do
+            {
+                newFileName = QFileInfo(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath(tmpDir)).fileName();
+            } while (QFileInfo(destination + "/" + newFileName).exists());
         }
+
         QString newFilePath = destination + "/" + newFileName;
-        if (UBFileSystemUtils::copy(readDir.absoluteFilePath(), newFilePath)) {
-            result.append(newFilePath);
+        if (UBFileSystemUtils::copy(readDir.absoluteFilePath(), newFilePath, true)) {
+            result.append(QFileInfo(newFilePath));
         }
     }
 

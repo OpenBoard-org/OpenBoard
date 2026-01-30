@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -54,7 +54,6 @@ class UBDesktopPalette : public UBActionPalette
     signals:
         void uniboardClick();
         void customClick();
-        void windowClick();
         void screenClick();
 
 //#ifdef Q_OS_LINUX //TODO: check why this produces an error on linux if uncommented

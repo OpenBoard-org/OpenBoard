@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -63,10 +63,7 @@ public:
         return Type;
     }
 
-    virtual void setUuid(const QUuid &pUuid);
     void destroy(bool canUndo = true);
-
-    virtual void clearSource();
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

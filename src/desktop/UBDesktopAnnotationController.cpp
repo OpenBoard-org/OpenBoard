@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -27,8 +27,6 @@
 
 
 
-#include <QDesktopWidget>
-
 #include "UBDesktopAnnotationController.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -51,7 +49,6 @@
 #include "domain/UBGraphicsPolygonItem.h"
 
 #include "UBCustomCaptureWindow.h"
-#include "UBWindowCapture.h"
 #include "UBDesktopPalette.h"
 #include "UBDesktopPropertyPalette.h"
 
@@ -76,28 +73,24 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mPendingMarkerButtonPressed(false)
         , mPendingEraserButtonPressed(false)
         , mbArrowClicked(false)
+        , mCustomCaptureClicked(false)
         , mBoardStylusTool(UBDrawingController::drawingController()->stylusTool())
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
+    mTransparentDrawingView->setWindowTitle("DesktopView");
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
-    mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
-    /* https://bugreports.qt.io/browse/QTBUG-81456 */
-    if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
-    {
-        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
-    else
-    {
-        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
-#else
+    // didn't find the equivalent in Qt6
+    #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+    #endif
+#endif //Q_OS_OSX
+
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-#endif
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
-    mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
+    mTransparentDrawingView->resize(UBApplication::displayManager->screenSize(ScreenRole::Desktop));
 
     mTransparentDrawingView->setMouseTracking(true);
 
@@ -106,10 +99,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
-    mTransparentDrawingScene = new UBGraphicsScene(0, false);
+    mTransparentDrawingScene = std::make_shared<UBGraphicsScene>(nullptr, false);
     updateColors();
 
-    mTransparentDrawingView->setScene(mTransparentDrawingScene);
+    mTransparentDrawingView->setScene(mTransparentDrawingScene.get());
     mTransparentDrawingScene->setDrawingMode(true);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
@@ -121,7 +114,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
                  mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
         connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(refreshMask()));
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
@@ -130,14 +123,14 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
-    connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
-    connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
-    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
+    connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene.get(), SLOT(hideTool()));
+    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene.get(), SLOT(hideTool()));
+    connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -145,13 +138,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int)), this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
-    mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView, rightPalette); 
+    mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView, rightPalette, "desktop");
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
-    mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView, rightPalette);
-    mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView, rightPalette);
+    mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView, rightPalette, "desktop");
+    mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView, rightPalette, "desktop");
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
@@ -176,7 +169,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
@@ -191,15 +184,14 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
-    delete mTransparentDrawingScene;
     delete mTransparentDrawingView;
 }
 
 void UBDesktopAnnotationController::updateColors(){
     if(UBApplication::boardController->activeScene()->isDarkBackground()){
-        mTransparentDrawingScene->setBackground(true, UBPageBackground::plain);
+        mTransparentDrawingScene->setSceneBackground(true, nullptr);
     }else{
-        mTransparentDrawingScene->setBackground(false, UBPageBackground::plain);
+        mTransparentDrawingScene->setSceneBackground(false, nullptr);
     }
 }
 
@@ -331,7 +323,7 @@ void UBDesktopAnnotationController::showWindow()
 
     if (!mWindowPositionInitialized)
     {
-        QRect desktopRect = QApplication::desktop()->screenGeometry(mDesktopPalette->pos());
+        QRect desktopRect = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
 
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
@@ -352,12 +344,16 @@ void UBDesktopAnnotationController::showWindow()
     // if finer control is necessary, use qgetenv("XDG_CURRENT_DESKTOP")
     mTransparentDrawingView->show();
 #endif
-    UBPlatformUtils::setDesktopMode(true);
+    UBPlatformUtils::hideMenuBarAndDock();
 
     mDesktopPalette->appear();
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
+#endif // UB_REQUIRES_MASK_UPDATE
+
+#ifdef Q_OS_LINUX
+    UBPlatformUtils::keepOnTop();
 #endif
 }
 
@@ -374,12 +370,21 @@ void UBDesktopAnnotationController::close()
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
     Q_UNUSED(tool);
-//     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-//     if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
-//     {
-//         if(mKeyboardPalette->m_isVisible)
-//             UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
-//     }
+#ifdef Q_OS_OSX
+    /* no longer needed
+     if (UBDrawingController::drawingController()->isInDesktopMode())
+     {
+         UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
+         if(eTool == UBStylusTool::Selector)
+         {
+             UBPlatformUtils::toggleFinder(true);
+         }
+         else
+         {
+             UBPlatformUtils::toggleFinder(false);
+         }
+     }*/
+#endif
 
     updateBackground();
 }
@@ -393,9 +398,9 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         updateMask(true);
-#endif
+#endif //UB_REQUIRES_MASK_UPDATE
     }
     else
     {
@@ -404,9 +409,9 @@ void UBDesktopAnnotationController::updateBackground()
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
 #endif
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         updateMask(false);
-#endif
+#endif //UB_REQUIRES_MASK_UPDATE
     }
 
     if (mTransparentDrawingScene && mTransparentDrawingScene->backgroundBrush() != newBrush)
@@ -434,58 +439,31 @@ void UBDesktopAnnotationController::goToUniboard()
 
 void UBDesktopAnnotationController::customCapture()
 {
-    onToolClicked();
-    mIsFullyTransparent = true;
-    updateBackground();
-
-    mDesktopPalette->disappearForCapture();
-    UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-    // need to show the window before execute it to avoid some glitch on windows.
-
-#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-    UBPlatformUtils::showFullScreen(&customCaptureWindow);
-#endif
-
-    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+    if (!mCustomCaptureClicked)
     {
-        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false);
+        mCustomCaptureClicked = true;
+        onToolClicked();
+        mIsFullyTransparent = true;
+        updateBackground();
+
+        mDesktopPalette->disappearForCapture();
+
+        getScreenPixmap([this](QPixmap pixmap){
+            UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
+
+            if (customCaptureWindow.execute(pixmap) == QDialog::Accepted)
+            {
+                QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+                emit imageCaptured(selectedPixmap, false);
+            }
+
+            mDesktopPalette->appear();
+
+            mCustomCaptureClicked = false;
+            mIsFullyTransparent = false;
+            updateBackground();
+        });
     }
-
-    mDesktopPalette->appear();
-
-    mIsFullyTransparent = false;
-    updateBackground();
-}
-
-
-void UBDesktopAnnotationController::windowCapture()
-{
-    onToolClicked();
-    mIsFullyTransparent = true;
-    updateBackground();
-
-    mDesktopPalette->disappearForCapture();
-
-    UBWindowCapture util(this);
-
-    if (util.execute() == QDialog::Accepted)
-    {
-        QPixmap windowPixmap = util.getCapturedWindow();
-
-        // on Mac OS X we can only know that user cancel the operatiion by checking is the image is null
-        // because the screencapture utility always return code 0 event if user cancel the application
-        if (!windowPixmap.isNull())
-        {
-            emit imageCaptured(windowPixmap, false);
-        }
-    }
-
-    mDesktopPalette->appear();
-
-    mIsFullyTransparent = false;
-
-    updateBackground();
 }
 
 
@@ -497,27 +475,21 @@ void UBDesktopAnnotationController::screenCapture()
 
     mDesktopPalette->disappearForCapture();
 
-    QPixmap originalPixmap = getScreenPixmap();
+    getScreenPixmap([this](QPixmap pixmap){
+        mDesktopPalette->appear();
 
-    mDesktopPalette->appear();
+        emit imageCaptured(pixmap, false);
 
-    emit imageCaptured(originalPixmap, false);
+        mIsFullyTransparent = false;
 
-    mIsFullyTransparent = false;
-
-    updateBackground();
+        updateBackground();
+    });
 }
 
 
-QPixmap UBDesktopAnnotationController::getScreenPixmap()
+void UBDesktopAnnotationController::getScreenPixmap(std::function<void(QPixmap)> callback)
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = UBApplication::controlScreen();
-
-    QRect rect = desktop->screenGeometry(QCursor::pos());
-
-    return screen->grabWindow(desktop->effectiveWinId(),
-                              rect.x(), rect.y(), rect.width(), rect.height());
+    UBApplication::displayManager->grab(ScreenRole::Control, callback);
 }
 
 
@@ -530,8 +502,8 @@ void UBDesktopAnnotationController::updateShowHideState(bool pEnabled)
 void UBDesktopAnnotationController::screenLayoutChanged()
 {
     if (UBApplication::applicationController &&
-            UBApplication::applicationController->displayManager() &&
-            UBApplication::applicationController->displayManager()->hasDisplay())
+            UBApplication::displayManager &&
+            UBApplication::displayManager->hasDisplay())
     {
         mDesktopPalette->setShowHideButtonVisible(true);
     }
@@ -555,13 +527,13 @@ void UBDesktopAnnotationController::penActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));  // global coordinates of palette
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionPen);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         penActionReleased();
@@ -609,13 +581,13 @@ void UBDesktopAnnotationController::eraserActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionEraser);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         eraserActionReleased();
@@ -664,13 +636,13 @@ void UBDesktopAnnotationController::markerActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionMarker);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         markerActionReleased();
@@ -912,7 +884,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
-#ifdef Q_OS_LINUX
         //Rquiered only for compiz wm
         //TODO. Window manager detection screen
 
@@ -920,7 +891,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(UBApplication::boardController->paletteManager()->addItemPalette()->geometry());
         }
 
-#endif
 
         p.end();
 
@@ -968,7 +938,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         p.setPen(Qt::red);
         p.setBrush(QBrush(Qt::red));
 
-        p.drawRect(mTransparentDrawingView->geometry().x(), mTransparentDrawingView->geometry().y(), mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        p.drawRect(0, 0, mTransparentDrawingView->width(), mTransparentDrawingView->height());
         p.end();
 
         mTransparentDrawingView->setMask(mMask.mask());

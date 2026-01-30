@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,6 +36,7 @@
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
 #include "core/UBDisplayManager.h"
+#include "core/UBShortcutManager.h"
 
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
@@ -67,15 +68,17 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     setCentralWidget(centralWidget);
 
 #ifdef Q_OS_OSX
-    actionPreferences->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Comma));
-    actionQuit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    actionPreferences->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Comma));
+    actionQuit->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
 #elif defined(Q_OS_WIN)
-    actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
+    actionPreferences->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Return));
     // this code, because it unusable, system key combination can`t be triggered, even we add it manually
-    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
+    actionQuit->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F4));
 #else
-    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
+    actionQuit->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F4));
 #endif
+
+    UBShortcutManager::shortcutManager()->addMainActions(this);
 }
 
 UBMainWindow::~UBMainWindow()
@@ -193,7 +196,7 @@ void UBMainWindow::onExportDone()
     actionDocumentAdd->setEnabled(true);
 }
 
-bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
+bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text, const QPixmap &iconPixmap, const QMessageBox::Icon icon)
 {
     QMessageBox messageBox;
     messageBox.setParent(this);
@@ -201,7 +204,11 @@ bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
     messageBox.setText(text);
     QPushButton* yesButton = messageBox.addButton(tr("Yes"),QMessageBox::YesRole);
     messageBox.addButton(tr("No"),QMessageBox::NoRole);
-    messageBox.setIcon(QMessageBox::Question);
+    if (iconPixmap.isNull())
+        messageBox.setIcon(icon);
+    else
+        messageBox.setIconPixmap(iconPixmap);
+
 
 #ifdef Q_OS_LINUX
     // to avoid to be handled by x11. This allows us to keep to the back all the windows manager stuff like palette, toolbar ...

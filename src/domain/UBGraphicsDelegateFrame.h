@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -94,6 +94,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         enum FrameTool {None, Move, Rotate, ResizeBottomRight, ResizeTop, ResizeRight, ResizeBottom, ResizeLeft};
         FrameTool toolFromPos (QPointF pos);
         void refreshGeometry();
+        QPointF snapVector(QPointF scenePos) const;
 
         FrameTool mCurrentTool;
         UBGraphicsItemDelegate* mDelegate;
@@ -104,6 +105,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mRespectRatio;
 
         qreal mAngle;
+        qreal mRotatedAngle;
         qreal mAngleOffset;
         qreal mTotalScaleX;
         qreal mTotalScaleY;
@@ -113,11 +115,12 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         qreal mTranslateY;
         qreal mTotalTranslateX;
         qreal mTotalTranslateY;
-        qreal mAngleTolerance;
+        qreal mRotationAngleStep;
         QRect mAngleRect;
 
         QPointF mStartingPoint;
         QTransform mInitialTransform;
+        QList<QPointF> mCornerPoints;
         QSizeF mOriginalSize;
         QPointF mFixedPoint;
 
@@ -133,6 +136,12 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QGraphicsRectItem* mLeftResizeGrip;
         QGraphicsRectItem* mRightResizeGrip;
         QGraphicsRectItem* mTopResizeGrip;
+
+        bool mHasBottomRightResizeGrip;
+        bool mHasBottomResizeGrip;
+        bool mHasLeftResizeGrip;
+        bool mHasRightResizeGrip;
+        bool mHasTopResizeGrip;
 
         OperationMode mOperationMode;
 

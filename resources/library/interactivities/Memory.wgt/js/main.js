@@ -40,7 +40,7 @@ var Game = (function() {
         init: {
             value: function(count) {
                 if(typeof count !== "number"){
-                    log("Cards count must be an number");	
+                    log("Cards count must be an number");
                     return;
                 }
                 this.cards = new Array(count);
@@ -88,7 +88,7 @@ function onTemplateLoadedCallback() {
         }
     });
 /*
-	$("#timeoutValue").text($("input[name=timeout]").val());	
+	$("#timeoutValue").text($("input[name=timeout]").val());
 	$("input[name=timeout]").change(function(){
 		$("#timeoutValue").text($(this).val());
 	});
@@ -98,7 +98,7 @@ function onTemplateLoadedCallback() {
 function reloadApp(app) {
     var cardsCount = parseInt(app.parameters.value("count"));
     var timeout = parseInt(app.parameters.value("timeout"))*1000;
-	
+
     var scene = $("#scene");
     var table = $("<div id='table'/>");
     scene.empty();
@@ -116,7 +116,7 @@ function reloadApp(app) {
 
     if(!app.onEdit)
         app.utils.shuffle(game.cards);
-		
+
     for(i = 0 ; i < game.cards.length ; i++) {
         (function(){
             var card = game.cards[i];
@@ -135,7 +135,8 @@ function reloadApp(app) {
 
             var checkbox = cardView.find("input[name='switch']");
             function setSwicth(index) {
-                var val = app.parameters.value("#UsePicture"+cardParameterKey(card, index)) === "true";
+                var val = app.parameters.value("#UsePicture"+cardParameterKey(card, index)) === "true"
+                || app.parameters.value("#UsePicture"+cardParameterKey(card, index)) === true;
                 var $p = cardView.find(".cards > div").eq(index);
                 if(val) {
                     $p.addClass("usePicture");
@@ -152,9 +153,9 @@ function reloadApp(app) {
             });
             setSwicth(0);
             setSwicth(1);
-			
+
             var dropzone = cardView.find(".dropzone");
-			
+
             function setPicture(index) {
                 var f = $.parseJSON(app.parameters.value("#Picture"+cardParameterKey(card, index)));
                 var pictureHolder = dropzone.eq(index).parent().find(">div:eq(0)");
@@ -175,7 +176,7 @@ function reloadApp(app) {
         })();
     }
     if(!app.onEdit) {
-        $(".cards>div:first-child").click(function(){            
+        $(".cards>div:first-child").click(function(){
             var cardView = $(this).parent();
             var card = cardView.parent().parent().data("card");
             cardView.toggleClass("flip");
@@ -215,7 +216,7 @@ function reloadApp(app) {
         $(".card-container .actions button[role=flip]").click();
     }
     if(window.sankore)
-        window.sankore.enableDropOnWidget(app.onEdit);
+        window.sankore.enableDropOnWidget(app.onEdit, app.onEdit);
 }
 
 function cardParameterKey(card, i) {
@@ -238,7 +239,7 @@ $(document).ready(function(){
         onView: reloadApp
     };
     init(reloadCallback, {
-        toolbar: toolbarTemplate, 
+        toolbar: toolbarTemplate,
         parameters: parametersTemplate
     }, callbacks);
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -26,22 +26,22 @@
 
 
 
-
 #include "UBSceneCache.h"
 
 #include "domain/UBGraphicsScene.h"
 
-#include "core/UBPersistenceManager.h"
+#include <adaptors/UBSvgSubsetAdaptor.h>
+
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "core/memcheck.h"
 
 UBSceneCache::UBSceneCache()
-    : mCachedSceneCount(0)
 {
     // NOOP
 }
@@ -53,40 +53,46 @@ UBSceneCache::~UBSceneCache()
 }
 
 
-UBGraphicsScene* UBSceneCache::createScene(UBDocumentProxy* proxy, int pageIndex, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBSceneCache::createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack)
 {
-    UBGraphicsScene* newScene = new UBGraphicsScene(proxy, useUndoRedoStack);
-    insert(proxy, pageIndex, newScene);
+    auto newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
+
+    insert(proxy, pageId, newScene);
 
     return newScene;
+}
 
+std::shared_ptr<void> UBSceneCache::prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent, bool cached)
+{
+    if (mSceneCache.contains({proxy, pageId}))
+    {
+        return nullptr;
+    }
+
+    // no entry in cache; create a cache entry to load scene
+    qDebug() << "Preparing to load scene" << pageId;
+    auto cacheEntry = std::make_shared<SceneCacheEntry>(proxy, pageId, xmlContent);
+
+    if (cached)
+    {
+        insertEntry({proxy, pageId}, cacheEntry);
+    }
+
+    cacheEntry->startLoading();
+
+    // return the cache entry as opaque handle to keep the entry alive for uncached loading
+    return cacheEntry;
 }
 
 
-void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScene* scene)
+void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::shared_ptr<UBGraphicsScene> scene)
 {
-    QList<UBSceneCacheID> existingKeys = QHash<UBSceneCacheID, UBGraphicsScene*>::keys(scene);
+    removeSceneFromCache(scene);
 
-    foreach(UBSceneCacheID key, existingKeys)
-    {
-        mCachedSceneCount -= QHash<UBSceneCacheID, UBGraphicsScene*>::remove(key);
-    }
+    UBSceneCacheID key{proxy, pageId};
+    insertEntry(key, std::make_shared<SceneCacheEntry>(scene));
 
-    UBSceneCacheID key(proxy, pageIndex);
-
-    if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(key))
-    {
-        QHash<UBSceneCacheID, UBGraphicsScene*>::insert(key, scene);
-        mCachedKeyFIFO.enqueue(key);
-    }
-    else
-    {
-        QHash<UBSceneCacheID, UBGraphicsScene*>::insert(key, scene);
-        mCachedKeyFIFO.enqueue(key);
-
-        mCachedSceneCount++;
-    }
-
+    // restore view state
     if (mViewStates.contains(key))
     {
         scene->setViewState(mViewStates.value(key));
@@ -94,176 +100,205 @@ void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScen
 }
 
 
-bool UBSceneCache::contains(UBDocumentProxy* proxy, int pageIndex) const
+bool UBSceneCache::contains(std::shared_ptr<UBDocumentProxy> proxy, int pageId) const
 {
-    UBSceneCacheID key(proxy, pageIndex);
-    return QHash<UBSceneCacheID, UBGraphicsScene*>::contains(key);
+    return mSceneCache.contains({proxy, pageId});
 }
 
 
-UBGraphicsScene* UBSceneCache::value(UBDocumentProxy* proxy, int pageIndex)
+std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    UBSceneCacheID key(proxy, pageIndex);
+    UBSceneCacheID key{proxy, pageId};
 
-    if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(key))
+    if (mSceneCache.contains(key))
     {
-        UBGraphicsScene* scene = QHash<UBSceneCacheID, UBGraphicsScene*>::value(key);
+        auto entry = mSceneCache.value(key);
 
         mCachedKeyFIFO.removeAll(key);
         mCachedKeyFIFO.enqueue(key);
 
-        return scene;
+        return entry->scene();
     }
     else
     {
-        return 0;
+        return nullptr;
     }
 }
 
 
-void UBSceneCache::removeScene(UBDocumentProxy* proxy, int pageIndex)
+void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    UBGraphicsScene* scene = value(proxy, pageIndex);
-    if (scene && !scene->isActive())
+    UBSceneCacheID key{proxy, pageId};
+
+    if (!mSceneCache.contains(key))
     {
-        UBSceneCacheID key(proxy, pageIndex);
-        int count = QHash<UBSceneCacheID, UBGraphicsScene*>::remove(key);
+        return;
+    }
+
+    auto entry = mSceneCache.value(key);
+
+    if (!entry->isSceneAvailable() || !entry->scene()->isActive())
+    {
+        mSceneCache.remove(key);
         mCachedKeyFIFO.removeAll(key);
 
-        mViewStates.insert(key, scene->viewState());
-
-        scene->deleteLater();
-
-        mCachedSceneCount -= count;
-    }
-}
-
-
-void UBSceneCache::removeAllScenes(UBDocumentProxy* proxy)
-{
-    for(int i = 0 ; i < proxy->pageCount(); i++)
-    {
-        removeScene(proxy, i);
-    }
-}
-
-
-void UBSceneCache::moveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex)
-{
-    UBSceneCacheID keySource(proxy, sourceIndex);
-
-    UBGraphicsScene *scene = 0;
-
-    if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(keySource))
-    {
-        scene = QHash<UBSceneCacheID, UBGraphicsScene*>::value(keySource);
-        mCachedKeyFIFO.removeAll(keySource);
-    }
-
-    if (sourceIndex < targetIndex)
-    {
-        for (int i = sourceIndex + 1; i <= targetIndex; i++)
+        if (entry->isSceneAvailable())
         {
-            internalMoveScene(proxy, i, i - 1);
+            mViewStates.insert(key, entry->scene()->viewState());
         }
     }
-    else
-    {
-        for (int i = sourceIndex - 1; i >= targetIndex; i--)
-        {
-            internalMoveScene(proxy, i, i + 1);
-        }
-    }
-
-    UBSceneCacheID keyTarget(proxy, targetIndex);
-
-    if (scene)
-    {
-        insert(proxy, targetIndex, scene);
-        mCachedKeyFIFO.enqueue(keyTarget);
-    }
-    else if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(keyTarget))
-    {
-        scene = QHash<UBSceneCacheID, UBGraphicsScene*>::take(keyTarget);
-        mCachedKeyFIFO.removeAll(keyTarget);
-    }
-
 }
 
-void UBSceneCache::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument)
+
+void UBSceneCache::removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy)
 {
-    if (!newDocument || !oldDocument) {
+    // get list of all page ids for proxy, avoid modifying the map here
+    auto lowerBound = mSceneCache.lowerBound({proxy, 0});
+    auto upperBound = mSceneCache.upperBound({proxy, INT_MAX});
+
+    QList<int> pageIds;
+
+    for (auto iter = lowerBound; iter != upperBound; ++iter)
+    {
+        pageIds << iter.key().mPageId;
+    }
+
+    // delete scenes by id
+    for(auto pageId : pageIds)
+    {
+        removeScene(proxy, pageId);
+    }
+}
+
+void UBSceneCache::removeSceneFromCache(std::shared_ptr<UBGraphicsScene> scene)
+{
+    if (scene->isActive())
+    {
         return;
     }
-    if (newDocument->pageCount() != oldDocument->pageCount()) {
-        return;
-    }
-    if (!QFileInfo(oldDocument->persistencePath()).exists()) {
-        return;
-    }
-    for (int i = 0; i < oldDocument->pageCount(); i++) {
 
-        UBSceneCacheID sourceKey(oldDocument, i);
-        UBGraphicsScene *currentScene = value(sourceKey);
-        if (currentScene) {
-            currentScene->setDocument(newDocument);
-        }
-        mCachedKeyFIFO.removeAll(sourceKey);
-        int count = QHash<UBSceneCacheID, UBGraphicsScene*>::remove(sourceKey);
-        mCachedSceneCount -= count;
+    // remove all entries pointing to this scene
+    const auto keylist = mSceneCache.keys();
 
-        insert(newDocument, i, currentScene);
-    }
-
-}
-
-
-void UBSceneCache::shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int endIncIndex)
-{
-    for(int i = endIncIndex; i >= startIncIndex; i--)
+    for (const auto& key : keylist)
     {
-        internalMoveScene(proxy, i, i + 1);
-    }
-}
+        auto entry = mSceneCache.value(key);
 
-
-void UBSceneCache::internalMoveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex)
-{
-    UBSceneCacheID sourceKey(proxy, sourceIndex);
-
-    if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(sourceKey))
-    {
-        UBGraphicsScene* scene = QHash<UBSceneCacheID, UBGraphicsScene*>::take(sourceKey);
-        mCachedKeyFIFO.removeAll(sourceKey);
-
-        UBSceneCacheID targetKey(proxy, targetIndex);
-        QHash<UBSceneCacheID, UBGraphicsScene*>::insert(targetKey, scene);
-        mCachedKeyFIFO.enqueue(targetKey);
-
-    }
-    else
-    {
-        UBSceneCacheID targetKey(proxy, targetIndex);
-        if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(targetKey))
+        if (entry->isSceneAvailable() && entry->scene() == scene)
         {
-            /*UBGraphicsScene* scene = */QHash<UBSceneCacheID, UBGraphicsScene*>::take(targetKey);
-
-            mCachedKeyFIFO.removeAll(targetKey);
+            mSceneCache.remove(key);
+            mCachedKeyFIFO.removeAll(key);
         }
     }
 }
 
-void UBSceneCache::dumpCacheContent()
+
+void UBSceneCache::insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEntry> entry)
 {
-    foreach(UBSceneCacheID key, keys())
+    mSceneCache.insert(key, entry);
+    mCachedKeyFIFO.removeAll(key);
+    mCachedKeyFIFO.enqueue(key);
+
+    // remove LRU entries if cache size grows beyond limit
+    auto entries = mCachedKeyFIFO.size();
+
+    while (entries-- > UBSettings::settings()->pageCacheSize->get().toInt())
     {
-        UBGraphicsScene *scene = 0;
+        qDebug() << "cache full, size" << entries;
+        const auto key = mCachedKeyFIFO.dequeue();
+        auto entry = mSceneCache.value(key);
 
-        if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(key))
-            scene = QHash<UBSceneCacheID, UBGraphicsScene*>::value(key);
-
-        int index = key.pageIndex;
-
-        qDebug() << "UBSceneCache::dumpCacheContent:" << index << " : " << scene;
+        // remove if still loading or inactive
+        if ((entry->isSceneAvailable() && !entry->scene()->isActive())
+                || !entry->isSceneAvailable())
+        {
+            qDebug() << "removing page" << key.mPageId << "of" << key.mDocumentProxy->documentFolderName();
+            removeScene(key.mDocumentProxy, key.mPageId);
+            entry = nullptr;
+            qDebug() << "removed page" << key.mPageId << "of" << key.mDocumentProxy->documentFolderName();
+            break;
+        }
     }
+}
+
+UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent)
+{
+    mContext = UBSvgSubsetAdaptor::prepareLoadingScene(proxy, pageId, xmlContent);
+}
+
+UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene)
+{
+    mScene = scene;
+}
+
+UBSceneCache::SceneCacheEntry::~SceneCacheEntry()
+{
+    if (mTimer)
+    {
+        delete mTimer;
+    }
+}
+
+void UBSceneCache::SceneCacheEntry::startLoading()
+{
+    mTimer = new QTimer;
+    QObject::connect(mTimer, &QTimer::timeout, mTimer, [this](){
+        if (UBApplication::isClosing)
+        {
+            mTimer->stop();
+            delete mTimer;
+            mTimer = nullptr;
+            return;
+        }
+
+        if (mContext)
+        {
+            mContext->step();
+
+            if (mContext->isFinished())
+            {
+                mScene = mContext->scene();
+                auto document = UBDocument::getDocument(mContext->proxy());
+                mContext = nullptr;
+                mTimer->stop();
+                delete mTimer;
+                mTimer = nullptr;
+
+                document->sceneLoaded(mScene.get(), shared_from_this());
+            }
+        }
+    });
+
+    mTimer->start();
+}
+
+bool UBSceneCache::SceneCacheEntry::isSceneAvailable() const
+{
+    return mScene != nullptr;
+}
+
+std::shared_ptr<UBGraphicsScene> UBSceneCache::SceneCacheEntry::scene()
+{
+    if (mContext && !mScene)
+    {
+        // finish loading
+        if (mTimer)
+        {
+            mTimer->stop();
+            delete mTimer;
+            mTimer = nullptr;
+        }
+
+        while (!mContext->isFinished())
+        {
+            mContext->step();
+        }
+
+        mScene = mContext->scene();
+        auto document = UBDocument::getDocument(mContext->proxy());
+        document->sceneLoaded(mScene.get(), shared_from_this());
+        mContext = nullptr;
+    }
+
+    return mScene;
 }

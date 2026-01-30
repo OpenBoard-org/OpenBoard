@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -83,7 +83,7 @@ private:
     void placeExceptionButton(DelegateButton *pButton, QTransform pTransform);
     void clearButtons();
     inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
-    inline UBGraphicsScene* ubscene();
+    inline std::shared_ptr<UBGraphicsScene> ubscene();
     void setCursorFromAngle(QString angle);
 
     QList<QGraphicsItem*> sortedByZ(const QList<QGraphicsItem*> &pItems);
@@ -99,9 +99,11 @@ private:
     QBrush mLocalBrush;
 
     QPointF mPressedPos;
+    QRectF mStartingBounds;
     QPointF mLastMovedPos;
     QPointF mLastTranslateOffset;
-    qreal mRotationAngle;
+    qreal mCursorRotationAngle;
+    qreal mItemRotationAngle;
 
     bool mIsLocked;
 

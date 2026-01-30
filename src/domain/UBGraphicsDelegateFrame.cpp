@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -40,7 +40,7 @@
 
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsProxyWidget.h"
+#include "domain/UBResizableGraphicsItem.h"
 
 #include "gui/UBResources.h"
 
@@ -55,6 +55,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mNominalFrameWidth(pFrameWidth)
     , mRespectRatio(respectRatio)
     , mAngle(0)
+    , mRotatedAngle(0)
     , mAngleOffset(0)
     , mTotalScaleX(-1)
     , mTotalScaleY(-1)
@@ -62,15 +63,31 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mTranslateY(0)
     , mTotalTranslateX(0)
     , mTotalTranslateY(0)
+    , mBottomRightResizeGripSvgItem(nullptr)
+    , mBottomResizeGripSvgItem(nullptr)
+    , mLeftResizeGripSvgItem(nullptr)
+    , mRightResizeGripSvgItem(nullptr)
+    , mTopResizeGripSvgItem(nullptr)
+    , mBottomRightResizeGrip(nullptr)
+    , mBottomResizeGrip(nullptr)
+    , mLeftResizeGrip(nullptr)
+    , mRightResizeGrip(nullptr)
+    , mTopResizeGrip(nullptr)
+    , mHasBottomRightResizeGrip(false)
+    , mHasBottomResizeGrip(false)
+    , mHasLeftResizeGrip(false)
+    , mHasRightResizeGrip(false)
+    , mHasTopResizeGrip(false)
     , mOperationMode(Scaling)
     , mFlippedX(false)
     , mFlippedY(false)
     , mMirrorX(false)
     , mMirrorY(false)
+    , mResizing(false)
     , mTitleBarHeight(hasTitleBar ? 20 :0)
     , mNominalTitleBarHeight(hasTitleBar ? 20:0)
 {
-    mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
+    mRotationAngleStep = UBSettings::settings()->rotationAngleStep->get().toReal();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -81,32 +98,55 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
-    mBottomRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resize.svg", this);
-    mBottomResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeBottom.svg", this);
-    mLeftResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeLeft.svg", this);
-    mRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeRight.svg", this);
-    mTopResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeTop.svg", this);
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasBottomRightResizeGrip = true;
+        mBottomRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resize.svg", this);
+        mBottomRightResizeGrip = new QGraphicsRectItem(this);
+        mBottomRightResizeGrip->setPen(Qt::NoPen);
+    }
 
-    mBottomRightResizeGrip = new QGraphicsRectItem(this);
-    mBottomRightResizeGrip->setPen(Qt::NoPen);
-    mBottomResizeGrip = new QGraphicsRectItem(this);
-    mBottomResizeGrip->setPen(Qt::NoPen);
-    mLeftResizeGrip = new QGraphicsRectItem(this);
-    mLeftResizeGrip->setPen(Qt::NoPen);
-    mRightResizeGrip = new QGraphicsRectItem(this);
-    mRightResizeGrip->setPen(Qt::NoPen);
-    mTopResizeGrip = new QGraphicsRectItem(this);
-    mTopResizeGrip->setPen(Qt::NoPen);
+    if (mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasBottomResizeGrip = true;
+        mBottomResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeBottom.svg", this);
+        mBottomResizeGrip = new QGraphicsRectItem(this);
+        mBottomResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+    {
+        mHasLeftResizeGrip = true;
+        mLeftResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeLeft.svg", this);
+        mLeftResizeGrip = new QGraphicsRectItem(this);
+        mLeftResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+    {
+        mHasRightResizeGrip = true;
+        mRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeRight.svg", this);
+        mRightResizeGrip = new QGraphicsRectItem(this);
+        mRightResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasTopResizeGrip = true;
+        mTopResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeTop.svg", this);
+        mTopResizeGrip = new QGraphicsRectItem(this);
+        mTopResizeGrip->setPen(Qt::NoPen);
+    }
 
     mRotateButton = new QGraphicsSvgItem(":/images/rotate.svg", this);
     mRotateButton->setCursor(UBResources::resources()->rotateCursor);
     mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE));
 
-    updateResizeCursors();
-
     setAntiScale(1.0);
 
+    initializeTransform();
     positionHandles();
+    updateResizeCursors();
 
     this->setAcceptHoverEvents(true);
 }
@@ -125,11 +165,21 @@ void UBGraphicsDelegateFrame::setAntiScale(qreal pAntiScale)
     QTransform tr;
     tr.scale(pAntiScale, pAntiScale);
 
-    mBottomRightResizeGripSvgItem->setTransform(tr);
-    mBottomResizeGripSvgItem->setTransform(tr);
-    mLeftResizeGripSvgItem->setTransform(tr);
-    mRightResizeGripSvgItem->setTransform(tr);
-    mTopResizeGripSvgItem->setTransform(tr);
+    if (mHasBottomRightResizeGrip)
+        mBottomRightResizeGripSvgItem->setTransform(tr);
+
+    if (mHasBottomResizeGrip)
+        mBottomResizeGripSvgItem->setTransform(tr);
+
+    if (mHasLeftResizeGrip)
+        mLeftResizeGripSvgItem->setTransform(tr);
+
+    if (mHasRightResizeGrip)
+        mRightResizeGripSvgItem->setTransform(tr);
+
+    if (mHasTopResizeGrip)
+        mTopResizeGripSvgItem->setTransform(tr);
+
     mRotateButton->setTransform(tr);
 }
 
@@ -239,50 +289,40 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mTranslateX = 0;
     mTranslateY = 0;
     mAngleOffset = 0;
+    mRotatedAngle = mAngle;
 
     mInitialTransform = buildTransform();
+
+    // calculate initial corner points and respect mirroring
+    mCornerPoints.clear();
+    const auto bounds = UBGraphicsScene::itemRect(delegated());
+    mCornerPoints << delegated()->mapToScene(bounds.topLeft());
+    mCornerPoints << delegated()->mapToScene(bounds.topRight());
+    mCornerPoints << delegated()->mapToScene(bounds.bottomLeft());
+    mCornerPoints << delegated()->mapToScene(bounds.bottomRight());
+
+    if (mMirrorX)
+    {
+        std::swap(mCornerPoints[0], mCornerPoints[1]);
+        std::swap(mCornerPoints[2], mCornerPoints[3]);
+    }
+
+    if (mMirrorY)
+    {
+        std::swap(mCornerPoints[0], mCornerPoints[2]);
+        std::swap(mCornerPoints[1], mCornerPoints[3]);
+    }
+
     mOriginalSize = delegated()->boundingRect().size();
 
-    mCurrentTool = toolFromPos(event->pos());
-    setCursorFromAngle(QString::number((int)mAngle % 360));
-    event->accept();
-}
+    mCurrentTool = toolFromPos(event->scenePos());
 
-void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
-{
     if (mCurrentTool == Rotate)
     {
-        QWidget *controlViewport = UBApplication::boardController->controlView()->viewport();
-
-        QSize cursorSize(45,30);
-
-
-        QImage mask_img(cursorSize, QImage::Format_Mono);
-        mask_img.fill(0xff);
-        QPainter mask_ptr(&mask_img);
-        mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
-        mask_ptr.drawRoundedRect(0,0, cursorSize.width()-1, cursorSize.height()-1, 6, 6);
-        QBitmap bmpMask = QBitmap::fromImage(mask_img);
-
-
-        QPixmap pixCursor(cursorSize);
-        pixCursor.fill(QColor(Qt::white));
-
-        QPainter painter(&pixCursor);
-
-        painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-        painter.setBrush(QBrush(Qt::white));
-        painter.setPen(QPen(QColor(Qt::black)));
-        painter.drawRoundedRect(1,1,cursorSize.width()-2,cursorSize.height()-2,6,6);
-        painter.setFont(QFont("Arial", 10));
-        painter.drawText(1,1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
-        painter.end();
-
-        pixCursor.setMask(bmpMask);
-        controlViewport->setCursor(pixCursor);
+        UBApplication::boardController->setCursorFromAngle(mAngle);
     }
+    event->accept();
 }
-
 
 bool UBGraphicsDelegateFrame::canResizeBottomRight(qreal width, qreal height, qreal scaleFactor)
 {
@@ -400,8 +440,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     QLineF move = QLineF(mStartingPoint, event->scenePos());
-    qreal moveX = (event->pos() - mStartingPoint).x();
-    qreal moveY = (event->pos() - mStartingPoint).y();
+    QPointF itemStartingPoint = mapFromScene(mStartingPoint);
+    qreal moveX = (event->pos() - itemStartingPoint).x();
+    qreal moveY = (event->pos() - itemStartingPoint).y();
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
 
@@ -409,6 +450,23 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         if(!rotating())
         {
+            const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+            constexpr double epsilon = 0.0001;
+
+            if (ubscene && ubscene->isSnapping() && !resizingBottomRight() && std::fmod(mAngle + epsilon, 90.) <= 2. * epsilon)
+            {
+                QPointF snap = snapVector(event->scenePos());
+                move.setP2(move.p2() + snap);
+
+                // rotate the snap according to item angle
+                QLineF snapLine{{}, snap};
+                snapLine.setAngle(snapLine.angle() - mAngle);
+                snap = snapLine.p2();
+
+                moveX += snap.x();
+                moveY += snap.y();
+            }
+
             mTranslateX = moveX;
             // Perform the resize
             if (resizingBottomRight())
@@ -519,33 +577,53 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
         QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
-        mAngle += startLine.angleTo(currentLine);
+        mRotatedAngle += startLine.angleTo(currentLine);
+        const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
 
-        if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
+        if (ubscene && ubscene->isSnapping())
         {
-            mAngle = qRound(mAngle / 45) * 45;
-            mAngleOffset += startLine.angleTo(currentLine);
-            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
-            {
-                mAngle += mAngleOffset;
-                mAngleOffset = 0;
-            }
+            mAngle = qRound(mRotatedAngle / mRotationAngleStep) * mRotationAngleStep;
         }
-        else if ((int)mAngle % 30 >= 30 - mAngleTolerance || (int)mAngle % 30 <= mAngleTolerance)
+        else
         {
-            mAngle = qRound(mAngle / 30) * 30;
-            mAngleOffset += startLine.angleTo(currentLine);
-            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
-            {
-                mAngle += mAngleOffset;
-                mAngleOffset = 0;
-            }
+            mAngle = mRotatedAngle;
         }
 
-        setCursorFromAngle(QString::number((int)mAngle % 360));
+        if (mCurrentTool == Rotate)
+        {
+            UBApplication::boardController->setCursorFromAngle(std::fmod(mAngle, 360.));
+        }
     }
     else if (moving())
     {
+        const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+        if (ubscene && ubscene->isSnapping())
+        {
+            // snap to grid
+            QPointF moved = event->scenePos() - mStartingPoint;
+            std::vector<QPointF> corners;
+
+            for (const auto& cornerPoint : mCornerPoints)
+            {
+                corners.push_back(cornerPoint + moved);
+            }
+
+            int snapIndex;
+            QPointF snapVector = ubscene->snap(corners, &snapIndex);
+            Qt::Corner corner = Qt::Corner(snapIndex);
+
+            if (!snapVector.isNull())
+            {
+                auto* view = UBApplication::boardController->controlView();
+                view->updateSnapIndicator(corner, corners.at(snapIndex) + snapVector, mAngle);
+            }
+
+            moveX += snapVector.x();
+            moveY += snapVector.y();
+            move.setP2(move.p2() + snapVector);
+        }
+
         mTranslateX = move.dx();
         mTranslateY = move.dy();
         moveLinkedItems(move);
@@ -603,8 +681,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else // resizing/resizing horizontally
     {
-
-        if (resizingBottomRight())
+        if (resizingBottomRight() && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
         {
             static QSizeF incV = QSizeF();
             static QSizeF incH = QSizeF();
@@ -635,8 +712,25 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             mCurrentTool = ResizeBottomRight;
         }
-        else
-            resizeDelegate(moveX, moveY);
+        else {
+            const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+            if (ubscene && ubscene->isSnapping())
+            {
+                QPointF snap = snapVector(event->scenePos());
+                moveX += snap.x();
+                moveY += snap.y();
+            }
+
+            if ((resizingBottom() || resizingTop()) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+            {
+                resizeDelegate(0., moveY);
+            }
+            else if ((resizingLeft() || resizingRight()) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+            {
+                resizeDelegate(moveX, 0.);
+            }
+        }
     }
     event->accept();
 }
@@ -739,8 +833,6 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     mCurrentTool = None;
 
-    QGraphicsRectItem::mouseReleaseEvent(event);
-
     // Show the buttons
     if(isResizing()){
         mResizing = false;
@@ -755,17 +847,27 @@ void UBGraphicsDelegateFrame::updateResizeCursors()
 
     tr.rotate(-mAngle);
     QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mLeftResizeGrip->setCursor(resizeCursor);
-    mRightResizeGrip->setCursor(resizeCursor);
+
+    if (mHasLeftResizeGrip)
+        mLeftResizeGrip->setCursor(resizeCursor);
+
+    if (mHasRightResizeGrip)
+        mRightResizeGrip->setCursor(resizeCursor);
 
     tr.rotate(-90);
     resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mBottomResizeGrip->setCursor(resizeCursor);
-    mTopResizeGrip->setCursor(resizeCursor);
+
+    if (mHasBottomResizeGrip)
+        mBottomResizeGrip->setCursor(resizeCursor);
+
+    if (mHasTopResizeGrip)
+        mTopResizeGrip->setCursor(resizeCursor);
 
     tr.rotate(-45);
     resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mBottomRightResizeGrip->setCursor(resizeCursor);
+
+    if (mHasBottomRightResizeGrip)
+        mBottomRightResizeGrip->setCursor(resizeCursor);
 }
 
 
@@ -841,58 +943,77 @@ void UBGraphicsDelegateFrame::positionHandles()
     setTransform(QTransform::fromTranslate(-center.x(), -center.y()), true);
     //TODO: combine these transforms into one
 
-    mBottomRightResizeGripSvgItem->setParentItem(this);
-    mBottomResizeGripSvgItem->setParentItem(this);
-    mLeftResizeGripSvgItem->setParentItem(this);
-    mRightResizeGripSvgItem->setParentItem(this);
-    mTopResizeGripSvgItem->setParentItem(this);
-    mRotateButton->setParentItem(this);
-
-    mBottomRightResizeGrip->setParentItem(this);
-    mBottomResizeGrip->setParentItem(this);
-    mLeftResizeGrip->setParentItem(this);
-    mRightResizeGrip->setParentItem(this);
-    mTopResizeGrip->setParentItem(this);
-
-    QRectF brRect = mBottomRightResizeGripSvgItem->mapRectToParent(mBottomRightResizeGripSvgItem->boundingRect());
-    QRectF bRect = mBottomResizeGripSvgItem->mapRectToParent(mBottomResizeGripSvgItem->boundingRect());
-    QRectF lRect = mLeftResizeGripSvgItem->mapRectToParent(mLeftResizeGripSvgItem->boundingRect());
-    QRectF rRect = mRightResizeGripSvgItem->mapRectToParent(mRightResizeGripSvgItem->boundingRect());
-    QRectF trRect = mTopResizeGripSvgItem->mapRectToParent(mTopResizeGripSvgItem->boundingRect());
-
-    mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
-    mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
-
-    mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
-    mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
-
-    mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
-    mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
-
-    mBottomRightResizeGrip->setRect(bottomRightResizeGripRect());
-    mBottomResizeGrip->setRect(bottomResizeGripRect());
-    mLeftResizeGrip->setRect(leftResizeGripRect());
-    mRightResizeGrip->setRect(rightResizeGripRect());
-    mTopResizeGrip->setRect(topResizeGripRect());
-
     QVariant vLocked = delegated()->data(UBGraphicsItemData::ItemLocked);
     bool isLocked = (vLocked.isValid() && vLocked.toBool());
-    bool bShowHorizontalResizers = ResizingHorizontally == mOperationMode;
-    bool bShowVerticalResizers   = ResizingHorizontally != mOperationMode;
-    bool bShowAllResizers        = Resizing == mOperationMode || Scaling == mOperationMode ;
 
-    mBottomRightResizeGripSvgItem->setVisible(!isLocked && bShowAllResizers);
-    mBottomResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
-    mLeftResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mRightResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mTopResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
+    if (mHasBottomRightResizeGrip)
+    {
+        mBottomRightResizeGripSvgItem->setParentItem(this);
+        mBottomRightResizeGrip->setParentItem(this);
+
+        QRectF brRect = mBottomRightResizeGripSvgItem->mapRectToParent(mBottomRightResizeGripSvgItem->boundingRect());
+        mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
+        mBottomRightResizeGrip->setRect(bottomRightResizeGripRect());
+
+        mBottomRightResizeGrip->setVisible(!isLocked);
+        mBottomRightResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasBottomResizeGrip)
+    {
+        mBottomResizeGripSvgItem->setParentItem(this);
+        mBottomResizeGrip->setParentItem(this);
+
+        QRectF bRect = mBottomResizeGripSvgItem->mapRectToParent(mBottomResizeGripSvgItem->boundingRect());
+        mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
+        mBottomResizeGrip->setRect(bottomResizeGripRect());
+
+        mBottomResizeGrip->setVisible(!isLocked);
+        mBottomResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasLeftResizeGrip)
+    {
+        mLeftResizeGripSvgItem->setParentItem(this);
+        mLeftResizeGrip->setParentItem(this);
+
+        QRectF lRect = mLeftResizeGripSvgItem->mapRectToParent(mLeftResizeGripSvgItem->boundingRect());
+        mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
+        mLeftResizeGrip->setRect(leftResizeGripRect());
+
+        mLeftResizeGrip->setVisible(!isLocked);
+        mLeftResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasRightResizeGrip)
+    {
+        mRightResizeGripSvgItem->setParentItem(this);
+        mRightResizeGrip->setParentItem(this);
+
+        QRectF rRect = mRightResizeGripSvgItem->mapRectToParent(mRightResizeGripSvgItem->boundingRect());
+        mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
+        mRightResizeGrip->setRect(rightResizeGripRect());
+
+        mRightResizeGrip->setVisible(!isLocked);
+        mRightResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasTopResizeGrip)
+    {
+        mTopResizeGripSvgItem->setParentItem(this);
+        mTopResizeGrip->setParentItem(this);
+
+        QRectF trRect = mTopResizeGripSvgItem->mapRectToParent(mTopResizeGripSvgItem->boundingRect());
+        mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
+        mTopResizeGrip->setRect(topResizeGripRect());
+
+        mTopResizeGrip->setVisible(!isLocked);
+        mTopResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    mRotateButton->setParentItem(this);
+    mRotateButton->setPos(rect().right() - mFrameWidth - (5 * mDelegate->antiScaleRatio()), rect().y() + (5 * mDelegate->antiScaleRatio()));
     mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE) && !isLocked);
-
-    mBottomRightResizeGrip->setVisible(!isLocked && bShowAllResizers);
-    mBottomResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
-    mLeftResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mRightResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mTopResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
 
     if (isLocked)
     {
@@ -919,39 +1040,39 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
 {
     if(mDelegate->isLocked())
         return None;
-    else if (bottomRightResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode)
-        return ResizeBottomRight;
-    else if (bottomResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
-            if(mMirrorY){
-                return ResizeTop;
-            }else{
-                return ResizeBottom;
-            }
-        }
-    else if (leftResizeGripRect().contains(pos)){
-            if(mMirrorX){
-                return ResizeRight;
-            }else{
-                return ResizeLeft;
-            }
-            return ResizeLeft;
-        }
-    else if (rightResizeGripRect().contains(pos)){
-            if(mMirrorX){
-                return ResizeLeft;
-            }else{
-                return ResizeRight;
-            }
-        }
-    else if (topResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
-            if(mMirrorY){
-                return ResizeBottom;
-            }else{
-                return ResizeTop;
-            }
-        }
-    else if (rotateButtonBounds().contains(pos) && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
+    // check handles in reverse order of creation to account for z order
+    else if (mRotateButton && mRotateButton->contains(mRotateButton->mapFromScene(pos)) && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
         return Rotate;
+    else if (mTopResizeGrip && mTopResizeGrip->contains(mTopResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+            if(mMirrorY){
+                return ResizeBottom;
+            }else{
+                return ResizeTop;
+            }
+        }
+    else if (mRightResizeGrip && mRightResizeGrip->contains(mRightResizeGrip->mapFromScene(pos)) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+            if(mMirrorX){
+                return ResizeLeft;
+            }else{
+                return ResizeRight;
+            }
+        }
+    else if (mLeftResizeGrip && mLeftResizeGrip->contains(mLeftResizeGrip->mapFromScene(pos)) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+            if(mMirrorX){
+                return ResizeRight;
+            }else{
+                return ResizeLeft;
+            }
+        }
+    else if (mBottomResizeGrip && mBottomResizeGrip->contains(mBottomResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+            if(mMirrorY){
+                return ResizeTop;
+            }else{
+                return ResizeBottom;
+            }
+        }
+    else if (mBottomRightResizeGrip && mBottomRightResizeGrip->contains(mBottomRightResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+        return ResizeBottomRight;
     else
         return Move;
 }
@@ -989,7 +1110,8 @@ QRectF UBGraphicsDelegateFrame::topResizeGripRect() const
 
 QRectF UBGraphicsDelegateFrame::rotateButtonBounds() const
 {
-    return QRectF(rect().right()- mFrameWidth, rect().top(), mFrameWidth, mFrameWidth);
+    //to make user's experience more pleasant, we slightly increase the rotateButton area activating the rotate action.
+    return QRectF(rect().right() - mFrameWidth - (5 * mDelegate->antiScaleRatio()), rect().top(), mFrameWidth + (5 * mDelegate->antiScaleRatio()), mFrameWidth + (5 * mDelegate->antiScaleRatio()));
 }
 
 void UBGraphicsDelegateFrame::refreshGeometry()
@@ -1006,4 +1128,45 @@ void UBGraphicsDelegateFrame::refreshGeometry()
     QLineF leftLine(topLeft, bottomLeft);
     qreal height = leftLine.length();
     setRect(topRight.x() - mFrameWidth, topLeft.y() - mFrameWidth, width + 2*mFrameWidth, height + 2*mFrameWidth);
+}
+
+QPointF UBGraphicsDelegateFrame::snapVector(QPointF scenePos) const
+{
+    const auto moved = scenePos - mStartingPoint;
+    std::vector<QPointF> corners;
+
+    if (resizingLeft() && !mMirrorX || resizingRight() && mMirrorX)
+    {
+        corners.push_back(mCornerPoints[0] + moved);
+        corners.push_back(mCornerPoints[2] + moved);
+    }
+    else if (resizingRight() && !mMirrorX || resizingLeft() && mMirrorX)
+    {
+        corners.push_back(mCornerPoints[1] + moved);
+        corners.push_back(mCornerPoints[3] + moved);
+    }
+    else if (resizingTop() && !mMirrorY || resizingBottom() && mMirrorY)
+    {
+        corners.push_back(mCornerPoints[0] + moved);
+        corners.push_back(mCornerPoints[1] + moved);
+    }
+    else if (resizingBottom() && !mMirrorY || resizingTop() && mMirrorY)
+    {
+        corners.push_back(mCornerPoints[2] + moved);
+        corners.push_back(mCornerPoints[3] + moved);
+    }
+    else if (resizingBottomRight())
+    {
+        corners.push_back(mCornerPoints[3] + moved);
+    }
+
+    UBGraphicsScene* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+    if (ubscene)
+    {
+        QPointF snapVector = ubscene->snap(corners);
+        return snapVector;
+    }
+
+    return {};
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" 
-		identifier="http://getuniboard.com/" 
-		version="1.6.0"
+                id="http://www.openboard.org/widget/graphme"
+                version="2.0"
 		width="800"
 		height="600"
 		ub:resizable="true">

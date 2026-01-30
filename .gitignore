@@ -45,6 +45,7 @@ Thumbs.db
 *.vcproj*
 *.ncb
 *.pro.user
+*.txt.user
 *.idb
 .project
 .settings
@@ -55,6 +56,7 @@ Makefile.Sankore*
 
 # Build files #
 ###############
+.qmake.stash
 build
 install
 Makefile
@@ -80,3 +82,4 @@ plugins/cffadaptor/objects
 ##########
 .directory
 .DS_Store
+Doxyfile

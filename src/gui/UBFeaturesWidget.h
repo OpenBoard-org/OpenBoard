@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -54,9 +54,7 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
-#include <QtWebKit>
-#include <QWebView>
-#include <QWebSettings>
+#include <QWebEngineView>
 
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
@@ -95,7 +93,7 @@ public:
             || mode == eUBDockPaletteWidget_DESKTOP;
     }
     UBFeaturesController * getFeaturesController() const { return controller; }
-    void importImage(const QImage &image, const QString &fileName = QString());
+    void importImage(const QByteArray& imageData, const QString &fileName = QString());
 
     static const int minThumbnailSize = 20;
     static const int maxThumbnailSize = 100;
@@ -260,7 +258,7 @@ class UBFeaturesNewFolderDialog : public QWidget
 
 public:
     UBFeaturesNewFolderDialog(QWidget *parent = 0);
-    void setRegexp(const QRegExp pRegExp);
+    void setRegexp(const QRegularExpression pRegExp);
     bool validString(const QString &pStr);
 
 signals:
@@ -275,7 +273,7 @@ private slots:
 
 private:
     QLineEdit *mLineEdit;
-    QRegExpValidator *mValidator;
+    QRegularExpressionValidator *mValidator;
     QStringList mFileNameList;
     QPushButton *acceptButton;
     const QString acceptText;
@@ -313,13 +311,8 @@ public:
 
     void showElement(const UBFeature &elem);
 
-private slots:
-    void onLoadFinished(bool ok);
-    void javaScriptWindowObjectCleared();
-
 private:
-    QWebView* mpView;
-    QWebSettings* mpWebSettings;
+    QWebEngineView* mpView;
     QVBoxLayout* mpLayout;
     UBWidgetUniboardAPI* mpSankoreAPI;
 };

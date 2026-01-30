@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -42,6 +42,7 @@
 #include <QtGui>
 #include <QtSvg>
 #include <QMimeData>
+#include <QGraphicsSvgItem>
 #include <QGraphicsVideoItem>
 
 #include "core/UB.h"
@@ -50,7 +51,6 @@
 class QGraphicsSceneMouseEvent;
 class QGraphicsItem;
 class UBGraphicsScene;
-class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;
@@ -241,7 +241,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = 0);
+    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = {});
 
         virtual ~UBGraphicsItemDelegate();
 
@@ -263,13 +263,14 @@ class UBGraphicsItemDelegate : public QObject
 
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
-        virtual UBGraphicsScene *castUBGraphicsScene();
+        virtual std::shared_ptr<UBGraphicsScene> castUBGraphicsScene();
         virtual void postpaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
         void printMessage(const QString &mess) {qDebug() << mess;}
 
         QGraphicsItem* delegated();
+        void sceneChanged(UBGraphicsScene* scene);
 
         virtual void positionHandles();
         void setZOrderButtonsVisible(bool visible);
@@ -309,6 +310,8 @@ class UBGraphicsItemDelegate : public QObject
         void showMenu();
 
         virtual void showHide(bool show);
+        virtual void showOnDisplay(bool hide);
+        virtual void hideOnDisplayWhenSelected(bool hide);
         virtual void lock(bool lock);
         virtual void duplicate();
 
@@ -327,6 +330,7 @@ class UBGraphicsItemDelegate : public QObject
 
         void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
         void setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem);
+        void setItemIsHiddenOnDisplayRecurs(const QVariant &pHide, QGraphicsItem *pItem);
 
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
@@ -344,6 +348,7 @@ class UBGraphicsItemDelegate : public QObject
 
         QAction* mLockAction;
         QAction* mShowOnDisplayAction;
+        QAction* mHideOnDisplayWhenSelectedAction;
         QAction* mSetAsBackgroundAction;
         QAction* mGotoContentSourceAction;
 
@@ -354,6 +359,10 @@ class UBGraphicsItemDelegate : public QObject
         QList<DelegateButton*> mButtons;
         QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
+
+#ifdef DEBUG_Z_LEVEL
+        QGraphicsSimpleTextItem* mZLevelTextItem;
+#endif
 
 protected slots:
         virtual void setAsBackground();

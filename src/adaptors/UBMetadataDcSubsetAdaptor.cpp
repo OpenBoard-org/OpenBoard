@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,10 +31,10 @@
 
 #include <QtGui>
 #include <QtXml>
-#include <QDesktopWidget>
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "board/UBBoardController.h"
 
 #include "document/UBDocumentProxy.h"
@@ -81,14 +81,14 @@ UBMetadataDcSubsetAdaptor::~UBMetadataDcSubsetAdaptor()
 }
 
 
-void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
+void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
 {
     if(!QDir(proxy->persistencePath()).exists()){
         //In this case the a document is an empty document so we do not persist it
         return;
     }
     QString fileName = proxy->persistencePath() + "/" + metadataFilename;
-    qWarning() << "Persisting document; path is" << fileName;
+    qInfo() << "Persisting document metadata; path is" << fileName;
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -117,7 +117,6 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
 
     // introduced in UB 4.2
     xmlWriter.writeTextElement(nsDc, "identifier", proxy->metaData(UBSettings::documentIdentifer).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "version", UBSettings::currentFileVersion);
     QString width = QString::number(proxy->defaultDocumentSize().width());
     QString height = QString::number(proxy->defaultDocumentSize().height());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "size", QString("%1x%2").arg(width).arg(height));
@@ -125,7 +124,8 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     // introduced in UB 4.4
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
 
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "page-count", QString::number(proxy->pageCount()));
+    // write as last element to cope with parsing problem
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "version", UBSettings::currentFileVersion);
 
     xmlWriter.writeEndElement(); //dc:Description
     xmlWriter.writeEndElement(); //RDF
@@ -159,6 +159,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
         }
 
         QXmlStreamReader xml(&file);
+        QString docVersion = "4.1"; // untagged doc version 4.1
 
         while (!xml.atEnd())
         {
@@ -166,30 +167,30 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
             if (xml.isStartElement())
             {
-                QString docVersion = "4.1"; // untagged doc version 4.1
+                QString name = xml.name().toString();
 
-                if (xml.name() == "title")
+                if (name == "title")
                 {
                     metadata.insert(UBSettings::documentName, xml.readElementText());
                 }
-                else if (xml.name() == "type")
+                else if (name == "type")
                 {
                     metadata.insert(UBSettings::documentGroupName, xml.readElementText());
                 }
-                else if (xml.name() == "date")
+                else if (name == "date")
                 {
                     date = xml.readElementText();
                 }
-                else if (xml.name() == "identifier") // introduced in UB 4.2
+                else if (name == "identifier") // introduced in UB 4.2
                 {
                         metadata.insert(UBSettings::documentIdentifer, xml.readElementText());
                 }
-                else if (xml.name() == "version" // introduced in UB 4.2
+                else if (name == "version" // introduced in UB 4.2
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                         docVersion = xml.readElementText();
                 }
-                else if (xml.name() == "size" // introduced in UB 4.2
+                else if (name == "size" // introduced in UB 4.2
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                     QString size = xml.readElementText();
@@ -220,18 +221,12 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                     sizeFound = true;
 
                 }
-                else if (xml.name() == "updated-at" // introduced in UB 4.4
+                else if (name == "updated-at" // introduced in UB 4.4
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                     metadata.insert(UBSettings::documentUpdatedAt, xml.readElementText());
                     updatedAtFound = true;
                 }
-                else if (xml.name() == "page-count"
-                        && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
-                {
-                    metadata.insert(UBSettings::documentPageCount, xml.readElementText());
-                }
-                metadata.insert(UBSettings::documentVersion, docVersion);
             }
 
             if (xml.hasError())
@@ -240,16 +235,13 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
             }
         }
 
+        metadata.insert(UBSettings::documentVersion, docVersion);
         file.close();
     }
 
     if (!sizeFound)
     {
-        QDesktopWidget* dw = qApp->desktop();
-        int controlScreenIndex = dw->primaryScreen();
-
-        QSize docSize = dw->screenGeometry(controlScreenIndex).size();
-        docSize.setHeight(docSize.height() - 70); // 70 = toolbar height
+        QSize docSize = UBSettings::settings()->pageSize->get().toSize();
 
         qWarning() << "Document size not found, using default view size" << docSize;
 

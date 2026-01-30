@@ -32,7 +32,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
     
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -47,8 +47,8 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("categoriser_images","")){
-            var data = jQuery.parseJSON(sankore.preference("categoriser_images",""));
+        if(await sankore.async.preference("categoriser_images","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("categoriser_images",""));
             importData(data);
         } else {
             showExample();
@@ -58,9 +58,9 @@ function start(){
         showExample();
 
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
-        }
+        });
     }
     
     $("#wgt_help").click(function(){
@@ -175,7 +175,7 @@ function start(){
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display","block");
                 if(window.sankore)
-                    sankore.enableDropOnWidget(true);
+                    sankore.enableDropOnWidget(true, true);
                 $(".cont").each(function(){
                     var container = $(this);
                     
@@ -751,7 +751,7 @@ function checkCorrectness(source){
 function onDropTarget(obj, event) {
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
         }

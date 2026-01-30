@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -34,29 +34,26 @@
 
 #include "frameworks/UBStringUtils.h"
 
-#include "core/UBSettings.h"
-
 class UBGraphicsScene;
 
-class UBDocumentProxy : public QObject
+class UBDocumentProxy
 {
-    Q_OBJECT
-
     friend class UBPersistenceManager;
 
     public:
 
         UBDocumentProxy();
-        UBDocumentProxy(const UBDocumentProxy &rValue);
+        UBDocumentProxy(const UBDocumentProxy &rValue) = delete;
+        UBDocumentProxy& operator= (const UBDocumentProxy&) = delete;
         UBDocumentProxy(const QString& pPersistencePath);
-        UBDocumentProxy(const QString& pPersistencePath, QMap<QString, QVariant> metadatas);
 
-        virtual ~UBDocumentProxy();
+        ~UBDocumentProxy();
 
-        UBDocumentProxy * deepCopy() const;
-        bool theSameDocument(UBDocumentProxy *proxy);
+        std::shared_ptr<UBDocumentProxy> deepCopy() const;
+        bool theSameDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
         QString persistencePath() const;
+        QString documentFolderName() const; //TODO 2.0 : should become id()
 
         void setPersistencePath(const QString& pPersistencePath);
 
@@ -68,6 +65,27 @@ class UBDocumentProxy : public QObject
         QString groupName() const;
         QDateTime documentDate();
 
+        //For display purposes
+        QString documentDateLittleEndian()
+        {
+            if (mDocumentDateLittleEndian.isEmpty())
+            {
+                mDocumentDateLittleEndian = UBStringUtils::toLittleEndian(documentDate());
+            }
+
+            return mDocumentDateLittleEndian;
+        }
+
+        QString documentUpdatedAtLittleEndian()
+        {
+            if (mDocumentUpdatedAtLittleEndian.isEmpty())
+            {
+                mDocumentUpdatedAtLittleEndian = UBStringUtils::toLittleEndian(lastUpdate());
+            }
+
+            return mDocumentUpdatedAtLittleEndian;
+        }
+
         QDateTime lastUpdate();
 
 
@@ -78,17 +96,19 @@ class UBDocumentProxy : public QObject
         QUuid uuid() const;
         void setUuid(const QUuid& uuid);
 
-        bool isModified() const;
-
-        int pageCount();
-
         int pageDpi();
         void setPageDpi(int dpi);
 
-    protected:
-        void setPageCount(int pPageCount);
-        int incPageCount();
-        int decPageCount();
+        bool isWidgetCompatible(const QUuid& uuid) const;
+        void setWidgetCompatible(const QUuid& uuid, bool compatible);
+        
+        bool testAndResetCleanupNeeded();
+
+        int lastVisitedSceneIndex() const;
+        void setLastVisitedSceneIndex(int lastVisitedSceneIndex);
+
+        bool isInFavoriteList() const;
+        void setIsInFavoristeList(bool isInFavoristeList);
 
     private:
 
@@ -96,14 +116,20 @@ class UBDocumentProxy : public QObject
 
         QString mPersistencePath;
 
+        QString mDocumentDateLittleEndian;
+        QString mDocumentUpdatedAtLittleEndian;
+
         QMap<QString, QVariant> mMetaDatas;
-
-        bool mIsModified;
-
-        int mPageCount;
 
         int mPageDpi;
 
+        QMap<QUuid, bool> mWidgetCompatibility;
+        
+        bool mNeedsCleanup;
+
+       int mLastVisitedIndex;
+
+       bool mIsInFavoriteList;
 };
 
 inline bool operator==(const UBDocumentProxy &proxy1, const UBDocumentProxy &proxy2)

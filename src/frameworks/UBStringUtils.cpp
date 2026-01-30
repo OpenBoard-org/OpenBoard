@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,22 +31,36 @@
 
 #include "core/memcheck.h"
 
+bool UBStringUtils::containsPrefix(const QStringList &prefixes, const QString &string, Qt::CaseSensitivity cs)
+{
+    for (const QString& prefix : prefixes)
+    {
+        if (string.startsWith(prefix, cs))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
 {
     // we look for a set of digit after non digits and before a .
-    QRegExp rx("\\D(\\d+)\\.");
+    static const QRegularExpression rx("\\D(\\d+)\\.");
 
     QMultiMap<int, QString> elements;
 
     foreach(QString source, sourceList)
     {
-        int pos = rx.lastIndexIn(source);
+        int pos = source.lastIndexOf(rx);
 
         int digit = -1;
 
         if (pos >= 0)
         {
-            digit = rx.cap(1).toInt();
+            QRegularExpressionMatch match = rx.match(source, pos);
+            digit = match.captured(1).toInt();
         }
 
         elements.insert(digit, source);
@@ -55,12 +69,12 @@ QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
     QStringList result;
 
     QList<int> keys = elements.keys();
-    qSort(keys);
+    std::sort(keys.begin(), keys.end());
 
     foreach(int key, keys)
     {
         QList<QString> values = elements.values(key);
-        qSort(values);
+        std::sort(values.begin(), values.end());
         foreach(QString val, values)
         {
             if (!result.contains(val))
@@ -72,19 +86,21 @@ QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
 }
 
 
-QString UBStringUtils::netxDigitizedName(const QString& source)
+QString UBStringUtils::nextDigitizedName(const QString& source)
 {
 
     // we look for a set of digit after non digits and at the end
-    QRegExp rx("\\D(\\d+)");
+    static const QRegularExpression rx("\\D(\\d+)");
 
-    int pos = rx.lastIndexIn(source);
+    int pos = source.lastIndexOf(rx);
 
     int digit = -1;
+    QRegularExpressionMatch match;
 
     if (pos >= 0)
     {
-        digit = rx.cap(1).toInt();
+        match = rx.match(source, pos);
+        digit = match.captured(1).toInt();
     }
 
     QString ret(source);
@@ -97,7 +113,7 @@ QString UBStringUtils::netxDigitizedName(const QString& source)
     {
         QString s("%1");
         s = s.arg(digit + 1);
-        return ret.replace(rx.cap(1), s);
+        return ret.replace(match.captured(1), s);
     }
 }
 
@@ -117,14 +133,49 @@ QString UBStringUtils::toCanonicalUuid(const QUuid& uuid)
 
 QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
 {
-    return dateTime.toUTC().toString(Qt::ISODate) + "Z";
+    // It seems that in some previous versions of Qt, the 'Z'
+    // was not in the string inserted in the QString returned by QDateTime::toString(Qt::DateFormat)
+    // when the date format was UTC.
+    // With Qt 5.15 and Qt6, it is, so we don't need to add it manually anymore
+    return dateTime.toUTC().toString(Qt::ISODate);
+}
+
+QString UBStringUtils::toLittleEndian(const QDateTime& dateTime)
+{
+    return dateTime.toUTC().toString("dd/MM/yyyy hh:mm");
 }
 
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
 {
-    QDateTime date = QDateTime::fromString(dateString, Qt::ISODate);
-    date.setTimeSpec(Qt::UTC);
+    // Because of some changes in the behavior of QDateTime to QString conversions (cf. UBStringUtils::toUtcIsoDateTime)
+    // invalid format is stored in metadatas and can produce an invalid QDateTime here with Qt > 6
+    QString nonConstDateString = dateString;
+    nonConstDateString.replace("ZZ", "Z");
+    QDateTime date = QDateTime::fromString(nonConstDateString, Qt::ISODate);
+    date.setTimeZone(QTimeZone::utc());
     return date.toLocalTime();
+}
+
+/**
+ * @brief Create a list of trimmed, non-empty strings
+ * @param list input list of strings
+ * @return list of trimmed, nonempty strings
+ */
+QStringList UBStringUtils::trimmed(const QStringList &list)
+{
+    QStringList output;
+
+    for (const QString& entry : list)
+    {
+        QString trimmedEntry = entry.trimmed();
+
+        if (!trimmedEntry.isEmpty())
+        {
+            output << trimmedEntry;
+        }
+    }
+
+    return output;
 }
 
 

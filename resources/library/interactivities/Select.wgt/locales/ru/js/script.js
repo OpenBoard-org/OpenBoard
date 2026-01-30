@@ -20,7 +20,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
     
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -35,14 +35,14 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("selectionner","")){
-            var data = jQuery.parseJSON(sankore.preference("selectionner",""));
+        if(await sankore.async.preference("selectionner","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("selectionner",""));
             importData(data);
         } else 
             showExample();
-        if(sankore.preference("sel_style","")){
-            changeStyle(sankore.preference("sel_style",""));
-            $("#style_select").val(sankore.preference("sel_style",""));
+        if(await sankore.async.preference("sel_style","")){
+            changeStyle(await sankore.async.preference("sel_style",""));
+            $("#style_select").val(await sankore.async.preference("sel_style",""));
         } else
             changeStyle("3")
     } 
@@ -51,10 +51,10 @@ function start(){
     
     //events
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
             sankore.setPreference("sel_style", $("#style_select").find("option:selected").val());
-        }
+        });
     }
     
     $("#wgt_help").click(function(){
@@ -124,7 +124,7 @@ function start(){
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
-                    sankore.enableDropOnWidget(true);
+                    sankore.enableDropOnWidget(true, true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display","block");
@@ -495,7 +495,7 @@ function changeStyle(val){
 function onDropTarget(obj, event) {
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
         }

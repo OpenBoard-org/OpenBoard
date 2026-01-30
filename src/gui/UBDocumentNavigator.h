@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -53,12 +53,16 @@ public:
     int nbColumns();
     void setThumbnailMinWidth(int width);
     int thumbnailMinWidth();
+    void clearSelection();
     UBSceneThumbnailNavigPixmap* clickedThumbnail(const QPoint pos) const;
 
 public slots:
     void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
     void generateThumbnails(UBDocumentContainer* source);
-    void updateSpecificThumbnail(int iPage);    
+    void insertThumbnail(int index);
+    void updateThumbnail(int index);
+    void removeThumbnail(int index);
+    void moveThumbnail(int from, int to);
 
     void longPressTimeout();
     void mousePressAndHoldEvent();
@@ -71,6 +75,8 @@ protected:
     virtual void dragEnterEvent(QDragEnterEvent* event);
     virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual void dropEvent(QDropEvent* event);
+
+    virtual void keyPressEvent(QKeyEvent *event);
 
 signals:
     void mousePressAndHoldEventRequired();
