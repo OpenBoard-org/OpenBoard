@@ -96,7 +96,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
     mBlackScene = std::make_shared<UBGraphicsScene>(nullptr);
-    mBlackScene->setBackground(true, UBPageBackground::plain);
+    mBlackScene->setSceneBackground(true, nullptr);
 
     if (displayManager->numScreens() >= 2 && displayManager->useMultiScreen())
     {
@@ -293,26 +293,24 @@ void UBApplicationController::addCapturedPixmap(const QPixmap &pPixmap, bool pag
 {
     if (!pPixmap.isNull())
     {
-        qreal sf = UBApplication::boardController->systemScaleFactor();
-        qreal scaledWidth = ((qreal)pPixmap.width()) / sf;
-        qreal scaledHeight = ((qreal)pPixmap.height()) / sf;
+        // make all scaling calculations floating point
+        const auto sf = UBApplication::boardController->systemScaleFactor();
+        const QSizeF pageNominalSize{UBApplication::boardController->activeScene()->nominalSize()};
+        const QSizeF pixmapSize{pPixmap.size()};
 
-        QSize pageNominalSize = UBApplication::boardController->activeScene()->nominalSize();
-
-        int newWidth = qMin((int)scaledWidth, pageNominalSize.width());
-        int newHeight = qMin((int)scaledHeight, pageNominalSize.height());
+        QSizeF scaledSize{pixmapSize / sf};
+        QSizeF newSize{scaledSize.boundedTo(pageNominalSize)};
 
         if (pageMode)
         {
-            newHeight = pPixmap.height();
+            newSize.setHeight(pixmapSize.height());
         }
 
-        QSizeF scaledSize(scaledWidth, scaledHeight);
-        scaledSize.scale(newWidth, newHeight, Qt::KeepAspectRatio);
+        scaledSize.scale(newSize, Qt::KeepAspectRatio);
 
-        qreal scaleFactor = qMin(scaledSize.width() / (qreal)pPixmap.width(), scaledSize.height() / (qreal)pPixmap.height());
+        qreal scaleFactor = qMin(scaledSize.width() / pixmapSize.width(), scaledSize.height() / pixmapSize.height());
 
-        QPointF pos(0.0, 0.0);
+        QPointF pos{};
 
         if (pageMode)
         {

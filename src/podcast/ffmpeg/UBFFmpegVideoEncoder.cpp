@@ -270,10 +270,17 @@ UBFFmpegVideoEncoder::UBFFmpegVideoEncoder(QObject* parent)
 UBFFmpegVideoEncoder::~UBFFmpegVideoEncoder()
 {
     if (mVideoWorker)
-        delete mVideoWorker;
+    {
+        UBFFmpegVideoEncoder::stop();
+        mVideoWorker->deleteLater();
+    }
 
     if (mVideoEncoderThread)
+    {
+        mVideoEncoderThread->quit();
+        mVideoEncoderThread->wait();
         delete mVideoEncoderThread;
+    }
 
     if (mAudioInput)
         delete mAudioInput;
@@ -448,7 +455,19 @@ bool UBFFmpegVideoEncoder::init()
         }
 
         c->bit_rate = 96000;
-        c->sample_fmt  = audioCodec->sample_fmts ? audioCodec->sample_fmts[0] : AV_SAMPLE_FMT_FLTP;// FLTP by default for AAC
+
+        const AVSampleFormat* sample_fmts;
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 19, 100)
+        sample_fmts = audioCodec->sample_fmts;
+#else
+        int err = avcodec_get_supported_config(nullptr, audioCodec, AV_CODEC_CONFIG_SAMPLE_FORMAT, 0, (const void**)&sample_fmts, nullptr);
+        if (err) {
+            setLastErrorMessage("Could not get supported sample formats");
+            return false;
+        }
+#endif
+        c->sample_fmt  = sample_fmts ? sample_fmts[0] : AV_SAMPLE_FMT_FLTP;// FLTP by default for AAC
+
         c->sample_rate = mAudioSampleRate;
 
 #if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57, 25, 100)

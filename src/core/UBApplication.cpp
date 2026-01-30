@@ -107,6 +107,9 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
     setOrganizationName("Open Education Foundation");
     setOrganizationDomain("oe-f.org");
     setApplicationName("OpenBoard");
+    setDesktopFileName("ch.openboard.OpenBoard");
+    // With Qt 6.9 on macOS 15 (at least), icons aren't shown in menus. This forces their display.
+    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     QString version = UBVERSION;
     if(version.endsWith("."))
@@ -709,6 +712,34 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 
         return UBShortcutManager::shortcutManager()->handleKeyReleaseEvent(keyEvent)
                     || result;
+    }
+
+    else if (event->type() == QEvent::MouseButtonPress)
+    {
+        // intercept special mouse buttons for shortcut handler
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        Qt::MouseButton button = mouseEvent->button();
+
+        if (button != Qt::LeftButton && button != Qt::RightButton)
+        {
+            return mPreferencesController->handleMouseEvent(mouseEvent)
+                    || UBShortcutManager::shortcutManager()->handleMouseEvent(mouseEvent)
+                    || result;
+        }
+    }
+
+    else if (event->type() == QEvent::TabletPress)
+    {
+        // intercept special tablet buttons for shortcut handler
+        QTabletEvent *tabletEvent = static_cast<QTabletEvent *>(event);
+        Qt::MouseButton button = tabletEvent->button();
+
+        if (button != Qt::LeftButton)
+        {
+            return mPreferencesController->handleTabletEvent(tabletEvent)
+                    || UBShortcutManager::shortcutManager()->handleTabletEvent(tabletEvent)
+                    || result;
+        }
     }
 
     return result;

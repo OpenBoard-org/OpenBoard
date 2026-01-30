@@ -159,8 +159,6 @@ private:
     bool mIsCreatingTextZone;
     bool mIsCreatingSceneGrabZone;
 
-    bool isAbsurdPoint(QPoint point);
-
     bool mVirtualKeyboardActive;
     bool mOkOnWidget;
 

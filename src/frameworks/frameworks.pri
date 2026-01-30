@@ -35,15 +35,13 @@ macx {
 }       
 
 
-linux-g++ {
+linux-g++* {
+    HEADERS  += src/frameworks/UBDesktopPortal.h \
+                src/frameworks/UBPipewireSink.h
+    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
+                src/frameworks/UBDesktopPortal.cpp \
+                src/frameworks/UBPipewireSink.cpp
 
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
-}         
-linux-g++-32 {
-
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
-}
-linux-g++-64 {
-
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libpipewire-0.3
 }

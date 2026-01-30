@@ -291,10 +291,6 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
         previewImageUrl = ":images/libpalette/movieIcon.svg";
         break;
 
-    case UBMimeType::Flash:
-        previewImageUrl = ":images/libpalette/FlashIcon.svg";
-        break;
-
     case UBMimeType::RasterImage:
     case UBMimeType::VectorImage:
         previewImageUrl = widgetsUrl;
@@ -1426,7 +1422,6 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
              || item.getType() == FEATURE_AUDIO
              || item.getType() == FEATURE_VIDEO
              || item.getType() == FEATURE_IMAGE
-             || item.getType() == FEATURE_FLASH
              || item.getType() == FEATURE_INTERNAL
              || item.getType() == FEATURE_FOLDER
              || item.getType() == FEATURE_DOCUMENT)

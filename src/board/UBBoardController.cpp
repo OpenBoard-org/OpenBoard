@@ -68,6 +68,7 @@
 #include "domain/UBItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 
+#include "gui/UBBackgroundManager.h"
 #include "gui/UBFeaturesWidget.h"
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBMagnifer.h"
@@ -110,6 +111,8 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mActionUngroupText(tr("Ungroup"))
     , mAutosaveTimer(0)
 {
+    mBgManager = new UBBackgroundManager(this);
+
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
     int penColorIndex = UBSettings::settings()->penColorIndex();
@@ -826,7 +829,6 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        centerRestore();
         updateActionStates();
     }
 }
@@ -1239,30 +1241,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         return svgItem;
     }
-    else if (UBMimeType::AppleWidget == itemMimeType) //mime type invented by us :-(
-    {
-        qDebug() << "accepting mime type" << mimeType << "as Apple widget";
-
-        QUrl widgetUrl = sourceUrl;
-
-        if (pData.length() > 0)
-        {
-            widgetUrl = expandWidgetToTempDir(pData, "wdgt");
-        }
-
-        UBGraphicsWidgetItem* appleWidgetItem = mActiveScene->addAppleWidget(widgetUrl, pPos);
-
-        if (isBackground)
-        {
-            mActiveScene->setAsBackgroundObject(appleWidgetItem);
-        }
-        else
-        {
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        }
-
-        return appleWidgetItem;
-    }
     else if (UBMimeType::W3CWidget == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as W3C widget";
@@ -1362,45 +1340,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
         return audioMediaItem;
-    }
-    else if (UBMimeType::Flash == itemMimeType)
-    {
-
-        qDebug() << "accepting mime type" << mimeType << "as flash";
-
-        QString sUrl = sourceUrl.toString();
-
-        if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
-        {
-            sUrl = sourceUrl.toLocalFile();
-        }
-
-        QSize size;
-
-        if (pSize.height() > 0 && pSize.width() > 0)
-            size = pSize;
-        else
-            size = mActiveScene->nominalSize() * .8;
-
-        Q_UNUSED(internalData)
-
-        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
-        UBFileSystemUtils::deleteFile(sourceUrl.toLocalFile());
-        emit npapiWidgetCreated(widgetUrl);
-
-        if (widgetUrl.length() > 0)
-        {
-            UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
-            widgetItem->setUuid(QUuid::createUuid());
-            qDebug() << widgetItem->getOwnFolder();
-            qDebug() << widgetItem->getSnapshotPath();
-
-            widgetItem->setSnapshotPath(widgetItem->getOwnFolder());
-
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-            return widgetItem;
-        }
     }
     else if (UBMimeType::PDF == itemMimeType)
     {
@@ -1596,13 +1535,15 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         adjustDisplayViews();
 
         UBSettings::settings()->setDarkBackground(mActiveScene->isDarkBackground());
-        UBSettings::settings()->setPageBackground(mActiveScene->pageBackground());
+
+        if (mActiveScene->background())
+        {
+            UBSettings::settings()->setPageBackgroundUuid(mActiveScene->background()->uuid());
+        }
 
         freezeW3CWidgets(false);
 
         selectionChanged();
-
-        updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
         if (documentChange)
         {
@@ -1766,20 +1707,14 @@ int UBBoardController::autosaveTimeoutFromSettings() const
     return value * minute;
 }
 
-void UBBoardController::changeBackground(bool isDark, UBPageBackground pageBackground)
+void UBBoardController::setBackground(bool isDark, const UBBackgroundRuling* background)
 {
-    bool currentIsDark = mActiveScene->isDarkBackground();
-    UBPageBackground currentBackgroundType = mActiveScene->pageBackground();
+    UBSettings::settings()->setDarkBackground(isDark);
+    UBSettings::settings()->setPageBackgroundUuid(background ? background->uuid() : QUuid{});
 
-    if ((isDark != currentIsDark) || (currentBackgroundType != pageBackground))
-    {
-        UBSettings::settings()->setDarkBackground(isDark);
-        UBSettings::settings()->setPageBackground(pageBackground);
+    mActiveScene->setSceneBackground(isDark, background);
 
-        mActiveScene->setBackground(isDark, pageBackground);
-
-        emit backgroundChanged();
-    }
+    emit backgroundChanged();
 }
 
 void UBBoardController::boardViewResized(QResizeEvent* event)
@@ -2214,13 +2149,22 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
 {
     if (mActiveScene)
     {
-        QImage image(pSceneRect.width(), pSceneRect.height(), QImage::Format_ARGB32);
+        /*
+         * To get the pixel size on screen for the screenshot
+         * we use the system scale factor to align to the pixels
+         * and use an additional factor of two to provide more details
+         */
+        const auto scalingFactor = 2. * mSystemScaleFactor;
+        const auto pixelSize = pSceneRect.size() * scalingFactor;
+        QImage image(pixelSize.toSize(), QImage::Format_ARGB32);
         image.fill(Qt::transparent);
 
-        QRectF targetRect(0, 0, pSceneRect.width(), pSceneRect.height());
+        QRectF targetRect{{0, 0}, pixelSize};
         QPainter painter(&image);
         painter.setRenderHint(QPainter::SmoothPixmapTransform);
         painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::TextAntialiasing);
+        painter.setRenderHint(QPainter::LosslessImageRendering);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::NonScreen);
         mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
@@ -2231,8 +2175,7 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
 //        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
         mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheAllowed);
 
-
-        mPaletteManager->addItem(QPixmap::fromImage(image));
+        mPaletteManager->addItem(QPixmap::fromImage(image), QPointF{}, 1. / scalingFactor);
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
     }
@@ -2578,45 +2521,6 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
     mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
 
     toolWidget->remove();
-}
-
-
-void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground)
-{
-    switch (pageBackground) {
-
-        case UBPageBackground::crossed:
-            if (isDark)
-                mMainWindow->actionCrossedDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionCrossedLightBackground->setChecked(true);
-        break;
-
-        case UBPageBackground::ruled:
-        {
-            QAction* actionRuledBackground = nullptr;
-            if(UBSettings::settings()->isSeyesRuledBackground())
-                if(isDark)
-                    actionRuledBackground = mMainWindow->actionSeyesRuledDarkBackground;
-                else
-                    actionRuledBackground = mMainWindow->actionSeyesRuledLightBackground;
-            else
-                if(isDark)
-                    actionRuledBackground = mMainWindow->actionRuledDarkBackground;
-                else
-                    actionRuledBackground = mMainWindow->actionRuledLightBackground;
-            if(actionRuledBackground)
-                actionRuledBackground->setChecked(true);
-        }
-        break;
-
-        default:
-            if (isDark)
-                mMainWindow->actionPlainDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionPlainLightBackground->setChecked(true);
-        break;
-    }
 }
 
 

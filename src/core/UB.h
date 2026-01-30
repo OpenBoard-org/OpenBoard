@@ -45,11 +45,9 @@ struct UBMimeType
     {
         RasterImage = 0,
         VectorImage,
-        AppleWidget,
         W3CWidget,
         Video,
         Audio,
-        Flash,
         PDF,
         OpenboardTool,
         Group,
@@ -220,13 +218,6 @@ struct UBUndoType
     {
         undotype_UNKNOWN  = 0, undotype_DOCUMENT, undotype_GRAPHICITEMTRANSFORM, undotype_GRAPHICITEM, undotype_GRAPHICTEXTITEM, undotype_PAGESIZE, undotype_GRAPHICSGROUPITEM, undotype_GRAPHICITEMZVALUE
     };
-};
-
-enum UBPageBackground
-{
-    plain = 0,
-    crossed,
-    ruled
 };
 
 /*

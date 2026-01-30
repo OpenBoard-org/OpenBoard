@@ -192,14 +192,12 @@ public:
     Qt::DropActions supportedDropActions() const {return Qt::MoveAction | Qt::CopyAction;}
     QStringList mimeTypes() const;
     QMimeData *mimeData (const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
     bool removeRows(int row, int count, const QModelIndex &parent);
 
     bool containsDocuments(const QModelIndex& index);
 
     QModelIndex indexForNode(UBDocumentTreeNode *pNode) const;
     QPersistentModelIndex persistentIndexForNode(UBDocumentTreeNode *pNode);
-//    bool insertRow(int row, const QModelIndex &parent);
 
     QPersistentModelIndex copyIndexToNewParent(const QModelIndex &source, const QModelIndex &newParent, eCopyMode pMode = aReference);
 
@@ -241,7 +239,7 @@ public:
     QPersistentModelIndex untitledDocumentsIndex() const {return mMyDocuments;}
     UBDocumentTreeNode *nodeFromIndex(const QModelIndex &pIndex) const;
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
-    void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
+    void setHighLighted(const QModelIndex &newHighLighted);
     QModelIndex highLighted() {return mHighLighted;}
     std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(QString folderName) const;
     std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(UBDocumentTreeNode* node, QString folderName) const;
@@ -291,12 +289,12 @@ class UBDocumentTreeMimeData : public QMimeData
 {
     Q_OBJECT
 
-    public:
-        QList<QModelIndex> indexes() const {return mIndexes;}
-        void setIndexes (const QList<QModelIndex> &pIndexes) {mIndexes = pIndexes;}
+public:
+    UBDocumentTreeMimeData(const QModelIndexList& pIndexes);
+    QModelIndexList indexes() const;
 
-    private:
-        QList<QModelIndex> mIndexes;
+private:
+    QModelIndexList mIndexes;
 };
 
 class UBDocumentTreeView : public QTreeView
@@ -308,7 +306,6 @@ public:
 
     //N/C - NNE - 20140404
     QModelIndex mapIndexToSource(const QModelIndex &index);
-    QModelIndexList mapIndexesToSource(const QModelIndexList &indexes);
 
 public slots:
     void setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand = true, bool pEdit = false);
@@ -329,8 +326,8 @@ protected:
 
 private:
     bool isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex);
+    UBDocumentTreeModel* baseModel() const;
     Qt::DropAction acceptableAction(const QModelIndex &dragIndex, const QModelIndex &atIndex);
-    void updateIndexEnvirons(const QModelIndex &index);
 };
 
 class UBValidator : public QValidator

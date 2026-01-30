@@ -30,8 +30,10 @@
 #ifndef UBDISPLAYMANAGER_H_
 #define UBDISPLAYMANAGER_H_
 
-#include <QtGui>
 #include <QMap>
+#include <QPointer>
+#include <QPushButton>
+#include <QScreen>
 
 class UBBlackoutWidget;
 class UBBoardView;
@@ -105,7 +107,7 @@ class UBDisplayManager : public QObject
         qreal physicalDpi(ScreenRole role) const;
         qreal logicalDpi(ScreenRole role) const;
 
-        QPixmap grab(ScreenRole role, QRect rect = QRect(0, 0, -1, -1)) const;
+        void grab(ScreenRole role, std::function<void(QPixmap)> callback, QRect rect = {}) const;
         QPixmap grabGlobal(QRect rect) const;
 
         void initScreensByRole();
@@ -113,16 +115,20 @@ class UBDisplayManager : public QObject
         void positionScreens();
         void adjustScreens();
 
-   signals:
+        void setScreenLabelParent(QWidget* labelParent);
+        QStringList availableScreenIndexes();
+
+    signals:
         void screenRolesAssigned();
         void screenLayoutChanged();
         void availableScreenCountChanged(int screenCount);
+        void screenLabelPressed(const QString& screenIndex);
 
-   public slots:
-
+    public slots:
         void blackout();
-
         void unBlackout();
+        void showScreenLabels(bool show);
+        void disableScreenLabels(QStringList screenList);
 
     private slots:
 
@@ -131,6 +137,7 @@ class UBDisplayManager : public QObject
     private:
 
         void initScreenIndexes();
+        void createScreenLabels();
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
         QList<Ui::BlackoutWidget*> mBlackoutUiList;
@@ -138,6 +145,9 @@ class UBDisplayManager : public QObject
         QList<QScreen*> mAvailableScreens;
         QMap<ScreenRole, QPointer<QScreen>> mScreensByRole;
         QMap<ScreenRole, QPointer<QWidget>> mWidgetsByRole;
+
+        QList<QPointer<QPushButton>> mScreenLabels;
+        QWidget* mLabelParent{nullptr};
 
         bool mUseMultiScreen;
 };

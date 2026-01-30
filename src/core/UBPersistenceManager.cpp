@@ -28,6 +28,7 @@
 
 #include "UBPersistenceManager.h"
 #include "domain/UBMediaAssetItem.h"
+#include "gui/UBBackgroundManager.h"
 #include "gui/UBMainWindow.h"
 
 #include <QtXml>
@@ -226,10 +227,16 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
         if (inFile.open(QIODevice::ReadOnly)) {
             QString domString(inFile.readAll());
 
-            int errorLine = 0; int errorColumn = 0;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+            QDomDocument::ParseResult result = xmlDom.setContent(domString);
+            int errorLine = result.errorLine;
+            int errorColumn = result.errorColumn;
+#else
+            int errorLine, errorColumn;
             QString errorStr;
-
-            if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
+            bool result = xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn);
+#endif
+            if (result) {
                 loadFolderTreeFromXml("", xmlDom.firstChildElement());
             } else {
                 qDebug() << "Error reading content of " << mFoldersXmlStorageName << '\n'
@@ -818,8 +825,9 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
         newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
     }
 
-    newScene->setBackground(UBSettings::settings()->isDarkBackground(),
-            UBSettings::settings()->UBSettings::pageBackground());
+    const auto uuid = UBSettings::settings()->UBSettings::pageBackgroundUuid();
+    const auto background = UBApplication::boardController->backgroundManager()->background(uuid);
+    newScene->setSceneBackground(UBSettings::settings()->isDarkBackground(), background);
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 

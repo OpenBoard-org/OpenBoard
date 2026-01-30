@@ -70,6 +70,8 @@ class UBPreferencesController : public QObject
         UBPreferencesController(QWidget *parent);
         virtual ~UBPreferencesController();
 
+        bool handleMouseEvent(QMouseEvent *event);
+        bool handleTabletEvent(QTabletEvent *event);
 
     public slots:
 
@@ -87,6 +89,7 @@ class UBPreferencesController : public QObject
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
         QString mScreenConfigurationPath;
+        QStringList mScreenList;
 
     protected slots:
 
@@ -104,14 +107,21 @@ class UBPreferencesController : public QObject
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
         void systemOSKCheckBoxToggled(bool checked);
+        void actionSelected(const QModelIndex& index);
+        void recordingClicked(bool checked);
+        void abortClicked();
+        void resetClicked();
 
     private slots:
         void adjustScreensPreferences();
+        void applyShortcutFilter(const QString& filter, int filterCol = -1);
+
 
     private:
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
+        QModelIndex currentIndex;
 };
 
 class UBBrushPropertiesFrame : public Ui::brushProperties
@@ -129,6 +139,7 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
 
 // forward
 class UBStringListValidator;
+class UBScreenLayoutPreview;
 
 class UBScreenListLineEdit : public QLineEdit
 {
@@ -149,11 +160,10 @@ signals:
     void screenListChanged(QStringList screenList);
 
 private slots:
-    void addScreen();
+    void addScreen(const QString& screenIndex);
     void onTextChanged(const QString& input);
 
 private:
-    QList<QPushButton*> mScreenLabels;
     UBStringListValidator* mValidator;
 };
 
@@ -172,6 +182,24 @@ public:
 
 private:
     QStringList mList;
+};
+
+class UBScreenLayoutPreview : public QWidget
+{
+    Q_OBJECT;
+
+public:
+    explicit UBScreenLayoutPreview(QWidget* parent = nullptr);
+    ~UBScreenLayoutPreview() override = default;
+
+public slots:
+    void refreshScreens();
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    QList<QScreen*> mScreens;
 };
 
 #endif /* UBPREFERENCESCONTROLLER_H_ */

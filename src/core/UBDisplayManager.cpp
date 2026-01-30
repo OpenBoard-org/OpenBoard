@@ -96,6 +96,7 @@ void UBDisplayManager::initScreenIndexes()
     {
         qDebug() << "availableScreens" << screens;
         mAvailableScreens = screens;
+        createScreenLabels();
         emit availableScreenCountChanged(screens.count());
     }
 
@@ -104,6 +105,61 @@ void UBDisplayManager::initScreenIndexes()
      * in the UBPreferencesManager, so we now get the screen list valid for
      * the new monitor configuration.
      */
+}
+
+void UBDisplayManager::createScreenLabels()
+{
+    if (!mLabelParent)
+    {
+        // don't create screen labels before parent is known
+        return;
+    }
+
+    qDeleteAll(mScreenLabels);
+    mScreenLabels.clear();
+
+    const static QSize labelSize{300, 150};
+    const auto screens = availableScreens();
+    int screenIndex = 1;
+    QFont font;
+    font.setPointSize(48);
+
+    for (QScreen* screen : screens)
+    {
+        QString index = QString::number(screenIndex);
+
+        QPushButton* button = new QPushButton{mLabelParent};
+        button->setWindowFlag(Qt::FramelessWindowHint, true);
+        button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+        button->setWindowFlag(Qt::BypassWindowManagerHint, true);
+        button->setWindowFlag(Qt::Window, true);
+        button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
+        button->setAttribute(Qt::WA_ShowWithoutActivating, true);
+
+        button->setProperty("screenIndex", index);
+#ifdef QT_DEBUG
+        button->setText(index + "(" + screen->name() + ")");
+#else
+        button->setText(index);
+#endif
+        button->setFont(font);
+        button->move(screen->geometry().topLeft());
+        button->setMinimumSize(labelSize);
+        button->setCursor(Qt::PointingHandCursor);
+
+        connect(button, &QPushButton::pressed, this, [this](){
+            QPushButton* button = dynamic_cast<QPushButton*>(sender());
+
+            if (button)
+            {
+                QString screenIndex = button->property("screenIndex").toString();
+                emit screenLabelPressed(screenIndex);
+            }
+        });
+
+        mScreenLabels << button;
+        ++screenIndex;
+    }
 }
 
 void UBDisplayManager::initScreensByRole()
@@ -145,6 +201,9 @@ void UBDisplayManager::assignRoles()
     QVariant appScreenList = UBSettings::settings()->appScreenList->get();
     QStringList screenList = appScreenList.toStringList();
     qDebug() << "assignRoles using screen list" << screenList;
+
+    // disable screen labels of screens in list
+    disableScreenLabels(screenList);
 
     if (!appScreenList.isValid())
     {
@@ -314,7 +373,49 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
 void UBDisplayManager::adjustScreens()
 {
     assignRoles();
+
+    if (UBPlatformUtils::sessionType() == UBPlatformUtils::SessionType::WAYLAND)
+    {
+        auto controlWidget = widget(ScreenRole::Control);
+
+        // hide windows for repositioning
+        if (controlWidget && hasControl() && controlWidget->isVisible())
+        {
+            for (auto widget : mWidgetsByRole)
+            {
+                if (widget)
+                {
+                    widget->hide();
+                }
+            }
+
+            QTimer::singleShot(100, this, [this](){
+                positionScreens();
+            });
+
+            return;
+        }
+    }
+
     positionScreens();
+}
+
+void UBDisplayManager::setScreenLabelParent(QWidget* labelParent)
+{
+    mLabelParent = labelParent;
+    createScreenLabels();
+}
+
+QStringList UBDisplayManager::availableScreenIndexes()
+{
+    QStringList screenIndexes;
+
+    for (const auto label : mScreenLabels)
+    {
+        screenIndexes << label->property("screenIndex").toString();
+    }
+
+    return screenIndexes;
 }
 
 void UBDisplayManager::positionScreens()
@@ -473,6 +574,56 @@ void UBDisplayManager::unBlackout()
     UBApplication::boardController->freezeW3CWidgets(false);
 }
 
+void UBDisplayManager::showScreenLabels(bool show)
+{
+    if (mScreenLabels.empty() || mScreenLabels.first().isNull() || mScreenLabels.first()->isVisible() == show)
+    {
+        return;
+    }
+
+    if (show)
+    {
+        for (auto label : mScreenLabels)
+        {
+            if (label)
+            {
+                label->showNormal();
+            }
+        }
+    }
+    else
+    {
+        for (const auto &label : mScreenLabels)
+        {
+            if (label && label->rect().contains(QCursor::pos()))
+            {
+                // do not hide labels when triggered by a click on one of them
+                return;
+            }
+        }
+
+        for (auto label : mScreenLabels)
+        {
+            if (label)
+            {
+                label->hide();
+            }
+        }
+    }
+}
+
+void UBDisplayManager::disableScreenLabels(QStringList screenList)
+{
+    for (auto label : mScreenLabels)
+    {
+        if (label)
+        {
+            const auto screenIndex = label->property("screenIndex").toString();
+            label->setDisabled(screenList.contains(screenIndex));
+        }
+    }
+}
+
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
@@ -521,18 +672,23 @@ qreal UBDisplayManager::logicalDpi(ScreenRole role) const
     return scr ? scr->logicalDotsPerInch() : 96.;
 }
 
-QPixmap UBDisplayManager::grab(ScreenRole role, QRect rect) const
+void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callback, QRect rect) const
 {
     QScreen* scr = screen(role);
 
     if (scr)
     {
-        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
-        // for using window id 0
-        return scr->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
-    }
+        if (!rect.isValid())
+        {
+            rect = QRect(QPoint(0, 0), scr->geometry().size());
+        }
 
-    return QPixmap();
+        UBPlatformUtils::grabScreen(scr, callback, rect);
+    }
+    else
+    {
+        callback(QPixmap());
+    }
 }
 
 QPixmap UBDisplayManager::grabGlobal(QRect rect) const

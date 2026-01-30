@@ -35,6 +35,7 @@
 #include <QFontMetrics>
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
+#include <QPainter>
 
 #include "UBBoardThumbnailsView.h"
 
@@ -58,13 +59,9 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     , mMargin(20)
     , mDropSource(NULL)
     , mDropTarget(NULL)
-    , mDropBar(new QGraphicsRectItem(0))
     , mLongPressInterval(350)
 {
     setThumbnailArranger(new UBBoardThumbnailArranger(this));
-
-    mDropBar->setPen(QPen(Qt::darkGray));
-    mDropBar->setBrush(QBrush(Qt::lightGray));
 
     setObjectName(name);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -94,21 +91,14 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
 void UBBoardThumbnailsView::setDocument(std::shared_ptr<UBDocument> document)
 {
     mDocument = document;
-
     if (document)
     {
         auto thumbnailScene = document->thumbnailScene();
         setScene(thumbnailScene);
         thumbnailScene->arrangeThumbnails();
-        thumbnailScene->addItem(mDropBar);
     }
     else
     {
-        if (mDropBar->scene())
-        {
-            mDropBar->scene()->removeItem(mDropBar);
-        }
-
         setScene(nullptr);
     }
 }
@@ -299,7 +289,8 @@ void UBBoardThumbnailsView::scrollContentsBy(int dx, int dy)
 
 void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)
 {
-    mDropBar->show();
+    mDropIndicatorVisible = true;
+    viewport()->update();
 
     if (event->source() == this)
     {
@@ -340,9 +331,11 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
             const auto offset = dropAbove ? -halfSpacingHeight : UBThumbnail::heightForWidth(thumbnailArranger()->thumbnailWidth()) + halfSpacingHeight;
             const auto y = item->pos().y() + offset - 1;
 
-            if (mDropBar->y() != y)
+            if (!mDropIndicatorVisible || !qFuzzyCompare(mDropIndicatorRect.y(), y))
             {
-                mDropBar->setRect(QRectF{item->pos().x(), y, thumbnailArranger()->thumbnailWidth(), 3});
+                mDropIndicatorVisible = true;
+                mDropIndicatorRect = QRectF{item->pos().x(), y, thumbnailArranger()->thumbnailWidth(), 3};
+                viewport()->update();
             }
         }
     }
@@ -360,8 +353,32 @@ void UBBoardThumbnailsView::dropEvent(QDropEvent *event)
     mDropSource = NULL;
     mDropTarget = NULL;
 
-    mDropBar->setRect(QRectF());
-    mDropBar->hide();
+    mDropIndicatorVisible = false;
+    mDropIndicatorRect = QRectF();
+    viewport()->update();
+}
+
+void UBBoardThumbnailsView::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event);
+    mDropIndicatorVisible = false;
+    mDropIndicatorRect = QRectF();
+    viewport()->update();
+}
+
+void UBBoardThumbnailsView::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    Q_UNUSED(rect);
+    if (!mDropIndicatorVisible || mDropIndicatorRect.isNull())
+        return;
+
+    painter->save();
+    QPen pen(Qt::darkGray);
+    pen.setWidth(0);
+    painter->setPen(pen);
+    painter->setBrush(QBrush(Qt::lightGray));
+    painter->drawRect(mDropIndicatorRect);
+    painter->restore();
 }
 
 /* ---- UBBoardThumbnailArranger ---- */

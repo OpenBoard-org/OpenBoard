@@ -60,6 +60,7 @@ set(OPENBOARD_FORMS_DIR     resources/forms src/web/simplebrowser)
 set(OPENBOARD_TS_DIR        resources/i18n)
 set(OPENBOARD_FONT_DIR      resources/customizations resources/fonts)
 set(OPENBOARD_ETC_DIR       resources/etc)
+set(OPENBOARD_BG_DIR        resources/etc/background)
 set(OPENBOARD_LIBRARY_DIR   resources/library)
 set(OPENBOARD_STARTUP_HINTS resources/startupHints)
 
@@ -67,8 +68,8 @@ set(OPENBOARD_ETC_FILE      ${OPENBOARD_ETC_DIR}/OpenBoard.config
                             ${OPENBOARD_ETC_DIR}/OpenBoard.css
                             ${OPENBOARD_ETC_DIR}/widgets.md5sum)
 set(OPENBOARD_TEMPLATE_FILE ${OPENBOARD_ETC_DIR}/asyncAPI.js
-                            ${OPENBOARD_ETC_DIR}/intranet-podcast-metadata.template
-                            ${OPENBOARD_ETC_DIR}/npapi-wrapper.config.xml)
+                            ${OPENBOARD_ETC_DIR}/kwinKeepAbove.js
+                            ${OPENBOARD_ETC_DIR}/intranet-podcast-metadata.template)
 
 set(OPENBOARD_ICON_FILE     resources/images/ch.openboard.OpenBoard.svg)
 set(OPENBOARD_DESKTOP_FILE  resources/linux/ch.openboard.OpenBoard.desktop)
@@ -114,7 +115,7 @@ include(cmake/DependencyPoppler.cmake)
 include(cmake/DependencyZlib.cmake)
 include(cmake/DependencyQuaZip.cmake)
 include(cmake/DependencyFFmpeg.cmake)
-include(cmake/DependencyX11.cmake)
+include(cmake/DependencyPipewire.cmake)
 
 # add source path to include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -217,6 +218,7 @@ install(DIRECTORY ${OPENBOARD_FONT_DIR}         DESTINATION ${OPENBOARD_INSTALL_
 install(DIRECTORY ${OPENBOARD_LIBRARY_DIR}      DESTINATION ${OPENBOARD_INSTALL_DATADIR})
 install(DIRECTORY ${OPENBOARD_STARTUP_HINTS}    DESTINATION ${OPENBOARD_INSTALL_DATADIR})
 install(DIRECTORY ${PROJECT_BINARY_DIR}/i18n    DESTINATION ${OPENBOARD_INSTALL_DATADIR})
+install(DIRECTORY ${OPENBOARD_BG_DIR}           DESTINATION ${OPENBOARD_INSTALL_DATADIR}/template)
 install(FILES     ${OPENBOARD_ETC_FILE}         DESTINATION ${OPENBOARD_INSTALL_SYSCONFDIR})
 install(FILES     ${OPENBOARD_TEMPLATE_FILE}    DESTINATION ${OPENBOARD_INSTALL_DATADIR}/template)
 install(FILES     ${OPENBOARD_ICON_FILE}        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)

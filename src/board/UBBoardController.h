@@ -44,6 +44,8 @@ class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
+class UBBackgroundRuling;
+class UBBackgroundManager;
 class UBDocument;
 class UBDocumentController;
 class UBMessageWindow;
@@ -100,6 +102,11 @@ class UBBoardController : public UBDocumentContainer
         UBBoardView* displayView() const
         {
             return mDisplayView;
+        }
+
+        UBBackgroundManager* backgroundManager() const
+        {
+            return mBgManager;
         }
 
         void setPenColorOnDarkBackground(const QColor& pColor)
@@ -221,7 +228,7 @@ class UBBoardController : public UBDocumentContainer
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
-        void changeBackground(bool isDark, UBPageBackground pageBackground);
+        void setBackground(bool isDark, const UBBackgroundRuling* background);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
@@ -268,7 +275,6 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
-        void npapiWidgetCreated(const QString &Url);
 
     protected:
         void setupViews();
@@ -298,6 +304,7 @@ class UBBoardController : public UBDocumentContainer
         int mActiveSceneIndex;
         int mSwitchToSceneIndex{-1};
         UBBoardPaletteManager *mPaletteManager;
+        UBBackgroundManager* mBgManager{nullptr};
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;
         UBEmbedController *mEmbedController;
@@ -328,7 +335,6 @@ class UBBoardController : public UBDocumentContainer
     private slots:
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
-        void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();

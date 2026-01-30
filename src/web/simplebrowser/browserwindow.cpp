@@ -67,6 +67,8 @@
 #include <QVBoxLayout>
 #include <QWebEngineProfile>
 
+#include "frameworks/UBPlatformUtils.h"
+
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
@@ -106,7 +108,12 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
 void BrowserWindow::init()
 {
     m_statusBar = new QStatusBar(this);
-    m_statusBar->setWindowFlag(Qt::ToolTip);
+
+    // On Wayland, popup-like tooltips without an input-grabbed parent can trigger a protocol error.
+    if (UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
+    {
+        m_statusBar->setWindowFlag(Qt::ToolTip);
+    }
     m_statusBar->setVisible(true);
 
     connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);

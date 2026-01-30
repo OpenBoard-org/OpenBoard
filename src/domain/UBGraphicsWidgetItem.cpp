@@ -52,7 +52,6 @@
 #include "core/UBSettings.h"
 
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBPlatformUtils.h"
 
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
@@ -484,9 +483,7 @@ int UBGraphicsWidgetItem::widgetType(const QUrl& pUrl)
 {
     QString mime = UBFileSystemUtils::mimeTypeFromFileName(pUrl.toString());
 
-    if (mime == "application/vnd.apple-widget") // NOTE @letsfindaway obsolete
-        return UBWidgetType::Apple;
-    else if (mime == "application/widget")
+    if (mime == "application/widget")
         return UBWidgetType::W3C;
     else
         return UBWidgetType::Other;
@@ -497,7 +494,6 @@ QString UBGraphicsWidgetItem::widgetName(const QUrl& widgetPath)
     QString name;
     QString version;
     QFile w3CConfigFile(widgetPath.toLocalFile() + "/config.xml");
-    QFile appleConfigFile(widgetPath.toLocalFile() + "/Info.plist");
 
     if (w3CConfigFile.exists() && w3CConfigFile.open(QFile::ReadOnly)) {
         QDomDocument doc;
@@ -511,43 +507,7 @@ QString UBGraphicsWidgetItem::widgetName(const QUrl& widgetPath)
         }
         w3CConfigFile.close();
     }
-    else if (appleConfigFile.exists() && appleConfigFile.open(QFile::ReadOnly)) {
-        QDomDocument doc;
-        doc.setContent(appleConfigFile.readAll());
-        QDomElement root = doc.firstChildElement("plist");
-        if (!root.isNull()) {
-            QDomElement dictElement = root.firstChildElement("dict");
-            if (!dictElement.isNull()) {
-                QDomNodeList childNodes  = dictElement.childNodes();
 
-                /* looking for something like
-                 * ..
-                 * <key>CFBundleDisplayName</key>
-                 * <string>brain scans</string>
-                 * ..
-                 */
-
-                for(int i = 0; i < childNodes.count() - 1; i++) {
-                    if (childNodes.at(i).isElement()) {
-                        QDomElement elKey = childNodes.at(i).toElement();
-                        if (elKey.text() == "CFBundleDisplayName") {
-                            if (childNodes.at(i + 1).isElement()) {
-                               QDomElement elValue = childNodes.at(i + 1).toElement();
-                               name = elValue.text();
-                            }
-                        }
-                        else if (elKey.text() == "CFBundleShortVersionString") {
-                            if (childNodes.at(i + 1).isElement()) {
-                               QDomElement elValue = childNodes.at(i + 1).toElement();
-                               version = elValue.text();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        appleConfigFile.close();
-    }
     QString result;
 
     if (name.length() > 0) {
@@ -951,94 +911,6 @@ QSizeF UBGraphicsWidgetItem::size() const
 }
 
 
-// NOTE @letsfindaway obsolete
-UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
-    : UBGraphicsWidgetItem(pWidgetUrl, parent)
-{
-    QString path = pWidgetUrl.toLocalFile();
-
-    if (!path.endsWith(".wdgt") && !path.endsWith(".wdgt/")) {
-        int lastSlashIndex = path.lastIndexOf("/");
-        if (lastSlashIndex > 0)
-            path = path.mid(0, lastSlashIndex + 1);
-    }
-
-    QFile plistFile(path + "/Info.plist");
-    QString plist;
-    if (plistFile.open(QFile::ReadOnly))
-    {
-        QByteArray plistBin = plistFile.readAll();
-        plist = QString::fromUtf8(plistBin);
-    }
-
-    int mainHtmlIndex = plist.indexOf("MainHTML");
-    int mainHtmlIndexStart = plist.indexOf("<string>", mainHtmlIndex);
-    int mainHtmlIndexEnd = plist.indexOf("</string>", mainHtmlIndexStart);
-
-    if (mainHtmlIndex > -1 && mainHtmlIndexStart > -1 && mainHtmlIndexEnd > -1)
-        mMainHtmlFileName = plist.mid(mainHtmlIndexStart + 8, mainHtmlIndexEnd - mainHtmlIndexStart - 8);
-
-    mMainHtmlUrl = pWidgetUrl;
-    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
-
-    mWebEngineView->load(mMainHtmlUrl);
-
-    QPixmap defaultPixmap(pWidgetUrl.toLocalFile() + "/Default.png");
-
-    setMaximumSize(defaultPixmap.size());
-
-    mNominalSize = defaultPixmap.size();
-
-    initialize();
-}
-
-
-UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
-{
-    /* NOOP */
-}
-
-UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
-{
-    UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebEngineView->url(), parentItem());
-
-    copyItemParameters(appleWidget);
-
-    return appleWidget;
-
-}
-
-void UBGraphicsAppleWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
-{
-}
-
-void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
-{
-    UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
-    if (cp)
-    {
-        foreach(QString key, mPreferences.keys())
-        {
-            cp->setPreference(key, mPreferences.value(key));
-        }
-
-        foreach(QString key, mDatastore.keys())
-        {
-            cp->setDatastoreEntry(key, mDatastore.value(key));
-        }
-
-        cp->setZValue(this->zValue());
-    }
-
-}
-
-
-
-
-bool UBGraphicsW3CWidgetItem::sTemplateLoaded = false;
-QString UBGraphicsW3CWidgetItem::sNPAPIWrappperConfigTemplate;
-QMap<QString, QString> UBGraphicsW3CWidgetItem::sNPAPIWrapperTemplates;
-
 UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(pWidgetUrl, parent)
     , mW3CWidgetAPI(0)
@@ -1241,107 +1113,6 @@ void UBGraphicsW3CWidgetItem::sendJSLeaveEvent()
     }
 }
 
-QString UBGraphicsW3CWidgetItem::createNPAPIWrapper(const QString& url, const QString& pMimeType, const QSize& sizeHint, const QString& pName)
-{
-    const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web");
-    QDir userWidgetDir(userWidgetPath);
-
-    return createNPAPIWrapperInDir(url, userWidgetDir, pMimeType, sizeHint, pName);
-}
-
-QString UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pDir, const QString& pMimeType, const QSize& sizeHint, const QString& pName)
-{
-    QString url = pUrl;
-    url = UBFileSystemUtils::removeLocalFilePrefix(url);
-    QString name = pName;
-
-    QFileInfo fi(url);
-
-    if (name.length() == 0)
-        name = fi.baseName();
-
-    if (fi.exists())
-        url = fi.fileName();
-
-    loadNPAPIWrappersTemplates();
-
-    QString htmlTemplate;
-
-    if (pMimeType.length() > 0 && sNPAPIWrapperTemplates.contains(pMimeType))
-        htmlTemplate = sNPAPIWrapperTemplates.value(pMimeType);
-    else {
-        QString extension = UBFileSystemUtils::extension(url);
-        if (sNPAPIWrapperTemplates.contains(extension))
-            htmlTemplate = sNPAPIWrapperTemplates.value(extension);
-    }
-
-    if (htmlTemplate.length() > 0) {
-        htmlTemplate = htmlTemplate.replace(QString("{in.url}"), url)
-            .replace(QString("{in.width}"), QString("%1").arg(sizeHint.width()))
-            .replace(QString("{in.height}"), QString("%1").arg(sizeHint.height()));
-
-        QString configTemplate = sNPAPIWrappperConfigTemplate
-            .replace(QString("{in.id}"), url)
-            .replace(QString("{in.width}"), QString("%1").arg(sizeHint.width()))
-            .replace(QString("{in.height}"), QString("%1").arg(sizeHint.height()))
-            .replace(QString("{in.name}"), name)
-            .replace(QString("{in.startFile}"), QString("index.htm"));
-
-        QString dirPath = pDir.path();
-        if (!pDir.exists())
-            pDir.mkpath(dirPath);
-
-        QString widgetLibraryPath = dirPath + "/" + name + ".wgt";
-        QDir widgetLibraryDir(widgetLibraryPath);
-
-        if (widgetLibraryDir.exists())
-            if (!UBFileSystemUtils::deleteDir(widgetLibraryDir.path()))
-                qWarning() << "Cannot delete old widget " << widgetLibraryDir.path();
-
-        widgetLibraryDir.mkpath(widgetLibraryPath);
-        if (fi.exists()) {
-            QString target = widgetLibraryPath + "/" + fi.fileName();
-            QString source = pUrl;
-            source = UBFileSystemUtils::removeLocalFilePrefix(source);
-            QFile::copy(source, target);
-        }
-
-        QFile configFile(widgetLibraryPath + "/config.xml");
-
-        if (!configFile.open(QIODevice::WriteOnly)) {
-            qWarning() << "Cannot open file " << configFile.fileName();
-            return QString();
-        }
-
-        QTextStream outConfig(&configFile);
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        outConfig.setCodec("UTF-8");
-#endif
-
-        outConfig << configTemplate;
-        configFile.close();
-
-        QFile indexFile(widgetLibraryPath + "/index.htm");
-
-        if (!indexFile.open(QIODevice::WriteOnly)) {
-            qWarning() << "Cannot open file " << indexFile.fileName();
-            return QString();
-        }
-
-        QTextStream outIndex(&indexFile);
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        outIndex.setCodec("UTF-8");
-#endif
-
-        outIndex << htmlTemplate;
-        indexFile.close();
-
-        return widgetLibraryPath;
-    }
-    else
-        return QString();
-}
-
 QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, const QDir& pDir, const QSize& sizeHint, const QString& pName)
 {
     QString widgetPath = pDir.path() + "/" + pName + ".wgt";
@@ -1412,13 +1183,6 @@ QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     return widgetPath;
 }
 
-bool UBGraphicsW3CWidgetItem::hasNPAPIWrapper(const QString& pMimeType)
-{
-    loadNPAPIWrappersTemplates();
-
-    return sNPAPIWrapperTemplates.contains(pMimeType);
-}
-
 void UBGraphicsW3CWidgetItem::registerAPI()
 {
     UBGraphicsWidgetItem::registerAPI();
@@ -1427,40 +1191,6 @@ void UBGraphicsW3CWidgetItem::registerAPI()
     {
         mW3CWidgetAPI = new UBW3CWidgetAPI(this);
         mWebEngineView->page()->webChannel()->registerObject("widget", mW3CWidgetAPI);
-    }
-}
-
-void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
-{
-    if (!sTemplateLoaded) {
-        sNPAPIWrapperTemplates.clear();
-
-        QString templatePath = UBPlatformUtils::applicationTemplateDirectory();
-
-        QDir templateDir(templatePath);
-
-        foreach(QString fileName, templateDir.entryList()) {
-            if (fileName.startsWith("npapi-wrapper") && (fileName.endsWith(".htm") || fileName.endsWith(".html"))) {
-
-                QString htmlContent = UBFileSystemUtils::readTextFile(templatePath + fileName);
-
-                if (htmlContent.length() > 0) {
-                    QStringList tokens = fileName.split(".");
-
-                    if (tokens.length() >= 4) {
-                        QString mime = tokens.at(tokens.length() - 4 );
-                        mime += "/" + tokens.at(tokens.length() - 3);
-
-                        QString fileExtension = tokens.at(tokens.length() - 2);
-
-                        sNPAPIWrapperTemplates.insert(mime, htmlContent);
-                        sNPAPIWrapperTemplates.insert(fileExtension, htmlContent);
-                    }
-                }
-            }
-        }
-        sNPAPIWrappperConfigTemplate = UBFileSystemUtils::readTextFile(templatePath + "npapi-wrapper.config.xml");
-        sTemplateLoaded = true;
     }
 }
 

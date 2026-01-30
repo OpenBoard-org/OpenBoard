@@ -51,6 +51,8 @@
 #include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBItem.h"
 
+#include "gui/UBBackgroundRuling.h"
+#include "gui/UBBackgroundManager.h"
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsCompass.h"
@@ -63,7 +65,6 @@
 
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
-#include "board/UBDrawingController.h"
 #include "board/UBBoardPaletteManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -160,7 +161,11 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(std::shared_ptr<UBDocumentPro
             return doc;
         }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+        doc.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing);
+#else
         doc.setContent(&file, true);
+#endif
         file.close();
     }
 
@@ -506,6 +511,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
             bool darkBackground = false;
             bool crossedBackground = false;
             bool ruledBackground = false;
+            bool intermediateLines = false;
 
             auto ubDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "dark-background");
 
@@ -525,42 +531,30 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 mScene->setBackgroundGridSize(gridSize);
             }
 
-            if (crossedBackground) {
-
-                auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
-
-                if (!ubIntermediateLines.isNull()) {
-                    bool intermediateLines = ubIntermediateLines.toInt();
-
-                    mScene->setIntermediateLines(intermediateLines);
-                }
-            }
-
             auto ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
 
             if (!ubRuledBackground.isNull())
                 ruledBackground = (ubRuledBackground.toString() == xmlTrue);
 
-            if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
+            if (ruledBackground || crossedBackground) {
 
                 auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
 
                 if (!ubIntermediateLines.isNull()) {
-                    bool intermediateLines = ubIntermediateLines.toInt();
-
-                    mScene->setIntermediateLines(intermediateLines);
+                    intermediateLines = ubIntermediateLines.toInt();
                 }
             }
 
-            UBPageBackground bg;
-            if (crossedBackground)
-                bg = UBPageBackground::crossed;
-            else if (ruledBackground)
-                bg = UBPageBackground::ruled;
-            else
-                bg = UBPageBackground::plain;
+            const UBBackgroundRuling* background{nullptr};
 
-            mScene->setBackground(darkBackground, bg);
+            // guess background pattern from attributes
+            if (crossedBackground || ruledBackground)
+            {
+                const auto bgManager = UBApplication::boardController->backgroundManager();
+                background = bgManager->guessBackground(crossedBackground, ruledBackground, intermediateLines);
+            }
+
+            mScene->setSceneBackground(darkBackground, background);
 
             auto pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
             if (!pageNominalSize.isNull())
@@ -580,6 +574,18 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                     qWarning() << "cannot make sense of 'nominal-size' value " << pageNominalSize.toString();
                 }
 
+            }
+        }
+        else if (name == "background")
+        {
+            UBBackgroundRuling bg;
+            bg.parseXml(mXmlReader);
+
+            if (bg.isValid())
+            {
+                const auto bgManager = UBApplication::boardController->backgroundManager();
+                bgManager->addBackground(bg);
+                mScene->setSceneBackground(mScene->isDarkBackground(), bgManager->background(bg.uuid()));
             }
         }
         else if (name == "g")
@@ -919,22 +925,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                     currentWidget = 0;
                 }
             }
-            else if (src.contains(".wdgt")) // NOTE @letsfindaway obsolete
-            {
-                UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
-                if (appleWidgetItem)
-                {
-                    appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                    appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
-
-                    mScene->addItem(appleWidgetItem);
-
-                    appleWidgetItem->show();
-
-                    currentWidget = appleWidgetItem;
-                }
-            }
             else if (src.contains(".wgt"))
             {
                 UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
@@ -1242,8 +1232,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(std::shared_ptr<UBDo
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
 
-    bool crossedBackground = mScene->pageBackground() == UBPageBackground::crossed;
-    bool ruledBackground = mScene->pageBackground() == UBPageBackground::ruled;
+    bool crossedBackground = mScene->background() && mScene->background()->isCrossed();
+    bool ruledBackground = mScene->background() && mScene->background()->isRuled();
+    bool intermediateLines = mScene->background() && mScene->background()->hasIntermediateLines();
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", crossedBackground ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "ruled-background", ruledBackground ? xmlTrue : xmlFalse);
@@ -1252,8 +1243,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(std::shared_ptr<UBDo
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
 
     if (crossedBackground || ruledBackground) {
-        bool intermediateLines = mScene->intermediateLines();
-
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "intermediate-lines", QString::number(intermediateLines));
     }
 
@@ -1295,6 +1284,11 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
     mXmlWriter.writeNamespace(nsXHtml, "xhtml");
 
     writeSvgElement(proxy);
+
+    if (mScene->background())
+    {
+        mScene->background()->toXml(mXmlWriter);
+    }
 
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();
@@ -1431,14 +1425,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
 
         if (audioItem && audioItem->isVisible()) {
             audioItemToLinkedAudio(audioItem);
-            continue;
-        }
-
-        // Is the item an app? // NOTE @letsfindaway obsolete
-        UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-        if (appleWidgetItem && appleWidgetItem->isVisible())
-        {
-            graphicsAppleWidgetToSvg(appleWidgetItem);
             continue;
         }
 
@@ -2609,14 +2595,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     }
 }
 
-
-
-// NOTE @letsfindaway obsolete
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem* item)
-{
-    graphicsWidgetToSvg(item);
-}
-
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsW3CWidgetToSvg(UBGraphicsW3CWidgetItem* item)
 {
     graphicsWidgetToSvg(item);
@@ -2711,34 +2689,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     }
 
     mXmlWriter.writeEndElement();
-}
-
-// NOTE @letsfindaway obsolete
-UBGraphicsAppleWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsAppleWidgetFromSvg()
-{
-
-    auto widgetUrl = mXmlReader.attributes().value(mNamespaceUri, "src");
-
-    if (widgetUrl.isNull())
-    {
-        qWarning() << "cannot make sens of widget src value";
-        return 0;
-    }
-
-    QString href = widgetUrl.toString();
-
-    QUrl url(href);
-
-    if (url.isRelative())
-    {
-        href = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(widgetUrl.toString());
-    }
-
-    UBGraphicsAppleWidgetItem* widgetItem = new UBGraphicsAppleWidgetItem(QUrl::fromLocalFile(href));
-
-    graphicsItemFromSvg(widgetItem);
-
-    return widgetItem;
 }
 
 UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidgetFromSvg()

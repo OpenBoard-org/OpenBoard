@@ -31,6 +31,8 @@
 
 #include "UBSettings.h"
 #include "UBApplication.h"
+#include <QPainter>
+#include <QScreen>
 
 #include "gui/UBCircleFrame.h"
 
@@ -38,6 +40,8 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBThemeManager.h"
+#include "core/UBShortcutManager.h"
+#include "frameworks/UBPlatformUtils.h"
 
 #include "frameworks/UBStringUtils.h"
 
@@ -50,7 +54,6 @@
 #include "ui_preferences.h"
 
 #include "core/memcheck.h"
-
 
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
@@ -73,7 +76,6 @@ void UBPreferencesDialog::closeEvent(QCloseEvent* e)
 }
 
 
-
 UBPreferencesController::UBPreferencesController(QWidget *parent)
     : QObject(parent)
     , mPreferencesWindow(0)
@@ -89,6 +91,11 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     adjustScreensPreferences();
 
     connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreensPreferences);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+    mPreferencesUI->keySequence->setMaximumSequenceLength(1);
+#endif
+
     wire();
 }
 
@@ -102,6 +109,56 @@ UBPreferencesController::~UBPreferencesController()
     delete mPenProperties;
 
     delete mMarkerProperties;
+}
+
+bool UBPreferencesController::handleMouseEvent(QMouseEvent *event)
+{
+    if (!mPreferencesUI->recordButton->isChecked()
+            || mPreferencesUI->mainTabWidget->currentWidget() != mPreferencesUI->shortcutTab)
+    {
+        return false;
+    }
+
+    Qt::MouseButton button = event->button();
+
+    if (currentIndex.isValid())
+    {
+        QString buttonName = UBShortcutManager::buttonName(button);
+        mPreferencesUI->mouseButton->setText(buttonName);
+        bool ok = UBShortcutManager::shortcutManager()->checkData(currentIndex.siblingAtColumn(3), buttonName);
+        applyShortcutFilter(ok ? mPreferencesUI->filter->text() : buttonName, ok ? -1 : 3);
+        mPreferencesUI->recordButton->setEnabled(ok);
+        mPreferencesUI->report->setText(ok ? "" : tr("Mouse button already in use"));
+        event->accept();
+        return true;
+    }
+
+    return false;
+}
+
+bool UBPreferencesController::handleTabletEvent(QTabletEvent *event)
+{
+    if (!mPreferencesUI->recordButton->isChecked()
+            || mPreferencesUI->mainTabWidget->currentWidget() != mPreferencesUI->shortcutTab)
+    {
+        return false;
+    }
+
+    Qt::MouseButton button = event->button();
+
+    if (currentIndex.isValid())
+    {
+        QString buttonName = UBShortcutManager::buttonName(button);
+        mPreferencesUI->stylusButton->setText(buttonName);
+        bool ok = UBShortcutManager::shortcutManager()->checkData(currentIndex.siblingAtColumn(4), buttonName);
+        applyShortcutFilter(ok ? mPreferencesUI->filter->text() : buttonName, ok ? -1 : 4);
+        mPreferencesUI->recordButton->setEnabled(ok);
+        mPreferencesUI->report->setText(ok ? "" : tr("Stylus button already in use"));
+        event->accept();
+        return true;
+    }
+
+    return false;
 }
 
 void UBPreferencesController::adjustScreensPreferences()
@@ -138,6 +195,69 @@ void UBPreferencesController::adjustScreensPreferences()
         UBSettings::settings()->appScreenList->set(value);
         mPreferencesUI->screenList->loadScreenList(value.toStringList());
     }
+
+    if (mPreferencesUI->screenLayoutPreview)
+    {
+        mPreferencesUI->screenLayoutPreview->refreshScreens();
+    }
+}
+
+void UBPreferencesController::applyShortcutFilter(const QString &filter, int filterCol)
+{
+    // go throug rows in reverse direction
+    QAbstractItemModel* model = mPreferencesUI->shortcutTableView->model();
+    QModelIndex index = model->index(0, 0);
+    bool groupVisible = false;
+    int minCol = filterCol < 0 ? 0 : filterCol;
+    int maxCol = filterCol < 0 ? model->columnCount() : filterCol + 1;
+
+    for (int row = model->rowCount() - 1; row >= 0; --row)
+    {
+        QModelIndex rowIndex = index.siblingAtRow(row);
+        bool match = false;
+        bool header = model->data(rowIndex, UBShortcutManager::GroupHeaderRole).toBool();
+
+        if (header)
+        {
+            match = groupVisible;
+            groupVisible = false;
+        }
+        else if (currentIndex.isValid() && currentIndex.row() == row)
+        {
+            match = true;
+            groupVisible = true;
+        }
+        else
+        {
+            for (int col = minCol; col < maxCol; ++col)
+            {
+                QModelIndex colIndex = rowIndex.siblingAtColumn(col);
+                const auto colData{model->data(colIndex).toString()};
+                const auto exactMatch{filterCol >= 0};
+
+                bool hasMatch{false};
+
+                if (exactMatch)
+                {
+                    const auto tokens = colData.split(", ");
+                    hasMatch = tokens.contains(filter);
+                }
+                else
+                {
+                    hasMatch = colData.contains(filter, Qt::CaseInsensitive);
+                }
+
+                if (hasMatch)
+                {
+                    match = true;
+                    groupVisible = true;
+                    break;
+                }
+            }
+        }
+
+        mPreferencesUI->shortcutTableView->setRowHidden(row, !match);
+    }
 }
 
 void UBPreferencesController::show()
@@ -159,7 +279,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
     connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
-        settings->appScreenList->set(screenList);
+        mScreenList = screenList;
 
         if (!mScreenConfigurationPath.isEmpty())
         {
@@ -187,7 +307,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->emptyTrashDaysValue, SIGNAL(valueChanged(int)), settings->emptyTrashDaysValue,  SLOT(setInt(int)));
 
 
-    connect(mPreferencesUI->keyboardPaletteKeyButtonSize, qOverload<int>(&QComboBox::currentIndexChanged), settings->boardKeyboardPaletteKeyBtnSize, [=](int index) {
+    connect(mPreferencesUI->keyboardPaletteKeyButtonSize, qOverload<int>(&QComboBox::currentIndexChanged), settings->boardKeyboardPaletteKeyBtnSize, [this, settings](int index) {
         settings->boardKeyboardPaletteKeyBtnSize->setString(mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(index));
     });
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
@@ -299,6 +419,48 @@ void UBPreferencesController::wire()
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
+
+    // shortcut tab
+    connect(mPreferencesUI->shortcutTableView, &QTableView::clicked, this, &UBPreferencesController::actionSelected);
+    connect(mPreferencesUI->shortcutTableView, &QTableView::doubleClicked, this, [this](){
+        mPreferencesUI->recordButton->setChecked(true);
+        mPreferencesUI->keySequence->setFocus();
+    });
+    connect(mPreferencesUI->filter, &QLineEdit::textChanged, this, [this](const QString& text){applyShortcutFilter(text);});
+    connect(mPreferencesUI->recordButton, &QPushButton::clicked, this, &UBPreferencesController::recordingClicked);
+    connect(mPreferencesUI->recordButton, &QPushButton::toggled, mPreferencesUI->shortcutScrollArea, &QScrollArea::setDisabled);
+    connect(mPreferencesUI->abortButton, &QPushButton::clicked, this, &UBPreferencesController::abortClicked);
+    connect(mPreferencesUI->resetButton, &QPushButton::clicked, this, &UBPreferencesController::resetClicked);
+    connect(mPreferencesUI->noCtrl, &QCheckBox::toggled, UBShortcutManager::shortcutManager(), &UBShortcutManager::ignoreCtrl);
+    connect(mPreferencesUI->mainTabWidget, &QTabWidget::currentChanged, [this](int tab){
+        auto shortcutTab = mPreferencesUI->mainTabWidget->indexOf(mPreferencesUI->shortcutTab);
+
+        if (tab != shortcutTab) {
+            abortClicked();
+        }
+    });
+    connect(mPreferencesUI->keySequence, &QKeySequenceEdit::keySequenceChanged, this, [this](const QKeySequence& keySequence){
+        // check validity of shortcut
+        if (currentIndex.isValid())
+        {
+            const QString keyString{keySequence.toString()};
+            bool ok = UBShortcutManager::shortcutManager()->checkData(currentIndex.siblingAtColumn(2), keyString);
+            applyShortcutFilter(ok ? mPreferencesUI->filter->text() : keyString, ok ? -1 : 2);
+            mPreferencesUI->recordButton->setEnabled(ok);
+            mPreferencesUI->report->setText(ok ? "" : tr("Key sequence already in use"));
+            mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts(keySequence));
+        }
+    });
+    connect(UBApplication::app(), &QApplication::focusChanged, this, [this](QWidget*, QWidget* now){
+        // activate recording when input field gets focus
+        if (now == mPreferencesUI->keySequence || now == mPreferencesUI->mouseButton || now == mPreferencesUI->stylusButton)
+        {
+            if (mPreferencesUI->recordButton->isEnabled() && !mPreferencesUI->recordButton->isChecked())
+            {
+                mPreferencesUI->recordButton->click();
+            }
+        }
+    });
 }
 
 void UBPreferencesController::init()
@@ -358,6 +520,13 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+    // shortcut tab
+    mPreferencesUI->shortcutTableView->setModel(UBShortcutManager::shortcutManager());
+    mPreferencesUI->shortcutTableView->horizontalHeader()->setModel(UBShortcutManager::shortcutManager());
+    mPreferencesUI->shortcutTableView->horizontalHeader()->resizeSection(0, 150);
+    mPreferencesUI->shortcutTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    mPreferencesUI->noCtrl->setChecked(settings->value("Shortcut/IgnoreCtrl").toBool());
+    mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
 }
 
 void UBPreferencesController::close()
@@ -368,6 +537,12 @@ void UBPreferencesController::close()
     UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
+
+    // screen settings
+    if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
+    {
+        UBSettings::settings()->appScreenList->set(mScreenList);
+    }
 
     mPreferencesWindow->accept();
 }
@@ -452,7 +627,8 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(defaultValue);
 
     }
-    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->networkTab){
+    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->networkTab)
+    {
         bool defaultValue = settings->webUseExternalBrowser->reset().toBool();
         mPreferencesUI->useExternalBrowserCheckBox->setChecked(defaultValue);
         defaultValue = settings->webShowPageImmediatelyOnMirroredScreen->reset().toBool();
@@ -486,6 +662,23 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->lightBackgroundOpacitySlider->setValue(lightBackgroundOpacity);
         lightBackgroundCrossOpacityValueChanged(lightBackgroundOpacity);
 
+    }
+    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->shortcutTab)
+    {
+        if (mPreferencesUI->recordButton->isChecked())
+        {
+            abortClicked();
+        }
+
+        UBShortcutManager* sm = UBShortcutManager::shortcutManager();
+
+        for (int row = 0; row < sm->rowCount(); ++row)
+        {
+            QModelIndex rowIndex = sm->index(row, 0);
+            sm->resetData(rowIndex);
+        }
+
+        resetClicked();
     }
 }
 
@@ -697,6 +890,80 @@ void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
     mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
 }
 
+void UBPreferencesController::actionSelected(const QModelIndex& index)
+{
+    if (mPreferencesUI->recordButton->isChecked())
+    {
+        return;
+    }
+
+    currentIndex = index;
+    UBShortcutManager* sm = UBShortcutManager::shortcutManager();
+    const QKeySequence keySequence{sm->data(index.siblingAtColumn(2), UBShortcutManager::PrimaryShortcutRole).toString()};
+    mPreferencesUI->keySequence->setKeySequence(keySequence);
+    mPreferencesUI->mouseButton->setText(sm->data(index.siblingAtColumn(3)).toString());
+    mPreferencesUI->stylusButton->setText(sm->data(index.siblingAtColumn(4)).toString());
+
+    bool isAction = sm->data(index, UBShortcutManager::ActionRole).toBool();
+    mPreferencesUI->recordButton->setEnabled(true);
+    mPreferencesUI->shortcutsGroupBox->setEnabled(isAction);
+}
+
+void UBPreferencesController::recordingClicked(bool checked)
+{
+    if (!checked && currentIndex.isValid())
+    {
+        // recording finished
+        UBShortcutManager* sm = UBShortcutManager::shortcutManager();
+        sm->setData(currentIndex.siblingAtColumn(2), mPreferencesUI->keySequence->keySequence().toString());
+        sm->setData(currentIndex.siblingAtColumn(3), sm->buttonIndex(mPreferencesUI->mouseButton->text()));
+        sm->setData(currentIndex.siblingAtColumn(4), sm->buttonIndex(mPreferencesUI->stylusButton->text()));
+    }
+    else if (checked)
+    {
+        mPreferencesUI->keySequence->setFocus();
+    }
+
+    mPreferencesUI->shortcutTableView->setSelectionMode(checked ? QTableView::NoSelection : QTableView::SingleSelection);
+//    mPreferencesUI->recordButton->setText(checked ? tr("Accept", "preferencesDialog") : tr("Record", "preferencesDialog"));
+}
+
+void UBPreferencesController::abortClicked()
+{
+    applyShortcutFilter(mPreferencesUI->filter->text());
+
+    mPreferencesUI->recordButton->setEnabled(true);
+    mPreferencesUI->recordButton->setChecked(false);
+//    mPreferencesUI->recordButton->setText(tr("Record", "preferencesDialog"));
+    mPreferencesUI->shortcutTableView->setSelectionMode(QTableView::SingleSelection);
+    mPreferencesUI->report->setText("");
+    mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
+}
+
+void UBPreferencesController::resetClicked()
+{
+    if (mPreferencesUI->recordButton->isChecked())
+    {
+        abortClicked();
+    }
+
+    if (currentIndex.isValid())
+    {
+        UBShortcutManager* sm = UBShortcutManager::shortcutManager();
+
+        sm->resetData(currentIndex);
+        applyShortcutFilter(mPreferencesUI->filter->text());
+
+        const QKeySequence keySequence{sm->data(currentIndex.siblingAtColumn(2)).toString()};
+        mPreferencesUI->keySequence->setKeySequence(keySequence);
+        mPreferencesUI->mouseButton->setText(sm->data(currentIndex.siblingAtColumn(3)).toString());
+        mPreferencesUI->stylusButton->setText(sm->data(currentIndex.siblingAtColumn(4)).toString());
+    }
+
+    mPreferencesUI->report->setText("");
+    mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
+}
+
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
                                                const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
                                                const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
@@ -777,6 +1044,10 @@ UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)
     , mValidator(nullptr)
 {
     connect(this, &QLineEdit::textChanged, this, &UBScreenListLineEdit::onTextChanged);
+    UBApplication::displayManager->setScreenLabelParent(this);
+
+    connect(UBApplication::displayManager, &UBDisplayManager::screenLabelPressed, this, &UBScreenListLineEdit::addScreen);
+    connect(this, &UBScreenListLineEdit::screenListChanged, UBApplication::displayManager, &UBDisplayManager::disableScreenLabels);
 }
 
 void UBScreenListLineEdit::setDefault()
@@ -792,85 +1063,46 @@ void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusInEvent(focusEvent);
-
-    if (mScreenLabels.empty())
+    if (UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
     {
-        QStringList screenList = UBStringUtils::trimmed(text().split(','));
-
-        QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-        QStringList availableScreenIndexes;
-        int screenIndex = 1;
-        QFont font;
-        font.setPointSize(48);
-
-        for (QScreen* screen : screens)
-        {
-            QString index = QString::number(screenIndex);
-            availableScreenIndexes << index;
-
-            QPushButton* button = new QPushButton(this);
-            button->setWindowFlag(Qt::FramelessWindowHint, true);
-            button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
-            button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
-            button->setWindowFlag(Qt::Window, true);
-            button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
-            button->setAttribute(Qt::WA_ShowWithoutActivating, true);
-            button->setProperty("screenIndex", index);
-#ifdef QT_DEBUG
-            button->setText(index + "(" + screen->name() + ")");
-#else
-            button->setText(index);
-#endif
-            button->setFont(font);
-            button->move(screen->geometry().topLeft());
-            button->setMinimumSize(300, 150);
-            button->setDisabled(screenList.contains(index));
-            button->setCursor(Qt::PointingHandCursor);
-            button->show();
-
-            connect(button, &QPushButton::pressed, this, &UBScreenListLineEdit::addScreen);
-
-            mScreenLabels << button;
-            ++screenIndex;
-        }
-
-        if (!mValidator)
-        {
-            mValidator = new UBStringListValidator(this);
-            setValidator(mValidator);
-        }
-
-        mValidator->setValidationStringList(availableScreenIndexes);
+        UBApplication::displayManager->showScreenLabels(true);
     }
+
+    if (!mValidator)
+    {
+        mValidator = new UBStringListValidator(this);
+        setValidator(mValidator);
+    }
+
+    mValidator->setValidationStringList(UBApplication::displayManager->availableScreenIndexes());
+
 }
 
 void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
-    qDeleteAll(mScreenLabels);
-    mScreenLabels.clear();
+
+    if (focusEvent->reason() != Qt::ActiveWindowFocusReason &&
+        UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
+    {
+        UBApplication::displayManager->showScreenLabels(false);
+    }
 }
 
-void UBScreenListLineEdit::addScreen()
+void UBScreenListLineEdit::addScreen(const QString& screenIndex)
 {
-    QPushButton* button = dynamic_cast<QPushButton*>(sender());
+    qDebug() << "addScreen" << screenIndex;
 
-    if (button)
+    QString list = text();
+    mValidator->fixup(list);
+
+    if (list.isEmpty())
     {
-        QString list = text();
-        mValidator->fixup(list);
-        QString screenIndex = button->property("screenIndex").toString();
-
-        if (list.isEmpty())
-        {
-            setText(screenIndex);
-        }
-        else
-        {
-            setText(list + "," + screenIndex);
-        }
-
-        button->setEnabled(false);
+        setText(screenIndex);
+    }
+    else
+    {
+        setText(list + "," + screenIndex);
     }
 }
 
@@ -878,30 +1110,16 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
     const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : std::as_const(mScreenLabels))
-    {
-        button->setDisabled(screenList.contains(button->property("screenIndex").toString()));
-    }
-
-    if (input.isEmpty() || input.right(1) == ',')
-    {
-        // create and attach a new QCompleter
-        QStringList model;
-
-        for (QPushButton* button : std::as_const(mScreenLabels))
-        {
-            if (button->isEnabled())
-            {
-                model << input + button->property("screenIndex").toString();
-            }
-        }
-    }
-
     // user indication of acceptable input
     if (hasAcceptableInput())
     {
         setStyleSheet("");
         emit screenListChanged(screenList);
+
+        QTimer::singleShot(100, this, [this](){
+            // keep focus
+            activateWindow();
+        });
     }
     else
     {
@@ -955,4 +1173,86 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
 void UBStringListValidator::setValidationStringList(const QStringList &list)
 {
     mList = list;
+}
+
+UBScreenLayoutPreview::UBScreenLayoutPreview(QWidget* parent)
+    : QWidget(parent)
+{
+    setMinimumSize(QSize(480, 260));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (UBApplication::displayManager)
+    {
+        connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged,
+                this, &UBScreenLayoutPreview::refreshScreens);
+        connect(UBApplication::displayManager, &UBDisplayManager::screenLayoutChanged,
+                this, &UBScreenLayoutPreview::refreshScreens);
+    }
+
+    refreshScreens();
+}
+
+void UBScreenLayoutPreview::refreshScreens()
+{
+    mScreens = UBApplication::displayManager ? UBApplication::displayManager->availableScreens() : QList<QScreen*>();
+    update();
+}
+
+void UBScreenLayoutPreview::paintEvent(QPaintEvent* event)
+{
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    if (mScreens.isEmpty())
+    {
+        painter.drawText(rect(), Qt::AlignCenter, tr("No displays detected"));
+        return;
+    }
+
+    const int margin = 10;
+    QRectF availableRect = QRectF(rect()).adjusted(margin, margin, -margin, -margin);
+
+    QRectF bounding;
+    for (QScreen* screen : mScreens)
+    {
+        bounding = bounding.isNull() ? QRectF(screen->geometry()) : bounding.united(QRectF(screen->geometry()));
+    }
+
+    if (bounding.width() <= 0 || bounding.height() <= 0)
+    {
+        painter.drawText(rect(), Qt::AlignCenter, tr("Invalid display layout"));
+        return;
+    }
+
+    const qreal scale = std::min(availableRect.width() / bounding.width(),
+                                 availableRect.height() / bounding.height());
+
+    const QPointF offset = availableRect.topLeft() - bounding.topLeft() * scale;
+
+    const QColor screenColor = palette().alternateBase().color();
+    const QColor primaryColor = palette().mid().color();
+    const QColor borderColor = palette().mid().color().darker(120);
+    const QFont font = painter.font();
+
+    int index = 1;
+    for (QScreen* screen : mScreens)
+    {
+        QRectF g(screen->geometry());
+        QRectF mapped(g.topLeft() * scale + offset, g.size() * scale);
+
+        QColor fill = (screen == QGuiApplication::primaryScreen()) ? primaryColor : screenColor;
+        painter.setBrush(fill);
+        painter.setPen(QPen(borderColor, 1.0));
+        painter.drawRoundedRect(mapped, 6, 6);
+
+        painter.setPen(palette().windowText().color());
+        QFont f = font;
+        f.setBold(true);
+        painter.setFont(f);
+        painter.drawText(mapped, Qt::AlignCenter, QString::number(index));
+
+        ++index;
+    }
 }

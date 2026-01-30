@@ -1370,10 +1370,8 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Sadržaj nije podržan u ciljanom formatu.</translation>
     </message>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="880"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1007"/>
         <source>Remove Page</source>
-        <translation>Ukloni stranicu</translation>
+        <translation type="vanished">Ukloni stranicu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -1388,12 +1386,6 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../../src/core/UBSceneCache.cpp" line="243"/>
         <source>Moving cached scenes (%1/%2)</source>
         <translation>Premještanje predmemoriranih scena (%1/%2)</translation>
-    </message>
-    <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="881"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.cpp" line="1008"/>
-        <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="46"/>
@@ -1442,19 +1434,19 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="569"/>
+        <location filename="../../src/core/UBApplication.cpp" line="573"/>
         <source>Page Size</source>
         <translation>Veličina stranice</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="590"/>
+        <location filename="../../src/core/UBApplication.cpp" line="594"/>
         <source>Podcast</source>
         <translation>Podcast</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="356"/>
-        <location filename="../../src/core/UBApplication.cpp" line="402"/>
-        <location filename="../../src/core/UBApplication.cpp" line="645"/>
+        <location filename="../../src/core/UBApplication.cpp" line="358"/>
+        <location filename="../../src/core/UBApplication.cpp" line="404"/>
+        <location filename="../../src/core/UBApplication.cpp" line="649"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation>Tvoja se UBX datoteka ne može izravno otvoriti. Uvezi je umjesto toga u modusu „Dokumenti”</translation>
     </message>
@@ -1467,22 +1459,22 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>Update available</source>
         <translation>Dostupna je nova verzija</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="586"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
         <source>New update available, would you go to the web page ?</source>
         <translation>Dostupna je nova verzija. Želiš li prijeći na web stranicu?</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>Update</source>
         <translation>Aktualiziraj</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="592"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
         <source>No update available</source>
         <translation>Nema nove verzije</translation>
     </message>
@@ -1503,12 +1495,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="112"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="109"/>
         <source>Group</source>
         <translation>Grupiraj</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="113"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
         <source>Ungroup</source>
         <translation>Rastavi grupu</translation>
     </message>
@@ -1523,50 +1515,50 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Dokument je upravo spremljen …</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="847"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="915"/>
         <source>Deleting page %1</source>
         <translation>Brisanje stranice %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="865"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="927"/>
         <source>Page %1 deleted</source>
         <translation>Stranica %1 izbrisana</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1198"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1294"/>
         <source>Downloading content %1 failed</source>
         <translation>Neuspjelo preuzimanje sadržaja %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1207"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1303"/>
         <source>Download finished</source>
         <translation>Preuzimanje završeno</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1338"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1383"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2328"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2364"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1434"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1479"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2396"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2432"/>
         <source>Add file operation failed: file copying error</source>
         <translation>Postupak dodavanja datoteke neuspio: greška tijekom kopiranja datoteke</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1534"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1630"/>
         <source>Unknown tool type %1</source>
         <translation>Nepoznata vrsta alata %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1579"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1675"/>
         <source>Unknown content type %1</source>
         <translation>Nepoznata vrsta sadržaja %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2723"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2791"/>
         <source>Add Item</source>
         <translation>Dodaj element</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2725"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2793"/>
         <source>All Supported (%1)</source>
         <translation>Sve podržane (%1)</translation>
     </message>
@@ -1576,12 +1568,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Boja</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1547"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1643"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1574"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1670"/>
         <source>Could not find document.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1589,12 +1581,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="943"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="929"/>
         <source>CapturedImage</source>
         <translation>Snimljena slika</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="948"/>
+        <location filename="../../src/board/UBBoardPaletteManager.cpp" line="934"/>
         <source>Error Adding Image to Library</source>
         <translation>Greška tijekom dodavanja slike u biblioteku</translation>
     </message>
@@ -1609,12 +1601,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardView</name>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1774"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1809"/>
         <source>Is it for Board or Widget ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1775"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1810"/>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1683,43 +1675,43 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1933"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3848"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3849"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3869"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3870"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3905"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3906"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1909"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3725"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3726"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3761"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3762"/>
         <source>Trash</source>
         <translation>Smeće</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1934"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1910"/>
         <source>Untitled Documents</source>
         <translation>Dokument bez naslova</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2025"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1997"/>
         <source>New Folder</source>
         <translation>Nova mapa</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2197"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2169"/>
         <source>Add Folder of Images</source>
         <translation>Dodaj mapu sa slikama</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2198"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2170"/>
         <source>Add Images</source>
         <translation>Dodaj slike</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2199"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2171"/>
         <source>Add Pages from File</source>
         <translation>Dodaj stranice iz datoteke</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2556"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2527"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation>
@@ -1729,12 +1721,12 @@ Do you wish to override the security check and continue ?   </source>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2566"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2537"/>
         <source>Duplicating Document %1</source>
         <translation>Dupliciranje dokumenta %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2570"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2541"/>
         <source>Document %1 copied</source>
         <translation>Dokument %1 kopiran</translation>
     </message>
@@ -1747,93 +1739,91 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">Stvarno želiš ukloniti odabrane elemente?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3275"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3228"/>
         <source>Open Supported File</source>
         <translation>Otvori podržanu datoteku</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3290"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3156"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3243"/>
         <source>Importing file %1...</source>
         <translation>Uvoz datoteke %1 …</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2489"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2501"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3466"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2465"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2477"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3329"/>
         <source>Opening document in Board. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2507"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3472"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2483"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3335"/>
         <source>Document opened successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3194"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3332"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3165"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3260"/>
         <source>Failed to import file ... </source>
         <translation>Neuspio uvoz datoteke …</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3221"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
         <source>Import all Images from Folder</source>
         <translation>Uvezi sve slike iz mape</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3253"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3206"/>
         <source>Folder does not contain any image files</source>
         <translation>Mapa ne sadžri slikovne datoteke</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3574"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3439"/>
         <source>Open Document</source>
         <translation>Otvori dokument</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3575"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3440"/>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Dokument „%1” je generiran s novijom verzijom OpenBoarda (%2). Otvaranjem dokumenta ćeš možda izgubiti neke informacije. Želiš li nastaviti?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3630"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3495"/>
         <source>Add all Images to Document</source>
         <translation>Dodaj sve slike dokumentu</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3631"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3496"/>
         <source>All Images (%1)</source>
         <translation>Sve slike (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3661"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3517"/>
         <source>Selection does not contain any image files!</source>
         <translation>Odabir ne sadrži slikovne datoteke!</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3873"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3874"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3894"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3895"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3729"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3730"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3750"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3751"/>
         <source>Delete</source>
         <translation>Izbriši</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4181"/>
         <source>Page %1</source>
-        <translation>Stranica %1</translation>
+        <translation type="vanished">Stranica %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="4183"/>
         <source>Title page</source>
-        <translation>Naslovna stranica</translation>
+        <translation type="vanished">Naslovna stranica</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3888"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3889"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3900"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3901"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3744"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3745"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3756"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3757"/>
         <source>Empty</source>
         <translation>Isprazni</translation>
     </message>
@@ -1842,122 +1832,107 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">Aktualiziranje prikaza minijatura dokumenta (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2613"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2584"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2614"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2585"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2698"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2669"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2699"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2704"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2675"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2705"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2676"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2722"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2693"/>
         <source>Emptying My Documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2723"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2694"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2759"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2730"/>
         <source>Emptying Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2760"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2731"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2776"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2747"/>
         <source>Moving %1 elements to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2777"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2748"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2785"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2756"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2786"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2757"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2792"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2763"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2793"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2764"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3145"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3116"/>
         <source>Open Supported File(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3404"/>
-        <source>Refreshing Document Thumbnails View (%1 pages)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3408"/>
-        <source>Refreshing Document Thumbnails View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3412"/>
-        <source>Document Thumbnails View up-to-date. Repainting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3972"/>
+        <location filename="../../src/document/UBDocument.cpp" line="64"/>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3973"/>
+        <location filename="../../src/document/UBDocument.cpp" line="66"/>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3979"/>
+        <location filename="../../src/document/UBDocument.cpp" line="73"/>
         <source>Remove page %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3980"/>
+        <location filename="../../src/document/UBDocument.cpp" line="74"/>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1965,57 +1940,57 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBDocumentManager</name>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="75"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
         <source>images</source>
         <translation>slike</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="76"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
         <source>videos</source>
         <translation>videa</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="77"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="79"/>
         <source>objects</source>
         <translation>objekti</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="78"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="80"/>
         <source>widgets</source>
         <translation>programčići</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="132"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="134"/>
         <source>All supported files (*.%1)</source>
         <translation>Sve podržane datoteke (*.%1)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="216"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="219"/>
         <source>Creating %1 pages. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="287"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="297"/>
         <source>Inserting page %1 of %2</source>
         <translation>Umetanje stranice %1 od %2</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="230"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="234"/>
         <source>Import successful.</source>
         <translation>Uspio uvoz.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="248"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="255"/>
         <source>Importing file %1</source>
         <translation>Uvoz datoteke %1</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="295"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="305"/>
         <source>Import of file %1 successful.</source>
         <translation>Uvoz datoteke %1 uspio.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBDocumentManager.cpp" line="338"/>
+        <location filename="../../src/core/UBDocumentManager.cpp" line="350"/>
         <source>File %1 saved</source>
         <translation>Datoteka %1 je spremljena</translation>
     </message>
@@ -2038,17 +2013,17 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">Prihvati</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="112"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="105"/>
         <source>Replace</source>
         <translation>Zamijeni</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="113"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="106"/>
         <source>Cancel</source>
         <translation>Odustani</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="192"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="185"/>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
@@ -2057,22 +2032,22 @@ Ako se ime ne promijeni dokument će se prepisati.
 Davanjem novog imena stvorit će se novi dokument.</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="111"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="104"/>
         <source>Rename</source>
         <translation type="unfinished">Preimenuj</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="140"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="133"/>
         <source>Replace all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="141"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="134"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="142"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="135"/>
         <source>Skip all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2080,17 +2055,17 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="397"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="390"/>
         <source>My documents</source>
         <translation>Moji dokumenti</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="401"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="394"/>
         <source>Trash</source>
         <translation>Smeće</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="757"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="749"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>%1 stranica je kopirana</numerusform>
@@ -2102,7 +2077,7 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1713"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1690"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>%1 stranica kopirana</numerusform>
@@ -2119,7 +2094,7 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
         <translation type="vanished">Stvarno želiš ukloniti odabrane elemente?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1657"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1650"/>
         <source>Copying page %1/%2</source>
         <translation>Kopiranje stranice %1/%2</translation>
     </message>
@@ -2135,16 +2110,6 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
         <location filename="../../src/gui/UBDownloadWidget.cpp" line="74"/>
         <source>Cancel</source>
         <translation>Odustani</translation>
-    </message>
-</context>
-<context>
-    <name>UBDraggableLivePixmapItem</name>
-    <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="593"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="596"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="598"/>
-        <source>Page %0</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2655,7 +2620,7 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1241"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1248"/>
         <source>Web</source>
         <translation>Web</translation>
     </message>
@@ -2663,7 +2628,7 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="830"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="837"/>
         <source>Loading ...</source>
         <translation>Učitavanje …</translation>
     </message>
@@ -2722,19 +2687,20 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="180"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="200"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="202"/>
         <source>Importing file %1...</source>
         <translation>Uvoz datoteke %1 …</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBImportDocument.cpp" line="188"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="207"/>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="213"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="209"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="215"/>
         <source>Import of file %1 failed.</source>
         <translation>Uvoz datoteke %1 neuspio.</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportDocument.cpp" line="219"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="194"/>
+        <location filename="../../src/adaptors/UBImportDocument.cpp" line="221"/>
         <source>Import successful.</source>
         <translation>Uvoz uspio.</translation>
     </message>
@@ -2903,27 +2869,37 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBPersistenceManager</name>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="742"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="266"/>
+        <source>Retrieved - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="280"/>
+        <source>Broken - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="748"/>
         <source>(copy)</source>
         <translation>(kopija)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>Document Repository Loss</source>
         <translation>Gubitak repozitorija dokumenata</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1408"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1419"/>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>OpenBoard je izgubio pristup repozitoriju dokumenata „%1”. Nažalost, program se mora zatvoriti kako bi se izbjeglo oštećenje podataka. Zadnje promjene će se možda također izgubiti.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1161"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1172"/>
         <source>Renaming pages (%1/%2)</source>
         <translation>Preimenovanje stranica (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="231"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="227"/>
         <source>Retrieving all your documents (found : %1)</source>
         <translation>Dohvaćanje svih tvojih dokumenata (pronađeno: %1)</translation>
     </message>
@@ -3290,7 +3266,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>%1 minijature generirane …</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="107"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="128"/>
         <source>Loading thumbnails (%1 pages)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3302,8 +3278,7 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="219"/>
-        <location filename="../../src/gui/UBDocumentThumbnailsView.h" line="261"/>
+        <location filename="../../src/gui/UBThumbnailTextItem.cpp" line="74"/>
         <source>Page %0</source>
         <translation>Stranica %1</translation>
     </message>

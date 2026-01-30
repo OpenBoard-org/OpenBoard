@@ -37,13 +37,13 @@
 
 #include "UBItem.h"
 
+class UBBackgroundRuling;
 class UBGraphicsPixmapItem;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
-class UBGraphicsAppleWidgetItem;
 class UBToolWidget;
 class UBGraphicsPDFItem;
 class UBGraphicsTextItem;
@@ -153,7 +153,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void removeItems(const QSet<QGraphicsItem*>& item);
 
         UBGraphicsWidgetItem* addWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
-        UBGraphicsAppleWidgetItem* addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
 
@@ -214,19 +213,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
             return !mDarkBackground;
         }
 
-        UBPageBackground pageBackground() const
-        {
-            return mPageBackground;
-        }
+        const UBBackgroundRuling* background() const;
 
         int backgroundGridSize() const
         {
             return mBackgroundGridSize;
-        }
-
-        bool intermediateLines() const
-        {
-            return mIntermediateLines;
         }
 
         bool hasBackground()
@@ -342,10 +333,9 @@ public slots:
         void initStroke();
         void hideTool();
 
-        void setBackground(bool pIsDark, UBPageBackground pBackground);
+        void setSceneBackground(bool pIsDark, const UBBackgroundRuling *background);
         void setBackgroundZoomFactor(qreal zoom);
         void setBackgroundGridSize(int pSize);
-        void setIntermediateLines(bool checked);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -442,9 +432,8 @@ signals:
         std::shared_ptr<UBDocumentProxy> mDocument;
 
         bool mDarkBackground;
-        UBPageBackground mPageBackground;
+        const UBBackgroundRuling* mBackground{nullptr};
         int mBackgroundGridSize;
-        bool mIntermediateLines;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;

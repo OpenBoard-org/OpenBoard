@@ -61,7 +61,9 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 #endif
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
-#if POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
+#if POPPLER_VERSION_MAJOR > 25 || (POPPLER_VERSION_MAJOR == 25 && POPPLER_VERSION_MINOR >= 12)
+    mDocument = new PDFDoc(std::make_unique<GooString>(static_cast<std::string_view>(filename.toLocal8Bit())));
+#elif POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
     mDocument = new PDFDoc(std::make_unique<GooString>(filename.toLocal8Bit()));
 #else
     mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
@@ -284,7 +286,13 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
             Q_ASSERT(qFuzzyCompare(xscale, yscale)); // Zoom equal in all axes expected.
             Q_ASSERT(xscale > 0.0); // Potential Div0 later if this assert fail.
 
-            qreal zoomRequested = xscale;
+            qreal devicePixelRatio = 1.0;
+            if (p && p->device())
+            {
+                devicePixelRatio = p->device()->devicePixelRatio();
+            }
+            qreal zoomRequested = xscale * devicePixelRatio;
+
             int zoomIndex = 0;
 
             // Choose a zoom which is superior or equivalent than the user choice (= no loss, upscaling).

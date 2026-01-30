@@ -99,7 +99,7 @@ class UBDesktopAnnotationController : public QObject
         void restoreUniboard();
 
     protected:
-        QPixmap getScreenPixmap();
+        void getScreenPixmap(std::function<void (QPixmap)> callback);
 
         UBBoardView* mTransparentDrawingView;       
         std::shared_ptr<UBGraphicsScene> mTransparentDrawingScene;
@@ -132,6 +132,7 @@ class UBDesktopAnnotationController : public QObject
         void setAssociatedPalettePosition(UBActionPalette* palette, const QString& actionName);
         void togglePropertyPalette(UBActionPalette* palette);
         void updateMask(bool bTransparent);
+        static QPixmap clipboardScreenshot();
 
         UBDesktopPalette *mDesktopPalette;
         //UBKeyboardPalette *mKeyboardPalette;
