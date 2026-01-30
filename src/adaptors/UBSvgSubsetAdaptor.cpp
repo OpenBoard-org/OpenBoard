@@ -63,7 +63,6 @@
 
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
-#include "board/UBDrawingController.h"
 #include "board/UBBoardPaletteManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -919,22 +918,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                     currentWidget = 0;
                 }
             }
-            else if (src.contains(".wdgt")) // NOTE @letsfindaway obsolete
-            {
-                UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
-                if (appleWidgetItem)
-                {
-                    appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                    appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
-
-                    mScene->addItem(appleWidgetItem);
-
-                    appleWidgetItem->show();
-
-                    currentWidget = appleWidgetItem;
-                }
-            }
             else if (src.contains(".wgt"))
             {
                 UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
@@ -1431,14 +1414,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
 
         if (audioItem && audioItem->isVisible()) {
             audioItemToLinkedAudio(audioItem);
-            continue;
-        }
-
-        // Is the item an app? // NOTE @letsfindaway obsolete
-        UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-        if (appleWidgetItem && appleWidgetItem->isVisible())
-        {
-            graphicsAppleWidgetToSvg(appleWidgetItem);
             continue;
         }
 
@@ -2609,14 +2584,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     }
 }
 
-
-
-// NOTE @letsfindaway obsolete
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem* item)
-{
-    graphicsWidgetToSvg(item);
-}
-
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsW3CWidgetToSvg(UBGraphicsW3CWidgetItem* item)
 {
     graphicsWidgetToSvg(item);
@@ -2711,34 +2678,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     }
 
     mXmlWriter.writeEndElement();
-}
-
-// NOTE @letsfindaway obsolete
-UBGraphicsAppleWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsAppleWidgetFromSvg()
-{
-
-    auto widgetUrl = mXmlReader.attributes().value(mNamespaceUri, "src");
-
-    if (widgetUrl.isNull())
-    {
-        qWarning() << "cannot make sens of widget src value";
-        return 0;
-    }
-
-    QString href = widgetUrl.toString();
-
-    QUrl url(href);
-
-    if (url.isRelative())
-    {
-        href = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(widgetUrl.toString());
-    }
-
-    UBGraphicsAppleWidgetItem* widgetItem = new UBGraphicsAppleWidgetItem(QUrl::fromLocalFile(href));
-
-    graphicsItemFromSvg(widgetItem);
-
-    return widgetItem;
 }
 
 UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidgetFromSvg()

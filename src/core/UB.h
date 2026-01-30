@@ -45,11 +45,9 @@ struct UBMimeType
     {
         RasterImage = 0,
         VectorImage,
-        AppleWidget,
         W3CWidget,
         Video,
         Audio,
-        Flash,
         PDF,
         OpenboardTool,
         Group,

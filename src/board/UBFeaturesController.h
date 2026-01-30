@@ -108,7 +108,6 @@ enum UBFeatureElementType
     FEATURE_AUDIO,
     FEATURE_VIDEO,
     FEATURE_IMAGE,
-    FEATURE_FLASH,
     FEATURE_TRASH,
     FEATURE_FAVORITE,
     FEATURE_SEARCH,
@@ -230,7 +229,6 @@ public:
     static const QString moviesPath;
     static const QString picturesPath;
     static const QString appPath;
-    static const QString flashPath;
     static const QString shapesPath;
     static const QString interactPath;
     static const QString trashPath;
@@ -248,7 +246,6 @@ signals:
 private slots:
     void addNewFolder(QString name);
     void startThread();
-    void createNpApiFeature(const QString &str);
 
 private:
 
@@ -278,14 +275,12 @@ private:
     QUrl mUserVideoDirectoryPath;
     QUrl mUserPicturesDirectoryPath;
     QUrl mUserInteractiveDirectoryPath;
-    QUrl mUserAnimationDirectoryPath;
 
     QString libraryPath;
     QUrl mLibPicturesDirectoryPath;
     QUrl mLibAudiosDirectoryPath;
     QUrl mLibVideosDirectoryPath;
     QUrl mLibInteractiveDirectoryPath;
-    QUrl mLibAnimationsDirectoryPath;
     QUrl mLibApplicationsDirectoryPath;
     QUrl mLibShapesDirectoryPath;
 
@@ -304,7 +299,6 @@ private:
     UBFeature picturesElement;
     UBFeature interactElement;
     UBFeature applicationsElement;
-    UBFeature flashElement;
     UBFeature shapesElement;
     UBFeature webSearchElement;
 

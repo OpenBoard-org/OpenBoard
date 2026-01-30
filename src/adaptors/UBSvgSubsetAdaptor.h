@@ -44,7 +44,6 @@ class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;
 class UBGraphicsVideoItem;
 class UBGraphicsAudioItem;
-class UBGraphicsAppleWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsTextItem;
 class UBGraphicsCurtainItem;
@@ -153,8 +152,6 @@ class UBSvgSubsetAdaptor
                 UBGraphicsMediaItem* videoItemFromSvg();
 
                 UBGraphicsMediaItem* audioItemFromSvg();
-
-                UBGraphicsAppleWidgetItem* graphicsAppleWidgetFromSvg();
 
                 UBGraphicsW3CWidgetItem* graphicsW3CWidgetFromSvg();
 
@@ -270,7 +267,6 @@ class UBSvgSubsetAdaptor
                 void videoItemToLinkedVideo(UBGraphicsVideoItem *videoItem);
                 void audioItemToLinkedAudio(UBGraphicsAudioItem *audioItem);
                 void graphicsItemToSvg(QGraphicsItem *item);
-                void graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem *item);
                 void graphicsW3CWidgetToSvg(UBGraphicsW3CWidgetItem *item);
                 void graphicsWidgetToSvg(UBGraphicsWidgetItem *item);
                 void textItemToSvg(UBGraphicsTextItem *item);

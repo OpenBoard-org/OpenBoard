@@ -475,14 +475,10 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "wmx") return "video/x-ms-wmx";
     if (ext == "avi") return "video/x-msvideo";
     if (ext == "ogv") return "video/ogg";
-    if (ext == "flv") return "video/x-flv"; // TODO UB 4.x  ... we need to be smarter ... flash may need an external plugin :-(
     if (ext == "m4v") return "video/x-m4v";
     // W3C widget
     if (ext == "wgt") return "application/widget";
     if (ext == "wgs") return "application/search";
-    // Apple widget
-    if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-( // NOTE @letsfindaway obsolete
-    if (ext == "swf") return "application/x-shockwave-flash";
     if (ext == "rdf") return "application/openboard-document";
 
     return "";
@@ -555,8 +551,6 @@ QString UBFileSystemUtils::fileExtensionFromMimeType(const QString& pMimeType)
     if (pMimeType == "video/x-flv") return "flv";
     if (pMimeType == "video/x-m4v") return "m4v";
     if (pMimeType == "application/widget") return "wgt";
-    if (pMimeType == "application/vnd.apple-widget") return "wdgt"; //mime type invented by us :-(
-    if (pMimeType == "application/x-shockwave-flash") return "swf";
 
     return "";
 
@@ -584,10 +578,6 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::Html;
     }
-    else if (typeString == "application/vnd.apple-widget")
-    {
-        type = UBMimeType::AppleWidget;
-    }
     else if (typeString == "application/widget")
     {
         type = UBMimeType::W3CWidget;
@@ -599,10 +589,6 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     else if (typeString.startsWith("audio/"))
     {
         type = UBMimeType::Audio;
-    }
-    else if (typeString.startsWith("application/x-shockwave-flash"))
-    {
-        type = UBMimeType::Flash;
     }
     else if (typeString.startsWith("application/pdf"))
     {

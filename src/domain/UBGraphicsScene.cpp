@@ -1715,11 +1715,7 @@ UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pWidgetUrl);
 
-    if(widgetType == UBWidgetType::Apple) // NOTE @letsfindaway obsolete
-    {
-        return addAppleWidget(pWidgetUrl, pPos);
-    }
-    else if(widgetType == UBWidgetType::W3C)
+    if(widgetType == UBWidgetType::W3C)
     {
         return addW3CWidget(pWidgetUrl, pPos);
     }
@@ -1728,16 +1724,6 @@ UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
         qDebug() << "UBGraphicsScene::addWidget: Unknown widget Type";
         return 0;
     }
-}
-
-// NOTE @letsfindaway obsolete
-UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
-{
-    UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(pWidgetUrl);
-
-    addGraphicsWidget(appleWidget, pPos);
-
-    return appleWidget;
 }
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos)

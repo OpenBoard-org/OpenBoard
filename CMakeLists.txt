@@ -67,8 +67,7 @@ set(OPENBOARD_ETC_FILE      ${OPENBOARD_ETC_DIR}/OpenBoard.config
                             ${OPENBOARD_ETC_DIR}/OpenBoard.css
                             ${OPENBOARD_ETC_DIR}/widgets.md5sum)
 set(OPENBOARD_TEMPLATE_FILE ${OPENBOARD_ETC_DIR}/asyncAPI.js
-                            ${OPENBOARD_ETC_DIR}/intranet-podcast-metadata.template
-                            ${OPENBOARD_ETC_DIR}/npapi-wrapper.config.xml)
+                            ${OPENBOARD_ETC_DIR}/intranet-podcast-metadata.template)
 
 set(OPENBOARD_ICON_FILE     resources/images/ch.openboard.OpenBoard.svg)
 set(OPENBOARD_DESKTOP_FILE  resources/linux/ch.openboard.OpenBoard.desktop)
