@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 Jonah Brüchert -->
+<component type="desktop-application">
+  <id>ch.openboard.OpenBoard</id>
+  <name>OpenBoard</name>
+  <summary>Interactive whiteboard for schools and universities</summary>
+  <summary xml:lang="es">Cuadro blanco interactivo para escuelas y universidades</summary>
+  <summary xml:lang="nb">Interaktiv tavle for skoler og universiteter</summary>
+  <summary xml:lang="pt_BR">Quadro branco interativo para escolas e universidades</summary>
+  <summary xml:lang="de">Interaktives Whiteboard für Schulen und Universitäten</summary>
+  <summary xml:lang="fr">Tableau blanc interactif pour écoles et universités</summary>
+  <summary xml:lang="it">Lavagna interattiva per la scuola e l'università</summary>
+  <project_license>GPL-3.0-only</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer id="ch.ge.edu">
+    <name>Département de l'Instruction Publique (DIP-SEM)</name>
+  </developer>
+  <description>
+    <p>OpenBoard is an open source cross-platform teaching software for interactive whiteboard designed primarily for use in schools and universities. It can be used both with interactive whiteboards or in a dual-screen setup with a pen-tablet display and a beamer.</p>
+    <p xml:lang="es">OpenBoard es un software de enseñanza de plataforma cruzada de código abierto para cuadros interactivos diseñado principalmente para uso en escuelas y universidades. Se puede utilizar con marcos interactivos o en una configuración de pantalla dual con un monitor de escritorio gráfico y un proyector.</p>
+    <p xml:lang="nb">OpenBoard er et kryssplattform og åpen kildekode undervisningsprogram for interaktive tavler, spesielt designet for bruk i skoler og universiteter. Det kan brukes både med interaktive tavler eller i et dobbelt skjermoppsett med tegnebrett med skjerm og projektor.</p>
+    <p xml:lang="pt_BR">O OpenBoard é um software de ensino de plataforma cruzada de código aberto para quadros interativos projetado principalmente para uso em escolas e universidades. Ele pode ser usado com quadros interativos ou em uma configuração de tela dupla com um monitor de mesa gráfica e um projetor.</p>
+    <p xml:lang="de">OpenBoard ist ein interaktives Open-Source-Whiteboard für den Einsatz in Schulen oder Universitäten. Es kann entweder mit einem interaktiven Whiteboard oder in einer Dual-Screen-Konfiguration mit einem digitalen Tablet und einem Beamer verwendet werden.</p>
+    <p xml:lang="fr">OpenBoard est un logiciel d’enseignement interactif pour TNI open source conçu pour être utilisé dans les écoles ou universités. Il peut être utilisé indifféremment avec un tableau blanc interactif ou dans une configuration à double écran avec tablette numérique et un beamer.</p>
+    <p xml:lang="it">OpenBoard è un'applicazione di lavagna interattiva open source e multipiattaforma progettata principalmente per l'uso nelle scuole e nelle università. Può essere usata sia con lavagne interattive che con uno schermo tavoletta a penna, con o senza un'impostazione a doppio schermo, ed un proiettore.</p>
+  </description>
+  <url type="homepage">https://www.openboard.ch</url>
+  <url type="bugtracker">https://github.com/OpenBoard-org/OpenBoard/issues</url>
+  <url type="help">https://openboard.ch/support.en.html</url>
+  <url type="translate">https://github.com/OpenBoard-org/openboard/pulls</url>
+  <content_rating type="oars-1.0"/>
+  <translation type="qt">OpenBoard</translation>
+  <launchable type="desktop-id">ch.openboard.OpenBoard.desktop</launchable>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+    <control>tablet</control>
+  </supports>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Board mode</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-227c6881013a1d904aca1a358400f3bd.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>Web browser</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-b93e95fc23edb6b9f70e571bc3e17b87.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>File browser</caption>
+      <image type="source">https://github.com/flathub/ch.openboard.OpenBoard/blob/fix-screenshots/screenshots/ch.openboard.OpenBoard-5d3ef7e025a1a382c1ed92fba185087a.png?raw=true</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="1.7.3" date="2024-12-17">
+      <description>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Tried to mitigate some audio related issues on Debian, by forcing the use of the ffmpeg backend (see Known Issues for more details on the remaining bugs)</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>On any widget, select options (Drop-down lists) won't appear at the right position. Be careful as it sometimes will appear behind the left or right palette of the Board Mode.</li>
+          <li>Reading multiple audio files, then, within the same session, coming back to a previously played audio file end in the audio file not being played correctly, especially with short audios. Duplicate the audio to replay it without any issue, or use any other way to play audio (desktop mode, letters order interactivity, online audio and video apps like peertube, etc).</li>
+          <li>Some use cases remain where you can end up with documents at the same level having the same name.</li>
+          <li>An issue can occur, that is not clearly identified at this time, when importing an UBX, where users end up with the imported documents appearing multiple times in the documents tree, at the same level.</li>
+          <li>In Desktop Mode, Gnome Dock should be set to bottom position to workaround the issue with the OpenBoard left palette not being usable from above it.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="1.7.2" date="2024-11-18">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>Added the "Snap-to-Grid" feature, which allows the user to snap elements on the lines of the backgrounds. If no ruled/crossed background is displayed, the feature uses the crossed background setting.</li>
+        </ul>
+        <p>Improvements</p>
+        <ul>
+          <li>Scenes are loaded on idle time of the main thread when possible</li>
+          <li>Improved a bit how thumbnails are handled to avoid useless and heavy operations</li>
+          <li>Export axes tools when exporting document to PDF</li>
+          <li>The current rotation angle is now displayed for any object, also for a group of objets being rotated</li>
+          <li>The current z-index of an object is now displayed when clicking on the layer up/down buttons.</li>
+          <li>It is now possible to draw on each side of the triangle</li>
+          <li>It is now possible to draw beyond the triangle/ruler limits</li>
+          <li>The rotation center is now the triangle corner instead of the 0 graduation</li>
+          <li>Screen gray borders are now transparent and reflects the secondary screen resolution</li>
+          <li>Upgraded from Qt 5 to Qt 6 on all officially supported platforms</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed a bug where annotating the first page when OpenBoard launches and exiting from the Board would make the application crash and the data lost</li>
+          <li>Fixed impossible to read a video on Debian</li>
+          <li>Dice interactivity was not working</li>
+          <li>Fixed several crashes</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2024-05-08" version="1.7.1">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>added the possibility to move tools (ruler, compass, etc) using arrow keys.</li>
+          <li>added a new Latex2SVG application converting Latex formulas to SVG, that you can then drag and drop on the board. Also supports mhchem for chemistry</li>
+          <li>added CMake support for community-driven Linux builds, thanks to @letsfindaway and @Vekhir.</li>
+        </ul>
+
+        <p>Improvements</p>
+        <ul>
+          <li>simplified the rules to be authorized to put a new text on the board, when close to another text box.</li>
+          <li>Improved performances on document loading time, especially for heavy documents, containing a lot of annotations.</li>
+          <li>changed delete icons' tooltip according to their text</li>
+          <li>migrated Windows build from xpdf to poppler</li>
+          <li>improved zLevel consistency and how the users can change it. A simple click on the "Layer Up" and "Layer Down" now simply increments or decrements the zLevel of the targeted object. Long click behavior remains unchanged.</li>
+        </ul>
+
+        <p>Bug fixes</p>
+        <ul>
+          <li>workaround for an issue related to QTBUG-79216, where dead keys were simply ignored in web widgets. The workaround fixes completely the issue on Linux, but not on macOS. You can workaround</li>
+          <li>the issue by giving focus of an input of the widget and pressing Next page then previous page on the Board toolbar, or by simply reloading the page when possible.</li>
+          <li>fixed an issue where the mask would preserve aspect ratio when using the bottom right handle to resize it.</li>
+          <li>fixed an issue where a newly created widget would not be visible until next launch</li>
+          <li>fixed an issue where removing from board a newly created widget would erase it from library and disk</li>
+          <li>fixed an issue where drag and dropping an object from a widget to the board would never trigger mouseReleaseEvent, ending with the widget being moved when not intended</li>
+          <li>fixed an issue where object zLevels would not be correctly set</li>
+          <li>fixed crashes occurring when using the 'Add' button's functionalities in Documents Mode</li>
+          <li>fixed a crash occurring when trying to drag and drop an image already on the board</li>
+          <li>fixed an issue where an image would be copy-pasted at bad off-screen positions on Windows</li>
+          <li>fixed a crash occuring when directly exiting OpenBoard from Board Mode on heavy documents.</li>
+          <li>fixed an issue where the scale of a pdf item was not preserved when copying the page to another document, with the help of @letsfindaway</li>
+          <li>fixed an issue where the eraser was not working when completely inside polygon, thanks to @letsfindaway</li>
+          <li>fixed incorrect sRGB profile and some files rights, thanks to @letsfindaway</li>
+          <li>fixed an issue by avoiding access to uninitialized DisplayManager, thanks to @letsfindaway</li>
+          <li>fixed ruler icons behaviors when zooming, thanks to @Vekhir</li>
+          <li>fixed windows silent install parameters for vcredist, thanks to @PatricCunhaforWork</li>
+        </ul>
+      </description>
+    </release>
+
+    <release type="stable" date="2023-12-09" version="1.7.0">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>Added the possibility to mark your documents as favorite. You can then drag and drop them from the library palette to the board, so you can change from one document to another quicker. Note that every recently open document is also temporary added to the Favorite folder in the Library palette, even if they are not marked as favorite. They will be removed when you exit OpenBoard, unless you mark them as favorite.</li>
+          <li>Added the possibility to import multiple files at once.</li>
+          <li>Added a "Hints and tips" dialog that shows up in Board Mode, at launch, to provide some basic knowledge on how to use OpenBoard. The dialog can also be displayed via the OpenBoard menu.</li>
+          <li>Removed obsolete "Web Browser" application from OpenBoard.</li>
+          <li>Added a "Replace All" option in the replacement dialog of an UBX import.</li>
+          <li>Added "Export background grid" and "Export background color" options to the preferences.</li>
+          <li>In Board mode, thumbnails on the left palette display the current page in "real-time"</li>
+          <li>Added the possibility to start in Document Mode.</li>
+          <li>UBZ documents can now be imported everywhere in the Documents tree.</li>
+          <li>Added the possibility to hide an object on extended screen when object is selected (useful for editable textboxes that you want to hide with the mask, and edit during class without revealing its content, for example). Note that your OS must be configured with "Extended Mode", not in "Clone Mode"</li>
+          <li>Added a popup asking user what to do when dropping an object above a widget, as the intent could be to drop it inside the widget or on the board.</li>
+          <li>The internal navigator was completely reworked to use a modern, Chrome-based browser engine including full support for HTML5. It represented a lot of work, almost entirely accomplished by @letsfindaway. A huge thank you for his continuous dedication to the project. This migration came with a bunch of rework, but also some cool adding. Among other things :</li>
+          <li>Improved support for creating widgets from web pages and detecting embed-able content.</li>
+          <li>Configurable Cookie handling.</li>
+          <li>Web Inspector for widget developers.</li>
+          <li>Pick images and PDFs from web pages and add them to the board.</li>
+          <li>Added the possibility to drag-and-drop or copy-paste of URLs to the board, to create a widget from the dropped web page, thanks to @letsfindaway.</li>
+          <li>Rework of the display management. Via the preferences, you can now organize your screens in a more user-friendly way, thanks to @letsfindaway.</li>
+          <li>Added a tool to draw Cartesian axes, thanks to @letsfindaway.</li>
+          <li>Added an option to show intermediate grid lines (5mm), thanks to @letsfindaway.</li>
+          <li>Added an option to enable a Seyes ruled background, thanks to @sebojolais. This option is SeyesRuledBackground and to be placed in the [Board] section.</li>
+          <li>Zoom with "Ctrl + mouse wheel". You can have a finer control of the zoom, using this functionality. You can also scroll in the current page (up and down with the mouse wheel, left and right with alt + mouse wheel). Original idea by @ootwch, improved by @letsfindaway.</li>
+          <li>Added a Camera widget, to embed your camera directly in the board, thanks to @letsfindaway.</li>
+          <li>Added the possibility to choose the text box size, by holding the mouse click until the desired width is reached (original idea by @sebojolais).</li>
+          <li>Added the possibility to run the main screen of OpenBoard in Windowed mode, thanks to @micolous.</li>
+          <li>Added support for ffmpeg-5, thanks to @letsfindaway.</li>
+          <li>Added support for Qt 6, with the precious help of @letsfindaway amd @JBBgameich.</li>
+          <li>Added support for Universal packaging on macOS.</li>
+        </ul>
+        <p>Improvements</p>
+        <ul>
+          <li>Added keyboard shortcuts to colors (1, 2, 3, 4 and 5).</li>
+          <li>Improved Desktop Mode UI so user knows what's selected easier. Also reduced the time to hold left click for sub-menus to show up</li>
+          <li>Toolbar and Preferences now also usable on low-resolution devices.</li>
+          <li>Improved height handling of text boxes. Height is now automatically handled and adapt through user's width resizes.</li>
+          <li>Improved "confirm-before-delete" dialogs, by making them more explicit on what is about to be deleted. Added better icons to illustrate each use case.</li>
+          <li>Display name in the tooltip of objects in the Library palette.</li>
+          <li>Store JPEG images in their native format, thanks to @letsfindaway.</li>
+          <li>Observe image rotation from image metadata, thanks to @letsfindaway.</li>
+          <li>Size of exported PDF page is now same as imported PDF page size. Thank you @letsfindaway for the help !</li>
+          <li>Allow dropping of images to sub-folders of the image library, thanks to @letsfindaway.</li>
+          <li>Better positioning of annotations, thanks to @letsfindaway.</li>
+          <li>Maintained compatibility for Qt 5.12, thanks to @letsfindaway and @JBBgameich</li>
+          <li>Many performance improvements, with the precious help of @letsfindaway.</li>
+        </ul>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed an issue where zooming in/out with an Axes tool on the board could end in a crash, thanks to @letsfindaway</li>
+          <li>Fixed an issue where, in a network-storage context, objects (PDF, audio, etc) could be removed from the document.</li>
+          <li>Fixed an issue where it was no longer possible to resize a widget, horizontally or vertically.</li>
+          <li>Fixed an issue where right-clicking on a textbox, would deselect it, making inoperative the actions of the context menu.</li>
+          <li>Fixed a crash where a not correctly readable PDF would prevent export from working. A new dialog is now showing up to explain user what's going on, before falling back to the export of the PDF pages as detailed (heavy) images.</li>
+          <li>Fixed an issue where user would have to click multiple times on "undo" to obtain the desired result.</li>
+          <li>Fixed an issue where it was not possible to change font size on an empty text box.</li>
+          <li>Fixed an issue where deleting the last character of a text box would provoke a resize of the box.</li>
+          <li>Fixed an issue where user could duplicate a page by accidentally drag and drop a thumbnail from Documents Mode to Board Mode.</li>
+          <li>Fixed an issue where rotating an object more than 90° would flip it horizontally.</li>
+          <li>Fixed an issue on macOS where clicking on "play" on a video would resize it to its original size.</li>
+          <li>Fixed an issue where it was not possible to open an UBZ by double-clicking on it with OpenBoard already launched.</li>
+          <li>Fixed an issue where an unwanted drag and drop could be started when simply clicking on a thumbnail on the left palette.</li>
+          <li>Fixed an issue where grid-size was not persisted, nor read, if crossed/ruled background was not selected (making axes tool loaded in another machine not corresponding to original).</li>
+          <li>Fixed an issue where an object in the right palette could be selected but displayed buttons not referring to it or its current state, after a drag and drop for example.</li>
+          <li>Fixed an issue where clicking on a selected item or on its delegate frame would deselect it.</li>
+          <li>Fixed an issue where Google Maps application was no longer working.</li>
+          <li>Fixed an issue where it was no longer possible to drag and drop a JPEG from a Pixabay search.</li>
+          <li>Fixed multiple crashes.</li>
+          <li>Several issues were fixed regarding interactivities, thanks to the migration made by @letsfindaway to a Chrome-based browser engine. Drop-down lists should now behave correctly, and it should be possible to scroll up and down when needed.</li>
+          <li>Many fixes related to handling of metadata, thanks to @letsfindaway.</li>
+          <li>Export of pages with widgets now export a snapshot of the widget content, thanks to @letsfindaway.</li>
+          <li>Fixed some typos, thanks to @cheese1.</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>Some 3rd party widgets may no longer work, as the internal widget API was changed. Please report to the widget author as well as to the OpenBoard team to help updating the widget.</li>
+          <li>Adding a PDF to the board from the internal browser (right click -&gt; add to board) does not work consistently.</li>
+          <li>Some use cases remain where you can end up with documents at the same level having the same name.</li>
+          <li>An issue can occur, that is not clearly identified at this time, when importing an UBX, where users end up with the imported documents appearing multiple times in the documents tree, at the same level.</li>
+          <li>In Desktop Mode, Gnome Dock should be set to bottom position to workaround the issue with the OpenBoard left palette not being usable from above it</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2022-06-13" version="1.6.4">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>Added the possibility to zoom using ctrl/cmd + mouse wheel, scroll up/down with mouse wheel, and scroll left/right with alt + mouse wheel, thanks to @letsfindaway</li>
+          <li>Updated Simplified Chinese translation, thanks to @wcxu21</li>
+          <li>Updated basque translations, thanks to @alexgabi</li>
+        </ul>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed an issue where a PDF imported in OpenBoard, then exported as PDF, could have the original PDF inside not correctly scaled, with the help of @letsfindaway</li>
+          <li>Improved performance of building font model, thanks to @letsfindaway</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>When Control screen is not the first screen on the left, main menu will not appear where it should. It is due to a Qt bug</li>
+          <li>With OpenBoard no longer able to be launched multiple times, double-clicking on an ubz file while OpenBoard is open won't open it.</li>
+          <li>In Desktop Mode, Gnome Dock should be set to bottom position to workaround the issue with the Openboard left palette not beeing usable from above it.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2022-06-13" version="1.6.3">
+      <description>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed an issue where using the ruler would make drawing impossible, thanks to @vivianecs and @letsfindaway</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>When Control screen is not the first screen on the left, main menu will not appear where it should. It is due to a Qt bug</li>
+          <li>With OpenBoard no longer able to be launched multiple times, double-clicking on an ubz file while OpenBoard is open won't open it.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2022-06-02" version="1.6.2">
+      <description>
+        <p>New Features</p>
+        <ul>
+          <li>Added a progression bar at OpenBoard's launch.</li>
+          <li>Restored complete support of PDF (1.0 to 1.4 versions) at export and permitted partial support of versions above (1.5 to 1.7) : a bug introduced in 1.5.2 was preventing the use of this method for versions 1.0 to 1.4. Also, previously, exported PDF pages were flattened as high resolution images, if the initial version of the PDF was &gt; 1.4 or if an error occured during export.</li>
+          <li>exported PDFs are now much lighter, and text in the exported PDF is searchable again.</li>
+          <li>if an error occurs during the export, previous method (flattened images of each page) is used.</li>
+          <li>Added several messages to notify the users of what's happening during long operations</li>
+          <li>It is now possible to double-click on an OpenBoard document (.ubz)  to launch OpenBoard and open the document directly, on every officially supported platform</li>
+          <li>Doubled the size of the arrows in Desktop Mode, making it easier to click on them with a stylus, thanks to @temaps</li>
+          <li>Updated Russian translations of GraphMe, thanks to @temaps</li>
+          <li>Updated Polish translations, thanks to @marcin-serwin</li>
+          <li>Updated Hungarian translations, thanks to @ovari</li>
+          <li>Updated Brazilian Portuguese translations, thanks to @alexrsoares</li>
+          <li>Updated Traditional Chinese translations, thanks to @SiderealArt</li>
+          <li>Added the possibility to export background grid/color to PDF, using two new settings (ExportBackgroundGrid, ExportBackgroundColor), thanks to @letsfindaway</li>
+          <li>added a condition in packaging to enable it for Raspberry 3 and 4, thanks to @mothsART</li>
+        </ul>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed multiple issues regarding thumbnails generation</li>
+          <li>Fixed several issues regarding selection in Documents Mode</li>
+          <li>Fixed two bugs occurring when inserting an image or a folder of images</li>
+          <li>Fixed an issue in Desktop Mode behavior becoming unstable after clicking on the library palette with the pen</li>
+          <li>Fixed an issue where in certain cases, text boxes could jump to their previous position</li>
+          <li>Fixed an issue where erasing some drawings then completely erase the board would result on a crash on the next page save</li>
+          <li>Fixed an issue where magnifier in rectangle shape on the main screen would appear rounded in a second screen in extended mode</li>
+          <li>Fixed an issue where it was impossible to delete a document right after opening it</li>
+          <li>Fixed an issue where a duplicated mask would not behave like the original</li>
+          <li>Fixed an issue where it was possible to launch multiple instances of OpenBoard</li>
+          <li>Fixed trash text inconsistent with context and/or tooltip</li>
+          <li>Fixed an issue where Display Screen's view would be offset from Control Screen's one after clicking on "next/previous" buttons</li>
+          <li>Fixed an issue where erasing the board then undo it would result in background objects being in an inconsistent state</li>
+          <li>Fixed several issues where play/pause, stop buttons and ticker would not update correctly when playing a video or an audio</li>
+          <li>Fixed an issue where it was possible to create documents with the same name in a same folder</li>
+          <li>Fixed several crashes when deleting documents that were on the the trash folder</li>
+          <li>Fixed some parameters not updating in the application Papier, and removed external links</li>
+          <li>Fixed an issue where the selected font on the font dialog would not be the one under cursor.</li>
+          <li>Fixed a crash occurring when trying to delete all pages of a document. Also, it is no longer possible to try to delete all the pages of a document. One needs to select the document instead of all its pages to delete it.</li>
+          <li>Fixed an issue where it was not possible to replay a video after a first play ended.</li>
+          <li>Fixed a crash after trying to copy multiple pages in another document</li>
+          <li>Fixed an issue where importing a ubz document would add an undesired empty page at the end of the document</li>
+          <li>Fixed some issues where thumbnails would be re-generated several times with no reason</li>
+          <li>Fixed a crash occurring after "Erase board + undo + redo + click on a thumbnail in the board thumbnails view"</li>
+          <li>Fixed an issue where the horizontal bar appearing during drag'n'drop would not adapt to the thumbnail size</li>
+          <li>Fixed an issue where a text box would loose focus after an automatic save is performed</li>
+          <li>Fixed a bug where a second display could randomly appear (like if a second screen was available) and prevent Desktop Mode to be used</li>
+          <li>Fixed a bug where drag'n'drop could be triggered after a simple click on a thumbnail, if persisting the current page was taking too much time</li>
+          <li>Fixed an issue where some svg objects could be lost if the page was copied from a document to another</li>
+          <li>Fixed an issue where rotation arrows would not be oriented properly after a rotation</li>
+          <li>Fixed an issue where the selected pen size was not seen as selected in the "Pen Size" buttons group</li>
+          <li>Fixed an issue where the last page would not have a thumbnail after a document is copied in another one</li>
+          <li>Fixed a an issue where after copying a page in another document, the thumbnail would not appear in Board Mode. The application could crash after that, in some cases</li>
+          <li>Fixed a crash occurring after double-clicking or "open with" on an ubx file, to try to open it with OpenBoard</li>
+          <li>Fixed several issues regarding duplication of pages in Document Mode</li>
+          <li>Fixed an issue where it was not possible to insert multiple times the same file in Document Mode</li>
+          <li>Fixed an issue where active document would not be visible (depending on selected sort and order)</li>
+          <li>Fixed several issues where renaming button was not working or not modifying the expected document</li>
+          <li>Fixed a crash occurring if trying in Document Mode to delete several pages of the document that is active in Board Mode</li>
+          <li>Fixed "compile with poppler &gt;= 22.01", thanks to @letsfindaway</li>
+          <li>Fixed "coordinates when display screen is left of control screen", thanks to @letsfindaway</li>
+          <li>Fixed "cursor shown on a ruler using pen tool", thanks to @letsfindaway</li>
+          <li>Fixed "remove incorrect sRGB profile from iCCP data in png files", thanks to @letsfindaway</li>
+          <li>Fixed "palette and tool resize", thanks to @letsfindaway</li>
+          <li>Fixed "no icon for ubz files"</li>
+          <li>Fixed several crashes occurring while deleting multiple pages at once</li>
+        </ul>
+        <p>Known Issues</p>
+        <ul>
+          <li>When Control screen is not the first screen on the left, main menu will not appear where it should. It is due to a Qt bug</li>
+          <li>With OpenBoard no longer able to be launched multiple times, double-clicking on an ubz file while OpenBoard is open won't open it.</li>
+          <li>In Desktop Mode, Gnome Dock should be set to bottom position to workaround the issue with the Openboard left palette not beeing usable from above it.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2021-04-15" version="1.6.1">
+      <description>
+        <p>New features:</p>
+        <ul>
+          <li>upgraded to Qt 5.15</li>
+          <li>the laser pointer diameter is now configurable in the config file, thanks to @letsfindaway. You can modify its value by changing it in the config file (PointerDiameter in the Board section)</li>
+          <li>it is now possible to draw intermediate lines in the grid backgrounds, thanks to @letsfindaway. You can enable it by passing EnableIntermediateLines to true in the config file. Once we have time to test it, it might become enabled by default.</li>
+          <li>a new application called "Axes" has been added, thanks to @letsfindaway. it can be enabled by passing EnableToolAxes to true in the config file. Once we have time to test it, it might become enabled by default.</li>
+          <li>a new application called "Paper" (already available for a while in some Geneva schools) has been added, thanks to François Le Cléac'h</li>
+          <li>added an option do enable/disable the new work made to increase performances when zooming on a PDF enableQualityLossToIncreaseZoomPerfs (enabled by default)</li>
+          <li>added 4 shapes in the library</li>
+          <li>ported from QScriptEngine to QJSonDocument, thanks to @JBBgameich</li>
+          <li>updated russian translations, thanks to @mariiaalt</li>
+          <li>added a zoomBehavior parameter to test some features regarding PDF rendering performances, thanks to @jpapale</li>
+        </ul>
+        <p>Bug fixes:</p>
+        <ul>
+          <li>It was no longer possible to make a selection above a PDF background. In some cases, undo could cause the PDF to be detached from background.</li>
+          <li>added shortcuts events in the thumbnails view.</li>
+          <li>Object moves were not memorized when using the "magicFinger" tool.</li>
+          <li>Fixed several issues regarding UBX import.</li>
+          <li>Selected pen color was no longer visible on the main bar.</li>
+          <li>In a text-box, a resize was applied even when only changing the color of a text.</li>
+          <li>potential fix to the "screen overlapping" issue</li>
+          <li>metadatas were not correctly persisted when the last action was to deleted a page in Board Mode</li>
+          <li>fixed two issues regarding ubx files where import could fail if some folders and files had the same name</li>
+          <li>fixed an issue where rename a folder could break the folder's hierarchy</li>
+          <li>fixed the labels of the colors toolbar</li>
+          <li>fixed an issue where resizing widgets would scale them instead of resizing the viewport</li>
+          <li>fixed an issue where OpenBoard would crash if trying to drag and drop anything on the thumbnails view</li>
+          <li>fixed an issue with shortcuts on a german keyboard layout, thanks to @letsfindaway</li>
+          <li>fixed an issue where changing of stylus tool while input device is pressed could result on a crash, thanks to @letsfindaway</li>
+          <li>fixed an issue where eraser preview circle would not hide at input device release, thanks @letsfindaway</li>
+          <li>fixed two issues where pageCount metadata could be corrupted</li>
+          <li>fixed a number of uninitialized variable uses, thanks to @multun</li>
+          <li>fixed some polish translations, thanks to @marcin-serwin</li>
+        </ul>
+        <p>Known issues:</p>
+        <ul>
+          <li>In Desktop Mode, Gnome Dock should be set to bottom position to workaround the issue with the Openboard left palette not beeing usable from above it.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2020-02-01" version="1.5.4">
+      <description>
+        <p>New Features:</p>
+        <ul>
+          <li>Added a preference in the display tab to show/hide the date column on alphabetical sort</li>
+          <li>Text color is inverted on background changes (white/black only)</li>
+          <li>Last used color applied globally is persisted (until the user loads another document)</li>
+          <li>Added the Bstgreek font to resources</li>
+          <li>Added GETypoLibre improvements (made by Neuchâtel)</li>
+          <li>Added 4 shapes with 'nofill' property</li>
+          <li>Added two options to periodically delete old documents in trash (emptyTrashForOlderDocuments and emptyTrashDaysValue)</li>
+        </ul>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Improved naming behavior (now accepts "/" in documents name and replaces it with "-" for folders)</li>
+          <li>A crash could occur when replacing active document during import</li>
+          <li>Improvements in the selection of another document when the current one selected is deleted</li>
+          <li>Fixed an issue where the text could be in interaction mode without being selected</li>
+          <li>Fixed several issues regarding text boxes</li>
+          <li>The 'updated-at' metadata was not updating on Documents Mode when a document was moved to trash</li>
+          <li>Improved scrolling behavior on thumbnails view</li>
+          <li>Improvements on click handling on thumbnails view</li>
+          <li>Changed background color of the pen preview circle to make it more visible on white background</li>
+          <li>Renamed documents were not automatically reordered</li>
+          <li>Improvements on German translation thanks to @gektor-de</li>
+          <li>Fixed some typo in German translation thanks to @odo2063</li>
+          <li>Fixed a massive memory leak in podcast thanks to @bartoszek</li>
+          <li>Improved ffmpeg version test (distribution agnostic) thanks to @bartoszek</li>
+          <li>Fixed UI with dark system themes thanks to @JBBgameich</li>
+          <li>Added background color to QMenu, QPushButton and QComboBox thanks to @JBBgameich</li>
+          <li>Updated Slovak translations @jrynik</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2019-04-10" version="1.5.3">
+      <description>
+        <p>New Features:</p>
+        <ul>
+          <li>Support of OpenSSL 1.1 has been added on the three supported platforms. A special thanks to super7ramp for his help</li>
+        </ul>
+        <p>Bug fixes:</p>
+        <ul>
+          <li>Some scaling issues could be experienced while exporting a document to PDF format</li>
+          <li>An image could be lost after a page duplication followed by the deletion of the image on one of the two pages</li>
+          <li>An image could be lost after the duplication of a page in Documents Mode</li>
+          <li>When duplicating grouped objects of different types, the z-order was not preserved</li>
+          <li>Perform "Set As Tool" on a flash animation could result on a crash</li>
+          <li>Secured web pages was not loading on Windows internal navigator</li>
+          <li>Slashes were allowed in folder's names</li>
+          <li>Ukrainian translation's file extension is now uk, instead of ua. A special thanks to glixx for reporting it</li>
+        </ul>
+        <p>Known issues:</p>
+        <ul>
+          <li>The redesign of the Documents mode was a complex development and several small cosmetic bugs may still remain, including focus issues</li>
+          <li>Some slow motion can be experienced in macOS while using drag and drop in the new document tree structure</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" date="2019-01-22" version="1.5.2"/>
+    <release type="stable" date="2018-12-13" version="1.5.1"/>
+    <release type="stable" date="2018-11-29" version="1.5.0"/>
+  </releases>
+  <provides>
+    <binary>openboard</binary>
+  </provides>
+</component>
