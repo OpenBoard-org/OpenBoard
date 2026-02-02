@@ -1,5 +1,5 @@
 VERSION_MAJ   = 1
 VERSION_MIN   = 7
-VERSION_PATCH = 4
+VERSION_PATCH = 5
 VERSION_TYPE = r        # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 260122  # for non-release builds
+VERSION_BUILD = 260202  # for non-release builds
