@@ -2,21 +2,21 @@
 ![GitHub Repo forks](https://img.shields.io/github/forks/OpenBoard-org/openboard)
 # OpenBoard
 [![latest release](https://img.shields.io/github/v/release/OpenBoard-org/openboard.svg)]()
-[![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.4/dev)]()
+[![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.5/dev)]()
 [![Github Repo Contributors](https://img.shields.io/github/contributors/OpenBoard-org/openboard.svg)]()
-[![downloads v1.7.4](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.4/total)]()
+[![downloads v1.7.5](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.5/total)]()
 [![Github All Releases](https://img.shields.io/github/downloads/OpenBoard-org/OpenBoard/total.svg)]()
 
 OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
 ### Installing
-1.7.4 installers are available for Windows, macOS and Debian on the [Downloads page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
+1.7.5 installers are available for Windows, macOS and Debian on the [Downloads page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
 
 ### Supported platforms 
 
 | Version   | officially maintained platforms | branch |
 |------------|--------------------------------------------------------|----|
-| 1.7.4 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
+| 1.7.5 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
 | 1.8.0 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12 | `dev` |
 
 ### Community-driven packages
