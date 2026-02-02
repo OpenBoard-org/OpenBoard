@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -29,22 +29,21 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
 
 #include "core/UB.h"
 
 #include "UBItem.h"
-#include "tools/UBGraphicsCurtainItem.h"
 
+class UBBackgroundRuling;
 class UBGraphicsPixmapItem;
-class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
-class UBGraphicsAppleWidgetItem;
 class UBToolWidget;
 class UBGraphicsPDFItem;
 class UBGraphicsTextItem;
@@ -58,6 +57,7 @@ class UBMagnifierParams;
 class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
+class UBMediaAssetItem;
 class UBSelectionFrame;
 class UBBoardView;
 
@@ -102,7 +102,7 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
-    bool zLevelAvailable(qreal z);
+    bool zLevelAvailable(QGraphicsItem* item);
 
 private:
     ScopeMap scopeMap;
@@ -110,7 +110,7 @@ private:
     QGraphicsScene *mScene;
 };
 
-class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
+class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::enable_shared_from_this<UBGraphicsScene>
 {
     Q_OBJECT
 
@@ -128,20 +128,21 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setURStackEnable(bool enable){mUndoRedoStackEnabled = enable;}
         bool isURStackIsEnabled(){return mUndoRedoStackEnabled;}
 
-        UBGraphicsScene(UBDocumentProxy *parent, bool enableUndoRedoStack = true);
+        UBGraphicsScene(std::shared_ptr<UBDocumentProxy>document, bool enableUndoRedoStack = true);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;
 
         virtual void copyItemParameters(UBItem *copy) const {Q_UNUSED(copy);}
 
-        UBGraphicsScene* sceneDeepCopy() const;
+        std::shared_ptr<UBGraphicsScene> sceneDeepCopy() const;
 
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
+        void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease(int tool = -1);
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
 
         void leaveEvent (QEvent* event);
 
@@ -152,12 +153,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void removeItems(const QSet<QGraphicsItem*>& item);
 
         UBGraphicsWidgetItem* addWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
-        UBGraphicsAppleWidgetItem* addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
-
-        QPointF lastCenter();
-        void setLastCenter(QPointF center);
 
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
@@ -168,8 +165,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsTextItem*  addTextWithFont(const QString& pString, const QPointF& pTopLeft = QPointF(0, 0)
                 , int pointSize = -1, const QString& fontFamily = "", bool bold = false, bool italic = false);
         UBGraphicsTextItem* addTextHtml(const QString &pString = QString(), const QPointF& pTopLeft = QPointF(0, 0));
-
-        UBGraphicsW3CWidgetItem* addOEmbed(const QUrl& pContentUrl, const QPointF& pPos = QPointF(0, 0));
 
         UBGraphicsGroupContainerItem *createGroup(QList<QGraphicsItem*> items);
         void addGroup(UBGraphicsGroupContainerItem *groupItem);
@@ -191,8 +186,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         QRectF normalizedSceneRect(qreal ratio = -1.0);
 
-        QGraphicsItem *itemForUuid(QUuid uuid);
-
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
@@ -203,9 +196,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool isEmpty() const;
 
-        void setDocument(UBDocumentProxy* pDocument);
+        void setDocument(std::shared_ptr<UBDocumentProxy> pDocument);
 
-        UBDocumentProxy* document() const
+        std::shared_ptr<UBDocumentProxy> document() const
         {
             return mDocument;
         }
@@ -220,19 +213,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return !mDarkBackground;
         }
 
-        UBPageBackground pageBackground() const
-        {
-            return mPageBackground;
-        }
+        const UBBackgroundRuling* background() const;
 
         int backgroundGridSize() const
         {
             return mBackgroundGridSize;
-        }
-
-        bool intermediateLines() const
-        {
-            return mIntermediateLines;
         }
 
         bool hasBackground()
@@ -249,46 +234,33 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void addMask(const QPointF &center = QPointF());
         void addCache();
+        UBGraphicsCache* graphicsCache();
 
-        QList<QGraphicsItem*> getFastAccessItems()
-        {
-            return mFastAccessItems;
-        }
+        bool isSnapping() const;
+        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}, QPointF* gridSnapPoint = nullptr) const;
+        QPointF snap(const std::vector<QPointF>& corners, int* snapIndex = nullptr) const;
+        QPointF snap(const QRectF& rect, Qt::Corner* corner = nullptr) const;
+        static QRectF itemRect(const QGraphicsItem* item);
 
         class SceneViewState
         {
             public:
                 SceneViewState()
                 {
-                    zoomFactor = 1;
-                    horizontalPosition = 0;
-                    verticalPostition = 0;
-                    mLastSceneCenter = QPointF();
                 }
 
                 SceneViewState(qreal pZoomFactor, int pHorizontalPosition, int pVerticalPostition, QPointF sceneCenter = QPointF())// 1595/1605
+                    : zoomFactor{pZoomFactor}
+                    , horizontalPosition{pHorizontalPosition}
+                    , verticalPostition{pVerticalPostition}
+                    , mLastSceneCenter{sceneCenter}
                 {
-                    zoomFactor = pZoomFactor;
-                    horizontalPosition = pHorizontalPosition;
-                    verticalPostition = pVerticalPostition;
-                    mLastSceneCenter = sceneCenter;
                 }
 
-                QPointF lastSceneCenter() // Save Scene Center to replace the view when the scene becomes active
-                {
-                    return mLastSceneCenter;
-                }
-
-                void setLastSceneCenter(QPointF center)
-                {
-                    mLastSceneCenter = center;
-                }
-
-                QPointF mLastSceneCenter;
-
-                qreal zoomFactor;
-                int horizontalPosition;
-                int verticalPostition;
+                qreal zoomFactor{1};
+                int horizontalPosition{0};
+                int verticalPostition{0};
+                QPointF mLastSceneCenter{};
         };
 
         SceneViewState viewState() const
@@ -303,11 +275,13 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
-        QList<QUrl> relativeDependencies() const;
+        QList<QString> relativeDependencies() const;
+        QList<UBMediaAssetItem*> mediaAssetItems() const;
 
         QSize nominalSize();
 
         QSize sceneSize();
+        QSizeF sceneSizeF() const;
 
         void setNominalSize(const QSize& pSize);
 
@@ -345,8 +319,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
 
-        static QUuid getPersonalUuid(QGraphicsItem *item);
-
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void clearSelectionFrame();
         UBBoardView *controlView();
@@ -361,14 +333,20 @@ public slots:
         void initStroke();
         void hideTool();
 
-        void setBackground(bool pIsDark, UBPageBackground pBackground);
+        void setSceneBackground(bool pIsDark, const UBBackgroundRuling *background);
         void setBackgroundZoomFactor(qreal zoom);
         void setBackgroundGridSize(int pSize);
-        void setIntermediateLines(bool checked);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
         UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap,
+            QGraphicsItem* replaceFor,
+            const QPointF& pPos = QPointF(0,0),
+            qreal scaleFactor = 1.0,
+            bool pUseAnimation = false,
+            bool useProxyForDocumentPath = false);
+
+        UBGraphicsPixmapItem* addImage(QByteArray pData,
             QGraphicsItem* replaceFor,
             const QPointF& pPos = QPointF(0,0),
             qreal scaleFactor = 1.0,
@@ -389,6 +367,11 @@ public slots:
         void resizedMagnifier(qreal newPercent);
 
         void stylusToolChanged(int tool, int previousTool);
+
+        void controlViewportChanged();
+
+signals:
+        void zoomChanged(qreal zoomFactor);
 
     protected:
 
@@ -427,6 +410,7 @@ public slots:
 
     private:
         void setDocumentUpdated();
+        void updateBackground();
         void createEraiser();
         void createPointer();
         void createMarkerCircle();
@@ -445,12 +429,11 @@ public slots:
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;
 
-        UBDocumentProxy* mDocument;
+        std::shared_ptr<UBDocumentProxy> mDocument;
 
         bool mDarkBackground;
-        UBPageBackground mPageBackground;
+        const UBBackgroundRuling* mBackground{nullptr};
         int mBackgroundGridSize;
-        bool mIntermediateLines;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;
@@ -460,6 +443,7 @@ public slots:
         QPointF mPreviousPoint;
         qreal mPreviousWidth;
         qreal mDistanceFromLastStrokePoint;
+        QPointF mCurrentPoint;
 
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 
@@ -479,9 +463,6 @@ public slots:
 
         int mItemCount;
 
-        QList<QGraphicsItem*> mFastAccessItems; // a local copy as QGraphicsScene::items() is very slow in Qt 4.6
-
-
         bool mHasCache;
         //        tmp stub for divide addings scene objects from undo mechanism implementation
         bool mUndoRedoStackEnabled;
@@ -496,6 +477,8 @@ public slots:
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
         UBSelectionFrame *mSelectionFrame;
+
+        UBGraphicsCache* mGraphicsCache;
 };
 
 

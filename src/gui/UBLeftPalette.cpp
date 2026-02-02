@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -67,7 +67,7 @@ UBLeftPalette::~UBLeftPalette()
 }
 
 
-void UBLeftPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+void UBLeftPalette::onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy)
 {
     Q_UNUSED(documentProxy)
     // the tab zero is forced

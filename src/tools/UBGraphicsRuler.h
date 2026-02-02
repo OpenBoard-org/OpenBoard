@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -73,17 +73,22 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    keyPressEvent(QKeyEvent *event);
         void paintGraduations(QPainter *painter);
 
     private:
 
         bool mResizing;
         bool mRotating;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
 
 
         // Helpers
-        void    fillBackground(QPainter *painter);
+        void    drawBorder(QPainter *painter, const QPainterPath &path);
+        void    fillBackground(QPainter *painter, const QPainterPath &path);
         void    paintRotationCenter(QPainter *painter);
+        void    paintHelp(QPainter *painter);
         virtual void    rotateAroundCenter(qreal angle);
 
         QGraphicsSvgItem* mRotateSvgItem;
@@ -96,7 +101,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         virtual QRectF           resizeButtonRect() const;
         virtual QRectF            closeButtonRect() const;
         virtual QRectF           rotateButtonRect() const;
-        virtual UBGraphicsScene*            scene() const;
+        virtual std::shared_ptr<UBGraphicsScene>            scene() const;
 
         QCursor mResizeCursor;
 

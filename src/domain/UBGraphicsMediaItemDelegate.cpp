@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -185,22 +185,21 @@ void UBGraphicsMediaItemDelegate::positionHandles()
         mToolBarItem->show();
 
         mToolBarItem->setRect(toolBarRect);
-    }
 
-    int toolBarButtonsWidth = 0;
-    foreach (DelegateButton* button, mToolBarButtons)
-        toolBarButtonsWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
+        int toolBarButtonsWidth = 0;
+        foreach (DelegateButton* button, mToolBarButtons)
+            toolBarButtonsWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
 
-    QRectF mediaItemRect = mMediaControl->rect();
-    mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtonsWidth);
-    mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
-    mMediaControl->setRect(mediaItemRect);
+        QRectF mediaItemRect = mMediaControl->rect();
+        mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtonsWidth);
+        mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
+        mMediaControl->setRect(mediaItemRect);
 
-    mToolBarItem->positionHandles();
-    mMediaControl->positionHandles();
+        mToolBarItem->positionHandles();
+        mMediaControl->positionHandles();
 
-    if (mediaItem)
         mToolBarItem->show();
+    }
 }
 
 void UBGraphicsMediaItemDelegate::remove(bool canUndo)
@@ -242,29 +241,52 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     if (status == QMediaPlayer::LoadedMedia)
         mMediaControl->totalTimeChanged(delegated()->mediaDuration());
 
-    // At the beginning of the video, play/pause to load and display the first frame
+    // At the beginning of the video, play/pause to load and display the first frame (not working on OSX)
+#ifndef Q_OS_OSX
     if ((status == QMediaPlayer::LoadedMedia || status == QMediaPlayer::BufferedMedia)
             && delegated()->mediaPosition() == delegated()->initialPos()
-            && !delegated()->isStopped()) {
-        delegated()->play();
-        delegated()->pause();
+            && !delegated()->isStopped()
+            && delegated()->firstLoad()
+            )
+    {
+        if (delegated()->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+        {
+            delegated()->play();
+            delegated()->pause();
+        }
+        delegated()->setFirstLoad(false);
     }
+#endif
 
     // At the end of the video, make sure the progress bar doesn't autohide
     if (status == QMediaPlayer::EndOfMedia)
+    {
+        delegated()->setFirstLoad(true);
         showToolBar(false);
+    }
 
 
     // in most cases, the only necessary action is to update the play/pause state
     updatePlayPauseState();
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::PlaybackState state)
+#else
 void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
+#endif
 {
     Q_UNUSED(state);
     // Possible states are StoppedState, PlayingState and PausedState
 
     // updatePlayPauseState handles this functionality
+    if (state == QMediaPlayer::StoppedState)
+    {
+        delegated()->setMediaPos(0);
+#ifdef Q_OS_OSX //media positionChanged signal is not always called in osx
+        mMediaControl->updateTicker(0);
+#endif
+    }
     updatePlayPauseState();
 }
 
@@ -280,8 +302,11 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    mMediaControl->totalTimeChanged(delegated()->mediaDuration());
-    mMediaControl->updateTicker(time);
+    if (!delegated()->isStopped())
+    {
+        mMediaControl->totalTimeChanged(delegated()->mediaDuration());
+        mMediaControl->updateTicker(time);
+    }
 }
 
 

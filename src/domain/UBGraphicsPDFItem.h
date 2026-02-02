@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -32,7 +32,7 @@
 
 #include <QtGui>
 
-#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 
 #include "core/UB.h"
 #include "pdf/GraphicsPDFItem.h"
@@ -40,7 +40,7 @@
 class UBGraphicsItemDelegate;
 class UBGraphicsPixmapItem;
 
-class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphicsItem
+class UBGraphicsPDFItem: public GraphicsPDFItem, public UBMediaAssetItem, public UBGraphicsItem
 {
     public:
         UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphicsItem* parent = 0);
@@ -48,34 +48,35 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         enum { Type = UBGraphicsItemType::PDFItemType };
 
-        virtual int type() const
+        virtual int type() const override
         {
             return Type;
         }
 
-        virtual UBItem* deepCopy() const;
+        virtual QList<QString> mediaAssets() const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
-        virtual void copyItemParameters(UBItem *copy) const;
+        virtual UBItem* deepCopy() const override;
 
-        virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
+        virtual void copyItemParameters(UBItem *copy) const override;
 
-        virtual void setCacheBehavior(CacheBehavior cacheBehavior);
+        virtual void setRenderingQuality(RenderingQuality pRenderingQuality) override;
 
-        virtual UBGraphicsScene* scene();
+        virtual void setCacheBehavior(CacheBehavior cacheBehavior) override;
+
+        virtual std::shared_ptr<UBGraphicsScene> scene() override;
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
 
-        virtual void clearSource(){;}
-        virtual void setUuid(const QUuid &pUuid);
     protected:
 
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-        virtual void updateChild();
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+        virtual void updateChild() override;
     private slots:
         void OnRequireUpdate();
 };

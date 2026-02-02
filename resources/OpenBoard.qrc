@@ -151,18 +151,8 @@
         <file>images/stylusPalette/textOn.png</file>
         <file>images/stylusPalette/captureArea.png</file>
         <file>images/stylusPalette/captureAreaOn.png</file>
-        <file>images/backgroundPalette/background1.svg</file>
-        <file>images/backgroundPalette/background1On.svg</file>
-        <file>images/backgroundPalette/background2.svg</file>
-        <file>images/backgroundPalette/background2On.svg</file>
-        <file>images/backgroundPalette/background3.svg</file>
-        <file>images/backgroundPalette/background3On.svg</file>
-        <file>images/backgroundPalette/background4.svg</file>
-        <file>images/backgroundPalette/background4On.svg</file>
-        <file>images/backgroundPalette/background5.svg</file>
-        <file>images/backgroundPalette/background5On.svg</file>
-        <file>images/backgroundPalette/background6.svg</file>
-        <file>images/backgroundPalette/background6On.svg</file>
+        <file>images/stylusPalette/snap.svg</file>
+        <file>images/stylusPalette/snapOn.svg</file>
         <file>images/toolPalette/podcast.svg</file>
         <file>images/toolPalette/podcastOn.svg</file>
         <file>images/toolPalette/rulerTool.png</file>
@@ -174,6 +164,7 @@
         <file>images/toolPalette/magnifierTool.png</file>
         <file>images/extraPalette/blackout.png</file>
         <file>images/extraPalette/keyboard.png</file>
+        <file>images/extraPalette/keyboardOn.png</file>
         <file>images/extraPalette/trapFlash.png</file>
         <file>images/extraPalette/webTrap.png</file>
         <file>images/extraPalette/webTrapEnabled.png</file>
@@ -366,6 +357,18 @@
         <file>images/desc.png</file>
         <file>images/toolPalette/axesTool.png</file>
         <file>images/numbersTool.svg</file>
+        <file>images/stylusPalette/eraserArrow.svg</file>
+        <file>images/stylusPalette/penArrow.svg</file>
+        <file>images/stylusPalette/eraserOnArrow.svg</file>
+        <file>images/stylusPalette/eraserOn.svg</file>
+        <file>images/stylusPalette/eraser.svg</file>
+        <file>images/stylusPalette/marker.svg</file>
+        <file>images/stylusPalette/markerArrow.svg</file>
+        <file>images/stylusPalette/markerOn.svg</file>
+        <file>images/stylusPalette/markerOnArrow.svg</file>
+        <file>images/stylusPalette/pen.svg</file>
+        <file>images/stylusPalette/penOn.svg</file>
+        <file>images/stylusPalette/penOnArrow.svg</file>
         <file>images/trash-my-documents.png</file>
         <file>images/trash-empty.png</file>
         <file>images/trash-folder.png</file>
@@ -373,5 +376,19 @@
         <file>images/trash-delete-folder.png</file>
         <file>images/trash-document.png</file>
         <file>images/trash-document-page.png</file>
+        <file>webbrowser/go-bottom.png</file>
+        <file>webbrowser/edit-clear.png</file>
+        <file>webbrowser/process-stop.png</file>
+        <file>images/openboard-document.png</file>
+        <file>images/addToFavorites.png</file>
+        <file>images/removeFromFavorites.png</file>
+        <file>images/toolbar/tip.png</file>
+        <file>images/moveTool.svg</file>
+        <file>images/lightMode.svg</file>
+        <file>images/darkMode.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateDarkOff.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateDarkOn.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateLightOff.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateLightOn.svg</file>
     </qresource>
 </RCC>

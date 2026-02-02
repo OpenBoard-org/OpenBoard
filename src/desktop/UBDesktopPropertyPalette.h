@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -53,7 +53,7 @@ class UBDesktopPenPalette : public UBDesktopPropertyPalette
 {
     Q_OBJECT
     public:
-        UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightPalette);
+        UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightPalette, QString objectNamePrefix = "");
         virtual ~UBDesktopPenPalette(){}
     public slots:
         void onParentMinimized();
@@ -67,14 +67,14 @@ class UBDesktopPenPalette : public UBDesktopPropertyPalette
 class UBDesktopEraserPalette : public UBDesktopPropertyPalette
 {
     public:
-        UBDesktopEraserPalette(QWidget *parent, UBRightPalette* rightPalette);
+        UBDesktopEraserPalette(QWidget *parent, UBRightPalette* rightPalette, QString objectNamePrefix = "");
         virtual ~UBDesktopEraserPalette(){}
 };
 
 class UBDesktopMarkerPalette : public UBDesktopPropertyPalette
 {
     public:
-        UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* rightPalette);
+        UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* rightPalette, QString objectNamePrefix = "");
         virtual ~UBDesktopMarkerPalette(){}
 };
 

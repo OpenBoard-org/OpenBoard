@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -35,6 +35,7 @@
 #include <QProcess>
 
 class QMainWindow;
+class QScreen;
 
 #define SYMBOL_KEYS_COUNT 47
 
@@ -191,6 +192,8 @@ public:
         static void init();
         static void destroy();
         static QString applicationResourcesDirectory();
+        static QString applicationEtcDirectory();
+        static QString applicationTemplateDirectory();
         static void hideFile(const QString &filePath);
         static void setFileType(const QString &filePath, unsigned long fileType);
         static void fadeDisplayOut();
@@ -198,9 +201,10 @@ public:
         static QString translationPath(QString pFilePrefix, QString pLanguage);
         static QString systemLanguage();
         static bool hasVirtualKeyboard();
+        static bool hasSystemOnScreenKeyboard();
         static void bringPreviousProcessToFront();
         static QString osUserLoginName();
-        static void setDesktopMode(bool desktop);
+        static void hideMenuBarAndDock();
         static void setWindowNonActivableFlag(QWidget* widget, bool nonAcivable);
         static QString computerName();
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
@@ -209,13 +213,46 @@ public:
         static void setFrontProcess();
         static void showFullScreen(QWidget * pWidget);
         static void showOSK(bool show);
+        static void grabScreen(QScreen* screen, std::function<void(QPixmap)> callback, QRect rect = {});
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);
         static void toggleFinder(const bool on);
+
+        static bool errorOpeningVirtualKeyboard;
+#endif
+        enum SessionType {
+            UNKNOWN,
+            X11,
+            WAYLAND
+        };
+
+#ifdef Q_OS_LINUX
+        static SessionType sessionType();
+        static void keepOnTop();
+#else
+        static SessionType sessionType() { return UNKNOWN; }
 #endif
 };
 
+#ifdef Q_OS_LINUX
+#include <QDBusConnection>
+
+class OnboardListener : public QObject
+{
+    Q_OBJECT
+
+public:
+    OnboardListener(const QDBusConnection& connection, QObject* parent = nullptr);
+
+public slots:
+    void onboardPropertiesChanged(QString interface, QMap<QString, QVariant> properties) const;
+
+private:
+    QDBusConnection mConnection;
+};
+
+#endif
 
 
 #endif /* UBPLATFORMUTILS_H_ */

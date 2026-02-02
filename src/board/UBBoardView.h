@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -42,6 +42,7 @@ class UBBoardController;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;
+class UBSnapIndicator;
 
 class UBBoardView : public QGraphicsView
 {
@@ -53,7 +54,7 @@ public:
     UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool isControl = false, bool isDesktop = false);
     virtual ~UBBoardView();
 
-    UBGraphicsScene* scene();
+    std::shared_ptr<UBGraphicsScene> scene();
 
     void forcedTabletRelease();
 
@@ -64,6 +65,10 @@ public:
 
     void setMultiselection(bool enable);
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
+    void setBoxing(const QMargins& margins);
+    void updateSnapIndicator(Qt::Corner corner, QPointF snapPoint, double angle = 0);
+
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
     bool directTabletEvent(QEvent *event);
@@ -73,6 +78,7 @@ signals:
     void resized(QResizeEvent* event);
     void shown();
     void mouseReleased();
+    void painted(const QRectF region);
 
 protected:
 
@@ -92,7 +98,6 @@ protected:
     virtual bool event (QEvent * e);
 
     virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
     virtual void tabletEvent(QTabletEvent * event);
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
@@ -112,7 +117,12 @@ protected:
 
     virtual void resizeEvent(QResizeEvent * event);
 
+    virtual void paintEvent(QPaintEvent *event);
+
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
+    virtual void drawForeground(QPainter *painter, const QRectF &rect);
+
+    virtual void scrollContentsBy(int dx, int dy);
 
 private:
 
@@ -149,14 +159,13 @@ private:
     bool mIsCreatingTextZone;
     bool mIsCreatingSceneGrabZone;
 
-    bool isAbsurdPoint(QPoint point);
-
     bool mVirtualKeyboardActive;
     bool mOkOnWidget;
 
     bool mWidgetMoved;
+    QPointF mFirstPressedMousePos;
     QPointF mLastPressedMousePos;
-
+    QList<QPointF> mCornerPoints;
 
     /* when an item is moved around, the tracking must stop if the object is deleted */
     QGraphicsItem *_movingItem;
@@ -198,6 +207,9 @@ private:
     bool bIsControl;
     bool bIsDesktop;
     bool mRubberBandInPlayMode;
+
+    QMargins mMargins{};
+    UBSnapIndicator* mSnapIndicator{nullptr};
 
     static bool hasSelectedParents(QGraphicsItem * item);
 

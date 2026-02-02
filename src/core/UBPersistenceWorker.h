@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,20 +31,22 @@
 
 #include <QObject>
 #include <QSemaphore>
+#include <QWaitCondition>
+
 #include "document/UBDocumentProxy.h"
 #include "domain/UBGraphicsScene.h"
 
 typedef enum{
-    WriteScene = 0,
-    ReadScene,
+    Noop,
+    WriteScene,
     WriteMetadata
 }ActionType;
 
 typedef struct{
     ActionType action;
-    UBDocumentProxy* proxy;
+    std::shared_ptr<UBDocumentProxy> proxy;
     UBGraphicsScene* scene;
-    int sceneIndex;
+    int pageId;
 }PersistenceInformation;
 
 class UBPersistenceWorker : public QObject
@@ -53,16 +55,17 @@ class UBPersistenceWorker : public QObject
 public:
     explicit UBPersistenceWorker(QObject *parent = 0);
 
-    void saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex);
-    void readScene(UBDocumentProxy* proxy, const int pageIndex);
-    void saveMetadata(UBDocumentProxy* proxy);
+    void saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageId);
+    void saveMetadata(std::shared_ptr<UBDocumentProxy> proxy);
+
+    void removePendingSaves(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
+    void waitForAllSaved();
 
 signals:
    void finished();
    void error(QString string);
-   void sceneLoaded(QByteArray text,UBDocumentProxy* proxy, const int pageIndex);
    void scenePersisted(UBGraphicsScene* scene);
-   void metadataPersisted(UBDocumentProxy* proxy);
+   void metadataPersisted(std::shared_ptr<UBDocumentProxy> proxy);
 
 public slots:
    void process();
@@ -71,6 +74,9 @@ public slots:
 protected:
    bool mReceivedApplicationClosing;
    QSemaphore mSemaphore;
+   QMutex mMutex;
+   QMutex mSaving;
+   QWaitCondition mNoMoreSaves;
    QList<PersistenceInformation> saves;
 };
 

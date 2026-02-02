@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,7 +31,7 @@
 #define UBITEM_H
 
 #include <QtGui>
-#include "core/UB.h"
+
 #include "domain/UBGraphicsItemDelegate.h"
 
 class UBGraphicsScene;
@@ -87,19 +87,9 @@ class UBItem
 
         virtual void copyItemParameters(UBItem *copy) const = 0;
 
-        virtual UBGraphicsScene* scene() // TODO UB 4.x should be pure virtual ...
+        virtual std::shared_ptr<UBGraphicsScene> scene() // TODO UB 4.x should be pure virtual ...
         {
             return 0;
-        }
-
-        virtual QUrl sourceUrl() const
-        {
-            return mSourceUrl;
-        }
-
-        virtual void setSourceUrl(const QUrl& pSourceUrl)
-        {
-            mSourceUrl = pSourceUrl;
         }
 
     protected:
@@ -107,8 +97,6 @@ class UBItem
         QUuid mUuid;
 
         RenderingQuality mRenderingQuality;
-
-        QUrl mSourceUrl;
 
         CacheBehavior mCacheBehavior;
 };
@@ -132,13 +120,11 @@ public:
     static bool isRotatable(QGraphicsItem *item);
     static bool isFlippable(QGraphicsItem *item);
     static bool isLocked(QGraphicsItem *item);
-    static QUuid getOwnUuid(QGraphicsItem *item);
+    static bool isHiddenOnDisplay(QGraphicsItem *item);
 
     static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);
 
     void remove(bool canUndo = true);
-
-    virtual void clearSource(){}
 
 private:
     UBGraphicsItemDelegate* mDelegate;

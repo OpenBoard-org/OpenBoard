@@ -58,13 +58,6 @@ var sankoreLang = {
 var sentence = "";
 var curSentence = "";
 
-if(window.sankore){
-    sentence = (sankore.preference("rightOrdPhrases", ""))?sankore.preference("rightOrdPhrases", ""):sankoreLang.example;
-    curSentence = (sankore.preference("currentOrdPhrases", ""))?sankore.preference("currentOrdPhrases", ""):"";
-} else {
-    sentence = sankoreLang.example;
-}
-
 var doCheck = true;
 
 // array of dom elements
@@ -83,14 +76,21 @@ var isBrowser = ( typeof( widget ) == "undefined" );
 var input_width = 606;
 var widget_padding = 0;
 
-$(document).ready(function(){
-    if(window.sankore)
-        if(sankore.preference("ord_phrases_style","")){
-            changeStyle(sankore.preference("ord_phrases_style",""));
-            $("#style_select").val(sankore.preference("ord_phrases_style",""));
+async function start(){
+    if(window.sankore){
+        sentence = (await sankore.async.preference("rightOrdPhrases", ""))?await sankore.async.preference("rightOrdPhrases", ""):sankoreLang.example;
+        curSentence = (await sankore.async.preference("currentOrdPhrases", ""))?await sankore.async.preference("currentOrdPhrases", ""):"";
+
+        if(await sankore.async.preference("ord_phrases_style","")){
+            changeStyle(await sankore.async.preference("ord_phrases_style",""));
+            $("#style_select").val(await sankore.async.preference("ord_phrases_style",""));
         } else
             changeStyle("3")
-        
+    } else {
+        sentence = sankoreLang.example;
+        changeStyle("3")
+    }
+
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_help").text(sankoreLang.help);
@@ -173,8 +173,8 @@ $(document).ready(function(){
         }
     });
     
-    
-})
+    modeView();
+}
 
 function str_replace( w, b, s ){
     while( s.indexOf( w ) != -1 ){
@@ -363,7 +363,7 @@ function modeEdit()
 }
 
 if (window.widget) {
-    window.widget.onleave = function(){
+    window.widget.onleave.connect(() => {
         sankore.setPreference("ord_phrases_style", $("#style_select").find("option:selected").val());
         if($( "#mp_word textarea" ).val())
         {
@@ -385,5 +385,5 @@ if (window.widget) {
             sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));
         }
         sankore.setPreference("rightOrdPhrases", sentence);
-    }
+    });
 }

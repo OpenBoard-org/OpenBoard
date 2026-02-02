@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -38,7 +38,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsCurtainItemDelegate::UBGraphicsCurtainItemDelegate(UBGraphicsCurtainItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, GF_MENU_SPECIFIED | GF_DUPLICATION_ENABLED)
+    : UBGraphicsItemDelegate(pDelegated, parent, GF_MENU_SPECIFIED | GF_DUPLICATION_ENABLED | GF_SCALABLE_ALL_AXIS)
 {
     //NOOP
 }
@@ -85,7 +85,8 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
 {
     if (change == QGraphicsItem::ItemVisibleHasChanged)
     {
-        UBGraphicsScene* ubScene = qobject_cast<UBGraphicsScene*>(mDelegated->scene());
+        // we may use a plain pointer here as it is not used later
+        auto ubScene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
         if(ubScene)
             ubScene->setModified(true);
     }

@@ -63,7 +63,7 @@
         function loadPage() {
 
             // Get OpenBoard's current language
-            var appLanguage = window.sankore ? sankore.locale().substr(0,2) : searchLanguage;
+            var appLanguage = window.sankore ? sankore.lang.substr(0,2) : searchLanguage;
             
             // Set it as search language, if possible
             if (availableLanguages.indexOf(appLanguage) > -1)
@@ -192,7 +192,11 @@
                 var imgContainer = $("<div class='imgContainer' draggable='true'>");
                 var newImg = document.createElement('img');
 
-                newImg.src = result.previewURL;
+                // Pixabay changed result.previewURL content-type to "binary/octet-stream" for jpeg images (so they are downloaded instead of previewed in navigator)
+                // we use webFormatUrl instead, that has "image/jpeg" as content-type for jpeg images. If not, drag and drop will fail as "binary/octet-stream" is not supported.
+                newImg.src = result.webformatURL;
+                $(newImg).width(result.previewWidth);
+                $(newImg).height(result.previewHeight);
 
                 var imgWidth = (result.previewWidth > minWidth)?result.previewWidth:minWidth;
                 var imgHeight = (result.previewHeight > minHeight)?result.previewHeight:minHeight;

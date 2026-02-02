@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -29,6 +29,7 @@
 
 #ifndef XPDFRENDERER_H
 #define XPDFRENDERER_H
+
 #include <QImage>
 #include <QThread>
 #include <QMutexLocker>
@@ -37,34 +38,19 @@
 
 #include "globals/UBGlobals.h"
 
-#ifdef USE_XPDF
-    THIRD_PARTY_WARNINGS_DISABLE
-    #include <xpdf/Object.h>
-    #include <xpdf/GlobalParams.h>
-    #include <xpdf/SplashOutputDev.h>
-    #include <xpdf/PDFDoc.h>
-    THIRD_PARTY_WARNINGS_ENABLE
-#else
-    #include <poppler/Object.h>
-    #include <poppler/GlobalParams.h>
-    #include <poppler/SplashOutputDev.h>
-    #include <poppler/PDFDoc.h>
-#endif
+#include <poppler/Object.h>
+#include <poppler/GlobalParams.h>
+#include <poppler/SplashOutputDev.h>
+#include <poppler/PDFDoc.h>
 
 class PDFDoc;
 
 
 namespace XPDFRendererZoomFactor
 {
-    const double mode1_zoomFactor = 3.0;
-    const double mode2_zoomFactorStage1 = 2.5;
-    const double mode2_zoomFactorStage2 = 5.0;
-    const double mode2_zoomFactorStage3 = 10.0;
-    const double mode3_zoomFactorStage1 = 1.0;
-    const double mode3_zoomFactorStage2 = 3.0;
-    const double mode4_zoomFactorStart = .25;
-    const double mode4_zoomFactorStepSquare = .25;
-    const double mode4_zoomFactorIterations = 7;
+    const double zoomFactorStart = .25;
+    const double zoomFactorStepSquare = .25;
+    const double zoomFactorIterations = 7;
 }
 
 namespace XPDFThreadMaxTimeoutOnExit
@@ -80,10 +66,12 @@ class XPDFRenderer : public PDFRenderer
         XPDFRenderer(const QString &filename, bool importingFile = false);
         virtual ~XPDFRenderer();
 
+        void initPDFZoomData();
         virtual bool isValid() const override;
         virtual int pageCount() const override;
         virtual QSizeF pageSizeF(int pageNumber) const override;
         virtual int pageRotation(int pageNumber) const override;
+        virtual QSizeF pointSizeF(int pageNumber) const override;
         virtual QString title() const override;
         virtual void render(QPainter *p, int pageNumber, const bool cacheAllowed, const QRectF &bounds = QRectF()) override;
 
@@ -160,20 +148,14 @@ class XPDFRenderer : public PDFRenderer
         CacheThread m_cacheThread;
 
         QImage &createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData);
-        QImage* createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
+        QImage* createPDFImageUncached(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
 
-        // Used when 'ZoomBehavior == 1, 2, 3 or 4'.
-        // =1 has only x3 zoom in cache (= loss if user zoom > 3.0).
-        // =2, has 2.5, 5 and 10 (= no loss, but a bit slower).
-        // =3, has 1.0, 2.5, 5 and 10, but downsampled instead of upsampled (= minor quality loss, a bit faster).
-        // =4, multithreaded, multiple level of zoom.
-        QVector<PdfZoomCacheData> m_pdfZoomCache;
-        int const m_pdfZoomMode;
+        QMap<int, QVector<PdfZoomCacheData>> m_perPagepdfZoomCache;
 
-        // Used when 'ZoomBehavior == 0' (no cache).
-        SplashBitmap* mpSplashBitmapHistorical;
-        // Used when 'ZoomBehavior == 0' (no cache).
-        SplashOutputDev* mSplashHistorical;
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashBitmap* mpSplashBitmapUncached;
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashOutputDev* mSplashUncached;
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -43,8 +43,6 @@
 UBImportPDF::UBImportPDF(QObject *parent)
     : UBPageBasedImportAdaptor(parent)
 {
-    QDesktopWidget* desktop = UBApplication::desktop();
-    this->dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
 }
 
 
@@ -77,19 +75,19 @@ QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& fil
         UBApplication::showMessage(tr("PDF import failed."));
         return result;
     }
-    pdfRenderer->setDPI(this->dpi);
 
     int pdfPageCount = pdfRenderer->pageCount();
 
+    UBApplication::showMessage(tr("Importing %1 PDF pages. Please wait...").arg(pdfPageCount), true);
+
     for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
     {
-        UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
         result << new UBGraphicsPDFItem(pdfRenderer, pdfPageNumber); // deleted by the scene
     }
     return result;
 }
 
-void UBImportPDF::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
+void UBImportPDF::placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scene, UBGraphicsItem* item)
 {
     UBGraphicsPDFItem *pdfItem = (UBGraphicsPDFItem*)item;
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<meta charset="UTF-8">
+	<title>LaTeX2SVG</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="css/main.css" />
+	<body>
+		<textarea id="input" class="input">e^{i\pi} + 1 = 0</textarea> 
+		<div id="output" class="output"></div>
+		<script>
+			MathJax =
+			{
+				svg:
+				{
+					fontCache: 'local'
+				}
+			};
+		</script>
+		<script src="js/MathJax/tex-svg.js" type="text/javascript"></script>
+		<script>
+			(function()
+			{
+				let input = document.getElementById('input');
+				let output = document.getElementById('output');
+
+				render();
+				input.addEventListener('input', (e) => render());
+
+				function render()
+				{
+					const texElement = MathJax.tex2svg(input.value);
+					output.innerHTML = '';
+
+					let svgElement = texElement.firstElementChild;
+					
+					svgElement.setAttribute('width', convertExValueToPxValue(svgElement.getAttribute('width')));
+					svgElement.setAttribute('height', convertExValueToPxValue(svgElement.getAttribute('height')));
+
+					const svgOuterHTML = svgElement.outerHTML;
+					
+					const textEncoder = new TextEncoder();
+					const svgBytes = textEncoder.encode(svgOuterHTML);
+					
+					let svgString = '';
+					
+					for (let i = 0; i < svgBytes.byteLength; i++)
+					{
+						svgString += String.fromCharCode(svgBytes[i]);
+					}
+					
+					const base64EncodedSVG = window.btoa(svgString);
+					
+					let img = document.createElement('img');
+					img.src = 'data:image/svg+xml;base64,' + base64EncodedSVG;
+					output.appendChild(img);
+				}
+				
+				function convertExValueToPxValue(value)
+				{
+					if (value.includes("ex"))
+					{
+						return (parseFloat(value) * 10).toFixed(2) + "px";
+					}
+					else
+					{
+						return value;
+					}
+				}
+			})();
+		</script>
+	</body>
+</html>

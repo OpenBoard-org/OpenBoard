@@ -15,7 +15,7 @@ var lang = ""; //locale language
 
 if(window.sankore){
     try{
-        lang = sankore.locale().substr(0,2);
+        lang = sankore.lang.substr(0,2);
     } catch(e){
         lang = "en";
     }

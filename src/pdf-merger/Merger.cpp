@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -135,6 +135,13 @@ void Merger::merge(const char * overlayDocName, const MergeDescription & pagesTo
 // Method performs saving of merged documents into selected file
 void Merger::saveMergedDocumentsAs(const char * outDocumentName)
 {
-   _overlayDocument->saveAs(outDocumentName);
+    try
+    {
+        _overlayDocument->saveAs(outDocumentName);
+    }
+    catch (...)
+    {
+        throw;
+    }
 }
 

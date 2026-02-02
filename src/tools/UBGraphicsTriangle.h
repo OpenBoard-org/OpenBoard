@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -77,7 +77,14 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
                 TopRight
         };
 
-        static UBGraphicsTriangleOrientation orientationFromStr(QStringRef& str)
+        enum UBGraphicsTriangleDrawingSide
+        {
+                Adjacent= 0,
+                Opposite,
+                Hypotenuse
+        };
+
+        static UBGraphicsTriangleOrientation orientationFromStr(const QString& str)
         {
             if (str == "BottomLeft") return BottomLeft;
             if (str == "BottomRight") return BottomRight;
@@ -107,7 +114,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         UBGraphicsTriangleOrientation getOrientation() const {return mOrientation;}
         QRectF rect() const {return boundingRect();}
 
-        UBGraphicsScene* scene() const;
+        std::shared_ptr<UBGraphicsScene> scene() const;
 
     protected:
 
@@ -129,18 +136,23 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         QRectF bounding_Rect() const;
 
+        qreal heightAtPosition(qreal position);
+
         QCursor    resizeCursor1() const;
         QCursor    resizeCursor2() const;
 
         QCursor    flipCursor() const;
 
+        virtual void    keyPressEvent(QKeyEvent *event);
         virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+
         void paintGraduations(QPainter *painter);
+        void paintHelp(QPainter *painter);
 
     private:
 
@@ -154,6 +166,9 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         bool mResizing1;
         bool mResizing2;
         bool mRotating;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
+
         QRect lastRect;
 
         // Coordinates are transformed....
@@ -171,6 +186,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         static const UBGraphicsTriangleOrientation sDefaultOrientation;
 
         UBGraphicsTriangleOrientation mOrientation;
+        UBGraphicsTriangleDrawingSide mDrawingSide;
 
         QPointF A1, B1, C1, A2, B2, C2; // coordinates of points in ext and int triangles
         qreal C;

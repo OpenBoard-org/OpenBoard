@@ -19,13 +19,17 @@ function createWord( word )
 
 var w;
 
-$(document).ready(function()
+$(document).ready(function() {
+    start();
+});
+
+async function start()
 {
     var w = new wcontainer( "#ub-widget" );
     var words = "";
         
     if(window.sankore)
-        words = (sankore.preference("ordSplWords", ""))?sankore.preference("ordSplWords", ""):sankoreLang.example;
+        words = (await sankore.async.preference("ordSplWords", ""))?await sankore.async.preference("ordSplWords", ""):sankoreLang.example;
     else
         words = sankoreLang.example;
     
@@ -35,7 +39,7 @@ $(document).ready(function()
     w.setViewContent( "" );
 
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             sankore.setPreference("spl_word_style", $("#style_select").find("option:selected").val());
             if(w.editMode){
                 sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
@@ -47,12 +51,12 @@ $(document).ready(function()
                 sankore.setPreference("ordSplWordsAnswer", ($("#ub-widget").hasClass("answerRight"))?"answerRight":"");
                 sankore.setPreference("ordSplWords", w.getData( "word" ));              
             }
-        }
+        });
     }
 
-    if(sankore.preference("spl_word_style","")){
-        changeStyle(sankore.preference("spl_word_style",""));
-        $("#style_select").val(sankore.preference("spl_word_style",""));
+    if(await sankore.async.preference("spl_word_style","")){
+        changeStyle(await sankore.async.preference("spl_word_style",""));
+        $("#style_select").val(await sankore.async.preference("spl_word_style",""));
     } else
         changeStyle("3")
 
@@ -122,16 +126,16 @@ $(document).ready(function()
     });
 
     // onViewMode
-    w.onViewMode = function()
+    w.onViewMode = async function()
     {
         var word = w.elements.container.find( "input" ).val().trim( ['*'] );
         w.setData( "word", word );
         word = word.replace( /\*/g, '' );
         
-        if(sankore.preference("ordSplWordsState", "") == "1" && flag){
-            $(".viewmode").html(sankore.preference("ordSplWordsCode", ""));
-            if(sankore.preference("ordSplWordsAnswer", ""))
-                $("#ub-widget").addClass(sankore.preference("ordSplWordAnswer", ""));
+        if(await sankore.async.preference("ordSplWordsState", "") == "1" && flag){
+            $(".viewmode").html(await sankore.async.preference("ordSplWordsCode", ""));
+            if(await sankore.async.preference("ordSplWordsAnswer", ""))
+                $("#ub-widget").addClass(await sankore.async.preference("ordSplWordAnswer", ""));
             flag = false;
         } 
         else
@@ -260,4 +264,4 @@ $(document).ready(function()
         }
     }
 	
-});
+};

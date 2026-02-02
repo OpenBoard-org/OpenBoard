@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -40,26 +40,23 @@
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBDocumentProxy::UBDocumentProxy()
-    : mPageCount(0)
-    , mPageDpi(0)
+    : mPageDpi(0)
     , mPersistencePath("")
+    , mDocumentDateLittleEndian("")
+    , mDocumentUpdatedAtLittleEndian("")
+    , mNeedsCleanup(true)
+    , mLastVisitedIndex(0)
+    , mIsInFavoriteList(false)
 {
     init();
 }
 
-UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
-    QObject()
-{
-    mPersistencePath = rValue.mPersistencePath;
-    mMetaDatas = rValue.mMetaDatas;
-    mIsModified = rValue.mIsModified;
-    mPageCount = rValue.mPageCount;
-}
-
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
-    : mPageCount(0)
-    , mPageDpi(0)
+    : mPageDpi(0)
+    , mNeedsCleanup(true)
+    , mLastVisitedIndex(0)
+    , mIsInFavoriteList(false)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -73,14 +70,14 @@ void UBDocumentProxy::init()
     setMetaData(UBSettings::documentGroupName, "");
 
     QDateTime now = QDateTime::currentDateTime();
-    setMetaData(UBSettings::documentName, now.toString(Qt::SystemLocaleShortDate));
+    setMetaData(UBSettings::documentName, QLocale::system().toString(now, QLocale::ShortFormat));
 
     setUuid(QUuid::createUuid());
 
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 }
 
-bool UBDocumentProxy::theSameDocument(UBDocumentProxy *proxy)
+bool UBDocumentProxy::theSameDocument(std::shared_ptr<UBDocumentProxy> proxy)
 {
     return  proxy && mPersistencePath == proxy->mPersistencePath;
 }
@@ -90,28 +87,36 @@ UBDocumentProxy::~UBDocumentProxy()
     // NOOP
 }
 
-UBDocumentProxy* UBDocumentProxy::deepCopy() const
+std::shared_ptr<UBDocumentProxy> UBDocumentProxy::deepCopy() const
 {
-    UBDocumentProxy* copy = new UBDocumentProxy();
+    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>();
 
     copy->mPersistencePath = QString(mPersistencePath);
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
-    copy->mIsModified = mIsModified;
-    copy->mPageCount = mPageCount;
+    copy->mLastVisitedIndex = mLastVisitedIndex;
+    copy->mIsInFavoriteList = mIsInFavoriteList;
 
     return copy;
 }
 
-
-int UBDocumentProxy::pageCount()
+int UBDocumentProxy::lastVisitedSceneIndex() const
 {
-    return mPageCount;
+    return mLastVisitedIndex;
 }
 
-
-void UBDocumentProxy::setPageCount(int pPageCount)
+void UBDocumentProxy::setLastVisitedSceneIndex(int lastVisitedSceneIndex)
 {
-    mPageCount = pPageCount;
+    mLastVisitedIndex = lastVisitedSceneIndex;
+}
+
+bool UBDocumentProxy::isInFavoriteList() const
+{
+    return mIsInFavoriteList;
+}
+
+void UBDocumentProxy::setIsInFavoristeList(bool isInFavoriteList)
+{
+    mIsInFavoriteList = isInFavoriteList;
 }
 
 int UBDocumentProxy::pageDpi()
@@ -124,32 +129,21 @@ void UBDocumentProxy::setPageDpi(int dpi)
     mPageDpi = dpi;
 }
 
-int UBDocumentProxy::incPageCount()
+bool UBDocumentProxy::isWidgetCompatible(const QUuid &uuid) const
 {
-    if (mPageCount <= 0)
-    {
-        mPageCount = 1;
-    }
-    else
-    {
-        mPageCount++;
-    }
-
-    return mPageCount;
-
+    return mWidgetCompatibility.value(uuid, true);
 }
 
-
-int UBDocumentProxy::decPageCount()
+void UBDocumentProxy::setWidgetCompatible(const QUuid &uuid, bool compatible)
 {
-    mPageCount --;
+    mWidgetCompatibility[uuid] = compatible;
+}
 
-    if (mPageCount < 0)
-    {
-        mPageCount = 0;
-    }
-
-    return mPageCount;
+bool UBDocumentProxy::testAndResetCleanupNeeded()
+{
+    bool tmp = mNeedsCleanup;
+    mNeedsCleanup = false;
+    return tmp;
 }
 
 QString UBDocumentProxy::persistencePath() const
@@ -157,11 +151,15 @@ QString UBDocumentProxy::persistencePath() const
     return mPersistencePath;
 }
 
+QString UBDocumentProxy::documentFolderName() const
+{
+    return mPersistencePath.section('/', -1);
+}
+
 void UBDocumentProxy::setPersistencePath(const QString& pPersistencePath)
 {
     if (pPersistencePath != mPersistencePath)
     {
-        mIsModified = true;
         mPersistencePath = pPersistencePath;
     }
 }
@@ -172,13 +170,10 @@ void UBDocumentProxy::setMetaData(const QString& pKey, const QVariant& pValue)
         return;
     else
     {
-        mIsModified = true;
         mMetaDatas.insert(pKey, pValue);
         if (pKey == UBSettings::documentUpdatedAt)
         {
-            UBDocumentManager *documentManager = UBDocumentManager::documentManager();
-            if (documentManager)
-                documentManager->emitDocumentUpdated(this);
+            mDocumentUpdatedAtLittleEndian = "";
         }
     }
 }
@@ -224,7 +219,6 @@ void UBDocumentProxy::setDefaultDocumentSize(QSize pSize)
     if (defaultDocumentSize() != pSize)
     {
         setMetaData(UBSettings::documentSize, QVariant(pSize));
-        mIsModified = true;
     }
 }
 
@@ -259,13 +253,10 @@ QDateTime UBDocumentProxy::documentDate()
 QDateTime UBDocumentProxy::lastUpdate()
 {
     if(mMetaDatas.contains(UBSettings::documentUpdatedAt))
+    {
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
+    }
     return QDateTime::currentDateTime();
-}
-
-bool UBDocumentProxy::isModified() const
-{
-    return mIsModified;
 }
 
 

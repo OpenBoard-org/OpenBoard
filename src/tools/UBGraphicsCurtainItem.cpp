@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -86,12 +86,6 @@ QVariant UBGraphicsCurtainItem::itemChange(GraphicsItemChange change, const QVar
     return QGraphicsRectItem::itemChange(change, newValue);
 }
 
-void UBGraphicsCurtainItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 void UBGraphicsCurtainItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Delegate()->mousePressEvent(event))
@@ -130,7 +124,7 @@ void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     if(widget == UBApplication::boardController->controlView()->viewport())
     {
         color = UBSettings::paletteColor;
-        if(!UBApplication::applicationController->displayManager()->hasDisplay())
+        if(!UBApplication::displayManager->useMultiScreen() || !UBApplication::displayManager->hasDisplay())
         {
             color = opaqueControlColor();
         }
@@ -169,21 +163,24 @@ void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setZValue(this->zValue());
     }
 }
 
 QColor UBGraphicsCurtainItem::drawColor() const
 {
-    UBGraphicsScene* pScene = static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
-    return pScene->isDarkBackground() ? sDarkBackgroundDrawColor : sDrawColor;
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    std::shared_ptr<UBGraphicsScene> pScene = scenePtr ? scenePtr->shared_from_this() : nullptr;
+    return pScene && pScene->isDarkBackground() ? sDarkBackgroundDrawColor : sDrawColor;
 }
 
 
 QColor UBGraphicsCurtainItem::opaqueControlColor() const
 {
-    UBGraphicsScene* pScene = static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
-    return pScene->isDarkBackground() ? sDarkBackgroundOpaqueControlColor : sOpaqueControlColor;
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    std::shared_ptr<UBGraphicsScene> pScene = scenePtr ? scenePtr->shared_from_this() : nullptr;
+    return pScene && pScene->isDarkBackground() ? sDarkBackgroundOpaqueControlColor : sOpaqueControlColor;
 }
 
 

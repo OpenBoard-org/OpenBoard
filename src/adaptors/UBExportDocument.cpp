@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,13 +31,15 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
+#include "adaptors/UBPageMapper.h"
+
 #include "core/UBDocumentManager.h"
 #include "core/UBApplication.h"
+#include "core/UBSettings.h"
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "globals/UBGlobals.h"
+#include "document/UBDocumentToc.h"
 
 #ifdef Q_OS_OSX
     #include <quazip.h>
@@ -60,13 +62,13 @@ UBExportDocument::~UBExportDocument()
     // NOOP
 }
 
-void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportDocument::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as UBZ File"));
 }
 
 
-bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString &filename)
+bool UBExportDocument::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString &filename)
 {
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
@@ -78,8 +80,18 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
 
     QDir documentDir = QDir(pDocumentProxy->persistencePath());
 
+    // try to load a TOC for mapping and check version number
+    UBDocumentToc toc{pDocumentProxy->persistencePath()};
+    std::unique_ptr<UBPageMapper> mapper{nullptr};
+    const auto version = QVersionNumber::fromString(pDocumentProxy->metaData(UBSettings::documentVersion).toString());
+
+    if (toc.load() && version >= QVersionNumber::fromString(UBSettings::currentFileVersion))
+    {
+        mapper = std::unique_ptr<UBPageMapper>{new UBPageMapper{pDocumentProxy->persistencePath(), &toc}};
+    }
+
     QuaZipFile outFile(&zip);
-    UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
+    UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, mapper.get(), this);
 
     zip.close();
 
@@ -98,7 +110,7 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
 
 void UBExportDocument::processing(const QString& pObjectName, int pCurrent, int pTotal)
 {
-    QString localized = UBExportDocument::trUtf8(pObjectName.toUtf8());
+    QString localized = UBExportDocument::tr(pObjectName.toUtf8());
 
     if (mIsVerbose)
         UBApplication::showMessage(tr("Exporting %1 %2 of %3").arg(localized).arg(pCurrent).arg(pTotal));

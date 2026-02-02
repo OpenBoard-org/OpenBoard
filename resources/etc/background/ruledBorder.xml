@@ -1,0 +1,25 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>c155edf1-bb46-4f4c-a665-a5800eeed465</bg:uuid>
+    <bg:description xml:lang="en">Ruled with border</bg:description>
+    <bg:description xml:lang="de">Liniert mit Rand</bg:description>
+    <bg:attributes ruled="true"/>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:stretch>
+            <bg:from>-30</bg:from>
+        </bg:stretch>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>90</bg:angle>
+        <bg:origin>topleft</bg:origin>
+        <bg:line>
+            <bg:offset>30</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>

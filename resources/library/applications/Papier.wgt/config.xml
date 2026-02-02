@@ -2,8 +2,8 @@
 
 <widget xmlns="http://www.w3.org/ns/widgets" 
 		xmlns:ub=""
-        id="https://openedu.fr/" 
-        version="1.0"
+        id="https://openedu.fr/widgets/papier"
+        version="2.0"
 	width="750"
 	height="300"
 ub:resizable="true"

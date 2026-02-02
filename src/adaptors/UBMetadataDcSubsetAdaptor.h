@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -40,7 +40,7 @@ class UBMetadataDcSubsetAdaptor
         UBMetadataDcSubsetAdaptor();
         virtual ~UBMetadataDcSubsetAdaptor();
 
-        static void persist(UBDocumentProxy* proxy);
+        static void persist(std::shared_ptr<UBDocumentProxy> proxy);
         static QMap<QString, QVariant> load(QString pPath);
 
         static const QString nsRdf;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -62,11 +62,12 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
         // Events
-        virtual void   mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void    keyPressEvent(QKeyEvent *event);
+        virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        virtual void   hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        virtual void   hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
     private slots:
@@ -114,7 +115,7 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QPainterPath           hingeShape() const;
         QPainterPath      pencilBaseShape() const;
         QPainterPath       pencilArmShape() const;
-        UBGraphicsScene*            scene() const;
+        std::shared_ptr<UBGraphicsScene>           scene() const;
         QColor                  drawColor() const;
         QColor            middleFillColor() const;
         QColor              edgeFillColor() const;
@@ -134,8 +135,11 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         bool mDrewCircle;
         QGraphicsSvgItem* mCloseSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
+        QGraphicsSvgItem* mMoveToolSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
 
         // Constants
         static constexpr int                      sNeedleLength = 12;

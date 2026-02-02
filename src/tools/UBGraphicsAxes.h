@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -78,6 +78,7 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         void setRect(const QRectF &rect);
 
         // Events
+        virtual void    keyPressEvent (QKeyEvent *event);
         virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -99,14 +100,16 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         virtual QRectF              resizeTopRect() const;
         virtual QRectF            closeButtonRect() const;
         virtual QRectF          numbersButtonRect() const;
+        virtual QRectF         moveToolButtonRect() const;
         virtual QLineF                      xAxis() const;
         virtual QLineF                      yAxis() const;
-        virtual UBGraphicsScene*            scene() const;
+        virtual std::shared_ptr<UBGraphicsScene>            scene() const;
 
         QColor                  drawColor() const;
         QFont                        font() const;
 
         QGraphicsSvgItem* mCloseSvgItem;
+        QGraphicsSvgItem* mMoveToolSvgItem;
         QGraphicsSvgItem* mNumbersSvgItem;
 
         bool mResizing;

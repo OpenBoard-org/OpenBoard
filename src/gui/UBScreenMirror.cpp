@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -26,14 +26,19 @@
 
 
 
-#include <QDesktopWidget>
-
 #include "UBScreenMirror.h"
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "board/UBBoardController.h"
+
+#ifdef Q_OS_LINUX
+#include "frameworks/UBDesktopPortal.h"
+#include "frameworks/UBPipewireSink.h"
+#include "frameworks/UBPlatformUtils.h"
+#endif
 
 #if defined(Q_OS_OSX)
 #include <ApplicationServices/ApplicationServices.h>
@@ -44,7 +49,6 @@
 
 UBScreenMirror::UBScreenMirror(QWidget* parent)
     : QWidget(parent)
-    , mScreenIndex(0)
     , mSourceWidget(0)
     , mTimerID(0)
 {
@@ -68,10 +72,12 @@ void UBScreenMirror::paintEvent(QPaintEvent *event)
 
     if (!mLastPixmap.isNull())
     {
-        int x = (width() - mLastPixmap.width()) / 2;
-        int y = (height() - mLastPixmap.height()) / 2;
+        // compute size and offset in device independent coordinates
+        QSizeF pixmapSize = mLastPixmap.size() / mLastPixmap.devicePixelRatioF();
+        int x = (width() - pixmapSize.width()) / 2;
+        int y = (height() - pixmapSize.height()) / 2;
 
-        painter.drawPixmap(x, y, width(), height(), mLastPixmap);
+        painter.drawPixmap(x, y, mLastPixmap);
     }
 }
 
@@ -89,32 +95,79 @@ void UBScreenMirror::grabPixmap()
 {
     if (mSourceWidget)
     {
-        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
-        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
-
-        mRect.setTopLeft(topLeft);
-        mRect.setBottomRight(bottomRight);
         mLastPixmap = mSourceWidget->grab();
-    }
-    else{
-        // WHY HERE?
-        // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
-        // what we have to grab. Not very good way of doing
-        QDesktopWidget * desktop = QApplication::desktop();
-        QScreen * screen = UBApplication::controlScreen();
-        mLastPixmap = screen->grabWindow(desktop->effectiveWinId(), mRect.x(), mRect.y(), mRect.width(), mRect.height());
-    }
 
-    if (!mLastPixmap.isNull())
-        mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if (!mLastPixmap.isNull())
+            mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    else
+    {
+        UBApplication::displayManager->grab(ScreenRole::Control, [this](QPixmap pixmap){
+            if (!pixmap.isNull())
+                mLastPixmap = pixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        });
+    }
 }
 
+#ifdef Q_OS_LINUX
+void UBScreenMirror::startScreenCast()
+{
+    // use UBDesktopPortal
+    if (!mPortal)
+    {
+        mPortal = new UBDesktopPortal(this);
+
+        connect(mPortal, &UBDesktopPortal::streamStarted, this, &UBScreenMirror::playStream);
+        connect(mPortal, &UBDesktopPortal::screenCastAborted, this, [](){
+            UBApplication::applicationController->mirroringEnabled(false);
+        });
+    }
+
+    mPortal->startScreenCast(true);
+}
+
+void UBScreenMirror::playStream(int fd, int nodeId)
+{
+    qDebug() << "Start stream player" << fd << nodeId;
+    auto sink = new UBPipewireSink(this);
+
+    connect(sink, &UBPipewireSink::gotImage, this, [this](QImage image){
+        mLastPixmap = QPixmap::fromImage(image).scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        update();
+    });
+
+    connect(sink, &UBPipewireSink::streamingInterrupted, sink, &QObject::deleteLater);
+
+    sink->start(fd, nodeId);
+}
+#endif
 
 void UBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 {
+    if (mSourceWidget == sourceWidget)
+    {
+        return;
+    }
+
+    qDebug() << "Mirror: setSourceWidget" << sourceWidget;
     mSourceWidget = sourceWidget;
 
-    mScreenIndex = qApp->desktop()->screenNumber(sourceWidget);
+#ifdef Q_OS_LINUX
+    if (mSourceWidget == nullptr && mIsStarted && UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND)
+    {
+        // stop timer
+        if (mTimerID != 0)
+        {
+            killTimer(mTimerID);
+            mTimerID = 0;
+        }
+
+        // use desktop portal to start a screencast
+        mLastPixmap = {};
+        startScreenCast();
+        return;
+    }
+#endif
 
     grabPixmap();
 
@@ -124,8 +177,25 @@ void UBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 
 void UBScreenMirror::start()
 {
+    if (mIsStarted)
+    {
+        return;
+    }
+
     qDebug() << "mirroring START";
+    mIsStarted = true;
     UBApplication::boardController->freezeW3CWidgets(true);
+
+#ifdef Q_OS_LINUX
+    if (mSourceWidget == nullptr && UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND)
+    {
+        // use desktop portal to start a screencast
+        mLastPixmap = {};
+        startScreenCast();
+        return;
+    }
+#endif
+
     if (mTimerID == 0)
     {
         int ms = 125;
@@ -149,11 +219,24 @@ void UBScreenMirror::start()
 
 void UBScreenMirror::stop()
 {
+    if (!mIsStarted)
+    {
+        return;
+    }
+
     qDebug() << "mirroring STOP";
+    mIsStarted = false;
     UBApplication::boardController->freezeW3CWidgets(false);
     if (mTimerID != 0)
     {
         killTimer(mTimerID);
         mTimerID = 0;
     }
+
+#ifdef Q_OS_LINUX
+    if (mPortal)
+    {
+        mPortal->stopScreenCast();
+    }
+#endif
 }

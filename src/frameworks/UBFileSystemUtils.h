@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,6 +36,7 @@
 #include "core/UB.h"
 
 class QuaZipFile;
+class UBPageMapper;
 class UBProcessingProgressListener;
 
 class UBFileSystemUtils : public QObject
@@ -104,12 +105,10 @@ class UBFileSystemUtils : public QObject
          * @return bool. true if compression is successful.
          */
         static bool compressDirInZip(const QDir& pDir, const QString& pDestDir, QuaZipFile *pOutZipFile
-                        , bool pRootDocumentFolder, UBProcessingProgressListener* progressListener = 0);
+                        , bool pRootDocumentFolder, UBPageMapper* mapper = nullptr
+                        , UBProcessingProgressListener* progressListener = nullptr);
 
         static bool expandZipToDir(const QFile& pZipFile, const QDir& pTargetDir);
-
-        static QString md5InHex(const QByteArray &pByteArray);
-        static QString md5(const QByteArray &pByteArray);
 
         static QString nextAvailableFileName(const QString& filename, const QString& inter = QString(""));
 

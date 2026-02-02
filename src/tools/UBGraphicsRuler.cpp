@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -27,6 +27,9 @@
 
 
 
+#include <QLinearGradient>
+#include <QBrush>
+#include <QPainterPath>
 #include <QPixmap>
 
 #include "tools/UBGraphicsRuler.h"
@@ -40,11 +43,12 @@
 
 const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 
-
 UBGraphicsRuler::UBGraphicsRuler()
     : QGraphicsRectItem()
     , mResizing(false)
     , mRotating(false)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
 {
     setRect(sDefaultRect);
 
@@ -61,6 +65,7 @@ UBGraphicsRuler::UBGraphicsRuler()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
     updateResizeCursor();
 }
 
@@ -114,23 +119,25 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
     UBAbstractDrawRuler::paint();
 
-    QTransform antiScaleTransform2;
+    QTransform antiScaleTransformResize;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    antiScaleTransform2.scale(ratio, 1.0);
+    antiScaleTransformResize.scale(ratio, 1.0);
 
-    mResizeSvgItem->setTransform(antiScaleTransform2);
+    mResizeSvgItem->setTransform(antiScaleTransformResize);
     mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
-    mRotateSvgItem->setTransform(antiScaleTransform2);
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 
-
+    QPainterPath outline = QPainterPath();
+    outline.addRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
 
     painter->setPen(drawColor());
     painter->setBrush(edgeFillColor());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
-    fillBackground(painter);
+
+    fillBackground(painter, outline);
+    drawBorder(painter, outline);
+    paintHelp(painter);
     paintGraduations(painter);
     if (mRotating)
         paintRotationCenter(painter);
@@ -149,26 +156,55 @@ QVariant UBGraphicsRuler::itemChange(GraphicsItemChange change, const QVariant &
     return QGraphicsRectItem::itemChange(change, value);
 }
 
-void UBGraphicsRuler::fillBackground(QPainter *painter)
+void UBGraphicsRuler::paintHelp(QPainter *painter)
 {
-    QRectF rect1(rect().topLeft(), QSizeF(rect().width(), rect().height() / 4));
-    QLinearGradient linearGradient1(
-        rect1.topLeft(),
-        rect1.bottomLeft());
-    linearGradient1.setColorAt(0, edgeFillColor());
-    linearGradient1.setColorAt(1, middleFillColor());
-    painter->fillRect(rect1, linearGradient1);
+    if (hasFocus())
+    {
+         //help message to aknowledge the user that the tool can be moved with the arrow keys
+         painter->setPen(drawColor());
+         painter->setFont(QFont("Arial",9));
+         QFontMetricsF fontMetrics(painter->font());
+         int textWidth = fontMetrics.horizontalAdvance(tr("use arrow keys for precise moves"));
 
-    QRectF rect2(rect1.bottomLeft(), QSizeF(rect().width(), rect().height() / 2));
-    painter->fillRect(rect2, middleFillColor());
+         if (rect().width()/2 > textWidth)
+         {
+             painter->drawText(rect(), Qt::AlignCenter, tr("use arrow keys for precise moves"));
 
-    QRectF rect3(rect2.bottomLeft(), rect1.size());
-    QLinearGradient linearGradient3(
-        rect3.topLeft(),
-        rect3.bottomLeft());
-    linearGradient3.setColorAt(0, middleFillColor());
-    linearGradient3.setColorAt(1, edgeFillColor());
-    painter->fillRect(rect3, linearGradient3);
+             mMoveToolSvgItem->setPos(
+                 rect().center().x() + (textWidth/2) + 5 /* (a 5px margin between the text and the icon) */,
+                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() / 2);
+
+             mMoveToolSvgItem->setVisible(true);
+         }
+         else
+         {
+             mMoveToolSvgItem->setVisible(false);
+         }
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
+}
+
+void UBGraphicsRuler::fillBackground(QPainter *painter, const QPainterPath &path)
+{
+    QLinearGradient linearGradient = QLinearGradient(
+        rect().topLeft(),
+        rect().bottomLeft());
+
+    linearGradient.setColorAt(0, edgeFillColor());
+    linearGradient.setColorAt(0.25, middleFillColor());
+    linearGradient.setColorAt(0.75, middleFillColor());
+    linearGradient.setColorAt(1, edgeFillColor());
+
+    QBrush brush = QBrush(linearGradient);
+    painter->fillPath(path, brush);
+}
+
+void UBGraphicsRuler::drawBorder(QPainter *painter, const QPainterPath &path)
+{
+    painter->drawPath(path);
 }
 
 void UBGraphicsRuler::paintGraduations(QPainter *painter)
@@ -184,7 +220,7 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     int rulerLengthInMillimeters = (rect().width() - sLeftEdgeMargin - sRoundingRadius)/pixelsPerMillimeter;
 
     // When a "centimeter" is too narrow, we only display every 5th number, and every 5th millimeter mark
-    double numbersWidth = fontMetrics.width("00");
+    double numbersWidth = fontMetrics.horizontalAdvance("00");
     bool shouldDisplayAllNumbers = (numbersWidth <= (sPixelsPerCentimeter - 5));
 
     for (int millimeters(0); millimeters < rulerLengthInMillimeters; millimeters++) {
@@ -213,8 +249,8 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
         {
             QString text = QString("%1").arg((int)(millimeters / UBGeometryUtils::millimetersPerCentimeter));
 
-            if (graduationX + fontMetrics.width(text) / 2 < rect().right()) {
-                qreal textWidth = fontMetrics.width(text);
+            if (graduationX + fontMetrics.horizontalAdvance(text) / 2 < rect().right()) {
+                qreal textWidth = fontMetrics.horizontalAdvance(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
                 painter->drawText(
                     QRectF(graduationX - textWidth / 2, rect().top() + 5 + UBGeometryUtils::centimeterGraduationHeight, textWidth, textHeight),
@@ -225,7 +261,6 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
             }
         }
     }
-
 
     painter->restore();
 
@@ -257,12 +292,12 @@ QPointF UBGraphicsRuler::rotationCenter() const
 QRectF UBGraphicsRuler::resizeButtonRect() const
 {
     QPixmap resizePixmap(":/images/resizeRuler.svg");
+    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
     QSizeF resizeRectSize(
-        resizePixmap.rect().width(),
+        resizePixmap.rect().width() * ratio,
         rect().height());
 
-    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width() * ratio, 0);
+    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width(), 0);
 
     QRectF resizeRect(resizeRectTopLeft, resizeRectSize);
     resizeRect.translate(rect().topLeft());
@@ -275,8 +310,8 @@ QRectF UBGraphicsRuler::closeButtonRect() const
     QPixmap closePixmap(":/images/closeTool.svg");
 
     QSizeF closeRectSize(
-        closePixmap.width() * mAntiScaleRatio,
-        closePixmap.height() * mAntiScaleRatio);
+        closePixmap.width(),
+        closePixmap.height());
 
     QPointF closeRectCenter(
         rect().left() + sLeftEdgeMargin + sPixelsPerCentimeter/2,
@@ -294,12 +329,12 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
     QPixmap rotatePixmap(":/images/closeTool.svg");
 
     QSizeF rotateRectSize(
-        rotatePixmap.width() * mAntiScaleRatio,
-        rotatePixmap.height() * mAntiScaleRatio);
+        rotatePixmap.width(),
+        rotatePixmap.height());
 
-    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (sPixelsPerCentimeter);
+    qreal marginToResizeButton = 0.5 * sPixelsPerCentimeter;
     QPointF rotateRectCenter(
-        rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * sPixelsPerCentimeter,
+        rect().right() - resizeButtonRect().width() - marginToResizeButton,
         rect().center().y());
 
     QPointF rotateRectTopLeft(
@@ -307,6 +342,30 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
         rotateRectCenter.y() - rotateRectSize.height() / 2);
 
     return QRectF(rotateRectTopLeft, rotateRectSize);
+}
+
+void UBGraphicsRuler::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();;
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+    }
 }
 
 void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -345,6 +404,10 @@ void UBGraphicsRuler::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else if (rotateButtonRect().contains(event->pos()))
     {
         mRotating = true;
+        mCursorRotationAngle = 0;
+        QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+        QPointF topRight = sceneTransform().map(boundingRect().topRight());
+        mItemRotationAngle = QLineF(topLeft, topRight).angle();
         event->accept();
     }
     else
@@ -363,6 +426,14 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (!mResizing && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (scene()->isSnapping()) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
@@ -381,7 +452,24 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             QLineF currentLine(rotationCenter(), event->pos());
             QLineF lastLine(rotationCenter(), event->lastPos());
-            rotateAroundCenter(currentLine.angleTo(lastLine));
+            mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
+            qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
+
+            if (scene()->isSnapping())
+            {
+                qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+                newAngle = qRound(newAngle / step) * step;
+            }
+
+            newAngle = std::fmod(newAngle, 360.);
+
+            QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+            QPointF topRight = sceneTransform().map(boundingRect().topRight());
+            qreal currentAngle = QLineF(topLeft, topRight).angle();
+            rotateAroundCenter(currentAngle - newAngle);
+
+            //display current angle
+            UBApplication::boardController->setCursorFromAngle(newAngle);
         }
 
         event->accept();
@@ -420,9 +508,6 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (UBDrawingController::drawingController()->mActiveRuler == nullptr)
-        UBDrawingController::drawingController()->mActiveRuler = this;
-
     if (currentTool == UBStylusTool::Selector ||
         currentTool == UBStylusTool::Play)
     {
@@ -453,6 +538,7 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     else if (UBDrawingController::drawingController()->isDrawingTool())
     {
         setCursor(drawRulerLineCursor());
+        UBDrawingController::drawingController()->setActiveRuler(this);
         event->accept();
     }
 }
@@ -464,16 +550,17 @@ void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
     mRotateSvgItem->setVisible(mShowButtons);
-    UBDrawingController::drawingController()->mActiveRuler = nullptr;
+    UBDrawingController::drawingController()->setActiveRuler(nullptr);
     event->accept();
     update();
 }
 
 
 
-UBGraphicsScene* UBGraphicsRuler::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsRuler::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
@@ -497,11 +584,6 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
         y = rect().y() - mStrokeWidth /2;
     }
 
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-        itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
-
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
 
@@ -523,10 +605,6 @@ void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
     {
         y = rect().y() - mStrokeWidth /2;
     }
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-        itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);

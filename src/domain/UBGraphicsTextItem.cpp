@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -79,6 +79,64 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
 
 UBGraphicsTextItem::~UBGraphicsTextItem()
 {
+}
+
+void UBGraphicsTextItem::initFontProperties()
+{
+    QTextCursor curCursor = textCursor();
+    QTextCharFormat format;
+    QFont font(createDefaultFont());
+
+    font.setPointSize(UBSettings::settings()->fontPointSize());
+    format.setFont(font);
+    if (UBSettings::settings()->isDarkBackground())
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
+    }
+    else
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
+    }
+
+    setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
+    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
+    curCursor.mergeCharFormat(format);
+    setTextCursor(curCursor);
+    setFont(font);
+
+    adjustSize();
+    contentsChanged();
+}
+
+QFont UBGraphicsTextItem::createDefaultFont()
+{
+    QFont font;
+
+    QString fFamily = UBSettings::settings()->fontFamily();
+    if (!fFamily.isEmpty())
+        font.setFamily(fFamily);
+
+    QString fStyleName = UBSettings::settings()->fontStyleName();
+    if (!fStyleName .isEmpty())
+        font.setStyleName(fStyleName);
+
+    bool bold = UBSettings::settings()->isBoldFont();
+    if (bold)
+        font.setWeight(QFont::Bold);
+
+    bool italic = UBSettings::settings()->isItalicFont();
+    if (italic)
+        font.setItalic(true);
+
+
+    int pointSize = UBSettings::settings()->fontPointSize();
+    if (pointSize > 0) {
+        font.setPointSize(pointSize);
+    }
+
+    return font;
 }
 
 void UBGraphicsTextItem::recolor()
@@ -231,6 +289,27 @@ void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (event->matches (QKeySequence::StandardKey::Bold) ||
+        event->matches (QKeySequence::StandardKey::Underline) ||
+        event->matches (QKeySequence::StandardKey::Italic))
+    {
+        QTextCursor curCursor = textCursor();
+        QTextCharFormat format;
+        QFont ft(curCursor.charFormat().font());
+        if (event->matches (QKeySequence::StandardKey::Bold))
+            ft.setBold(!ft.bold());
+        else if (event->matches (QKeySequence::StandardKey::Underline))
+            ft.setUnderline(!ft.underline());
+        else if (event->matches (QKeySequence::StandardKey::Italic))
+            ft.setItalic(!ft.italic());
+        format.setFont(ft);
+        curCursor.mergeCharFormat(format);
+        setTextCursor(curCursor);
+
+        contentsChanged();
+        return;
+    }
+
     QGraphicsTextItem::keyPressEvent(event);
 }
 
@@ -260,7 +339,7 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
         {
             painter->setFont(font());
             painter->setPen(UBSettings::paletteColor);
-            painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
+            painter->drawText(boundingRect(), Qt::AlignLeft, mTypeTextHereLabel);
         }
     }
 
@@ -291,11 +370,12 @@ void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setTextWidth(this->textWidth());
         cp->setTextHeight(this->textHeight());
 
-        cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
     }
 }
@@ -383,24 +463,20 @@ void UBGraphicsTextItem::contentsChanged()
     {
         scene()->setModified(true);
     }
-
-    if (toPlainText().isEmpty())
-    {
-        resize(QFontMetrics(font()).width(mTypeTextHereLabel),QFontMetrics(font()).height());
-    }
 }
 
 
-UBGraphicsScene* UBGraphicsTextItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsTextItem::scene()
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 
 void UBGraphicsTextItem::resize(qreal w, qreal h)
 {
     setTextWidth(w);
-    setTextHeight(h);
+    setTextHeight(document()->size().height());
     if (Delegate())
         Delegate()->positionHandles();
 }
@@ -409,12 +485,6 @@ void UBGraphicsTextItem::resize(qreal w, qreal h)
 QSizeF UBGraphicsTextItem::size() const
 {
     return QSizeF(textWidth(), textHeight());
-}
-
-void UBGraphicsTextItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 

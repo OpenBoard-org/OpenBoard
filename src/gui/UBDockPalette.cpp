@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -37,10 +37,12 @@
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBPreferencesController.h"
 #include "core/UBDownloadManager.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
 
@@ -99,8 +101,11 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
     connect(UBSettings::settings()->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(onToolbarPosUpdated()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
 
-    connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onDocumentSet(UBDocumentProxy*)));
+    connect(UBApplication::boardController,SIGNAL(documentSet(std::shared_ptr<UBDocumentProxy>)),this,SLOT(onDocumentSet(std::shared_ptr<UBDocumentProxy>)));
     connect(this,SIGNAL(pageSelectionChangedRequired()),UBApplication::boardController,SLOT(selectionChanged()));
+
+    connect(UBApplication::displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(onResizeRequest()));
+    connect(UBApplication::boardController->controlView(), SIGNAL(resized(QResizeEvent*)), this, SLOT(onResizeRequest()));
 }
 
 /**
@@ -120,7 +125,7 @@ UBDockPalette::~UBDockPalette()
     }
 }
 
-void UBDockPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+void UBDockPalette::onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy)
 {
     Q_UNUSED(documentProxy);
 }
@@ -193,7 +198,7 @@ void UBDockPalette::resizeEvent(QResizeEvent *event)
  * \brief Handle the mouse enter event
  * @param event as the mouse event
  */
-void UBDockPalette::enterEvent(QEvent *event)
+void UBDockPalette::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event);
     // We want to set the cursor as an arrow everytime it enters the palette
@@ -411,12 +416,12 @@ void UBDockPalette::removeTab(UBDockPaletteWidget* widget)
 }
 
 /**
- * \brief Handle the resize request
- * @param event as the given resize request
+ * \brief Reposition the dock palette
  */
-void UBDockPalette::onResizeRequest(QResizeEvent *event)
+void UBDockPalette::onResizeRequest()
 {
-    resizeEvent(event);
+    // it is possible to pass a nullptr because the handler does not use this argument
+    UBDockPalette::resizeEvent(nullptr);
 }
 
 /**
@@ -669,7 +674,7 @@ UBTabDockPalette::~UBTabDockPalette()
 
 void UBTabDockPalette::mousePressEvent(QMouseEvent *event)
 {
-    dock->mClickTime = QTime::currentTime();
+    dock->mClickTime.start();
     // The goal here is to verify if the user can resize the widget.
     // It is only possible to resize it if the border is selected
     QPoint p = event->pos();
@@ -764,5 +769,49 @@ void UBTabDockPalette::mouseReleaseEvent(QMouseEvent *event)
             dock->tabClicked(clickedTab);
         }
     }
+    else if (dock->mResized)
+    {
+        emit dock->pageSelectionChangedRequired();
+    }
     dock->mCanResize = false;
+}
+
+void UBTabDockPalette::tabletEvent(QTabletEvent *event)
+{
+    if (event->type() == QEvent::TabletPress)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mousePressEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletMove)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mouseMoveEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletRelease)
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->position(), event->button(), event->buttons(), event->modifiers());
+#else
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->posF(), event->button(), event->buttons(), event->modifiers());
+#endif
+        mouseReleaseEvent(&mouseEvent);
+        event->accept();
+    }
 }

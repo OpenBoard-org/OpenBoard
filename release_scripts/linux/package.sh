@@ -34,7 +34,6 @@
 #    | | | openboard.desktop
 #    opt/
 #    | openboard/
-#    | | importer/
 #    | | library/
 #    | | etc/
 #    | | qtlib/ (*)
@@ -57,8 +56,6 @@ initializeVariables()
   # Where the application was built (see build.sh)
   BUILD_DIR="$PROJECT_ROOT/build/linux/release"
   PRODUCT_PATH="$BUILD_DIR/product"
-  IMPORTER_DIR="$PROJECT_ROOT/../OpenBoard-Importer/"
-  IMPORTER_NAME="OpenBoardImporter"
 
   # Where the package is built to
   PACKAGE_BUILD_DIR="$PROJECT_ROOT/install"
@@ -72,8 +69,12 @@ initializeVariables()
   APPLICATION_PATH="opt"
 
   PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
-  QT_PLUGINS_DEST_PATH="$PACKAGE_DIRECTORY/plugins"
-  QT_LIBRARY_DEST_PATH="$PACKAGE_DIRECTORY/qtlib"
+  PACKAGE_QT_DIRECTORY="$PACKAGE_DIRECTORY/qt"
+  QT_LIBRARY_DEST_PATH="$PACKAGE_QT_DIRECTORY/lib"
+  QT_LIBRARY_EXECUTABLES_DEST_PATH="$PACKAGE_QT_DIRECTORY/libexec"
+  QT_PLUGINS_DEST_PATH="$PACKAGE_QT_DIRECTORY/plugins"
+  QT_RESOURCES_DEST_PATH="$PACKAGE_QT_DIRECTORY/resources"
+  QT_TRANSLATIONS_DEST_PATH="$PACKAGE_QT_DIRECTORY/translations"
 
   DESKTOP_FILE_PATH="$BASE_WORKING_DIR/usr/share/applications"
   APPLICATION_SHORTCUT="$DESKTOP_FILE_PATH/${APPLICATION_CODE}.desktop"
@@ -88,10 +89,14 @@ initializeVariables()
   BUNDLE_QT=true
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
-  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
-  GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
+  QT_PATH="/home/dev/Qt/6.9.3/gcc_64"
+  QT_SHARE_PATH="/usr/share/qt5/"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  QT_LIBRARY_EXECUTABLES_SOURCE_PATH="$QT_PATH/libexec"
+  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
+  QT_RESOURCES_SOURCE_PATH="$QT_PATH/resources"
+  QT_TRANSLATIONS_SOURCE_PATH="$QT_PATH/translations"
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`
@@ -155,6 +160,11 @@ copyQtPlugin(){
     fi
 }
 
+removeQtDebugFiles()
+{
+	notifyProgress "removing Qt debug files"
+	find $PACKAGE_QT_DIRECTORY -name "*.debug" -print0 | xargs -0 rm
+}
 
 # ----------------------------------------------------------------------------
 # Copying the application, libs etc. to the temporary working directory
@@ -180,73 +190,117 @@ chown -R root:root $PACKAGE_DIRECTORY
 
 cp -R resources/customizations $PACKAGE_DIRECTORY/
 cp resources/linux/openboard-ubz.xml $PACKAGE_DIRECTORY/etc/
+cp resources/linux/application-ubz.png $PACKAGE_DIRECTORY/etc/
 
 if $BUNDLE_QT; then
     cp -R resources/linux/run.sh $PACKAGE_DIRECTORY/
     chmod a+x $PACKAGE_DIRECTORY/run.sh
 fi
 
-notifyProgress "Copying importer"
-mkdir -p $PACKAGE_DIRECTORY/importer
-cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
-
-notifyProgress "Stripping importer and main executable"
+notifyProgress "Stripping main executable"
 strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
-strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
+
+# copying startup hints
+notifyProgress "copying startupHints"
+cp -R resources/startupHints $PACKAGE_DIRECTORY/
 
 if $BUNDLE_QT; then
     notifyProgress "Copying and stripping Qt plugins"
     mkdir -p $QT_PLUGINS_DEST_PATH
-    copyQtPlugin audio
-    copyQtPlugin bearer
+    #copyQtPlugin audio
+    #copyQtPlugin bearer
+    copyQtPlugin egldeviceintegrations
     copyQtPlugin generic
+    copyQtPlugin help
     copyQtPlugin iconengines
     copyQtPlugin imageformats
-    copyQtPlugin mediaservice
+    copyQtPlugin multimedia
+    copyQtPlugin networkinformation
     copyQtPlugin platforminputcontexts
     copyQtPlugin platforms
     copyQtPlugin platformthemes
     copyQtPlugin position
     copyQtPlugin printsupport
-    #copyQtPlugin qtwebengine
-    copyQtPlugin sceneparsers
+    #copyQtPlugin sceneparsers
+    copyQtPlugin tls
+    copyQtPlugin wayland-graphics-integration-client
+    copyQtPlugin wayland-decoration-client
+    copyQtPlugin wayland-graphics-integration-server
+    copyQtPlugin wayland-shell-integration
     copyQtPlugin xcbglintegrations
+
 
     notifyProgress "Copying and stripping Qt libraries"
     mkdir -p $QT_LIBRARY_DEST_PATH
-    copyQtLibrary libQt5Core
-    copyQtLibrary libQt5DBus
-    copyQtLibrary libQt5Gui
-    copyQtLibrary libQt5Multimedia
-    copyQtLibrary libQt5MultimediaGstTools
-    copyQtLibrary libQt5MultimediaWidgets
-    copyQtLibrary libQt5Network
-    copyQtLibrary libQt5OpenGL
-    copyQtLibrary libQt5Positioning
-    copyQtLibrary libQt5PrintSupport
-    copyQtLibrary libQt5Qml
-    copyQtLibrary libQt5QmlModels
-    copyQtLibrary libQt5Quick
-    copyQtLibrary libQt5Sensors
-    copyQtLibrary libQt5Sql
-    copyQtLibrary libQt5Svg
-    copyQtLibrary libQt5WebChannel
-    copyQtLibrary libQt5WebKit
-    copyQtLibrary libQt5WebKitWidgets
-    copyQtLibrary libQt5WebSockets
-    copyQtLibrary libQt5Widgets
-    copyQtLibrary libQt5XcbQpa
-    copyQtLibrary libQt5Xml
-    copyQtLibrary libQt5XmlPatterns
+    copyQtLibrary libQt6Concurrent
+    copyQtLibrary libQt6Core
+    copyQtLibrary libQt6Core5Compat
+    copyQtLibrary libQt6DBus
+    copyQtLibrary libQt6Gui
+    copyQtLibrary libQt6Multimedia
+    #copyQtLibrary libQt6MultimediaGstTools
+    copyQtLibrary libQt6MultimediaWidgets
+    copyQtLibrary libQt6Network
+    copyQtLibrary libQt6OpenGL
+    copyQtLibrary libQt6Positioning
+    copyQtLibrary libQt6PrintSupport
+    copyQtLibrary libQt6Qml
+    copyQtLibrary libQt6QmlModels
+    copyQtLibrary libQt6QmlMeta
+    copyQtLibrary libQt6QmlWorkerScript
+    copyQtLibrary libQt6Quick
+    #copyQtLibrary libQt6Sensors
+    copyQtLibrary libQt6Sql
+    copyQtLibrary libQt6Svg
+    copyQtLibrary libQt6WebChannel
+    copyQtLibrary libQt6WebEngineCore
+    copyQtLibrary libQt6WebEngineWidgets
+    copyQtLibrary libQt6QuickWidgets
+    #copyQtLibrary libQt6WebSockets
+    copyQtLibrary libQt6Widgets
+    copyQtLibrary libQt6XcbQpa
+    copyQtLibrary libQt6Xml
+    #copyQtLibrary libQt6XmlPatterns
     copyQtLibrary libicuuc
     copyQtLibrary libicui18n
     copyQtLibrary libicudata
+    
+
+    removeQtDebugFiles
 fi
 
 notifyProgress "Copying Qt translations"
 mkdir -p $PACKAGE_DIRECTORY/i18n
 cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtbase*.qm $PACKAGE_DIRECTORY/i18n/
+#cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtscript*.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtmultimedia*.qm $PACKAGE_DIRECTORY/i18n/
+#cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtxmlpatterns*.qm $PACKAGE_DIRECTORY/i18n/
 
+# ----------------------------------------------------------------------------
+# QT WebEngine
+# ----------------------------------------------------------------------------
+notifyProgress "Copying Qt WebEngine dependencies"
+mkdir -p "$QT_LIBRARY_EXECUTABLES_DEST_PATH"
+cp $QT_LIBRARY_EXECUTABLES_SOURCE_PATH/QtWebEngineProcess $QT_LIBRARY_EXECUTABLES_DEST_PATH
+
+mkdir -p "$QT_RESOURCES_DEST_PATH"
+cp $QT_RESOURCES_SOURCE_PATH/* $QT_RESOURCES_DEST_PATH
+
+mkdir -p "$QT_TRANSLATIONS_DEST_PATH/qtwebengine_locales"
+cp $QT_TRANSLATIONS_SOURCE_PATH/qtwebengine_locales/* $QT_TRANSLATIONS_DEST_PATH/qtwebengine_locales
+
+
+# ----------------------------------------------------------------------------
+# FFmpeg
+# ----------------------------------------------------------------------------
+notifyProgress "Copying Qt FFmpeg dependencies"
+cp $QT_LIBRARY_SOURCE_PATH/libavcodec* $QT_LIBRARY_DEST_PATH/
+cp $QT_LIBRARY_SOURCE_PATH/libavformat* $QT_LIBRARY_DEST_PATH/
+cp $QT_LIBRARY_SOURCE_PATH/libavutil* $QT_LIBRARY_DEST_PATH/
+cp $QT_LIBRARY_SOURCE_PATH/libswscale* $QT_LIBRARY_DEST_PATH/
+cp $QT_LIBRARY_SOURCE_PATH/libswresample* $QT_LIBRARY_DEST_PATH/
+cp $QT_LIBRARY_SOURCE_PATH/libQt6FFmpegStub* $QT_LIBRARY_DEST_PATH/
 
 # ----------------------------------------------------------------------------
 # DEBIAN directory of package (control, md5sums, postinst etc)
@@ -287,6 +341,7 @@ cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
 xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_CODE}.desktop
 xdg-mime install --mode system /$APPLICATION_PATH/$APPLICATION_CODE/etc/openboard-ubz.xml
 xdg-mime default /usr/share/applications/${APPLICATION_CODE}.desktop application/ubz
+xdg-icon-resource install --context mimetypes --size 48 /$APPLICATION_PATH/$APPLICATION_CODE/etc/application-ubz.png application-ubz
 
 ln -s $SYMLINK_TARGET /usr/bin/$APPLICATION_CODE
 
@@ -399,8 +454,6 @@ echo "Type=Application" >> $APPLICATION_SHORTCUT
 echo "MimeType=application/ubz" >> $APPLICATION_SHORTCUT
 echo "Categories=Education;" >> $APPLICATION_SHORTCUT
 cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_NAME}.png"
-
-
 
 # ----------------------------------------------------------------------------
 # Building the package

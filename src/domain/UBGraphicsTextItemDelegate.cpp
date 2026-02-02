@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -100,7 +100,12 @@ int AlignTextButton::nextKind() const
 }
 
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject *)
-    : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE | GF_TITLE_BAR_USED)
+    : UBGraphicsItemDelegate(pDelegated,0,  GF_SCALABLE_X_AXIS
+                                          | GF_DUPLICATION_ENABLED
+                                          | GF_MENU_SPECIFIED
+                                          | GF_ZORDER_MANIPULATIONS_ALLOWED
+                                          | GF_REVOLVABLE
+                                          | GF_TITLE_BAR_USED)
     , mFontButton(0)
     , mColorButton(0)
     , mDecreaseSizeButton(0)
@@ -110,32 +115,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
-    delegated()->setPlainText("");
-
-    QTextCursor curCursor = delegated()->textCursor();
-    QTextCharFormat format;
-    QFont font(createDefaultFont());
-
-    font.setPointSize(UBSettings::settings()->fontPointSize());
-    format.setFont(font);
-    if (UBSettings::settings()->isDarkBackground())
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
-    }
-    else
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
-    }
-    delegated()->setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
-    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
-    curCursor.mergeCharFormat(format);
-    delegated()->setTextCursor(curCursor);
-    delegated()->setFont(font);
-
-    delegated()->adjustSize();
-    delegated()->contentsChanged();
 
     connect(delegated()->document(), SIGNAL(cursorPositionChanged(QTextCursor)), this, SLOT(onCursorPositionChanged(QTextCursor)));
     connect(delegated()->document(), SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
@@ -144,35 +123,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
 UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
 {
     // NOOP
-}
-
-QFont UBGraphicsTextItemDelegate::createDefaultFont()
-{
-    QFont font;
-
-    QString fFamily = UBSettings::settings()->fontFamily();
-    if (!fFamily.isEmpty())
-        font.setFamily(fFamily);
-
-    QString fStyleName = UBSettings::settings()->fontStyleName();
-    if (!fStyleName .isEmpty())
-        font.setStyleName(fStyleName);
-
-    bool bold = UBSettings::settings()->isBoldFont();
-    if (bold)
-        font.setWeight(QFont::Bold);
-
-    bool italic = UBSettings::settings()->isItalicFont();
-    if (italic)
-        font.setItalic(true);
-
-
-    int pointSize = UBSettings::settings()->fontPointSize();
-    if (pointSize > 0) {
-        font.setPointSize(pointSize);
-    }
-
-    return font;
 }
 
 void UBGraphicsTextItemDelegate::createControls()
@@ -318,12 +268,24 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 
             QStringList customFontList =  UBResources::resources()->customFontList();
             int index = 0;
-            foreach (QString dialogFontName, dialogFontNames){
-                if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive) || customFontList.contains(dialogFontName, Qt::CaseSensitive))
+            int remove = 0;
+
+            for (const QString& dialogFontName : dialogFontNames)
+            {
+                if (UBStringUtils::containsPrefix(safeWebFontNames, dialogFontName, Qt::CaseInsensitive) ||
+                        UBStringUtils::containsPrefix(customFontList, dialogFontName, Qt::CaseSensitive))
+                {
+                    stringListModel->removeRows(index, remove);
+                    remove = 0;
                     index++;
+                }
                 else
-                    stringListModel->removeRow(index);
+                {
+                    ++remove;
+                }
             }
+
+            stringListModel->removeRows(index, remove);
         }
     }
     QList<QComboBox*> comboBoxes = fontDialog.findChildren<QComboBox*>();
@@ -407,12 +369,12 @@ void UBGraphicsTextItemDelegate::pickColor()
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
-    ChangeTextSize(-delta, changeSize);
+    changeTextSize(-delta, changeSize);
 }
 
 void UBGraphicsTextItemDelegate::increaseSize()
 {
-   ChangeTextSize(delta, changeSize);
+   changeTextSize(delta, changeSize);
 }
 
 void UBGraphicsTextItemDelegate::alignButtonProcess()
@@ -580,7 +542,7 @@ bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
     return true;
 }
 
-void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
+void UBGraphicsTextItemDelegate::changeTextSize(qreal factor, textChangeMode changeMode)
 {
     // round it to the nearest hundredth
     factor = floor(factor*100+0.5)/100.;
@@ -595,9 +557,6 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
             return;
 
     UBGraphicsTextItem *item = dynamic_cast<UBGraphicsTextItem*>(delegated());
-
-    if (item && (QString() == item->toPlainText()))
-        return;
 
     QTextCursor cursor = delegated()->textCursor();
     QTextCharFormat textFormat;
@@ -614,71 +573,86 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     int startPos = qMin(cursor.anchor(), cursor.position());
     int endPos = qMax(cursor.anchor(), cursor.position());
 
-    QFont curFont;
-    QFont nextCharFont;
-    bool bEndofTheSameBlock;
-    int iBlockLen;
-    int iPointSize;
-    int iNextPointSize;
-    int iCursorPos = startPos;
-    QBrush curBrush;
-    QBrush nextCharBrush;
+    QFont curFont = cursor.charFormat().font();
+    int iPointSize = curFont.pointSize();
 
-   // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
-    cursor.setPosition (startPos, QTextCursor::MoveAnchor);
-    while(iCursorPos < endPos)
-    {
-        bEndofTheSameBlock = false;
-        iBlockLen = 0;
-
-        // Here we get the point size of the first character
-        cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
-        curFont = cursor.charFormat().font();
-        curBrush = cursor.charFormat().foreground();
-        iPointSize = curFont.pointSize();
-
-        // Then we position the end cursor to the start cursor position
-        cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
-
-        do
-        {
-            // Get the next character font size
-            cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
-            nextCharFont = cursor.charFormat().font();
-            nextCharBrush = cursor.charFormat().foreground();
-            iNextPointSize = nextCharFont.pointSize();
-
-            if (
-                    (iPointSize != iNextPointSize)
-                 || (iCursorPos+iBlockLen >= endPos)
-                 || (curFont.family().compare(nextCharFont.family()) != 0)
-                 || (curFont.italic() != nextCharFont.italic())
-                 || (curFont.bold() != nextCharFont.bold())
-                 || (curFont.underline() != nextCharFont.underline())
-                 || (curBrush != nextCharBrush))
-            {
-                bEndofTheSameBlock = true;
-                break;
-            }
-
-            iBlockLen++;
-
-        }while(!bEndofTheSameBlock);
-
-
+    if (item && (QString() == item->toPlainText()))
+    {//the document is empty but we still want to be able to change the current font size
         //setting new parameters
-        QFont tmpFont = curFont;
         int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
-        tmpFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
-        textFormat.setFont(tmpFont);
-        textFormat.setForeground(curBrush);
-        cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
+        curFont.setPointSize((iNewPointSize > 0) ? iNewPointSize : 1);
+        textFormat.setFont(curFont);
         cursor.mergeCharFormat(textFormat);
+    }
+    else
+    {
+        QFont curFont = cursor.charFormat().font();
+        QFont nextCharFont;
+        bool bEndofTheSameBlock;
+        int iBlockLen = 0;
+        int iPointSize = curFont.pointSize();
+        int iNextPointSize;
+        int iCursorPos = startPos;
+        QBrush curBrush;
+        QBrush nextCharBrush;
 
-        iCursorPos += iBlockLen;
-        cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
+        // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
+        cursor.setPosition (startPos, QTextCursor::MoveAnchor);
+        while(iCursorPos < endPos)
+        {
+            bEndofTheSameBlock = false;
+            iBlockLen = 0;
 
-        curFont = nextCharFont;
+            // Here we get the point size of the first character
+            cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
+            curFont = cursor.charFormat().font();
+            curBrush = cursor.charFormat().foreground();
+            iPointSize = curFont.pointSize();
+
+            // Then we position the end cursor to the start cursor position
+            cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
+
+            do
+            {
+                // Get the next character font size
+                cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
+                nextCharFont = cursor.charFormat().font();
+                nextCharBrush = cursor.charFormat().foreground();
+                iNextPointSize = nextCharFont.pointSize();
+
+                if (
+                        (iPointSize != iNextPointSize)
+                     || (iCursorPos+iBlockLen >= endPos)
+                     || (curFont.family().compare(nextCharFont.family()) != 0)
+                     || (curFont.italic() != nextCharFont.italic())
+                     || (curFont.bold() != nextCharFont.bold())
+                     || (curFont.underline() != nextCharFont.underline())
+                     || (curFont.strikeOut() != nextCharFont.strikeOut())
+                     || (curBrush != nextCharBrush))
+                {
+                    bEndofTheSameBlock = true;
+                    break;
+                }
+
+                iBlockLen++;
+
+            }while(!bEndofTheSameBlock);
+
+
+            //setting new parameters
+            QFont tmpFont = curFont;
+            int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
+            tmpFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
+            textFormat.setFont(tmpFont);
+            textFormat.setForeground(curBrush);
+            cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
+            cursor.mergeCharFormat(textFormat);
+
+            iCursorPos += iBlockLen;
+            cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
+
+            curFont = nextCharFont;
+        }
     }
 
     delegated()->setFont(curFont);
@@ -858,7 +832,7 @@ void UBGraphicsTextItemDelegate::restoreTextCursorFormats()
 
 void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)
 {
-    ChangeTextSize(multiplyer, scaleSize);
+    changeTextSize(multiplyer, scaleSize);
 }
 
 QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)

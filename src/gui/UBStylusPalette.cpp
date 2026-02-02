@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,6 +36,8 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBApplicationController.h"
+#include "core/UBShortcutManager.h"
+
 
 #include "board/UBDrawingController.h"
 
@@ -65,26 +67,19 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     actions << UBApplication::mainWindow->actionCapture;
 
     if(UBPlatformUtils::hasVirtualKeyboard())
+    {
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
+        UBApplication::mainWindow->actionVirtualKeyboard->setProperty("ungrouped", true);
+    }
+
+    actions << UBApplication::mainWindow->actionSnap;
+    UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
 
     setActions(actions);
     setButtonIconSize(QSize(42, 42));
+    groupActions();
 
-    if(!UBPlatformUtils::hasVirtualKeyboard())
-    {
-        groupActions();
-    }
-    else
-    {
-        // VirtualKeyboard action is not in group
-        // So, groupping all buttons, except last
-        mButtonGroup = new QButtonGroup(this);
-        for(int i=0; i < mButtons.size()-1; i++)
-        {
-            mButtonGroup->addButton(mButtons[i], i);
-        }
-        connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
-    }
+    UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);
 
     adjustSizeAndPosition();
 
@@ -125,12 +120,15 @@ void UBStylusPalette::initPosition()
 
 UBStylusPalette::~UBStylusPalette()
 {
-
+    if (mActionGroup)
+    {
+        UBShortcutManager::shortcutManager()->removeActionGroup(mActionGroup);
+    }
 }
 
 void UBStylusPalette::stylusToolDoubleClicked()
 {
-    emit stylusToolDoubleClicked(mButtonGroup->checkedId());
+    emit stylusToolDoubleClicked(mActionGroup->checkedAction()->property("id").toInt());
 }
 
 

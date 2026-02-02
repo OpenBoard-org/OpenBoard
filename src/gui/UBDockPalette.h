@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -38,7 +38,7 @@ class UBDocumentProxy;
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QEvent>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QPoint>
 #include <QPixmap>
 #include <QMap>
@@ -47,6 +47,7 @@ class UBDocumentProxy;
 #include <QVector>
 
 #include "UBDockPaletteWidget.h"
+#include "core/UB.h"
 
 #define TABSIZE        50       //Height of the tab of the palette
 #define CLICKTIME   1000000  //Clicktime to expand or collapse palette
@@ -84,6 +85,7 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void tabletEvent(QTabletEvent *event);
     virtual void paintEvent(QPaintEvent *event);
 
 private:
@@ -116,11 +118,11 @@ public:
     QRect getTabPaletteRect();
 
     virtual void assignParent(QWidget *widget);
-    virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible) override;
 
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void enterEvent(QEvent *);
-    virtual void leaveEvent(QEvent *);
+    virtual void paintEvent(QPaintEvent *event) override;
+    virtual void enterEvent(UB::EnterEvent *event) override;
+    virtual void leaveEvent(QEvent *) override;
 
     void setBackgroundBrush(const QBrush& brush);
     void registerWidget(UBDockPaletteWidget* widget);
@@ -148,7 +150,7 @@ public slots:
     void onShowTabWidget(UBDockPaletteWidget* widget);
     void onHideTabWidget(UBDockPaletteWidget* widget);
     void onAllDownloadsFinished();
-    virtual void onDocumentSet(UBDocumentProxy* documentProxy);
+    virtual void onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy);
 
 signals:
     void mouseEntered();
@@ -179,7 +181,7 @@ protected:
     /** The last width of the palette */
     int mLastWidth;
     /** The click time*/
-    QTime mClickTime;
+    QElapsedTimer mClickTime;
     /** The mouse pressed position */
     QPoint mMousePressPos;
     /** The tab orientation */
@@ -203,7 +205,7 @@ protected:
 
 private slots:
     void onToolbarPosUpdated();
-    void onResizeRequest(QResizeEvent* event);
+    void onResizeRequest();
 
 private:
     void tabClicked(int tabIndex);

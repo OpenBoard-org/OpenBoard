@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -27,26 +27,27 @@
 
 #include "UBDocumentManager.h"
 
-#include "frameworks/UBStringUtils.h"
-
 #include "adaptors/UBExportFullPDF.h"
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
-#include "adaptors/UBExportCFF.h"
 #include "adaptors/UBExportDocumentSetAdaptor.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
-#include "adaptors/UBImportCFF.h"
 #include "adaptors/UBImportDocumentSetAdaptor.h"
 
-#include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPixmapItem.h"
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
 #include "board/UBBoardController.h"
+
+#include "domain/UBGraphicsScene.h"
+
+#include "document/UBDocument.h"
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
+#include "document/UBDocumentToc.h"
+
+#include "frameworks/UBStringUtils.h"
+
+#include "gui/UBThumbnailScene.h"
 
 #include "UBApplication.h"
 #include "UBSettings.h"
@@ -77,7 +78,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     QString dummyObjects = tr("objects");
     QString dummyWidgets = tr("widgets");
 
-    //UBExportCFF* cffExporter = new UBExportCFF(this);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
 
@@ -86,7 +86,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mExportAdaptors.append(exportDocumentSet);
     //mExportAdaptors.append(webPublished);
     mExportAdaptors.append(exportFullPdf);
-    //mExportAdaptors.append(cffExporter);
 
 //     UBExportWeb* exportWeb = new UBExportWeb(this);
 //     mExportAdaptors.append(exportWeb);
@@ -99,8 +98,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mImportAdaptors.append(pdfImport);
     UBImportImage* imageImport = new UBImportImage(this);
     mImportAdaptors.append(imageImport);
-    UBImportCFF* cffImport = new UBImportCFF(this);
-    mImportAdaptors.append(cffImport);
 }
 
 
@@ -151,7 +148,7 @@ QString UBDocumentManager::importFileFilter(bool notUbx)
 
 QFileInfoList UBDocumentManager::importUbx(const QString &Incomingfile, const QString &destination)
 {
-    UBImportDocumentSetAdaptor *docSetAdaptor;
+    UBImportDocumentSetAdaptor *docSetAdaptor = nullptr;
     foreach (UBImportAdaptor *curAdaptor, mImportAdaptors) {
         docSetAdaptor = qobject_cast<UBImportDocumentSetAdaptor*>(curAdaptor);
         if (docSetAdaptor) {
@@ -165,7 +162,7 @@ QFileInfoList UBDocumentManager::importUbx(const QString &Incomingfile, const QS
     return docSetAdaptor->importData(Incomingfile, destination);
 }
 
-UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString& pGroup)
+std::shared_ptr<UBDocument> UBDocumentManager::importFile(const QFile& pFile, const QString& pGroup)
 {
     QFileInfo fileInfo(pFile);
 
@@ -173,7 +170,8 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
     {
         if (adaptor->supportedExtentions().lastIndexOf(fileInfo.suffix().toLower()) != -1)
         {
-            UBDocumentProxy* document;
+            std::shared_ptr<UBDocumentProxy> document;
+            std::shared_ptr<UBDocument> doc;
             UBApplication::setDisabled(true);
 
             if (adaptor->isDocumentBased())
@@ -181,7 +179,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                 UBDocumentBasedImportAdaptor* importAdaptor = (UBDocumentBasedImportAdaptor*)adaptor;
 
                 document = importAdaptor->importFile(pFile, pGroup);
-
+                doc = UBDocument::getDocument(document);
             }
             else
             {
@@ -196,40 +194,58 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                                                                                       , 0
                                                                                       , true);
 
-                QUuid uuid = QUuid::createUuid();
-                QString filepath = pFile.fileName();
-                if (importAdaptor->folderToCopy() != "")
+                if (document)
                 {
-                    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
-                    if (!b)
+                    doc = UBDocument::getDocument(document);
+                    QString filepath = pFile.fileName();
+                    QUuid uuid;
+                    if (importAdaptor->folderToCopy() != "")
                     {
-                        UBApplication::setDisabled(false);
-                        return NULL;
+                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy(), filepath);
+                        if (uuid.isNull())
+                        {
+                            UBApplication::setDisabled(false);
+                            return NULL;
+                        }
                     }
+
+                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
+                    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
+                    int pageIndex = 0;
+
+                    UBApplication::showMessage(tr("Creating %1 pages. Please wait...").arg(pages.size()), true);
+
+                    // create the thumbnail scene before any pages are created
+                    doc->thumbnailScene(false);
+
+                    foreach(UBGraphicsItem* page, pages)
+                    {
+    #ifdef Q_WS_MACX
+                        //Workaround for issue 912
+                        QApplication::processEvents();
+    #endif
+                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, false);
+                        importAdaptor->placeImportedItemToScene(scene, page);
+                        doc->persistPage(scene, pageIndex, false, false, false, false);
+                        pageIndex++;
+                    }
+
+                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+
+                    // remove all asset entries to force scanning
+                    for (int index = 0; index < doc->pageCount(); ++index)
+                    {
+                        doc->toc()->unsetAssets(index);
+                    }
+
+                    doc->toc()->save();
+                    doc->scanAssets();
+                    UBApplication::showMessage(tr("Import successful."));
                 }
-
-                QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
-                int nPage = 0;
-                foreach(UBGraphicsItem* page, pages)
-                {
-
-                    UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-#ifdef Q_WS_MACX
-                    //Workaround for issue 912
-                    QApplication::processEvents();
-#endif
-                    int pageIndex = document->pageCount();
-                    UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
-                    importAdaptor->placeImportedItemToScene(scene, page);
-                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
-                }
-
-                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-                UBApplication::showMessage(tr("Import successful."));
             }
 
             UBApplication::setDisabled(false);
-            return document;
+            return doc;
         }
 
     }
@@ -237,9 +253,12 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 }
 
 
-int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList fileNames)
+int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> document, QStringList fileNames)
 {
     int nImportedDocuments = 0;
+    auto doc = UBDocument::getDocument(document);
+    const auto currentNumberOfPages = doc->pageCount();
+
     foreach(const QString& fileName, fileNames)
     {
         UBApplication::showMessage(tr("Importing file %1").arg(fileName));
@@ -247,12 +266,12 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
         QFile file(fileName);
         QFileInfo fileInfo(file);
 
+        UBApplication::setDisabled(true);
+
         foreach (UBImportAdaptor *adaptor, mImportAdaptors)
         {
             if (adaptor->supportedExtentions().lastIndexOf(fileInfo.suffix().toLower()) != -1)
             {
-                UBApplication::setDisabled(true);
-
                 if (adaptor->isDocumentBased())
                 {
                     //issue 1629 - NNE - 20131212 : Resolve a segfault, but for .ubx, actually
@@ -260,49 +279,63 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
                     UBDocumentBasedImportAdaptor* importAdaptor = dynamic_cast<UBDocumentBasedImportAdaptor*>(adaptor);
 
                     if (importAdaptor && importAdaptor->addFileToDocument(document, file))
+                    {
                         nImportedDocuments++;
+                        break;
+                    }
                 }
                 else
                 {
                     UBPageBasedImportAdaptor* importAdaptor = (UBPageBasedImportAdaptor*)adaptor;
 
-                    QUuid uuid = QUuid::createUuid();
+                    QByteArray data;
+
+                    if (file.open(QFile::ReadOnly))
+                    {
+                        data = file.readAll();
+                        file.close();
+                    }
+
                     QString filepath = file.fileName();
+                    QUuid uuid;
                     if (importAdaptor->folderToCopy() != "")
                     {
-                        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
-                        if (!b)
+                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy(), filepath);
+                        if (uuid.isNull())
                         {
                             continue;
                         }
                     }
 
+                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
                     QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                     int nPage = 0;
                     foreach(UBGraphicsItem* page, pages)
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-                        int pageIndex = document->pageCount();
-                        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        int pageIndex = doc->pageCount();
+                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
-                        UBApplication::boardController->insertThumbPage(pageIndex);
+                        doc->persistPage(scene, pageIndex, false, false, false, false);
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+                    doc->toc()->save();
                     UBApplication::showMessage(tr("Import of file %1 successful.").arg(file.fileName()));
                     nImportedDocuments++;
+                    break;
                 }
-
-                UBApplication::setDisabled(false);
             }
         }
+
+        doc->thumbnailScene()->createThumbnails(currentNumberOfPages);
+        UBApplication::setDisabled(false);
     }
     return nImportedDocuments;
 }
 
 
-int UBDocumentManager::addImageDirToDocument(const QDir& pDir, UBDocumentProxy* pDocument)
+int UBDocumentManager::addImageDirToDocument(const QDir& pDir, std::shared_ptr<UBDocumentProxy> pDocument)
 {
     QStringList filenames = pDir.entryList(QDir::Files | QDir::NoDotAndDotDot);
 
@@ -320,9 +353,9 @@ int UBDocumentManager::addImageDirToDocument(const QDir& pDir, UBDocumentProxy* 
 }
 
 
-UBDocumentProxy* UBDocumentManager::importDir(const QDir& pDir, const QString& pGroup)
+std::shared_ptr<UBDocumentProxy> UBDocumentManager::importDir(const QDir& pDir, const QString& pGroup)
 {
-    UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createDocument(pGroup, pDir.dirName());
+    std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createDocument(pGroup, pDir.dirName());
 
     int result = addImageDirToDocument(pDir, doc);
 
@@ -348,9 +381,4 @@ UBDocumentProxy* UBDocumentManager::importDir(const QDir& pDir, const QString& p
 QList<UBExportAdaptor*> UBDocumentManager::supportedExportAdaptors()
 {
     return mExportAdaptors;
-}
-
-void UBDocumentManager::emitDocumentUpdated(UBDocumentProxy* pDocument)
-{
-    emit documentUpdated(pDocument);
 }

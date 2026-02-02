@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -43,6 +43,7 @@
 const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-250, -250, 500, 500);
 const qreal UBGraphicsProtractor::minRadius = 70;
 
+
 UBGraphicsProtractor::UBGraphicsProtractor()
         : QGraphicsEllipseItem(sDefaultRect)
         , mCurrentTool(None)
@@ -51,6 +52,8 @@ UBGraphicsProtractor::UBGraphicsProtractor()
         , mSpan(180)
         , mStartAngle(0)
         , mScaleFactor(1)
+        , mCursorRotationAngle(0)
+        , mItemRotationAngle(0)
         , mResetSvgItem(0)
         , mResizeSvgItem(0)
         , mMarkerSvgItem(0)
@@ -82,6 +85,7 @@ UBGraphicsProtractor::UBGraphicsProtractor()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to recieve key events
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
     mResetSvgItem->setPos(resetButtonRect().topLeft());
@@ -89,7 +93,6 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     mMarkerSvgItem->setPos(markerButtonRect().topLeft());
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 }
-
 
 void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget)
 {
@@ -101,12 +104,14 @@ void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsIt
     QPen pen_(drawColor());
     pen_.setWidth(0); // Line width = 1 pixel regardless of scale / zoom
     painter->setPen(pen_);
-    
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
     painter->setFont(QFont("Arial", 11));
     painter->setBrush(fillBrush());
     painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(), 2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
     paintGraduations(painter);
     paintButtons(painter);
+    paintHelp(painter);
     paintAngleMarker(painter);
 
     painter->restore();
@@ -180,12 +185,39 @@ QPainterPath UBGraphicsProtractor::shape() const
     return path;
 }
 
+void UBGraphicsProtractor::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+     default:
+        break;
+    }
+}
 
 void UBGraphicsProtractor::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     mPreviousMousePos = event->pos();
     mCurrentTool = toolFromPos(event->pos());
     mShowButtons = mCurrentTool == Reset || mCurrentTool == Close;
+    mCursorRotationAngle = 0;
+    mItemRotationAngle = mStartAngle;
 
     if (mCurrentTool == None || mCurrentTool == Move)
         QGraphicsEllipseItem::mousePressEvent(event);
@@ -201,14 +233,23 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal angle = startLine.angleTo(currentLine);
     qreal scaleFactor = currentLine.length()/startLine.length();
 
-
     switch (mCurrentTool)
     {
     case Rotate :
         prepareGeometryChange();
-        mStartAngle = mStartAngle + angle;
+        mCursorRotationAngle = std::fmod(mCursorRotationAngle + angle, 360.);
+        mStartAngle = mItemRotationAngle + mCursorRotationAngle;
+
+        if (scene()->isSnapping())
+        {
+            qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+            mStartAngle = qRound(mStartAngle / step) * step;
+        }
+
+        mStartAngle = std::fmod(mStartAngle, 360.);
         setStartAngle(mStartAngle * 16);
         mPreviousMousePos = currentPoint;
+        UBApplication::boardController->setCursorFromAngle(mStartAngle);
 
         break;
 
@@ -237,6 +278,15 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     case Move :
         QGraphicsEllipseItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (scene()->isSnapping()) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         break;
 
     default :
@@ -269,6 +319,9 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     case Resize:
         update();
         break;
+
+    case Move:
+        Q_FALLTHROUGH();
 
     default :
         QGraphicsEllipseItem::mouseReleaseEvent(event);
@@ -448,21 +501,47 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
             QString grad = QString("%1").arg((int)(angle));
             QString grad2 = QString("%1").arg((int)(mSpan - angle));
 
-            painter->drawText(QRectF(center.x() + (rad - graduationLength*1.5)*co  - fm1.width(grad)/2,
+            painter->drawText(QRectF(center.x() + (rad - graduationLength*1.5)*co  - fm1.horizontalAdvance(grad)/2,
                                      center.y() - (rad - graduationLength*1.5)*si - fm1.height()/2,
-                                     fm1.width(grad), fm1.height()), Qt::AlignTop, grad);
+                                     fm1.horizontalAdvance(grad), fm1.height()), Qt::AlignTop, grad);
 
             //internal arc
             painter->setFont(font2);
-            painter->drawText(QRectF(center.x() + (rad/2 + graduationLength*1.5)*co  - fm2.width(grad2)/2,
+            painter->drawText(QRectF(center.x() + (rad/2 + graduationLength*1.5)*co  - fm2.horizontalAdvance(grad2)/2,
                                      center.y() - (rad/2 + graduationLength*1.5)*si - fm2.height()/2,
-                                     fm2.width(grad2), fm2.height()), Qt::AlignTop, grad2);
+                                     fm2.horizontalAdvance(grad2), fm2.height()), Qt::AlignTop, grad2);
             painter->setFont(font1);
 
         }
     }
 
     painter->restore();
+}
+
+void UBGraphicsProtractor::paintHelp(QPainter *painter)
+{
+    if (hasFocus())
+    {
+        //help message to aknowledge the user that the tool can be moved with the arrow keys
+        QFont f("Arial", 9);
+        painter->setFont(f);
+        painter->setPen(drawColor());
+        QRectF r = rect();
+        r.setTop(r.top() +  + f.pointSize());
+        painter->setPen(drawColor());
+        painter->setFont(QFont("Arial",9));
+        QFontMetricsF fontMetrics(painter->font());
+
+        painter->drawText(r, Qt::AlignCenter, tr("use arrow keys for precise moves"));
+
+        mMoveToolSvgItem->setVisible(true);
+        mMoveToolSvgItem->setPos(r.center().x() - (mMoveToolSvgItem->boundingRect().width()/2), r.center().y() - fontMetrics.height() - mMoveToolSvgItem->boundingRect().height() - 5);
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
+
 }
 
 
@@ -543,9 +622,9 @@ void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
 
         co = cos((mStartAngle + angle) * PI/180);
         si = sin((mStartAngle + angle) * PI/180);
-        painter->drawText(QRectF(rect().center().x() + (rad*2.5/10)*co  - fm2.width(ang)/2,
+        painter->drawText(QRectF(rect().center().x() + (rad*2.5/10)*co  - fm2.horizontalAdvance(ang)/2,
                                  rect().center().y() - (rad*2.5/10)*si - fm2.height()/2,
-                                 fm2.width(ang), fm2.height()), Qt::AlignTop, ang);
+                                 fm2.horizontalAdvance(ang), fm2.height()), Qt::AlignTop, ang);
     }
 
     painter->restore();
@@ -585,9 +664,10 @@ UBGraphicsProtractor::Tool UBGraphicsProtractor::toolFromPos(QPointF pos)
 }
 
 
-UBGraphicsScene* UBGraphicsProtractor::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsProtractor::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsEllipseItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsEllipseItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 QBrush UBGraphicsProtractor::fillBrush() const
@@ -644,6 +724,5 @@ void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 
 QPointF UBGraphicsProtractor::rotationCenter() const
 {
-    return QPointF(rect().x(), rect().y());
-
+    return QPointF{0., 0.};
 }

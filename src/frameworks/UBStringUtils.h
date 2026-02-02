@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -41,16 +41,17 @@ class UBStringUtils
         ~UBStringUtils() {}
 
     public:
+        static bool containsPrefix(const QStringList& prefixes, const QString& string, Qt::CaseSensitivity cs);
         static QStringList sortByLastDigit(const QStringList& source);
 
-        static QString netxDigitizedName(const QString& source);
+        static QString nextDigitizedName(const QString& source);
 
         static QString toCanonicalUuid(const QUuid& uuid);
-
+        static QString toLittleEndian(const QDateTime& dateTime);
         static QString toUtcIsoDateTime(const QDateTime& dateTime);
         static QDateTime fromUtcIsoDate(const QString& dateString);
 
-
+        static QStringList trimmed(const QStringList& list);
 };
 
 #endif // UBSTRINGUTILS_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -57,7 +57,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual void copyItemParameters(UBItem *copy) const;
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         virtual QRectF boundingRect() const;
         virtual QPainterPath shape() const;
@@ -95,11 +95,11 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
             mColorOnLightBackground = pColorOnLightBackground;
         }
 
-        virtual void clearSource(){;}
-        virtual void setUuid(const QUuid &pUuid);
         void activateTextEditor(bool activate);
         void setSelected(bool selected);
         void recolor();
+        void initFontProperties();
+        QFont createDefaultFont();
 
         QString mTypeTextHereLabel;
 

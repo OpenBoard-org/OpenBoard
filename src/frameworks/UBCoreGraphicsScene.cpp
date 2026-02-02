@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -29,15 +29,13 @@
 
 #include "UBCoreGraphicsScene.h"
 
-#include "domain/UBGraphicsMediaItem.h"
-#include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "core/memcheck.h"
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
-    , mIsModified(true)
+    , mIsModified(false)
 {
     //NOOP
 }
@@ -73,28 +71,35 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
 
-    setModified(true);
+    UBItem* ubitem = dynamic_cast<UBItem*>(item);
+
+    if (ubitem)
+    {
+        mItemsByUuid[ubitem->uuid()] = item;
+    }
 }
 
 
 void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
 {
+    UBItem* ubitem = dynamic_cast<UBItem*>(item);
+
+    if (ubitem)
+    {
+        mItemsByUuid.remove(ubitem->uuid());
+    }
+
     QGraphicsScene::removeItem(item);
     if (forceDelete)
     {
         deleteItem(item);
     }
-    setModified(true);
 }
 
 bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 {
     if(mItemsToDelete.contains(item))
     {
-        UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
-        if (item_casted != NULL)
-            item_casted->clearSource();
-
         mItemsToDelete.remove(item);
         delete item;
         item = NULL;
@@ -116,4 +121,9 @@ void UBCoreGraphicsScene::addItemToDeletion(QGraphicsItem *item)
     if (item) {
         mItemsToDelete.insert(item);
     }
+}
+
+QGraphicsItem* UBCoreGraphicsScene::itemForUuid(const QUuid& uuid) const
+{
+    return mItemsByUuid.value(uuid, nullptr);
 }

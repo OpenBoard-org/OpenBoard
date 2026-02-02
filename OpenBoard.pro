@@ -1,17 +1,16 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-CONFIG += c++14
+CONFIG += c++17
 CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 
+# Don't use deprecated APIs
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050900
+DEFINES += QT_DEPRECATED_WARNINGS
 
-VERSION_MAJ = 1
-VERSION_MIN = 6
-VERSION_PATCH = 2
-VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 1118
+include(version.txt)
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -29,17 +28,20 @@ VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
-QT += webkit
 QT += svg
+greaterThan(QT_MAJOR_VERSION, 5):QT += svgwidgets
 QT += network
 QT += xml
-QT += xmlpatterns
 QT += uitools
 QT += multimedia
-QT += webkitwidgets
 QT += multimediawidgets
+QT += webenginewidgets
 QT += printsupport
 QT += core
+QT += concurrent
+greaterThan(QT_MAJOR_VERSION, 5): win32: QT += core5compat
+greaterThan(QT_MAJOR_VERSION, 5): macx: QT += core5compat
+linux: QT += dbus
 
 INCLUDEPATH += src
 
@@ -63,10 +65,6 @@ DEFINES += QAPPLICATION_CLASS=QApplication
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
-
-#plugins
-include(plugins/plugins.pri)
-INCLUDEPATH += plugins/cffadaptor/src
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
@@ -170,33 +168,23 @@ macx {
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
-   LIBS += -L/usr/local/opt/openssl/lib
 
-   # quazip depends on QT. Current is 5.14, so if you wish to build
-   # OB using a previous QT version, you have to build your own quazip,
-   # otherwise it won't link.
-   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
-      LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
-   } else {
-       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt5
-   }
+   LIBS += -L/usr/local/lib -lquazip1-qt6.1.4
+   INCLUDEPATH += /opt/local/include/QuaZip-Qt6-1.4/quazip
+   
    LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /opt/local/include
-   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
-       INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
-   } else {
-       INCLUDEPATH += /usr/local/opt/quazip/include/quazip
-   }
 
    LIBS        += -L/opt/local/lib -lpoppler
    INCLUDEPATH += /opt/local/include/poppler
 
-   CONFIG(release, debug|release):CONFIG += x86_64
-   CONFIG(debug, debug|release):CONFIG += x86_64
-
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
+
+   # For universal builds
+   QMAKE_APPLE_DEVICE_ARCHS=x86_64 arm64
+   #QMAKE_APPLE_DEVICE_ARCHS = arm64
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
@@ -233,6 +221,48 @@ macx {
    UB_MACX_EXTRAS.path = "$$RESOURCES_DIR"
    UB_I18N.path = $$DESTDIR/i18n # not used
 
+    exists(resources/i18n/OpenBoard_ar.qm) {
+        TRANSLATION_ar.files = resources/i18n/OpenBoard_ar.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_ar.path = "$$RESOURCES_DIR/ar.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_ar
+    }
+    exists(resources/i18n/OpenBoard_bg.qm) {
+        TRANSLATION_bg.files = resources/i18n/OpenBoard_bg.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_bg
+    }
+    exists(resources/i18n/OpenBoard_ca.qm) {
+        TRANSLATION_ca.files = resources/i18n/OpenBoard_ca.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_ca
+    }
+    exists(resources/i18n/OpenBoard_cs.qm) {
+        TRANSLATION_cs.files = resources/i18n/OpenBoard_cs.qm \
+            resources/i18n/localizable.strings
+        TRANSLATION_cs.path = "$$RESOURCES_DIR/cs.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_cs
+    }
+    exists(resources/i18n/OpenBoard_da.qm) {
+        TRANSLATION_da.files = resources/i18n/OpenBoard_da.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_da.path = "$$RESOURCES_DIR/da.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_da
+    }
+    exists(resources/i18n/OpenBoard_de.qm) {
+        TRANSLATION_de.files = resources/i18n/OpenBoard_de.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_de.path = "$$RESOURCES_DIR/de.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_de
+    }
+    exists(resources/i18n/OpenBoard_el.qm) {
+        TRANSLATION_el.files = resources/i18n/OpenBoard_el.qm \
+            resources/i18n/Localizable.strings
+        TRANSLATION_el.path = "$$RESOURCES_DIR/el.lproj"
+        QMAKE_BUNDLE_DATA += TRANSLATION_el
+    }
    exists(resources/i18n/OpenBoard_en.qm) {
        TRANSLATION_en.files = resources/i18n/OpenBoard_en.qm \
            resources/i18n/Localizable.strings
@@ -244,6 +274,18 @@ macx {
            resources/i18n/Localizable.strings
        TRANSLATION_en_UK.path = "$$RESOURCES_DIR/en_UK.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_en_UK
+   }
+   exists(resources/i18n/OpenBoard_es.qm) {
+       TRANSLATION_es.files = resources/i18n/OpenBoard_es.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_es.path = "$$RESOURCES_DIR/es.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_es
+   }
+   exists(resources/i18n/OpenBoard_eu.qm) {
+       TRANSLATION_eu.files = resources/i18n/OpenBoard_eu.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_eu.path = "$$RESOURCES_DIR/eu.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_eu
    }
    exists(resources/i18n/OpenBoard_fr.qm) {
        TRANSLATION_fr.files = resources/i18n/OpenBoard_fr.qm \
@@ -257,23 +299,23 @@ macx {
        TRANSLATION_fr_CH.path = "$$RESOURCES_DIR/fr_CH.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_fr_CH
    }
-   exists(resources/i18n/OpenBoard_de.qm) {
-       TRANSLATION_de.files = resources/i18n/OpenBoard_de.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_de.path = "$$RESOURCES_DIR/de.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_de
+   exists(resources/i18n/OpenBoard_gl.qm) {
+       TRANSLATION_gl.files = resources/i18n/OpenBoard_gl.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_gl
    }
-   exists(resources/i18n/OpenBoard_nl.qm) {
-       TRANSLATION_nl.files = resources/i18n/OpenBoard_nl.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_nl.path = "$$RESOURCES_DIR/nl.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_nl
+   exists(resources/i18n/OpenBoard_hr.qm) {
+       TRANSLATION_hr.files = resources/i18n/OpenBoard_hr.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_hr.path = "$$RESOURCES_DIR/hr.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_hr
    }
-   exists(resources/i18n/OpenBoard_es.qm) {
-       TRANSLATION_es.files = resources/i18n/OpenBoard_es.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_es.path = "$$RESOURCES_DIR/es.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_es
+   exists(resources/i18n/OpenBoard_hu.qm) {
+       TRANSLATION_hu.files = resources/i18n/OpenBoard_hu.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_hu.path = "$$RESOURCES_DIR/hu.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_hu
    }
    exists(resources/i18n/OpenBoard_it.qm) {
        TRANSLATION_it.files = resources/i18n/OpenBoard_it.qm \
@@ -281,35 +323,11 @@ macx {
        TRANSLATION_it.path = "$$RESOURCES_DIR/it.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_it
    }
-   exists(resources/i18n/OpenBoard_pl.qm) {
-       TRANSLATION_pl.files = resources/i18n/OpenBoard_pl.qm \
+   exists(resources/i18n/OpenBoard_iw.qm) {
+       TRANSLATION_iw.files = resources/i18n/OpenBoard_iw.qm \
            resources/i18n/Localizable.strings
-       TRANSLATION_pl.path = "$$RESOURCES_DIR/pl.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_pl
-   }
-   exists(resources/i18n/OpenBoard_ru.qm) {
-       TRANSLATION_ru.files = resources/i18n/OpenBoard_ru.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_ru.path = "$$RESOURCES_DIR/ru.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ru
-   }
-   exists(resources/i18n/OpenBoard_da.qm) {
-       TRANSLATION_da.files = resources/i18n/OpenBoard_da.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_da.path = "$$RESOURCES_DIR/da.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_da
-   }
-   exists(resources/i18n/OpenBoard_nb.qm) {
-       TRANSLATION_nb.files = resources/i18n/OpenBoard_nb.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_nb.path = "$$RESOURCES_DIR/nb.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_nb
-   }
-   exists(resources/i18n/OpenBoard_sv.qm) {
-       TRANSLATION_sv.files = resources/i18n/OpenBoard_sv.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_sv.path = "$$RESOURCES_DIR/sv.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_sv
+       TRANSLATION_iw.path = "$$RESOURCES_DIR/iw.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_iw
    }
    exists(resources/i18n/OpenBoard_ja.qm) {
        TRANSLATION_ja.files = resources/i18n/OpenBoard_ja.qm \
@@ -322,6 +340,78 @@ macx {
            resources/i18n/Localizable.strings
        TRANSLATION_ko.path = "$$RESOURCES_DIR/ko.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_ko
+   }
+   exists(resources/i18n/OpenBoard_mg.qm) {
+       TRANSLATION_mg.files = resources/i18n/OpenBoard_mg.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_mg
+   }
+   exists(resources/i18n/OpenBoard_nb.qm) {
+       TRANSLATION_nb.files = resources/i18n/OpenBoard_nb.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_nb.path = "$$RESOURCES_DIR/nb.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_nb
+   }
+   exists(resources/i18n/OpenBoard_nl.qm) {
+       TRANSLATION_nl.files = resources/i18n/OpenBoard_nl.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_nl.path = "$$RESOURCES_DIR/nl.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_nl
+   }
+   exists(resources/i18n/OpenBoard_pl.qm) {
+       TRANSLATION_pl.files = resources/i18n/OpenBoard_pl.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_pl.path = "$$RESOURCES_DIR/pl.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_pl
+   }
+   exists(resources/i18n/OpenBoard_pt.qm) {
+       TRANSLATION_pt.files = resources/i18n/OpenBoard_pt.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_pt.path = "$$RESOURCES_DIR/pt.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_pt
+   }
+   exists(resources/i18n/OpenBoard_pt_BR.qm) {
+       TRANSLATION_pt_BR.files = resources/i18n/OpenBoard_pt_BR.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_pt_BR.path = "$$RESOURCES_DIR/pt_BR.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_pt_BR
+   }
+   exists(resources/i18n/OpenBoard_ro.qm) {
+       TRANSLATION_ro.files = resources/i18n/OpenBoard_ro.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_ro.path = "$$RESOURCES_DIR/ro.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_ro
+   }
+   exists(resources/i18n/OpenBoard_ru.qm) {
+       TRANSLATION_ru.files = resources/i18n/OpenBoard_ru.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_ru.path = "$$RESOURCES_DIR/ru.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_ru
+   }
+   exists(resources/i18n/OpenBoard_sk.qm) {
+       TRANSLATION_sk.files = resources/i18n/OpenBoard_sk.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_sk
+   }
+   exists(resources/i18n/OpenBoard_sv.qm) {
+       TRANSLATION_sv.files = resources/i18n/OpenBoard_sv.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_sv.path = "$$RESOURCES_DIR/sv.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_sv
+   }
+   exists(resources/i18n/OpenBoard_tr.qm) {
+       TRANSLATION_tr.files = resources/i18n/OpenBoard_tr.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_tr.path = "$$RESOURCES_DIR/tr.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_tr
+   }
+   exists(resources/i18n/OpenBoard_uk.qm) {
+       TRANSLATION_uk.files = resources/i18n/OpenBoard_uk.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_uk.path = "$$RESOURCES_DIR/uk.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_uk
    }
    exists(resources/i18n/OpenBoard_zh.qm) {
        TRANSLATION_zh.files = resources/i18n/OpenBoard_zh.qm \
@@ -340,90 +430,6 @@ macx {
            resources/i18n/Localizable.strings
        TRANSLATION_zh_TW.path = "$$RESOURCES_DIR/zh_TW.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_zh_TW
-   }
-   exists(resources/i18n/OpenBoard_ro.qm) {
-       TRANSLATION_ro.files = resources/i18n/OpenBoard_ro.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_ro.path = "$$RESOURCES_DIR/ro.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ro
-   }
-   exists(resources/i18n/OpenBoard_ar.qm) {
-       TRANSLATION_ar.files = resources/i18n/OpenBoard_ar.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_ar.path = "$$RESOURCES_DIR/ar.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ar
-   }
-   exists(resources/i18n/OpenBoard_iw.qm) {
-       TRANSLATION_iw.files = resources/i18n/OpenBoard_iw.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_iw.path = "$$RESOURCES_DIR/iw.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_iw
-   }
-   exists(resources/i18n/OpenBoard_pt.qm) {
-       TRANSLATION_pt.files = resources/i18n/OpenBoard_pt.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_pt.path = "$$RESOURCES_DIR/pt.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_pt
-   }
-   exists(resources/i18n/OpenBoard_sk.qm) {
-       TRANSLATION_sk.files = resources/i18n/OpenBoard_sk.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_sk
-   }
-   exists(resources/i18n/OpenBoard_bg.qm) {
-       TRANSLATION_bg.files = resources/i18n/OpenBoard_bg.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_bg
-   }
-   exists(resources/i18n/OpenBoard_ca.qm) {
-       TRANSLATION_ca.files = resources/i18n/OpenBoard_ca.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ca
-   }
-   exists(resources/i18n/OpenBoard_el.qm) {
-       TRANSLATION_el.files = resources/i18n/OpenBoard_el.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_el.path = "$$RESOURCES_DIR/el.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_el
-   }
-   exists(resources/i18n/OpenBoard_tr.qm) {
-       TRANSLATION_tr.files = resources/i18n/OpenBoard_tr.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_tr.path = "$$RESOURCES_DIR/tr.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_tr
-   }
-   exists(resources/i18n/OpenBoard_cs.qm) {
-       TRANSLATION_cs.files = resources/i18n/OpenBoard_cs.qm \
-           resources/i18n/localizable.strings
-       TRANSLATION_cs.path = "$$RESOURCES_DIR/cs.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_cs
-   }
-   exists(resources/i18n/OpenBoard_mg.qm) {
-       TRANSLATION_mg.files = resources/i18n/OpenBoard_mg.qm \
-           resources/i18n/localizable.strings
-       TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_mg
-   }
-   exists(resources/i18n/OpenBoard_gl.qm) {
-       TRANSLATION_gl.files = resources/i18n/OpenBoard_gl.qm \
-           resources/i18n/localizable.strings
-       TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_gl
-   }
-   exists(resources/i18n/OpenBoard_uk.qm) {
-       TRANSLATION_uk.files = resources/i18n/OpenBoard_uk.qm \
-           resources/i18n/localizable.strings
-       TRANSLATION_uk.path = "$$RESOURCES_DIR/uk.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_uk
-   }
-   exists(resources/i18n/OpenBoard_hu.qm) {
-       TRANSLATION_hu.files = resources/i18n/OpenBoard_hu.qm \
-           resources/i18n/localizable.strings
-       TRANSLATION_hu.path = "$$RESOURCES_DIR/hu.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_hu
    }
 
    QMAKE_BUNDLE_DATA += UB_ETC \
@@ -449,9 +455,14 @@ linux-g++* {
     CONFIG += link_prl
     LIBS += -lcrypto
     #LIBS += -lprofiler
-    LIBS += -lX11
-    LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip"
+
+    greaterThan(QT_MAJOR_VERSION, 5) {
+        LIBS += -lquazip1-qt6
+        INCLUDEPATH += "/usr/include/QuaZip-Qt6-1.4/quazip"
+    } else {
+        LIBS += -lquazip5
+        INCLUDEPATH += "/usr/include/quazip5"
+    }
 
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
@@ -472,38 +483,41 @@ linux-g++* {
 RESOURCES += resources/OpenBoard.qrc
 
 # When adding a translation here, also add it in the macx part
-TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
-   resources/i18n/OpenBoard_en_UK.ts \
-   resources/i18n/OpenBoard_fr.ts \
-   resources/i18n/OpenBoard_fr_CH.ts \
-   resources/i18n/OpenBoard_de.ts \
-   resources/i18n/OpenBoard_nl.ts \
-   resources/i18n/OpenBoard_es.ts \
-   resources/i18n/OpenBoard_it.ts \
-   resources/i18n/OpenBoard_pl.ts \
-   resources/i18n/OpenBoard_ru.ts \
-   resources/i18n/OpenBoard_da.ts \
-   resources/i18n/OpenBoard_nb.ts \
-   resources/i18n/OpenBoard_sv.ts \
-   resources/i18n/OpenBoard_ja.ts \
-   resources/i18n/OpenBoard_ko.ts \
-   resources/i18n/OpenBoard_zh.ts \
-   resources/i18n/OpenBoard_zh_CN.ts \
-   resources/i18n/OpenBoard_zh_TW.ts \
-   resources/i18n/OpenBoard_ro.ts \
-   resources/i18n/OpenBoard_ar.ts \
-   resources/i18n/OpenBoard_iw.ts \
-   resources/i18n/OpenBoard_pt.ts \
-   resources/i18n/OpenBoard_sk.ts \
-   resources/i18n/OpenBoard_bg.ts \
-   resources/i18n/OpenBoard_ca.ts \
-   resources/i18n/OpenBoard_el.ts \
-   resources/i18n/OpenBoard_tr.ts \
-   resources/i18n/OpenBoard_cs.ts \
-   resources/i18n/OpenBoard_gl.ts \
-   resources/i18n/OpenBoard_uk.ts \
-   resources/i18n/OpenBoard_hu.ts \
-   resources/i18n/OpenBoard_mg.ts
+TRANSLATIONS = resources/i18n/OpenBoard_ar.ts \
+    resources/i18n/OpenBoard_bg.ts \
+    resources/i18n/OpenBoard_ca.ts \
+    resources/i18n/OpenBoard_cs.ts \
+    resources/i18n/OpenBoard_da.ts \
+    resources/i18n/OpenBoard_de.ts \
+    resources/i18n/OpenBoard_el.ts \
+    resources/i18n/OpenBoard_en.ts \
+    resources/i18n/OpenBoard_en_UK.ts \
+    resources/i18n/OpenBoard_es.ts \
+    resources/i18n/OpenBoard_eu.ts \
+    resources/i18n/OpenBoard_fr.ts \
+    resources/i18n/OpenBoard_fr_CH.ts \
+    resources/i18n/OpenBoard_gl.ts \
+    resources/i18n/OpenBoard_hr.ts \
+    resources/i18n/OpenBoard_hu.ts \
+    resources/i18n/OpenBoard_it.ts \
+    resources/i18n/OpenBoard_iw.ts \
+    resources/i18n/OpenBoard_ja.ts \
+    resources/i18n/OpenBoard_ko.ts \
+    resources/i18n/OpenBoard_mg.ts \
+    resources/i18n/OpenBoard_nb.ts \
+    resources/i18n/OpenBoard_nl.ts \
+    resources/i18n/OpenBoard_pl.ts \
+    resources/i18n/OpenBoard_pt.ts \
+    resources/i18n/OpenBoard_pt_BR.ts \
+    resources/i18n/OpenBoard_ro.ts \
+    resources/i18n/OpenBoard_ru.ts \
+    resources/i18n/OpenBoard_sk.ts \
+    resources/i18n/OpenBoard_sv.ts \
+    resources/i18n/OpenBoard_tr.ts \
+    resources/i18n/OpenBoard_uk.ts \
+    resources/i18n/OpenBoard_zh.ts \
+    resources/i18n/OpenBoard_zh_CN.ts \
+    resources/i18n/OpenBoard_zh_TW.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \

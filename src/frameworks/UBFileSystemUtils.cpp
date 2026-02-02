@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -31,7 +31,7 @@
 
 #include <QtGui>
 
-#include "core/UBApplication.h"
+#include "adaptors/UBPageMapper.h"
 
 #include "globals/UBGlobals.h"
 
@@ -41,7 +41,6 @@ THIRD_PARTY_WARNINGS_DISABLE
 #else
     #include "quazipfile.h"
 #endif
-#include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
@@ -104,6 +103,11 @@ bool UBFileSystemUtils::copyFile(const QString &source, const QString &destinati
     if (QFile::exists(normalizedDestination)) {
         if  (QFileInfo(normalizedDestination).isFile() && overwrite) {
             QFile::remove(normalizedDestination);
+        }
+        else
+        {
+            if (!overwrite)
+                return true; // don't try to copy an existing file if overwrite is false
         }
     } else {
         normalizedDestination = normalizedDestination.replace(QString("\\"), QString("/"));
@@ -300,7 +304,7 @@ bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pT
         {
             if (dirContent.isDir())
             {
-                successSoFar = copyDir(pSourceDirPath + "/" + dirContent.fileName(), pTargetDirPath + "/" + dirContent.fileName());
+                successSoFar = copyDir(pSourceDirPath + "/" + dirContent.fileName(), pTargetDirPath + "/" + dirContent.fileName(), overwite);
             }
             else
             {
@@ -458,6 +462,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "bmp") return "image/bmp";
     if (ext == "tiff" || ext == "tif") return "image/tiff";
     if (ext == "gif") return "image/gif";
+    if (ext == "webp") return "image/webp";
     if (ext == "svg" || ext == "svgz") return "image/svg+xml";
     if (ext == "pdf") return "application/pdf";
     if (ext == "mov" || ext == "qt") return "video/quicktime";
@@ -470,14 +475,11 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "wmx") return "video/x-ms-wmx";
     if (ext == "avi") return "video/x-msvideo";
     if (ext == "ogv") return "video/ogg";
-    if (ext == "flv") return "video/x-flv"; // TODO UB 4.x  ... we need to be smarter ... flash may need an external plugin :-(
     if (ext == "m4v") return "video/x-m4v";
     // W3C widget
     if (ext == "wgt") return "application/widget";
     if (ext == "wgs") return "application/search";
-    // Apple widget
-    if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-(
-    if (ext == "swf") return "application/x-shockwave-flash";
+    if (ext == "rdf") return "application/openboard-document";
 
     return "";
 
@@ -549,8 +551,6 @@ QString UBFileSystemUtils::fileExtensionFromMimeType(const QString& pMimeType)
     if (pMimeType == "video/x-flv") return "flv";
     if (pMimeType == "video/x-m4v") return "m4v";
     if (pMimeType == "application/widget") return "wgt";
-    if (pMimeType == "application/vnd.apple-widget") return "wdgt"; //mime type invented by us :-(
-    if (pMimeType == "application/x-shockwave-flash") return "swf";
 
     return "";
 
@@ -563,6 +563,7 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
 
     if (typeString == "image/jpeg"
         || typeString == "image/png"
+        || typeString == "image/webp"
         || typeString == "image/gif"
         || typeString == "image/tiff"
         || typeString == "image/bmp")
@@ -573,9 +574,9 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::VectorImage;
     }
-    else if (typeString == "application/vnd.apple-widget")
+    else if (typeString == "text/html")
     {
-        type = UBMimeType::AppleWidget;
+        type = UBMimeType::Html;
     }
     else if (typeString == "application/widget")
     {
@@ -589,10 +590,6 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::Audio;
     }
-    else if (typeString.startsWith("application/x-shockwave-flash"))
-    {
-        type = UBMimeType::Flash;
-    }
     else if (typeString.startsWith("application/pdf"))
     {
         type = UBMimeType::PDF;
@@ -605,6 +602,10 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     else if (typeString.startsWith("application/openboard-tool"))
     {
         type = UBMimeType::OpenboardTool;
+    }
+    else if (typeString == "application/openboard-document")
+    {
+        type = UBMimeType::Document;
     }
     return type;
 
@@ -642,7 +643,8 @@ QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, con
 }
 
 
-bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestPath, QuaZipFile *pOutZipFile, bool pRootDocumentFolder, UBProcessingProgressListener* progressListener)
+bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestPath, QuaZipFile *pOutZipFile,
+                                         bool pRootDocumentFolder, UBPageMapper* mapper, UBProcessingProgressListener* progressListener)
 {
     QFileInfoList files = pDir.entryInfoList(QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
 
@@ -684,6 +686,16 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
                 progressListener->processing(objectType, pageFiles.indexOf(file), pageFiles.size());
             }
 
+            auto outFilename = file.fileName();
+
+            // map file
+            if (mapper)
+            {
+                auto result = mapper->map(file.fileName());
+                file = result.input;
+                outFilename = result.output;
+            }
+
             QFile inFile(file.absoluteFilePath());
             if(!inFile.open(QIODevice::ReadOnly))
             {
@@ -693,7 +705,7 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
 
             qDebug() << "will open" << pDestPath << file.fileName() << inFile.fileName();
 
-            if(!pOutZipFile->open(QIODevice::WriteOnly, QuaZipNewInfo(pDestPath + file.fileName(), inFile.fileName())))
+            if(!pOutZipFile->open(QIODevice::WriteOnly, QuaZipNewInfo(pDestPath + outFilename, inFile.fileName())))
             {
                 qWarning() << "Compression of file" << inFile.fileName() << " failed. Cause: outFile.open(): " << pOutZipFile->getZipError();
                 inFile.close();
@@ -776,7 +788,11 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
         root.mkpath(newFileInfo.absolutePath());
 
         out.setFileName(newFileName);
-        out.open(QIODevice::WriteOnly);
+        if (!out.open(QIODevice::WriteOnly))
+        {
+            qWarning() << "ZIP write failed. Cause: file.open(): " << out.fileName();
+            return false;
+        }
 
         // Slow like hell (on GNU/Linux at least), but it is not my fault.
         // Not ZIP/UNZIP package's fault either.
@@ -824,37 +840,6 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
     }
 
     return true;
-}
-
-
-QString UBFileSystemUtils::md5InHex(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-
-    return QString(QByteArray((char *)result, 16).toHex());
-}
-
-QString UBFileSystemUtils::md5(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-    QString s;
-
-    for(int i = 0; i < 16; i++)
-    {
-        s += QChar(result[i]);
-    }
-
-    return s;
 }
 
 QString UBFileSystemUtils::readTextFile(QString path)

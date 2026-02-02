@@ -1,0 +1,22 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>e986ad6c-9a3e-4a63-a97a-1a19c7fa90cc</bg:uuid>
+    <bg:description xml:lang="en">Ruled 5mm</bg:description>
+    <bg:description xml:lang="de">Liniert 5mm</bg:description>
+    <bg:attributes ruled="true" intermediateLines="true"/>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>5</bg:offset>
+            <bg:width>1</bg:width>
+            <bg:color>
+                <bg:onDark>0.5</bg:onDark>
+                <bg:onLight>0.5</bg:onLight>
+            </bg:color>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>

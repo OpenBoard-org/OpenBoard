@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -43,10 +43,11 @@ class UBGraphicsItemUndoCommand : public UBUndoCommand
     public:
         typedef QMultiMap<UBGraphicsGroupContainerItem*, QUuid> GroupDataTable;
 
-        UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
+
+        UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSet<QGraphicsItem*>& pRemovedItems,
                                   const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap = GroupDataTable());
 
-        UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem,
+        UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, QGraphicsItem* pRemovedItem,
                         QGraphicsItem* pAddedItem);
 
         virtual ~UBGraphicsItemUndoCommand();
@@ -61,7 +62,12 @@ class UBGraphicsItemUndoCommand : public UBUndoCommand
         virtual void redo();
 
     private:
-        UBGraphicsScene* mScene;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        typedef QMultiMapIterator<UBGraphicsGroupContainerItem*, QUuid> GroupDataTableIterator;
+#else
+        typedef QMapIterator<UBGraphicsGroupContainerItem*, QUuid> GroupDataTableIterator;
+#endif
+        std::shared_ptr<UBGraphicsScene> mScene;
         QSet<QGraphicsItem*> mRemovedItems;
         QSet<QGraphicsItem*> mAddedItems;
         GroupDataTable mExcludedFromGroup;

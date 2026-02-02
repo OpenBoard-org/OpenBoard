@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=OpenBoard
+Comment=OpenBoard, an interactive white board application
+Exec=openboard %f
+Icon=ch.openboard.OpenBoard
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/ubz
+Categories=Education;

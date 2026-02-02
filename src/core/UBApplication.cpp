@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -45,6 +45,7 @@
 #include "UBPreferencesController.h"
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
+#include "UBShortcutManager.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -57,7 +58,8 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
-#include "gui/UBThumbnailWidget.h"
+#include "gui/UBThumbnail.h"
+#include "gui/UBStartupHintsPalette.h"
 
 #include "ui_mainWindow.h"
 
@@ -69,6 +71,7 @@
 
 QPointer<QUndoStack> UBApplication::undoStack;
 
+UBDisplayManager* UBApplication::displayManager = nullptr;
 UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
@@ -76,10 +79,14 @@ UBDocumentController* UBApplication::documentController = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
 
+bool UBApplication::isClosing = false;
+
 const QString UBApplication::mimeTypeUniboardDocument = QString("application/vnd.mnemis-uniboard-document");
 const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mnemis-uniboard-page");
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
+
+QString UBApplication::fileToOpen = "";
 
 #if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
 bool bIsMinimized = false;
@@ -88,17 +95,20 @@ bool bIsMinimized = false;
 QObject* UBApplication::staticMemoryCleaner = 0;
 
 
-UBApplication::UBApplication(const QString &id, int &argc, char **argv) : SingleApplication(argc, argv)
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : SingleApplication(argc, argv, true)
   , mPreferencesController(NULL)
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
 {
-
+    Q_UNUSED(id)
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
     setOrganizationName("Open Education Foundation");
     setOrganizationDomain("oe-f.org");
     setApplicationName("OpenBoard");
+    setDesktopFileName("ch.openboard.OpenBoard");
+    // With Qt 6.9 on macOS 15 (at least), icons aren't shown in menus. This forces their display.
+    QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     QString version = UBVERSION;
     if(version.endsWith("."))
@@ -127,6 +137,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
+    connect(this, &SingleApplication::receivedMessage, this, &UBApplication::handleOpenMessage);
     updateProtoActionsState();
 
 #ifndef Q_OS_OSX
@@ -135,7 +146,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     setStyle("fusion");
 
-    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
+    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationEtcDirectory() + "/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
         setStyleSheet(css);
 
@@ -231,24 +242,62 @@ void UBApplication::setupTranslators(QStringList args)
     else{
         mApplicationTranslator = new QTranslator(this);
         mQtGuiTranslator = new QTranslator(this);
-        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language));
-        installTranslator(mApplicationTranslator);
+
+        if (mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language)))
+            installTranslator(mApplicationTranslator);
 
         QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
 
-
-        if(!QFile(qtGuiTranslationPath).exists()){
+        if(!QFile(qtGuiTranslationPath).exists())
+        {
             qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language.left(2));
+
             if(!QFile(qtGuiTranslationPath).exists())
+            {
                 qtGuiTranslationPath = "";
+            }
         }
 
-        if(!qtGuiTranslationPath.isEmpty()){
-            mQtGuiTranslator->load(qtGuiTranslationPath);
+        QLocale locale(language);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QString qtTranslationPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#else
+        QString qtTranslationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+        bool loaded = false;
+
+        if (qtGuiTranslationPath.isEmpty())
+        {
+            loaded = mQtGuiTranslator->load(locale, "qt", "_", qtTranslationPath, ".qm");
+        }
+        else
+        {
+            loaded = mQtGuiTranslator->load(qtGuiTranslationPath, UBPlatformUtils::applicationResourcesDirectory() + "/" + "i18n", "_", ".qm");
+        }
+
+        if (loaded)
+        {
+            qDebug() << "Loaded Qt Gui translations";
             installTranslator(mQtGuiTranslator);
         }
         else
-            qDebug() << "Qt gui translation in " << language << " is not available";
+        {
+            qWarning() << "Qt gui translations in " << language << " are not available or could not be loaded";
+        }
+
+        // QtWebEngine translations
+        QTranslator* qtWebEngineTranslator = new QTranslator(this);
+        loaded = qtWebEngineTranslator->load(locale, "qtwebengine", "_", qtTranslationPath, ".qm");
+
+        if (loaded)
+        {
+            qDebug() << "Loaded QtWebengine translations";
+            installTranslator(qtWebEngineTranslator);
+        }
+        else
+        {
+            qWarning() << "QtWebEngine translations in " << language << " are not available or could not be loaded";
+        }
     }
 
     QLocale::setDefault(QLocale(language));
@@ -259,25 +308,20 @@ int UBApplication::exec(const QString& pFileToImport)
 {
     QPixmapCache::setCacheLimit(1024 * 100);
 
-    QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
-    QDir webDbDir(webDbPath);
-    if (!webDbDir.exists(webDbPath))
-        webDbDir.mkpath(webDbPath);
+    displayManager = new UBDisplayManager(staticMemoryCleaner);
 
-    QWebSettings::setIconDatabasePath(webDbPath);
-    QWebSettings::setOfflineStoragePath (webDbPath);
+    if (UBSettings::settings()->appRunInWindow->get().toBool()) {
+        mainWindow = new UBMainWindow(0,
+                Qt::Window |
+                Qt::WindowCloseButtonHint |
+                Qt::WindowMinimizeButtonHint |
+                Qt::WindowMaximizeButtonHint |
+                Qt::WindowShadeButtonHint
+        ); // deleted by application destructor
+    } else {
+        mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
+    }
 
-    QWebSettings *gs = QWebSettings::globalSettings();
-    gs->setAttribute(QWebSettings::JavaEnabled, true);
-    gs->setAttribute(QWebSettings::PluginsEnabled, true);
-    gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    gs->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-
-
-    mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
@@ -308,6 +352,14 @@ int UBApplication::exec(const QString& pFileToImport)
                                                         staticMemoryCleaner,
                                                         boardController->paletteManager()->rightPalette());
 
+
+    if (!UBApplication::fileToOpen.isEmpty())
+    {
+        if (!UBApplication::fileToOpen.endsWith("ubx"))
+           applicationController->importFile(UBApplication::fileToOpen);
+        else
+            applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
+    }
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
             boardController->paletteManager(), SLOT(slot_changeMainMode(UBApplicationController::MainMode)));
@@ -348,25 +400,35 @@ int UBApplication::exec(const QString& pFileToImport)
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)
-        UBApplication::applicationController->importFile(pFileToImport);
+    {
+        if (!pFileToImport.endsWith("ubx"))
+            applicationController->importFile(pFileToImport);
+        else
+            applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
+    }
 
-    if (UBSettings::settings()->appStartMode->get().toInt())
+    if (UBSettings::settings()->appStartMode->get().toInt() == 1)
         applicationController->showDesktop();
+    else if (UBSettings::settings()->appStartMode->get().toInt() == 2)
+        applicationController->showDocument();
     else
         applicationController->showBoard();
 
+    if(UBSettings::settings()->appStartupHintsEnabled->get().toBool())
+    {
+        UBApplication::boardController->paletteManager()->tipsPalette()->show();
+    }
+
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
-    onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+    onScreenCountChanged(displayManager->numScreens());
+    connect(displayManager, SIGNAL(availableScreenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
 }
 
 void UBApplication::onScreenCountChanged(int newCount)
 {
-    Q_UNUSED(newCount);
-    UBDisplayManager displayManager;
-    mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
+    mainWindow->actionMultiScreen->setEnabled(newCount > 1);
 }
 
 void UBApplication::showMinimized()
@@ -450,6 +512,8 @@ void UBApplication::closeEvent(QCloseEvent *event)
 
 void UBApplication::closing()
 {
+    isClosing = true;
+
     if (UBSettings::settings()->emptyTrashForOlderDocuments->get().toBool())
     {
         UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
@@ -490,7 +554,11 @@ void UBApplication::setDisabled(bool disable)
 
 void UBApplication::decorateActionMenu(QAction* action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject* menuWidget,  action->associatedObjects())
+#else
     foreach(QWidget* menuWidget,  action->associatedWidgets())
+#endif
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -517,6 +585,7 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionOpenTutorial);
+            menu->addAction(mainWindow->actionHintsAndTips);
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
@@ -575,17 +644,31 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 
         UBPlatformUtils::setFrontProcess();
 
-        applicationController->importFile(fileToOpenEvent->file());
+        if (applicationController)
+        {
+            if (!fileToOpenEvent->file().endsWith("ubx"))
+                applicationController->importFile(fileToOpenEvent->file());
+            else
+                applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
+        }
+        else
+        {
+            //startup : progressdialog.exec() is called and fileOpenEvent is consumed too early
+            // we store the file and will import it when the documents tree is ready
+
+            UBApplication::fileToOpen = fileToOpenEvent->file();
+            return true;
+        }
     }
 
-    if (event->type() == QEvent::TabletLeaveProximity)
+    else if (event->type() == QEvent::TabletLeaveProximity)
     {
         if (boardController && boardController->controlView())
             boardController->controlView()->forcedTabletRelease();
     }
 
 
-    if (event->type() == QEvent::ApplicationActivate)
+    else if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
 
@@ -603,25 +686,81 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 #endif
     }
 
+    else if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        // set snap action when pressing shift while snapping tool is active
+        if (keyEvent->key() == Qt::Key_Shift && UBDrawingController::drawingController()->isSnappingTool())
+        {
+            mainWindow->actionSnap->setChecked(true);
+        }
+    }
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        // intercept key release events for shortcut handler
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        // unset snap action when releasing shift while snapping tool is active
+        if (keyEvent->key() == Qt::Key_Shift && UBDrawingController::drawingController()->isSnappingTool())
+        {
+            mainWindow->actionSnap->setChecked(false);
+        }
+
+        return UBShortcutManager::shortcutManager()->handleKeyReleaseEvent(keyEvent)
+                    || result;
+    }
+
+    else if (event->type() == QEvent::MouseButtonPress)
+    {
+        // intercept special mouse buttons for shortcut handler
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        Qt::MouseButton button = mouseEvent->button();
+
+        if (button != Qt::LeftButton && button != Qt::RightButton)
+        {
+            return mPreferencesController->handleMouseEvent(mouseEvent)
+                    || UBShortcutManager::shortcutManager()->handleMouseEvent(mouseEvent)
+                    || result;
+        }
+    }
+
+    else if (event->type() == QEvent::TabletPress)
+    {
+        // intercept special tablet buttons for shortcut handler
+        QTabletEvent *tabletEvent = static_cast<QTabletEvent *>(event);
+        Qt::MouseButton button = tabletEvent->button();
+
+        if (button != Qt::LeftButton)
+        {
+            return mPreferencesController->handleTabletEvent(tabletEvent)
+                    || UBShortcutManager::shortcutManager()->handleTabletEvent(tabletEvent)
+                    || result;
+        }
+    }
+
     return result;
 }
 
 
-bool UBApplication::handleOpenMessage(const QString& pMessage)
+void UBApplication::handleOpenMessage(quint32 instanceId, QByteArray message)
 {
-    qDebug() << "received message" << pMessage;
+    Q_UNUSED(instanceId)
 
-    if (pMessage == UBSettings::appPingMessage)
+    QString filename = QString::fromUtf8(message);
+    qDebug() << "received message" << filename;
+
+    if (filename == UBSettings::appPingMessage)
     {
         qDebug() << "received ping";
-        return true;
+        return;
     }
 
-    qDebug() << "importing file" << pMessage;
+    qDebug() << "importing file" << filename;
 
-    UBApplication::applicationController->importFile(pMessage);
+    UBApplication::applicationController->importFile(filename);
 
-    return true;
+    return;
 }
 
 void UBApplication::cleanup()
@@ -640,13 +779,13 @@ void UBApplication::cleanup()
 QString UBApplication::urlFromHtml(QString html)
 {
     QString _html;
-    QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
+    static const QRegularExpression comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
     QString url;
     QDomDocument domDoc;
 
     //    We remove all the comments & CRLF of this html
     _html = html.remove(comments);
-    domDoc.setContent(_html.remove(QRegExp("[\\0]")));
+    domDoc.setContent(_html.remove(QChar('\0')));
     QDomElement rootElem = domDoc.documentElement();
 
     //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag
@@ -673,19 +812,4 @@ bool UBApplication::isFromWeb(QString url)
     }
 
     return res;
-}
-
-QScreen* UBApplication::controlScreen()
-{
-    QList<QScreen*> screenList = screens();
-    if (screenList.size() == 1)
-        return screenList.first();
-
-    return screenList[controlScreenIndex()];
-}
-
-
-int UBApplication::controlScreenIndex()
-{
-    return applicationController->displayManager()->controleScreenIndex();
 }

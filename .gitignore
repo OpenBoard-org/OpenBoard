@@ -45,6 +45,7 @@ Thumbs.db
 *.vcproj*
 *.ncb
 *.pro.user
+*.txt.user
 *.idb
 .project
 .settings
@@ -81,3 +82,4 @@ plugins/cffadaptor/objects
 ##########
 .directory
 .DS_Store
+Doxyfile

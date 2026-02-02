@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function init(){
+async function init(){
 	
     var ubwidget = $("#ubwidget").ubwidget({
 //        width:360,
@@ -188,8 +188,8 @@ function init(){
     $('#headtitle').hide();
 	
     if(window.sankore){
-        text = window.sankore.preference('noteText', text);
-        currentFontSize = window.sankore.preference('fontSize', defaultFontSize);
+        text = await window.sankore.async.preference('noteText', text);
+        currentFontSize = await window.sankore.async.preference('fontSize', defaultFontSize);
         $('.ubw-container').css({
 //            width:window.innerWidth - 2,
 //            height:window.innerHeight - 20
@@ -236,9 +236,9 @@ function init(){
     }
     
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             window.sankore.setPreference("noteText", textField.html());
             window.sankore.setPreference("fontSize", newFontSize);
-        }
+        });
     }
 }

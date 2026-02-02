@@ -57,13 +57,6 @@ var sankoreLang = {
 var word = "";
 var curWord = "";
 
-if(window.sankore){
-    word = (sankore.preference("rightOrdWords", ""))?sankore.preference("rightOrdWords", ""):sankoreLang.example;
-    curWord = (sankore.preference("currentOrdWords", ""))?sankore.preference("currentOrdWords", ""):"";
-} else {
-    word = sankoreLang.example;
-}
-
 // array of dom elements
 var letters = [];
 
@@ -82,14 +75,19 @@ var widget_padding = 0;
 var min_view_width = 400;
 
 
-$(document).ready(function(){
+async function start(){
     if(window.sankore){
-        if(sankore.preference("ord_words_style","")){
-            changeStyle(sankore.preference("ord_words_style",""));
+        word = (await sankore.async.preference("rightOrdWords", ""))?await sankore.async.preference("rightOrdWords", ""):sankoreLang.example;
+        curWord = (await sankore.async.preference("currentOrdWords", ""))?await sankore.async.preference("currentOrdWords", ""):"";
+
+        if(await sankore.async.preference("ord_words_style","")){
+            changeStyle(await sankore.async.preference("ord_words_style",""));
         } else
             changeStyle("3")
-    } else 
+    } else {
         changeStyle("3")
+    }
+
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_help").text(sankoreLang.help);
@@ -190,8 +188,8 @@ $(document).ready(function(){
             }
         }
     });    
-    
-})
+    modeView();
+}
 
 /*
 =================
@@ -409,7 +407,7 @@ function modeEdit()
 }
 
 if (window.widget) {
-    window.widget.onleave = function(){
+    window.widget.onleave.connect(() => {
         sankore.setPreference("ord_words_style", $("#style_select").find("option:selected").val());
         if($( "#mp_word .wgt_cont" ).val())
         {
@@ -431,5 +429,5 @@ if (window.widget) {
             sankore.setPreference("currentOrdWords", str);
         }
         sankore.setPreference("rightOrdWords", word);
-    }
+    });
 }

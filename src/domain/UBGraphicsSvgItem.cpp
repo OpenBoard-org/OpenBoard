@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -55,6 +55,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* pa
     {
         mFileData = f.readAll();
         f.close();
+        mMediaAssetUuid = createMediaAssetUuid(mFileData);
     }
 }
 
@@ -67,6 +68,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
 
     setSharedRenderer(renderer);
     mFileData = pFileData;
+    mMediaAssetUuid = createMediaAssetUuid(mFileData);
 }
 
 
@@ -89,11 +91,21 @@ void UBGraphicsSvgItem::init()
 
     setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
 
-    setUuid(QUuid::createUuid());
+    UBGraphicsSvgItem::setUuid(QUuid::createUuid());
 }
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
 {
+}
+
+QList<QString> UBGraphicsSvgItem::mediaAssets() const
+{
+    return {UBPersistenceManager::imageDirectory + "/" + mMediaAssetUuid.toString() + ".svg"};
+}
+
+void UBGraphicsSvgItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    mMediaAssetUuid = uuidFromPath(mediaAsset);
 }
 
 
@@ -182,8 +194,10 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-        cp->setSourceUrl(this->sourceUrl());
+        cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setZValue(this->zValue());
+        cp->mMediaAssetUuid = mMediaAssetUuid;
     }
 }
 
@@ -202,9 +216,10 @@ void UBGraphicsSvgItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 }
 
 
-UBGraphicsScene* UBGraphicsSvgItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsSvgItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 
@@ -225,18 +240,4 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
 
     return pixmapItem;
-}
-
-void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
-
-void UBGraphicsSvgItem::clearSource()
-{
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
-    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
-    UBFileSystemUtils::deleteFile(diskPath);
 }

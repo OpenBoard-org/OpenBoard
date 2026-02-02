@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -108,10 +108,10 @@ enum UBFeatureElementType
     FEATURE_AUDIO,
     FEATURE_VIDEO,
     FEATURE_IMAGE,
-    FEATURE_FLASH,
     FEATURE_TRASH,
     FEATURE_FAVORITE,
     FEATURE_SEARCH,
+    FEATURE_DOCUMENT,
     FEATURE_INVALID
 };
 
@@ -175,6 +175,7 @@ public:
 
     void addItemToPage(const UBFeature &item);
     void addItemAsBackground(const UBFeature &item);
+    void addUserWidgetToLibrary(const QString &url, const QString &name);
     const UBFeature& getCurrentElement()const {return currentElement;}
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
     const UBFeature & getTrashElement () const { return trashElement; }
@@ -196,10 +197,11 @@ public:
     void deleteItem(const UBFeature &pFeature);
     bool isTrash( const QUrl &url );
     void moveToTrash(UBFeature feature, bool deleteManualy = false);
-    void addToFavorite( const QUrl &path );
+    void addToFavorite(const QUrl &path , const QString &name = QString(), bool temporaryAdded = false);
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
-    void importImage(const QImage &image, const QString &fileName = QString());
-    void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
+    void storeAsFavorite(UBFeature feature);
+    void importImage(const QByteArray& imageData, const QString &fileName = QString());
+    void importImage(const QByteArray& imageData, const UBFeature &destination, const QString &fileName = QString() );
     QStringList getFileNamesInFolders();
 
     void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
@@ -217,13 +219,16 @@ public:
     void assignFeaturesListView(UBFeaturesListView *pList);
     void assignPathListView(UBFeaturesListView *pList);
 
+    bool isInFavoriteList(QUrl url);
+    bool isDocumentInFavoriteList(QString documentFolderName);
+    bool isInRecentlyOpenDocuments(QString documentFolderName);
+
 public:
     static const QString rootPath;
     static const QString audiosPath;
     static const QString moviesPath;
     static const QString picturesPath;
     static const QString appPath;
-    static const QString flashPath;
     static const QString shapesPath;
     static const QString interactPath;
     static const QString trashPath;
@@ -241,7 +246,6 @@ signals:
 private slots:
     void addNewFolder(QString name);
     void startThread();
-    void createNpApiFeature(const QString &str);
 
 private:
 
@@ -271,14 +275,12 @@ private:
     QUrl mUserVideoDirectoryPath;
     QUrl mUserPicturesDirectoryPath;
     QUrl mUserInteractiveDirectoryPath;
-    QUrl mUserAnimationDirectoryPath;
 
     QString libraryPath;
     QUrl mLibPicturesDirectoryPath;
     QUrl mLibAudiosDirectoryPath;
     QUrl mLibVideosDirectoryPath;
     QUrl mLibInteractiveDirectoryPath;
-    QUrl mLibAnimationsDirectoryPath;
     QUrl mLibApplicationsDirectoryPath;
     QUrl mLibShapesDirectoryPath;
 
@@ -297,11 +299,11 @@ private:
     UBFeature picturesElement;
     UBFeature interactElement;
     UBFeature applicationsElement;
-    UBFeature flashElement;
     UBFeature shapesElement;
     UBFeature webSearchElement;
 
-    QSet <QUrl> *favoriteSet;
+    QSet<QUrl> *favoriteSet;
+    QSet<QUrl> recentlyOpenDocuments;
 
 public:
     UBFeature trashElement;

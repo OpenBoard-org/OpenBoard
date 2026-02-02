@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -33,6 +33,9 @@
 #include <QtGui>
 #include "UBDocumentProxy.h"
 
+// forward
+class UBDocument;
+
 class UBDocumentContainer : public QObject
 {
     Q_OBJECT
@@ -41,61 +44,27 @@ class UBDocumentContainer : public QObject
         UBDocumentContainer(QObject * parent = 0);
         virtual ~UBDocumentContainer();
 
-        void setDocument(UBDocumentProxy* document, bool forceReload = false);
-        void pureSetDocument(UBDocumentProxy *document) {mCurrentDocument = document;}
+        void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
 
-        UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
-        QList<std::shared_ptr<QPixmap>>& documentThumbs() { return mDocumentThumbs; }
-        int pageCount() const{return mCurrentDocument->pageCount();}
-        std::shared_ptr<QPixmap> pageAt(int index)
-        {
-            if (index < mDocumentThumbs.size())
-                return mDocumentThumbs[index];
-            else
-            {
-                return NULL;
-            }
-        }
+        std::shared_ptr<UBDocumentProxy> selectedDocument(){return mCurrentDocument;}
+        std::shared_ptr<UBDocument> activeDocument();
 
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
 
-        void duplicatePages(QList<int>& pageIndexes);
         void duplicatePage(int index);
         void deletePages(QList<int>& pageIndexes);
-
-
         void addPage(int index);
-        void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
 
-        virtual void reloadThumbnails();
-
-        void clearThumbPage();
-        void initThumbPage();
-        void insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap);
-        void insertThumbPage(int index);
-        void addEmptyThumbPage();
-        void deleteThumbPage(int index);
-        void updateThumbPage(int index);
-        void moveThumbPage(int source, int target);
+    public slots:
+        void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
 
     private:
-        UBDocumentProxy* mCurrentDocument;
-        QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
+        std::shared_ptr<UBDocumentProxy> mCurrentDocument;
+        std::shared_ptr<UBDocument> mActiveDocument;
 
     signals:
-        void documentSet(UBDocumentProxy* document);
-        void documentPageInserted(int index);
-        void documentPageUpdated(int index);
-        void documentPageRemoved(int index);
-        void documentPageMoved(int from, int to);
-        void documentThumbnailsUpdated(UBDocumentContainer* source);
-
-        void initThumbnailsRequired(UBDocumentContainer* source);
-        void addThumbnailRequired(UBDocumentContainer* source, int index);
-        void removeThumbnailRequired(int index);
-        void moveThumbnailRequired(int from, int to);
-        void updateThumbnailsRequired();
+        void documentSet(std::shared_ptr<UBDocumentProxy> document);
 };
 
 

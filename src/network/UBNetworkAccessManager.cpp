@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -39,7 +39,6 @@
 #include "core/UBSettings.h"
 
 #include "ui_passworddialog.h"
-#include "ui_proxy.h"
 
 #include "UBCookieJar.h"
 
@@ -68,6 +67,8 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
     connect(this, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError>&)),
             SLOT(sslErrors(QNetworkReply*, const QList<QSslError>&)));
 
+    // NOTE Setting the proxy here also affects QWebEngine.
+    // see https://doc.qt.io/qt-5/qtwebengine-overview.html#proxy-support
     QNetworkProxy* proxy = UBSettings::settings()->httpProxy();
 
     if (proxy)
@@ -85,22 +86,8 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
     setCache(diskCache);
 }
 
-QNetworkReply* UBNetworkAccessManager::createRequest(Operation op, const QNetworkRequest & req, QIODevice * outgoingData)
-{
-    QNetworkRequest request = req; // copy so we can modify
-    // this is a temporary hack until we properly use the pipelining flags from QtWebkit
-    // pipeline everything! :)
-    request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-
-    QNetworkReply* reply = QNetworkAccessManager::createRequest(op, request, outgoingData);
-
-    return reply;
-}
-
 QNetworkReply *UBNetworkAccessManager::get(const QNetworkRequest &request)
 {
-    QTime loadStartTime;
-    loadStartTime.start();
     QNetworkReply *networkReply = QNetworkAccessManager::get(request);
     return networkReply;
 }
@@ -115,20 +102,20 @@ void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthe
     Ui::PasswordDialog passwordDialog;
     passwordDialog.setupUi(&dialog);
 
-    passwordDialog.iconLabel->setText(QString());
-    passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
+    passwordDialog.m_iconLabel->setText(QString());
+    passwordDialog.m_iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
     introMessage = introMessage.arg((reply->url().toString()).toHtmlEscaped()).arg((reply->url().toString()).toHtmlEscaped());
-    passwordDialog.introLabel->setText(introMessage);
-    passwordDialog.introLabel->setWordWrap(true);
+    passwordDialog.m_infoLabel->setText(introMessage);
+    passwordDialog.m_infoLabel->setWordWrap(true);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        if(auth && passwordDialog.userNameLineEdit)
-            auth->setUser(passwordDialog.userNameLineEdit->text());
-        if(auth && passwordDialog.passwordLineEdit)
-            auth->setPassword(passwordDialog.passwordLineEdit->text());
+        if(auth && passwordDialog.m_userNameLineEdit)
+            auth->setUser(passwordDialog.m_userNameLineEdit->text());
+        if(auth && passwordDialog.m_passwordLineEdit)
+            auth->setPassword(passwordDialog.m_passwordLineEdit->text());
     }
 
 }
@@ -163,7 +150,7 @@ void UBNetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &pr
 void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError> &error)
 {
     // check if SSL certificate has been trusted already
-    QString replyHost = reply->url().host() + ":" + reply->url().port();
+    QString replyHost = reply->url().host() + QString(":%1").arg(reply->url().port());
     if(!sslTrustedHostList.contains(replyHost))
     {
         QWidget *mainWindow = QApplication::activeWindow();

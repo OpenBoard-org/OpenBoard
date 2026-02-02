@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -55,6 +55,8 @@ class PDFRenderer : public QObject
         virtual QSizeF pageSizeF(int pageNumber) const = 0;
 
         virtual int pageRotation(int pageNumber) const = 0;
+
+        virtual QSizeF pointSizeF(int pageNumber) const = 0;
 
         virtual QString title() const = 0;
 

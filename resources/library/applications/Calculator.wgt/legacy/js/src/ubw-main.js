@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function init() {
+async function init() {
     var h = 292;
     var w = 160;
     var wh = h + 6;
@@ -336,8 +336,8 @@ function init() {
         .append(keysPanel);
 
     if (window.sankore) {
-        historyTxt = window.sankore.preference('historyTxt', historyTxt);
-        var ht = window.sankore.preference('historyTab', "hidden");
+        historyTxt = await window.sankore.async.preference('historyTxt', historyTxt);
+        var ht = await window.sankore.async.preference('historyTab', "hidden");
         $("#historyBox").val(historyTxt);
         if (ht === "visible") {
             historyTab.trigger("click");

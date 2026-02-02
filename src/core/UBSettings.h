@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -87,9 +87,9 @@ class UBSettings : public QObject
 
         // Background related
         bool isDarkBackground();
-        UBPageBackground pageBackground();
+        QUuid pageBackgroundUuid();
         void setDarkBackground(bool isDarkBackground);
-        void setPageBackground(UBPageBackground background);
+        void setPageBackgroundUuid(const QUuid& background);
 
         // Stylus palette related
         bool isStylusPaletteVisible();
@@ -138,7 +138,6 @@ class UBSettings : public QObject
         static QString userVideoDirectory();
         static QString userAudioDirectory();
         static QString userSearchDirectory();
-        static QString userAnimationDirectory();
         static QString userInteractiveDirectory();
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
@@ -154,7 +153,6 @@ class UBSettings : public QObject
         QString applicationCustomFontDirectory();
         QString applicationAudiosLibraryDirectory();
         QString applicationVideosLibraryDirectory();
-        QString applicationAnimationsLibraryDirectory();
         QString applicationStartupHintsDirectory();
 
         QNetworkProxy* httpProxy();
@@ -193,7 +191,6 @@ class UBSettings : public QObject
         static int defaultCrossSize;
         static int minCrossSize;
         static int maxCrossSize;
-        static bool intermediateLines;
 
         static int colorPaletteSize;
         static int objectFrameWidth;
@@ -259,9 +256,9 @@ class UBSettings : public QObject
         UBSetting* appEnableAutomaticSoftwareUpdates;
         UBSetting* appSoftwareUpdateURL;
         UBSetting* appHideCheckForSoftwareUpdate;
-        UBSetting* appHideSwapDisplayScreens;
         UBSetting* appToolBarOrientationVertical;
         UBSetting* appPreferredLanguage;
+        UBSetting* appRunInWindow;
 
         UBSetting* appIsInSoftwareUpdateProcess;
 
@@ -269,10 +266,9 @@ class UBSettings : public QObject
         UBSetting* appLastSessionPageIndex;
 
         UBSetting* appUseMultiscreen;
+        UBSetting* appScreenList;
 
         UBSetting* appStartupHintsEnabled;
-
-        UBSetting* appLookForOpenSankoreInstall;
 
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
@@ -329,9 +325,17 @@ class UBSettings : public QObject
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
         UBSetting* webHomePage;
+        UBSetting* webSearchEngineUrl;
+        UBSetting* alternativeUserAgent;
+        UBSetting* alternativeUserAgentDomains;
+        UBSetting* webCookieAutoDelete;
+        UBSetting* webCookieKeepDomains;
+        UBSetting* webCookiePolicy;
+        UBSetting* webPrivateBrowsing;
 
         UBSetting* pageCacheSize;
 
+        UBSetting* boardZoomBase;
         UBSetting* boardZoomFactor;
 
         UBSetting* mirroringRefreshRateInFps;
@@ -348,8 +352,6 @@ class UBSettings : public QObject
         UBSetting* lastWidgetPath;
         UBSetting* lastVideoPath;
 
-        UBSetting* appOnlineUserName;
-
         UBSetting* boardShowToolsPalette;
 
         QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
@@ -357,10 +359,11 @@ class UBSettings : public QObject
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;
         UBSetting* pdfPageFormat;
+        UBSetting* pdfUsePDFMerger;
         UBSetting* pdfResolution;
 
-        UBSetting* pdfZoomBehavior;
-        UBSetting* enableQualityLossToIncreaseZoomPerfs;
+        UBSetting* exportBackgroundGrid;
+        UBSetting* exportBackgroundColor;
 
         UBSetting* podcastFramesPerSecond;
         UBSetting* podcastVideoSize;
@@ -409,7 +412,7 @@ class UBSettings : public QObject
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
 
-        UBSetting* angleTolerance;
+        UBSetting* rotationAngleStep;
         UBSetting* historyLimit;
 
         UBSetting* libIconSize;
@@ -423,9 +426,6 @@ class UBSettings : public QObject
 
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
-
-        UBSetting* enableToolAxes;
-        UBSetting* enableIntermediateLines;
 
     public slots:
 

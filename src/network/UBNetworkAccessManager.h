@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -43,9 +43,6 @@ class UBNetworkAccessManager : public QNetworkAccessManager
         UBNetworkAccessManager(QObject *parent = 0);
 
         virtual QNetworkReply *get(const QNetworkRequest &request);
-
-    protected:
-        virtual QNetworkReply * createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData = 0 );
 
     private:
 

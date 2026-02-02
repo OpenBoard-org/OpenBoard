@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -176,9 +176,12 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mAntiScaleRatio(1.0)
     , mToolBarItem(NULL)
     , mMimeData(NULL)
+    , mHideOnDisplayWhenSelectedAction(nullptr)
+#ifdef DEBUG_Z_LEVEL
+    , mZLevelTextItem(nullptr)
+#endif
 {
     setUBFlags(fls);
-    connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
 }
 
 void UBGraphicsItemDelegate::createControls()
@@ -198,6 +201,7 @@ void UBGraphicsItemDelegate::createControls()
         connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
         if (testUBFlags(GF_DUPLICATION_ENABLED)){
             mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
+            mDuplicateButton->setToolTip(tr("Duplicate"));
             connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
             mButtons << mDuplicateButton;
         }
@@ -211,6 +215,7 @@ void UBGraphicsItemDelegate::createControls()
 
     if (!mZOrderUpButton) {
         mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderUpButton->setToolTip(tr("Layer up"));
         mZOrderUpButton->setShowProgressIndicator(true);
         connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
         connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
@@ -219,6 +224,7 @@ void UBGraphicsItemDelegate::createControls()
 
     if (!mZOrderDownButton) {
         mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderDownButton->setToolTip(tr("Layer down"));
         mZOrderDownButton->setShowProgressIndicator(true);
         connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
         connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
@@ -263,8 +269,15 @@ bool UBGraphicsItemDelegate::controlsExist() const
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    if (UBApplication::boardController)
-        disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    if (mDelegated)
+    {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+        if (scene)
+        {
+            disconnect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+        }
+    }
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
@@ -273,16 +286,24 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    UBGraphicsScene *ubScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>ubScene = castUBGraphicsScene();
     switch (static_cast<int>(change))
     {
         case QGraphicsItem::ItemSelectedHasChanged :
         {
             if (ubScene) {
                 if (value.toBool()) { //selected(true)
+                    if (delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+                    {
+                        showHide(false);
+                    }
                     ubScene->setSelectedZLevel(delegated());
                 } else {
                     ubScene->setOwnZlevel(delegated());
+                    if (delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+                    {
+                        showHide(true);
+                    }
                     freeControls();
                 }
             }
@@ -309,18 +330,35 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
                 positionHandles();
                 break;
             }
+
             break;
         }
     }
 
+#ifdef DEBUG_Z_LEVEL
+    if (change == QGraphicsItem::ItemZValueHasChanged)
+    {
+        qreal newZ = qvariant_cast<double>(value);
+
+        qDebug() << newZ;
+
+        if (!mZLevelTextItem)
+            mZLevelTextItem = new QGraphicsSimpleTextItem(QString("Z: %1").arg(newZ), mDelegated);
+        else
+            mZLevelTextItem->setText(QString("Z: %1").arg(newZ));
+
+        mZLevelTextItem->setPos(mDelegated->boundingRect().bottomRight() + QPointF(10, 10));
+        mZLevelTextItem->setBrush(QColor("red"));
+    }
+#endif
+
     return value;
 }
 
-UBGraphicsScene *UBGraphicsItemDelegate::castUBGraphicsScene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsItemDelegate::castUBGraphicsScene()
 {
-    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
-
-    return castScene;
+    auto scene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
+    return scene ? scene->shared_from_this() : nullptr;
 }
 
 /** Used to render custom data after the main "Paint" operation is finished */
@@ -443,6 +481,18 @@ QGraphicsItem *UBGraphicsItemDelegate::delegated()
     return curDelegate;
 }
 
+void UBGraphicsItemDelegate::sceneChanged(UBGraphicsScene* scene)
+{
+    UBGraphicsScene* previousScene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+    if (previousScene)
+    {
+        disconnect(previousScene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+    }
+
+    connect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+}
+
 void UBGraphicsItemDelegate::positionHandles()
 {
     if (!controlsExist()) {
@@ -505,7 +555,7 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-    UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+    std::shared_ptr<UBGraphicsScene> scene = castUBGraphicsScene();
     if (scene)
     {
         if (mFrame && !mFrame->scene() && mDelegated->scene())
@@ -520,11 +570,6 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
             }
             scene->removeItem(mFrame);
         }
-
-        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
-        UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
-        if (mDelegated_casted)
-            mDelegated_casted->setHtml(QString());
 
         scene->removeItem(mDelegated);
 
@@ -550,28 +595,28 @@ void UBGraphicsItemDelegate::duplicate()
 
 void UBGraphicsItemDelegate::increaseZLevelUp()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::up, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelTop()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::top, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZLevelDown()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::down, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelBottom()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::bottom, true);
     }
@@ -605,6 +650,38 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+void UBGraphicsItemDelegate::showOnDisplay(bool show)
+{
+    if (!delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+    {
+        showHide(show);
+    }
+
+    mHideOnDisplayWhenSelectedAction->setEnabled(show);
+}
+
+void UBGraphicsItemDelegate::hideOnDisplayWhenSelected(bool hide)
+{
+    setItemIsHiddenOnDisplayRecurs(hide, delegated());
+
+    if (mShowOnDisplayAction->isChecked()) //no effects if showOnDisplayAction is unchecked
+    {
+        showHide(!hide);
+    }
+
+    mShowOnDisplayAction->setEnabled(!hide);
+}
+
+void UBGraphicsItemDelegate::setItemIsHiddenOnDisplayRecurs(const QVariant &pHide, QGraphicsItem *pItem)
+{
+    mDelegated->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, pHide);
+
+    for (auto&& childItem : pItem->childItems())
+    {
+        setItemIsHiddenOnDisplayRecurs(pHide, childItem);
+    }
+}
+
 void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
 {
     pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
@@ -618,7 +695,7 @@ void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem
  */
 void UBGraphicsItemDelegate::setAsBackground()
 {
-    UBGraphicsScene* scene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene> scene = castUBGraphicsScene();
     QGraphicsItem* item = delegated();
 
     if (scene && item) {
@@ -642,13 +719,7 @@ void UBGraphicsItemDelegate::setAsBackground()
 
 void UBGraphicsItemDelegate::gotoContentSource()
 {
-    UBItem* item = dynamic_cast<UBItem*>(mDelegated);
-
-    if(item && !item->sourceUrl().isEmpty())
-    {
-        UBApplication::applicationController->showInternet();
-        UBApplication::webController->loadUrl(item->sourceUrl());
-    }
+    // only used in UBGraphicsWidgetItemDelegate
 }
 
 void UBGraphicsItemDelegate::startUndoStep()
@@ -671,7 +742,6 @@ void UBGraphicsItemDelegate::commitUndoStep()
 
     if (mDelegated->pos() != mPreviousPosition
         || mDelegated->transform() != mPreviousTransform
-        || mDelegated->zValue() != mPreviousZValue
         || (resizableItem && resizableItem->size() != mPreviousSize))
     {
         UBGraphicsItemTransformUndoCommand *uc =
@@ -716,13 +786,20 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     mLockAction->setIcon(lockIcon);
     mLockAction->setCheckable(true);
 
-    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showHide(bool)));
+    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showOnDisplay(bool)));
     mShowOnDisplayAction->setCheckable(true);
 
     QIcon showIcon;
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    mHideOnDisplayWhenSelectedAction = mMenu->addAction(tr("Hide on Extended Screen when selected"), this, SLOT(hideOnDisplayWhenSelected(bool)));
+    mHideOnDisplayWhenSelectedAction->setCheckable(true);
+    mHideOnDisplayWhenSelectedAction->setChecked(delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool());
+
+    mHideOnDisplayWhenSelectedAction->setEnabled(!mShowOnDisplayAction->isChecked());
+    mShowOnDisplayAction->setEnabled(!mHideOnDisplayWhenSelectedAction->isChecked());
 
     if (delegated()->data(UBGraphicsItemData::ItemCanBeSetAsBackground).toBool()) {
         mSetAsBackgroundAction = mMenu->addAction(tr("Set as background"), this, SLOT(setAsBackground()));
@@ -735,10 +812,10 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
 
     if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
     {
-        mGotoContentSourceAction = menu->addAction(tr("Go to Content Source"), this, SLOT(gotoContentSource()));
+        mGotoContentSourceAction = menu->addAction(tr("Web Inspector"), this, SLOT(gotoContentSource()));
 
         QIcon sourceIcon;
-        sourceIcon.addPixmap(QPixmap(":/images/toolbar/internet.png"), QIcon::Normal, QIcon::On);
+        sourceIcon.addPixmap(QPixmap(":/images/libpalette/miniSearch.png"), QIcon::Normal, QIcon::On);
         mGotoContentSourceAction->setIcon(sourceIcon);
     }
 }
@@ -748,7 +825,7 @@ void UBGraphicsItemDelegate::updateMenuActionState()
     if (mLockAction)
         mLockAction->setChecked(isLocked());
 
-    if (mShowOnDisplayAction)
+    if (mShowOnDisplayAction && !mDelegated->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
     {
         bool isControl = mDelegated->data(UBGraphicsItemData::ItemLayerType) == UBItemLayerType::Control;
         mShowOnDisplayAction->setChecked(!isControl);
@@ -757,7 +834,7 @@ void UBGraphicsItemDelegate::updateMenuActionState()
     if (mGotoContentSourceAction)
     {
         UBItem* item = dynamic_cast<UBItem*>(mDelegated);
-        mGotoContentSourceAction->setEnabled(item && !item->sourceUrl().isEmpty());
+        mGotoContentSourceAction->setEnabled(item);
     }
 }
 
@@ -788,11 +865,14 @@ void UBGraphicsItemDelegate::setLocked(bool pLocked)
 
 void UBGraphicsItemDelegate::updateFrame()
 {
-    if (mFrame && !mFrame->scene() && mDelegated->scene())
-        mDelegated->scene()->addItem(mFrame);
+    if (mFrame)
+    {
+        if (!mFrame->scene() && mDelegated->scene())
+            mDelegated->scene()->addItem(mFrame);
 
-    mFrame->setAntiScale(mAntiScaleRatio);
-    mFrame->positionHandles();
+        mFrame->setAntiScale(mAntiScaleRatio);
+        mFrame->positionHandles();
+    }
 }
 
 void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
@@ -1307,7 +1387,7 @@ void MediaTimer::setNumDigits(int numDigits)
     } else {
         if (numDigits == ndigits)             // no change
             return;
-        register int i;
+        int i;
         int dif;
         if (numDigits > ndigits) {            // expand
             dif = numDigits - ndigits;

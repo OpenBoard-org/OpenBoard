@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -62,7 +62,10 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
 #endif
 #ifdef Q_OS_OSX
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
-        setAttribute(Qt::WA_MacNoShadow);
+        // didn't find the equivalent in Qt6
+        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            setAttribute(Qt::WA_MacNoShadow);
+        #endif
 #endif
     }
 
@@ -108,7 +111,7 @@ int UBFloatingPalette::border()
 }
 
 
-void UBFloatingPalette::enterEvent(QEvent *event)
+void UBFloatingPalette::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event);
     emit mouseEntered();
@@ -119,7 +122,11 @@ void UBFloatingPalette::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         mIsMoving = true;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mDragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+#else
         mDragPosition = event->globalPos() - frameGeometry().topLeft();
+#endif
         event->accept();
     }
     else
@@ -132,7 +139,11 @@ void UBFloatingPalette::mouseMoveEvent(QMouseEvent *event)
 {
     if (mIsMoving)
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        moveInsideParent(event->globalPosition().toPoint() - mDragPosition);
+#else
         moveInsideParent(event->globalPos() - mDragPosition);
+#endif
         event->accept();
         emit moving();
     }

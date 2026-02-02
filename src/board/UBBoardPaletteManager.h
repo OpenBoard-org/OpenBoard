@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -34,7 +34,6 @@
 
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
-#include "gui/UBPageNavigationWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
@@ -54,6 +53,7 @@ class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
 class UBStartupHintsPalette;
+class UBPageNavigationWidget;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -68,6 +68,8 @@ class UBBoardPaletteManager : public QObject
         UBRightPalette* rightPalette(){return mRightPalette;}
         UBStylusPalette* stylusPalette(){return mStylusPalette;}
         UBActionPalette *addItemPalette() {return mAddItemPalette;}
+        UBFeaturesWidget *featuresWidget() { return mpFeaturesWidget; }
+        UBStartupHintsPalette *tipsPalette() { return mTipPalette; }
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void refreshPalettes();
@@ -130,8 +132,8 @@ class UBBoardPaletteManager : public QObject
         QTime mZoomButtonPressedTime;
         bool mPendingZoomButtonPressed;
 
-        QTime mPanButtonPressedTime;
-        bool mPendingPanButtonPressed;
+        QTime mHandButtonPressedTime;
+        bool mPendingHandButtonPressed;
 
         QTime mEraseButtonPressedTime;
         bool mPendingEraseButtonPressed;
@@ -150,8 +152,6 @@ class UBBoardPaletteManager : public QObject
         bool mDownloadInProgress;
 
     private slots:
-
-        void changeBackground();
 
         void toggleBackgroundPalette(bool checked);
         void backgroundPaletteClosed();
@@ -180,8 +180,8 @@ class UBBoardPaletteManager : public QObject
 
         void zoomButtonPressed();
         void zoomButtonReleased();
-        void panButtonPressed();
-        void panButtonReleased();
+        void handButtonPressed();
+        void handButtonReleased();
 
         void changeStylusPaletteOrientation(QVariant var);
 };

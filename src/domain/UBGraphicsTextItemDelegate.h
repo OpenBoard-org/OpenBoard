@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -151,14 +151,13 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
-        void ChangeTextSize(qreal factor, textChangeMode changeMode);
+        void changeTextSize(qreal factor, textChangeMode changeMode);
         void updateAlignButtonState();
         bool oneBlockSelection();
         void saveTextCursorFormats();
         void restoreTextCursorFormats();
 
 
-        QFont createDefaultFont();
         QAction *mEditableAction;
         struct selectionData_t {
             selectionData_t()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -57,7 +57,7 @@ UBExportWeb::~UBExportWeb()
 }
 
 
-void UBExportWeb::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportWeb::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     if (!pDocumentProxy)
         return;

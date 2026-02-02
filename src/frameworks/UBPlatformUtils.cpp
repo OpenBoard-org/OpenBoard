@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -66,7 +66,9 @@ UBKeyboardLocale::~UBKeyboardLocale()
 
 int UBPlatformUtils::nKeyboardLayouts;
 UBKeyboardLocale** UBPlatformUtils::keyboardLayouts;
-
+#ifdef Q_OS_OSX
+bool UBPlatformUtils::errorOpeningVirtualKeyboard = false;
+#endif
 UBKeyboardLocale** UBPlatformUtils::getKeyboardLayouts(int& nCount)
 {
     nCount = nKeyboardLayouts;

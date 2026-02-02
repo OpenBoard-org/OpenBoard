@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -28,13 +28,13 @@
 
 
 #include <QFile>
-#include <QDesktopWidget>
 
 #include "PDFRenderer.h"
 
 #include "XPDFRenderer.h"
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/memcheck.h"
 
 
@@ -63,14 +63,19 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
         newRenderer->setFileUuid(uuid);
 
         QFile file(filename);
-        file.open(QIODevice::ReadOnly);
-        newRenderer->setFileData(file.readAll());
-        file.close();
+        if (file.open(QIODevice::ReadOnly))
+        {
+            newRenderer->setFileData(file.readAll());
+            file.close();
+        }
+        else
+        {
+            qDebug() << "Could not open PDF at " << file.fileName();
+        }
 
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 
-        QDesktopWidget* desktop = UBApplication::desktop();
-        int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+        int dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
         newRenderer->setDPI(dpiCommon);
 
         return newRenderer;

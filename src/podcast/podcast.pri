@@ -23,7 +23,6 @@ win32 {
 }
 
 macx {
-    CONFIG += c++11
 
     SOURCES  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.cpp \
                 src/podcast/ffmpeg/UBMicrophoneInput.cpp
@@ -31,23 +30,7 @@ macx {
     HEADERS  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.h \
                 src/podcast/ffmpeg/UBMicrophoneInput.h
 
-    LIBS += -lavformat -lavcodec -lswscale  -lswresample -lavutil \
-        -lpthread -lvpx -lvorbisenc -llzma -lbz2 -lz -ldl -lavutil -lm
-
-    # (ffmpeg-4.0 with all options (to clean))
-    # brew install ffmpeg --with-chromaprint --with-fdk-aac --with-libass --with-librsvg --with-libsoxr --with-libssh --with-tesseract
-    #--with-libvidstab --with-opencore-amr --with-openh264 --with-openjpeg --with-openssl --with-rtmpdump --with-rubberband --with-sdl2
-    #--with-snappy --with-tools --with-webp --with-x265 --with-xz --with-zeromq --with-zimg
-    # brew install opus
-
-    LIBS += -L/usr/local/opt/x264/lib
-    LIBS += -L/usr/local/opt/libvorbis/lib
-    LIBS += -L/usr/local/opt/libvpx/lib
-    LIBS += -L/usr/local/opt/theora/lib
-    LIBS += -L/usr/local/opt/libogg/lib
-    LIBS += -L/usr/local/opt/opus/lib
-    LIBS += -L/usr/local/opt/lame/lib
-    LIBS += -L/usr/local/opt/libass/lib
+    LIBS += -lavformat -lavcodec -lswscale -lswresample -lavutil
 }
 
 linux-g++* {
@@ -67,7 +50,7 @@ linux-g++* {
             -lxcb-xfixes \
             -lxcb-render -lxcb-shape -lxcb -lX11 -lasound -lSDL -lx264 -lpthread -lvpx -lvorbisenc -lvorbis -ltheoraenc -ltheoradec -logg -lopus -lmp3lame -lfreetype -lfdk-aac -lass -llzma -lbz2 -lz -ldl -lswresample -lswscale -lavutil -lm
 
-    FFMPEG_VERSION = $$system(ffmpeg --version|& grep -oP "version.*?\K[0-9]\.[0-9]")
+    FFMPEG_VERSION = $$system(ffmpeg --version 2>&1 | grep -oP "version.*?\K[0-9]\.[0-9]")
     equals(FFMPEG_VERSION, 2.8) {
         LIBS -= -lswresample
         LIBS += -lavresample

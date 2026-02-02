@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -34,8 +34,10 @@
 #include "UBGraphicsDelegateFrame.h"
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include <QGraphicsVideoItem>
 
@@ -49,7 +51,7 @@ bool UBGraphicsMediaItem::sIsMutedByDefault = false;
  */
 UBGraphicsMediaItem* UBGraphicsMediaItem::createMediaItem(const QUrl &pMediaFileUrl, QGraphicsItem* parent)
 {
-    UBGraphicsMediaItem * mediaItem;
+    UBGraphicsMediaItem * mediaItem = nullptr;
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
@@ -68,6 +70,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
         , mStopped(false)
+        , mFirstLoad(true)
         , mMediaFileUrl(pMediaFileUrl)
         , mLinkedImage(NULL)
         , mInitialPos(0)
@@ -76,7 +79,14 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mErrorString = "";
 
     mMediaObject = new QMediaPlayer(this);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    mMediaObject->setSource(pMediaFileUrl);
+    QAudioOutput* output = new QAudioOutput(QAudioDevice(), this);
+    mMediaObject->setAudioOutput(output);
+#else
     mMediaObject->setMedia(pMediaFileUrl);
+#endif
 
     setDelegate(new UBGraphicsMediaItemDelegate(this));
 
@@ -87,8 +97,13 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             Delegate(), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(mMediaObject, SIGNAL(playbackStateChanged(QMediaPlayer::PlaybackState)),
+            Delegate(), SLOT(mediaStateChanged(QMediaPlayer::PlaybackState)));
+#else
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
             Delegate(), SLOT(mediaStateChanged(QMediaPlayer::State)));
+#endif
 
     connect(mMediaObject, SIGNAL(positionChanged(qint64)),
             Delegate(), SLOT(updateTicker(qint64)));
@@ -99,8 +114,13 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)),
             this, SLOT(showOnDisplayChanged(bool)));
 
-    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(mMediaObject, &QMediaPlayer::errorOccurred,
             this, &UBGraphicsMediaItem::mediaError);
+#else
+    connect(mMediaObject, qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
+            this, &UBGraphicsMediaItem::mediaError);
+#endif
 }
 
 UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
@@ -114,8 +134,16 @@ UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     this->setSize(320, 26);
     this->setMinimumSize(QSize(150, 26));
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     mMediaObject->setNotifyInterval(1000);
+#endif
+}
 
+QList<QString> UBGraphicsAudioItem::mediaAssets() const
+{
+    const QString completeFileName = QFileInfo(mediaFileUrl().toLocalFile()).fileName();
+    const QString path = UBPersistenceManager::audioDirectory + "/";
+    return {path + completeFileName};
 }
 
 UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
@@ -135,10 +163,12 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
      * active scene has changed, or when the item is first created.
      * If and when Qt fix this issue, this should be changed back.
      * */
-    //mMediaObject->setVideoOutput(mVideoItem);
-    mHasVideoOutput = false;
+    mMediaObject->setVideoOutput(mVideoItem);
+    mHasVideoOutput = true;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     mMediaObject->setNotifyInterval(50);
+#endif
 
     setMinimumSize(QSize(320, 240));
     setSize(320, 240);
@@ -146,26 +176,40 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(mMediaObject, &QMediaPlayer::hasVideoChanged,
+            this, &UBGraphicsVideoItem::hasVideoChanged);
+
+    connect(mMediaObject, &QMediaPlayer::playbackStateChanged,
+            this, &UBGraphicsVideoItem::mediaStateChanged);
+
+    connect(mMediaObject, &QMediaPlayer::errorOccurred,
+            this, &UBGraphicsVideoItem::mediaError);
+#else
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
             this, SLOT(hasVideoChanged(bool)));
 
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(mediaStateChanged(QMediaPlayer::State)));
 
-    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+    connect(mMediaObject, qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
             this, &UBGraphicsVideoItem::mediaError);
+#endif
 
     setAcceptHoverEvents(true);
 
     update();
 }
 
+QList<QString> UBGraphicsVideoItem::mediaAssets() const
+{
+    const QString completeFileName = QFileInfo(mediaFileUrl().toLocalFile()).fileName();
+    const QString path = UBPersistenceManager::videoDirectory + "/";
+    return {path + completeFileName};
+}
+
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
 {
-    if (mMediaObject) {
-        mMediaObject->stop();
-        delete mMediaObject;
-    }
 }
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -175,12 +219,12 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             || (change == QGraphicsItem::ItemVisibleChange))
     {
         if (mMediaObject && (!isEnabled() || !isVisible() || !scene()))
-            mMediaObject->pause();
+           pause();
     }
     else if (change == QGraphicsItem::ItemSceneHasChanged)
     {
         if (!scene())
-            mMediaObject->stop();
+            stop();
         else {
             QString absoluteMediaFilename;
 
@@ -190,8 +234,13 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                  mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
-
+            {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+                mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
+#else
+                mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
+#endif
+            }
         }
     }
 
@@ -212,10 +261,17 @@ void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+QMediaPlayer::PlaybackState UBGraphicsMediaItem::playerState() const
+{
+    return mMediaObject->playbackState();
+}
+#else
 QMediaPlayer::State UBGraphicsMediaItem::playerState() const
 {
     return mMediaObject->state();
 }
+#endif
 
 /**
  * @brief Returns true if the video was manually stopped, false otherwise.
@@ -223,6 +279,16 @@ QMediaPlayer::State UBGraphicsMediaItem::playerState() const
 bool UBGraphicsMediaItem::isStopped() const
 {
     return mStopped;
+}
+
+bool UBGraphicsMediaItem::firstLoad() const
+{
+    return mFirstLoad;
+}
+
+void UBGraphicsMediaItem::setFirstLoad(bool firstLoad)
+{
+    mFirstLoad = firstLoad;
 }
 
 qint64 UBGraphicsMediaItem::mediaDuration() const
@@ -261,12 +327,6 @@ void UBGraphicsMediaItem::setMinimumSize(const QSize& size)
     this->setSize(width, height);
 }
 
-void UBGraphicsMediaItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
-}
-
 void UBGraphicsMediaItem::setMediaFileUrl(QUrl url)
 {
     mMediaFileUrl = url;
@@ -294,22 +354,6 @@ void UBGraphicsMediaItem::setSelected(bool selected)
     QGraphicsRectItem::setSelected(selected);
 }
 
-void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
-{
-    UBItem::setSourceUrl(pSourceUrl);
-}
-
-void UBGraphicsMediaItem::clearSource()
-{
-    QString path = mediaFileUrl().toLocalFile();
-    //if path is absolute clean duplicated path string
-    if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
-        path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
-
-    if (!UBFileSystemUtils::deleteFile(path))
-        qDebug() << "cannot delete file: " << path;
-}
-
 void UBGraphicsMediaItem::toggleMute()
 {
     mMuted = !mMuted;
@@ -319,21 +363,26 @@ void UBGraphicsMediaItem::toggleMute()
 void UBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    mMediaObject->audioOutput()->setMuted(mMuted);
+#else
     mMediaObject->setMuted(mMuted);
+#endif
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
 
-UBGraphicsScene* UBGraphicsMediaItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsMediaItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 
 void UBGraphicsMediaItem::activeSceneChanged()
 {
     if (UBApplication::boardController->activeScene() != scene())
-        mMediaObject->pause();
+        pause();
 }
 
 
@@ -341,11 +390,19 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
     if (!shown) {
         mMuted = true;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mMediaObject->audioOutput()->setMuted(mMuted);
+#else
         mMediaObject->setMuted(mMuted);
+#endif
     }
     else if (!mMutedByUserAction) {
         mMuted = false;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mMediaObject->audioOutput()->setMuted(mMuted);
+#else
         mMediaObject->setMuted(mMuted);
+#endif
     }
 }
 void UBGraphicsMediaItem::play()
@@ -373,33 +430,45 @@ void UBGraphicsMediaItem::togglePlayPause()
         return;
     }
 
-    if (mMediaObject->state() == QMediaPlayer::StoppedState)
-        mMediaObject->play();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QMediaPlayer::PlaybackState state = mMediaObject->playbackState();
+#else
+    QMediaPlayer::State state = mMediaObject->state();
+#endif
 
-    else if (mMediaObject->state() == QMediaPlayer::PlayingState) {
+    if (state == QMediaPlayer::StoppedState)
+    {
+        play();
+    }
+
+    else if (state == QMediaPlayer::PlayingState) {
 
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0) {
-            mMediaObject->stop();
-            mMediaObject->play();
+            stop();
+            play();
         }
 
         else {
-            mMediaObject->pause();
+            pause();
             if(scene())
                 scene()->setModified(true);
         }
     }
 
-    else if (mMediaObject->state() == QMediaPlayer::PausedState) {
+    else if (state == QMediaPlayer::PausedState) {
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0)
-            mMediaObject->stop();
+            stop();
 
-        mMediaObject->play();
+        play();
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mMediaObject->setSource(mediaFileUrl());
+#else
         mMediaObject->setMedia(mediaFileUrl());
-        mMediaObject->play();
+#endif
+        play();
     }
 }
 
@@ -417,11 +486,16 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
         case QMediaPlayer::FormatError:
             mErrorString = tr("Unsupported media format");
             break;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         case QMediaPlayer::ServiceMissingError:
             mErrorString = tr("Media playback service not found");
             break;
         default:
             mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
+#else
+        default:
+            mErrorString = tr("Media error: ") + QMetaEnum::fromType<QMediaPlayer::Error>().valueToKey(errorCode) + " (" + mMediaObject->errorString() + ")";
+#endif
     }
 
     if (!mErrorString.isEmpty() ) {
@@ -442,7 +516,8 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-        cp->setSourceUrl(this->sourceUrl());
+        cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());
@@ -488,6 +563,11 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 QRectF UBGraphicsMediaItem::boundingRect() const
 {
     return rect();
+}
+
+void UBGraphicsMediaItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    setMediaFileUrl(QUrl::fromLocalFile(documentPath + "/" + mediaAsset));
 }
 
 void UBGraphicsMediaItem::setSize(int width, int height)
@@ -561,11 +641,16 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
     // We don't want the video item to resize when the video is stopped or finished;
     // and in those cases, the new size is reported as (0, 0).
 
+    // In OSX, nativeSizeChanged is called when the video starts, but with the initial size of the video,
+    // not (0,0), so we lose user own resizes if we perform it.
+#ifndef Q_OS_OSX
     if (newSize != QSizeF(0,0))
         this->setSize(newSize.width(), newSize.height());
-
     else // Make sure the toolbar doesn't disappear
         Delegate()->showToolBar(false);
+#else
+    Q_UNUSED(newSize);
+#endif
 }
 
 void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -623,7 +708,11 @@ void UBGraphicsVideoItem::hasVideoChanged(bool hasVideo)
     setPlaceholderVisible(!hasVideo);
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+void UBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::PlaybackState state)
+#else
 void UBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::State state)
+#endif
 {
 
 #if defined(Q_OS_OSX) || defined(Q_OS_WIN)
@@ -644,7 +733,11 @@ void UBGraphicsVideoItem::activeSceneChanged()
     // Call setVideoOutput, if the video is visible and if it hasn't been called already
     if (!mHasVideoOutput && UBApplication::boardController->activeScene() == scene()) {
         //qDebug() << "setting video output";
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mMediaObject->setSource(mMediaFileUrl);
+#else
         mMediaObject->setMedia(mMediaFileUrl);
+#endif
         mMediaObject->setVideoOutput(mVideoItem);
         mHasVideoOutput = true;
     }

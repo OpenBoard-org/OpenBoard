@@ -29,11 +29,13 @@
 #include "MacUtils.h"
 #include "UBPlatformUtils.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "gui/UBMainWindow.h"
 
 #include <QWidget>
+#include <QRegularExpression>
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Cocoa/Cocoa.h>
@@ -85,7 +87,7 @@ void UBPlatformUtils::init()
 }
 
 
-void UBPlatformUtils::setDesktopMode(bool desktop)
+void UBPlatformUtils::hideMenuBarAndDock()
 {
 
     @try {
@@ -119,6 +121,16 @@ QString UBPlatformUtils::applicationResourcesDirectory()
     [pool drain];
 
     return path;
+}
+
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
+}
+
+QString UBPlatformUtils::applicationTemplateDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)
@@ -204,16 +216,21 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
+bool UBPlatformUtils::hasSystemOnScreenKeyboard()
+{
+    return true;
+}
+
 QStringList UBPlatformUtils::availableTranslations()
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSString *lprojPath = [[NSBundle mainBundle] resourcePath];
     QString translationsPath =  QString::fromUtf8([lprojPath UTF8String], strlen([lprojPath UTF8String]));
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath, false);
-    QRegExp sankoreTranslationFiles(".*lproj");
+    QRegularExpression sankoreTranslationFiles(".*lproj");
     translationsList=translationsList.filter(sankoreTranslationFiles);
     [pool drain];
-    return translationsList.replaceInStrings(QRegExp("(.*)/(.*).lproj"),"\\2");
+    return translationsList.replaceInStrings(QRegularExpression("(.*)/(.*).lproj"),"\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix, QString pLanguage)
@@ -607,17 +624,22 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
      * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
      * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
     */
-    
-    pWidget->showMaximized();
 
-    /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
-     * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
-     * screen area minus the menu bar and dock area). So we have to manually resize it to the
-     * total screen height, and move it up to the top of the screen (y=0 position). */
+    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
+            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
+        pWidget->show();
+    } else {
+        pWidget->showMaximized();
 
-    QRect currentScreenRect = QApplication::desktop()->screenGeometry(pWidget);
-    pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
-    pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+        /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
+         * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
+         * screen area minus the menu bar and dock area). So we have to manually resize it to the
+         * total screen height, and move it up to the top of the screen (y=0 position). */
+
+        QRect currentScreenRect = QGuiApplication::screenAt(pWidget->geometry().topLeft())->geometry();
+        pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
+        pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+    }
 }
 
 
@@ -666,6 +688,7 @@ void UBPlatformUtils::showOSK(bool show)
                         tell menu bar item 1 of menu bar 2\n\
                             ignoring application responses\n\
                                 click\n\
+                                delay 0.5\n\
                             end ignoring\n\
                         end tell\n\
                     end tell\n\
@@ -684,7 +707,16 @@ void UBPlatformUtils::showOSK(bool show)
                 tell application \"System Events\"\n\
                     tell application process \"TextInputMenuAgent\"\n\
                         tell menu 1 of menu bar item 1 of menu bar 2\n\
-                            click menu item 2\n\
+                            set nbItems to count menu items\n\
+                            if (nbItems = 4)\n\
+                                -- only one language so items are\n\
+                                -- 1. emojis&symbols n-2. keyboard n-1. separator n.preferences\n\
+                                click menu item (nbItems-2)\n\
+                            else\n\
+                                -- items are ... n-4. access keyboard n-3. separator n-2 display names n-1. separator n. preferences\n\
+                                -- target is in fourth position from bottom\n\
+                                click menu item (nbItems - 4)\n\
+                            end if\n\
                         end tell\n\
                     end tell\n\
                 end tell\n\
@@ -696,6 +728,8 @@ void UBPlatformUtils::showOSK(bool show)
 
         if(errorInfo!=nil)
         {
+            errorOpeningVirtualKeyboard = true;
+
             NSAlert *alert = [[NSAlert alloc] init];
 
             if (alert != nil)
@@ -711,5 +745,15 @@ void UBPlatformUtils::showOSK(bool show)
                     UBApplication::mainWindow->actionVirtualKeyboard->setChecked(true);
             }
         }
+        else
+        {
+            errorOpeningVirtualKeyboard = false;
+        }
     }
+}
+
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+{
+    QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    callback(pixmap);
 }

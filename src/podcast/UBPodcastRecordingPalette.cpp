@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -59,7 +59,11 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
 
     addAction(UBApplication::mainWindow->actionPodcastConfig);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject* menuWidget,  UBApplication::mainWindow->actionPodcastConfig->associatedObjects())
+#else
     foreach(QWidget* menuWidget,  UBApplication::mainWindow->actionPodcastConfig->associatedWidgets())
+#endif
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -39,7 +39,7 @@ class UBGraphicsGroupContainerItem;
 class UBGraphicsItemGroupUndoCommand : public UBUndoCommand
 {
 public:
-    UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated);
+    UBGraphicsItemGroupUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, UBGraphicsGroupContainerItem *pGroupCreated);
     virtual ~UBGraphicsItemGroupUndoCommand();
 
     virtual int getType() const { return UBUndoType::undotype_GRAPHICSGROUPITEM; }
@@ -49,7 +49,7 @@ protected:
     virtual void redo();
 
 private:
-    UBGraphicsScene *mScene;
+    std::shared_ptr<UBGraphicsScene> mScene;
     UBGraphicsGroupContainerItem *mGroup;
     QList<QGraphicsItem*> mItems;
 

@@ -45,10 +45,10 @@ html, body {
 
 .theme-slate #ubwidget > .wrapper, .theme-pad #ubwidget > .wrapper {
     position: absolute;
-    top: -49px;
+    /* top: -49px;
     bottom: -5px;
     left: -5px;
-    right: -5px;
+    right: -5px; */
     overflow: hidden;
 }
 
@@ -112,7 +112,7 @@ html, body {
 }
 
 #toolbar button[role='edit'] {
-    background: url("images/toolbar-edit.png") left top no-repeat;	
+    background: url("images/toolbar-edit.png") left top no-repeat;
 }
 
 #toolbar button[role='view'] {
@@ -122,11 +122,11 @@ html, body {
 }
 
 #toolbar button[role='reload'] {
-    background: url("images/toolbar-reload.png") left top no-repeat;	
+    background: url("images/toolbar-reload.png") left top no-repeat;
 }
 
 #toolbar button[role='help'] {
-    background: url("images/toolbar-help.png") left top no-repeat;	
+    background: url("images/toolbar-help.png") left top no-repeat;
     display: none;
 }
 
