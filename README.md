@@ -10,7 +10,7 @@
 OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
 ### Installing
-1.7.4 installers are available for Windows, macOS and Debian on the [Download's page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
+1.7.4 installers are available for Windows, macOS and Debian on the [Downloads page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
 
 ### Supported platforms 
 
@@ -19,7 +19,7 @@ OpenBoard is an open source cross-platform interactive white board application d
 | 1.7.4 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
 | 1.8.0 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12 | `dev` |
 
-### Communnity-driven packages
+### Community-driven packages
 On Linux, Debian is the only officially maintained platform. For other platforms, you can thank the awesome community of OpenBoard that provides community-driven packages on a number of other distributions. Check on [this page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads) to see if you find what you're looking for. If you actually want to provide support and to be referenced on this page, please open an issue with the relevant information, and we'll be glad to add your contribution.
 
 ### Building from source
