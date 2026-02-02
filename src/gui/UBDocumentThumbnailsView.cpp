@@ -168,6 +168,12 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
             mSelectionSpan = index2 - index1;
             selectItems(qMin(index1, index2), mSelectionSpan < 0 ? - mSelectionSpan + 1 : mSelectionSpan + 1);
         }
+        else
+        {
+            int index = sceneItem->sceneIndex();
+            selectItemAt(index, Qt::ControlModifier & event->modifiers());
+            mSelectionSpan = 0;
+        }
     }
     else
     {
@@ -178,7 +184,7 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
         }
         else
         {
-            thumbnailScene->hightlightItem(sceneItem->sceneIndex(), true);
+            thumbnailScene->hightlightItem(sceneItem->sceneIndex());
         }
 
         mSelectionSpan = 0;
@@ -247,6 +253,25 @@ void UBDocumentThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 
     if(elapsedTimeSincePress < STARTDRAGTIME) {
         emit mouseClick(itemAt(event->pos()), 0);
+    }
+
+    // clicking on the same thumbnail with no modifiers should make it the only one selected
+    // Not done in the mousePressEvent function to let the drag and drop feature work as intented
+    if (event->modifiers() == Qt::NoModifier)
+    {
+        UBThumbnail* sceneItem = dynamic_cast<UBThumbnail*>(itemAt(event->pos()));
+
+        if (sceneItem)
+        {
+            if (sceneItem->isSelected() && mDocument)
+            {
+                auto thumbnailScene = mDocument->thumbnailScene();
+                if (thumbnailScene)
+                {
+                    thumbnailScene->hightlightItem(sceneItem->sceneIndex(), true);
+                }
+            }
+        }
     }
 
     // do not forward event to parent class as this affects selection
