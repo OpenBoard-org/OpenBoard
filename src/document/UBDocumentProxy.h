@@ -96,8 +96,6 @@ class UBDocumentProxy
         QUuid uuid() const;
         void setUuid(const QUuid& uuid);
 
-        bool isModified() const;
-
         int pageCount();
 
         int pageDpi();
@@ -129,8 +127,6 @@ class UBDocumentProxy
         QString mDocumentUpdatedAtLittleEndian;
 
         QMap<QString, QVariant> mMetaDatas;
-
-        bool mIsModified;
 
         int mPageCount;
 

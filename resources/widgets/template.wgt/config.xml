@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://openboard.org/widgets/myfirstwidget" 
+        version="1.0"
+        width="600"
+        height="400"
+        ub:resizable="true"
+        ub:transparent="false">
+    <name>My First Widget</name>
+    <author email=""></author>
+    <description>This is my first widget !</description>
+    <content src="index.html"/>
+</widget>

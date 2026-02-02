@@ -177,9 +177,11 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mToolBarItem(NULL)
     , mMimeData(NULL)
     , mHideOnDisplayWhenSelectedAction(nullptr)
+#ifdef DEBUG_Z_LEVEL
+    , mZLevelTextItem(nullptr)
+#endif
 {
     setUBFlags(fls);
-    connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
 }
 
 void UBGraphicsItemDelegate::createControls()
@@ -267,8 +269,15 @@ bool UBGraphicsItemDelegate::controlsExist() const
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    if (UBApplication::boardController)
-        disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    if (mDelegated)
+    {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+        if (scene)
+        {
+            disconnect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+        }
+    }
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
@@ -321,9 +330,27 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
                 positionHandles();
                 break;
             }
+
             break;
         }
     }
+
+#ifdef DEBUG_Z_LEVEL
+    if (change == QGraphicsItem::ItemZValueHasChanged)
+    {
+        qreal newZ = qvariant_cast<double>(value);
+
+        qDebug() << newZ;
+
+        if (!mZLevelTextItem)
+            mZLevelTextItem = new QGraphicsSimpleTextItem(QString("Z: %1").arg(newZ), mDelegated);
+        else
+            mZLevelTextItem->setText(QString("Z: %1").arg(newZ));
+
+        mZLevelTextItem->setPos(mDelegated->boundingRect().bottomRight() + QPointF(10, 10));
+        mZLevelTextItem->setBrush(QColor("red"));
+    }
+#endif
 
     return value;
 }
@@ -452,6 +479,18 @@ QGraphicsItem *UBGraphicsItemDelegate::delegated()
     }
 
     return curDelegate;
+}
+
+void UBGraphicsItemDelegate::sceneChanged(UBGraphicsScene* scene)
+{
+    UBGraphicsScene* previousScene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+    if (previousScene)
+    {
+        disconnect(previousScene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+    }
+
+    connect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
 }
 
 void UBGraphicsItemDelegate::positionHandles()
@@ -832,11 +871,14 @@ void UBGraphicsItemDelegate::setLocked(bool pLocked)
 
 void UBGraphicsItemDelegate::updateFrame()
 {
-    if (mFrame && !mFrame->scene() && mDelegated->scene())
-        mDelegated->scene()->addItem(mFrame);
+    if (mFrame)
+    {
+        if (!mFrame->scene() && mDelegated->scene())
+            mDelegated->scene()->addItem(mFrame);
 
-    mFrame->setAntiScale(mAntiScaleRatio);
-    mFrame->positionHandles();
+        mFrame->setAntiScale(mAntiScaleRatio);
+        mFrame->positionHandles();
+    }
 }
 
 void UBGraphicsItemDelegate::updateButtons(bool showUpdated)

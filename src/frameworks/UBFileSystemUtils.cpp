@@ -41,7 +41,6 @@ THIRD_PARTY_WARNINGS_DISABLE
 #else
     #include "quazipfile.h"
 #endif
-#include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
@@ -463,6 +462,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "bmp") return "image/bmp";
     if (ext == "tiff" || ext == "tif") return "image/tiff";
     if (ext == "gif") return "image/gif";
+    if (ext == "webp") return "image/webp";
     if (ext == "svg" || ext == "svgz") return "image/svg+xml";
     if (ext == "pdf") return "application/pdf";
     if (ext == "mov" || ext == "qt") return "video/quicktime";
@@ -569,6 +569,7 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
 
     if (typeString == "image/jpeg"
         || typeString == "image/png"
+        || typeString == "image/webp"
         || typeString == "image/gif"
         || typeString == "image/tiff"
         || typeString == "image/bmp")
@@ -838,37 +839,6 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
     }
 
     return true;
-}
-
-
-QString UBFileSystemUtils::md5InHex(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-
-    return QString(QByteArray((char *)result, 16).toHex());
-}
-
-QString UBFileSystemUtils::md5(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-    QString s;
-
-    for(int i = 0; i < 16; i++)
-    {
-        s += QChar(result[i]);
-    }
-
-    return s;
 }
 
 QString UBFileSystemUtils::readTextFile(QString path)

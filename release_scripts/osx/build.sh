@@ -19,7 +19,7 @@ PROJECT_ROOT="$SCRIPT_PATH/../.."
 
 
 APPLICATION_NAME="OpenBoard"
-BASE_QT_DIR=/Users/dev/Qt/6.5.2/macos
+BASE_QT_DIR=/Users/dev/Qt/6.9.3/macos
 # Executables
 QMAKE=$BASE_QT_DIR/bin/qmake
 MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
@@ -29,6 +29,7 @@ STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
 LRELEASE=$BASE_QT_DIR/bin/lrelease
+LCONVERT=$BASE_QT_DIR/bin/lconvert
 
 # Directories
 BUILD_DIR="$PROJECT_ROOT/build/macx/release"
@@ -76,7 +77,8 @@ do
         if [ ! -z $directoryLanguageCode ]; then
             if [[ $eachDirectory == *".lproj"* && $eachDirectory != "empty.lproj" && $directoryLanguageCode == *$languageCode* ]]; then
                 # OpenBoard translation found for qt translation file
-                cp $eachTranslation $basicDir/$eachDirectory
+                # cp $eachTranslation $basicDir/$eachDirectory
+                $LCONVERT -o $basicDir/$eachDirectory/qt_$languageCode.qm $BASE_QT_TRANSLATIONS_DIRECTORY/qtbase_$languageCode.qm $BASE_QT_TRANSLATIONS_DIRECTORY/qtmultimedia_$languageCode.qm
                 if [ $directoryLanguageCode != $languageCode ]; then
                     # handling fr and fr_CH code.
                     mv $basicDir/$eachDirectory/qt_$languageCode.qm $basicDir/$eachDirectory/qt_$directoryLanguageCode.qm
@@ -88,27 +90,6 @@ done
 
 }
 
-
-function addImporter {
-    importerDir="`pwd`/../OpenBoard-Importer"
-    importerName="OpenBoardImporter"
-
-    if [ ! -e ${importerDir} ]; then
-        abort "${importerDir} not found"
-    fi
-
-    cd ${importerDir}
-#    git reset --hard
-#    git pull
-    rm -rf ${importerName}.app
-    rm MakeFile*
-    rm -rf release
-    rm -rf debug
-    $QMAKE ${importerName}.pro -spec macx-clang
-    make -j4 release
-    $MACDEPLOYQT ${importerName}.app 
-    cd -
-}
 
 trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
 
@@ -132,8 +113,6 @@ checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
 checkExecutable "$LRELEASE"
-
-#addImporter
 
 # delete the build directory
 notify "Cleaning ..."

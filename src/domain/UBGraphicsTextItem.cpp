@@ -289,6 +289,27 @@ void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (event->matches (QKeySequence::StandardKey::Bold) ||
+        event->matches (QKeySequence::StandardKey::Underline) ||
+        event->matches (QKeySequence::StandardKey::Italic))
+    {
+        QTextCursor curCursor = textCursor();
+        QTextCharFormat format;
+        QFont ft(curCursor.charFormat().font());
+        if (event->matches (QKeySequence::StandardKey::Bold))
+            ft.setBold(!ft.bold());
+        else if (event->matches (QKeySequence::StandardKey::Underline))
+            ft.setUnderline(!ft.underline());
+        else if (event->matches (QKeySequence::StandardKey::Italic))
+            ft.setItalic(!ft.italic());
+        format.setFont(ft);
+        curCursor.mergeCharFormat(format);
+        setTextCursor(curCursor);
+
+        contentsChanged();
+        return;
+    }
+
     QGraphicsTextItem::keyPressEvent(event);
 }
 
@@ -318,7 +339,7 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
         {
             painter->setFont(font());
             painter->setPen(UBSettings::paletteColor);
-            painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
+            painter->drawText(boundingRect(), Qt::AlignLeft, mTypeTextHereLabel);
         }
     }
 
@@ -351,6 +372,7 @@ void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setTextWidth(this->textWidth());
         cp->setTextHeight(this->textHeight());
 

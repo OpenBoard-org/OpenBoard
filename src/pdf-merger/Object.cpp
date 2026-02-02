@@ -280,7 +280,7 @@ void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<un
 
    serialize(out, stream);
    stream.clear();
-   stream.reserve();
+   stream.shrink_to_fit();
 
    //call serialize of each child
    Children::iterator it;

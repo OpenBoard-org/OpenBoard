@@ -42,6 +42,7 @@ class UBBoardController;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;
+class UBSnapIndicator;
 
 class UBBoardView : public QGraphicsView
 {
@@ -64,6 +65,10 @@ public:
 
     void setMultiselection(bool enable);
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
+    void setBoxing(const QMargins& margins);
+    void updateSnapIndicator(Qt::Corner corner, QPointF snapPoint, double angle = 0);
+
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
     bool directTabletEvent(QEvent *event);
@@ -115,6 +120,7 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
+    virtual void drawForeground(QPainter *painter, const QRectF &rect);
 
     virtual void scrollContentsBy(int dx, int dy);
 
@@ -159,8 +165,9 @@ private:
     bool mOkOnWidget;
 
     bool mWidgetMoved;
+    QPointF mFirstPressedMousePos;
     QPointF mLastPressedMousePos;
-
+    QList<QPointF> mCornerPoints;
 
     /* when an item is moved around, the tracking must stop if the object is deleted */
     QGraphicsItem *_movingItem;
@@ -202,6 +209,9 @@ private:
     bool bIsControl;
     bool bIsDesktop;
     bool mRubberBandInPlayMode;
+
+    QMargins mMargins{};
+    UBSnapIndicator* mSnapIndicator{nullptr};
 
     static bool hasSelectedParents(QGraphicsItem * item);
 

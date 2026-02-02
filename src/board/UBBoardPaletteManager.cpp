@@ -405,7 +405,11 @@ void UBBoardPaletteManager::connectPalettes()
 {
     connect(UBApplication::mainWindow->actionStylus, SIGNAL(toggled(bool)), this, SLOT(toggleStylusPalette(bool)));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, UBApplication::mainWindow->actionZoomIn->associatedObjects())
+#else
     foreach(QWidget *widget, UBApplication::mainWindow->actionZoomIn->associatedWidgets())
+#endif
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -415,7 +419,11 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, UBApplication::mainWindow->actionZoomOut->associatedObjects())
+#else
     foreach(QWidget *widget, UBApplication::mainWindow->actionZoomOut->associatedWidgets())
+#endif
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -425,7 +433,11 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, UBApplication::mainWindow->actionHand->associatedObjects())
+#else
     foreach(QWidget *widget, UBApplication::mainWindow->actionHand->associatedWidgets())
+#endif
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -458,7 +470,11 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionEraseBackground,SIGNAL(triggered()),mErasePalette,SLOT(close()));
     connect(mErasePalette, SIGNAL(closed()), this, SLOT(erasePaletteClosed()));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, UBApplication::mainWindow->actionErase->associatedObjects())
+#else
     foreach(QWidget *widget, UBApplication::mainWindow->actionErase->associatedWidgets())
+#endif
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -473,7 +489,11 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
     connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, UBApplication::mainWindow->actionPages->associatedObjects())
+#else
     foreach(QWidget *widget, UBApplication::mainWindow->actionPages->associatedWidgets())
+#endif
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -517,20 +537,6 @@ void UBBoardPaletteManager::containerResized()
         mKeyboardPalette->move(userLeft + (userWidth - mKeyboardPalette->width())/2,
                                userTop + (userHeight - mKeyboardPalette->height())/2);
         mKeyboardPalette->adjustSizeAndPosition();
-    }
-
-// NOTE @letsfindaway Fixed, but don't see any reason for this.
-// Probably remove.
-    if(mLeftPalette && mLeftPalette->width() > 0)
-    {
-        mLeftPalette->resize(mLeftPalette->width()-1, mContainer->height());
-        mLeftPalette->resize(mLeftPalette->width()+1, mContainer->height());
-    }
-
-    if(mRightPalette && mRightPalette->width() > 0)
-    {
-        mRightPalette->resize(mRightPalette->width()-1, mContainer->height());
-        mRightPalette->resize(mRightPalette->width()+1, mContainer->height());
     }
 }
 

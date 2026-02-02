@@ -123,6 +123,16 @@ QString UBPlatformUtils::applicationResourcesDirectory()
     return path;
 }
 
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
+}
+
+QString UBPlatformUtils::applicationTemplateDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
+}
+
 void UBPlatformUtils::hideFile(const QString &filePath)
 {
     FSRef ref;

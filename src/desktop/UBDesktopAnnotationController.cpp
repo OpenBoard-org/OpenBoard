@@ -73,6 +73,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mPendingMarkerButtonPressed(false)
         , mPendingEraserButtonPressed(false)
         , mbArrowClicked(false)
+        , mCustomCaptureClicked(false)
         , mBoardStylusTool(UBDrawingController::drawingController()->stylusTool())
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
 {
@@ -433,28 +434,34 @@ void UBDesktopAnnotationController::goToUniboard()
 
 void UBDesktopAnnotationController::customCapture()
 {
-    onToolClicked();
-    mIsFullyTransparent = true;
-    updateBackground();
-
-    mDesktopPalette->disappearForCapture();
-    UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-    // need to show the window before execute it to avoid some glitch on windows.
-
-#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-    UBPlatformUtils::showFullScreen(&customCaptureWindow);
-#endif
-
-    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+    if (!mCustomCaptureClicked)
     {
-        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false);
+        mCustomCaptureClicked = true;
+        onToolClicked();
+        mIsFullyTransparent = true;
+        updateBackground();
+
+        mDesktopPalette->disappearForCapture();
+        UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
+        // need to show the window before execute it to avoid some glitch on windows.
+
+    #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
+        UBPlatformUtils::showFullScreen(&customCaptureWindow);
+    #endif
+
+        if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+        {
+            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+            emit imageCaptured(selectedPixmap, false);
+        }
+
+
+        mDesktopPalette->appear();
+
+        mCustomCaptureClicked = false;
+        mIsFullyTransparent = false;
+        updateBackground();
     }
-
-    mDesktopPalette->appear();
-
-    mIsFullyTransparent = false;
-    updateBackground();
 }
 
 

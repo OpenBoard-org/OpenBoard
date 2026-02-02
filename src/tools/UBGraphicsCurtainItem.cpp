@@ -130,7 +130,7 @@ void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     if(widget == UBApplication::boardController->controlView()->viewport())
     {
         color = UBSettings::paletteColor;
-        if(!UBApplication::displayManager->hasDisplay())
+        if(!UBApplication::displayManager->useMultiScreen() || !UBApplication::displayManager->hasDisplay())
         {
             color = opaqueControlColor();
         }
@@ -169,6 +169,7 @@ void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setZValue(this->zValue());
     }
 }

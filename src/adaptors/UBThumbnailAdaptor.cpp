@@ -83,9 +83,29 @@ void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentPro
     }
 }
 
+QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+{
+    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+
+    QFile thumbFile(thumbFileName);
+
+    if (!thumbFile.exists())
+    {
+        std::shared_ptr<UBGraphicsScene> scene = UBSvgSubsetAdaptor::loadScene(proxy, pageIndex);
+
+        if (scene)
+        {
+            persistScene(proxy, scene, pageIndex);
+        }
+    }
+
+    QPixmap pix;
+    pix.load(thumbFileName);
+    return pix;
+}
+
 QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
-    UBApplication::showMessage(tr("Loading thumbnail (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     QFile file(fileName);
@@ -105,6 +125,7 @@ QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int page
 void UBThumbnailAdaptor::load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list)
 {
     list.clear();
+    UBApplication::showMessage(tr("Loading thumbnails (%1 pages)").arg(proxy->pageCount()));
     for(int i=0; i<proxy->pageCount(); i++)
     {
         list.append(std::make_shared<QPixmap>(get(proxy, i)));

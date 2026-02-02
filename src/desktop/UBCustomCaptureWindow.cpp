@@ -81,7 +81,13 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 
     // necessary so that changing geometry really affects the widget
     showNormal();
-    setGeometry(UBApplication::displayManager->screenGeometry(ScreenRole::Desktop));
+    const auto geo = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
+    setGeometry(geo);
+
+    // for some Qt versions it is also necessary to do explicit move and resize
+    move(geo.topLeft());
+    resize(geo.size());
+
     this->show();
     setWindowOpacity(1.0);
 
@@ -131,7 +137,7 @@ void UBCustomCaptureWindow::mouseReleaseEvent ( QMouseEvent * event )
     event->accept();
 
     // do not accept very small selection
-    if (!(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
+    if (mSelectionBand && !(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
     {
         accept();
     }

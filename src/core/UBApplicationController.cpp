@@ -37,7 +37,6 @@
 #include "core/UBSetting.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
-#include "core/UBOpenSankoreImporter.h"
 
 
 #include "board/UBBoardView.h"
@@ -129,9 +128,6 @@ UBApplicationController::~UBApplicationController()
     }
     delete mMirror;
     delete mUninoteController;
-
-    delete(mOpenSankoreImporter);
-    mOpenSankoreImporter = NULL;
 }
 
 
@@ -234,28 +230,28 @@ void UBApplicationController::adjustDisplayView()
     {
         qreal systemDisplayViewScaleFactor = 1.0;
 
-        QSize pageSize = UBApplication::boardController->activeScene()->nominalSize();
+        QSize pageSize = mControlView->size();
         QSize displaySize = mDisplayView->size();
 
         qreal hFactor = ((qreal)displaySize.width()) / ((qreal)pageSize.width());
         qreal vFactor = ((qreal)displaySize.height()) / ((qreal)pageSize.height());
 
-        systemDisplayViewScaleFactor = qMin(hFactor, vFactor);
+        systemDisplayViewScaleFactor = qMax(hFactor, vFactor);
 
         QTransform tr;
-        qreal scaleFactor = systemDisplayViewScaleFactor * UBApplication::boardController->currentZoom();
+        qreal scaleFactor = systemDisplayViewScaleFactor
+                * UBApplication::boardController->currentZoom()
+                * UBApplication::boardController->systemScaleFactor();
 
         tr.scale(scaleFactor, scaleFactor);
-
-        QRect rect = mControlView->rect();
-        QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
         QTransform recentTransform = mDisplayView->transform();
 
         if (recentTransform != tr)
             mDisplayView->setTransform(tr);
 
-        mDisplayView->centerOn(mControlView->mapToScene(center));
+        QRect rect = mControlView->rect();
+        mDisplayView->centerOn(mControlView->mapToScene(rect.center()));
     }
 }
 
@@ -305,26 +301,24 @@ void UBApplicationController::addCapturedPixmap(const QPixmap &pPixmap, bool pag
 {
     if (!pPixmap.isNull())
     {
-        qreal sf = UBApplication::boardController->systemScaleFactor();
-        qreal scaledWidth = ((qreal)pPixmap.width()) / sf;
-        qreal scaledHeight = ((qreal)pPixmap.height()) / sf;
+        // make all scaling calculations floating point
+        const auto sf = UBApplication::boardController->systemScaleFactor();
+        const QSizeF pageNominalSize{UBApplication::boardController->activeScene()->nominalSize()};
+        const QSizeF pixmapSize{pPixmap.size()};
 
-        QSize pageNominalSize = UBApplication::boardController->activeScene()->nominalSize();
-
-        int newWidth = qMin((int)scaledWidth, pageNominalSize.width());
-        int newHeight = qMin((int)scaledHeight, pageNominalSize.height());
+        QSizeF scaledSize{pixmapSize / sf};
+        QSizeF newSize{scaledSize.boundedTo(pageNominalSize)};
 
         if (pageMode)
         {
-            newHeight = pPixmap.height();
+            newSize.setHeight(pixmapSize.height());
         }
 
-        QSizeF scaledSize(scaledWidth, scaledHeight);
-        scaledSize.scale(newWidth, newHeight, Qt::KeepAspectRatio);
+        scaledSize.scale(newSize, Qt::KeepAspectRatio);
 
-        qreal scaleFactor = qMin(scaledSize.width() / (qreal)pPixmap.width(), scaledSize.height() / (qreal)pPixmap.height());
+        qreal scaleFactor = qMin(scaledSize.width() / pixmapSize.width(), scaledSize.height() / pixmapSize.height());
 
-        QPointF pos(0.0, 0.0);
+        QPointF pos{};
 
         if (pageMode)
         {
@@ -450,8 +444,8 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
-            UBApplication::boardController->persistCurrentScene();
+        UBApplication::boardController->persistCurrentScene();
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(UBApplication::boardController->selectedDocument());
 
         UBApplication::boardController->hide();
     }
@@ -600,8 +594,6 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
 
 void UBApplicationController::checkAtLaunch()
 {
-    mOpenSankoreImporter = new UBOpenSankoreImporter(mMainWindow->centralWidget());
-
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
         checkUpdate();
@@ -728,27 +720,14 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     if (success && document)
     {
-        if (mMainMode == Board || mMainMode == Internet)
+        if (UBApplication::boardController)
         {
-            if (UBApplication::boardController)
-            {
-                UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
-            }
-
-            if (UBApplication::documentController)
-            {
-                if (UBApplication::documentController->selectedDocument() == document)
-                {
-                    UBApplication::documentController->reloadThumbnails();
-                }
-            }
+            UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
         }
-        else if (mMainMode == Document)
+
+        if (UBApplication::documentController)
         {
-            if (UBApplication::documentController)
-            {
-                UBApplication::documentController->selectDocument(document, true, true);
-            }
+            UBApplication::documentController->selectDocument(document, true, true);
         }
 
         // This import operation happens when double-clicking on a UBZ for example.

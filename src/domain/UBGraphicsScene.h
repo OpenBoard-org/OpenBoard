@@ -29,6 +29,7 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
 
@@ -100,7 +101,7 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
-    bool zLevelAvailable(qreal z);
+    bool zLevelAvailable(QGraphicsItem* item);
 
 private:
     ScopeMap scopeMap;
@@ -138,9 +139,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease(int tool = -1);
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
 
         void leaveEvent (QEvent* event);
 
@@ -154,9 +155,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         UBGraphicsAppleWidgetItem* addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
-
-        QPointF lastCenter();
-        void setLastCenter(QPointF center);
 
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
@@ -248,40 +246,31 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void addCache();
         UBGraphicsCache* graphicsCache();
 
+        bool isSnapping() const;
+        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}, QPointF* gridSnapPoint = nullptr) const;
+        QPointF snap(const std::vector<QPointF>& corners, int* snapIndex = nullptr) const;
+        QPointF snap(const QRectF& rect, Qt::Corner* corner = nullptr) const;
+        static QRectF itemRect(const QGraphicsItem* item);
+
         class SceneViewState
         {
             public:
                 SceneViewState()
                 {
-                    zoomFactor = 1;
-                    horizontalPosition = 0;
-                    verticalPostition = 0;
-                    mLastSceneCenter = QPointF();
                 }
 
                 SceneViewState(qreal pZoomFactor, int pHorizontalPosition, int pVerticalPostition, QPointF sceneCenter = QPointF())// 1595/1605
+                    : zoomFactor{pZoomFactor}
+                    , horizontalPosition{pHorizontalPosition}
+                    , verticalPostition{pVerticalPostition}
+                    , mLastSceneCenter{sceneCenter}
                 {
-                    zoomFactor = pZoomFactor;
-                    horizontalPosition = pHorizontalPosition;
-                    verticalPostition = pVerticalPostition;
-                    mLastSceneCenter = sceneCenter;
                 }
 
-                QPointF lastSceneCenter() // Save Scene Center to replace the view when the scene becomes active
-                {
-                    return mLastSceneCenter;
-                }
-
-                void setLastSceneCenter(QPointF center)
-                {
-                    mLastSceneCenter = center;
-                }
-
-                QPointF mLastSceneCenter;
-
-                qreal zoomFactor;
-                int horizontalPosition;
-                int verticalPostition;
+                qreal zoomFactor{1};
+                int horizontalPosition{0};
+                int verticalPostition{0};
+                QPointF mLastSceneCenter{};
         };
 
         SceneViewState viewState() const
@@ -394,6 +383,9 @@ public slots:
 
         void controlViewportChanged();
 
+signals:
+        void zoomChanged(qreal zoomFactor);
+
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
@@ -465,6 +457,7 @@ public slots:
         QPointF mPreviousPoint;
         qreal mPreviousWidth;
         qreal mDistanceFromLastStrokePoint;
+        QPointF mCurrentPoint;
 
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 

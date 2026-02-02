@@ -28,9 +28,13 @@
 
 
 #include "UBDocumentContainer.h"
+
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
+#include "document/UBDocument.h"
+#include "gui/UBThumbnailScene.h"
 
 
 UBDocumentContainer::UBDocumentContainer(QObject * parent)
@@ -48,119 +52,44 @@ void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document,
     if (mCurrentDocument != document || forceReload)
     {
         mCurrentDocument = document;
-        emit initThumbnailsRequired(document); //for board mode
-        clearThumbPage(); //for document mode
-        reloadThumbnails();
         emit documentSet(mCurrentDocument);
-    }
-}
-
-void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
-{
-    int offset = 0;
-    foreach(int sceneIndex, pageIndexes)
-    {
-        UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
-        offset++;
     }
 }
 
 void UBDocumentContainer::duplicatePage(int index)
 {
-    UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, index);
+    auto document = UBDocument::getDocument(selectedDocument());
+
+    document->duplicatePage(index);
 }
 
-void UBDocumentContainer::moveThumbPage(int source, int target)
+
+void UBDocumentContainer::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target)
 {
-    mDocumentThumbs.move(source, target);
+    auto document = UBDocument::getDocument(proxy);
 
-    //on board thumbnails view (UBDocumentNavigator)
-    emit documentPageMoved(source, target);
+    if (document)
+    {
+        document->movePage(source, target);
+        document->thumbnailScene()->hightlightItem(target);
 
-    //on board thumbnails view (UBoardThumbnailsView)
-    emit moveThumbnailRequired(source, target);
+        proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        UBMetadataDcSubsetAdaptor::persist(proxy);
+    }
 }
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 {
-    UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mCurrentDocument, pageIndexes);
-    int offset = 0;
-    foreach(int index, pageIndexes)
-    {
-        deleteThumbPage(index - offset);
-        offset++;
-    }
+    auto document = UBDocument::getDocument(mCurrentDocument);
+    document->deletePages(pageIndexes);
 }
 
 void UBDocumentContainer::addPage(int index)
 {
-    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index);
-    insertThumbPage(index);
+    auto document = UBDocument::getDocument(mCurrentDocument);
+    document->createPage(index);
 }
 
-
-void UBDocumentContainer::addPixmapAt(std::shared_ptr<QPixmap> pix, int index)
-{
-    mDocumentThumbs.insert(index, pix);
-}
-
-
-void UBDocumentContainer::clearThumbPage()
-{
-    mDocumentThumbs.clear();
-}
-
-void UBDocumentContainer::initThumbPage()
-{
-    clearThumbPage();
-
-    for (int i=0; i < selectedDocument()->pageCount(); i++)
-        insertThumbPage(i);
-}
-
-void UBDocumentContainer::deleteThumbPage(int index)
-{
-    mDocumentThumbs.removeAt(index);
-
-    //on board thumbnails view (UBDocumentNavigator)
-    emit documentPageRemoved(index);
-
-    //on board thumbnails view (UBoardThumbnailsView)
-    emit removeThumbnailRequired(index);
-}
-
-void UBDocumentContainer::updateThumbPage(int index)
-{
-    if (mDocumentThumbs.size() > index)
-    {
-        QPixmap pixmap = UBThumbnailAdaptor::get(mCurrentDocument, index);
-        mDocumentThumbs[index] = std::make_shared<QPixmap>(pixmap);
-
-        emit documentPageUpdated(index);
-    }
-}
-
-void UBDocumentContainer::insertThumbPage(int index)
-{
-    QPixmap newPixmap = UBThumbnailAdaptor::get(mCurrentDocument, index);
-    mDocumentThumbs.insert(index, std::make_shared<QPixmap>(newPixmap));
-
-    emit documentPageInserted(index);
-    emit addThumbnailRequired(selectedDocument(), index);
-}
-
-void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap)
-{
-    mDocumentThumbs.insert(index, thumbnailPixmap);
-
-    emit documentPageInserted(index);
-    emit addThumbnailRequired(selectedDocument(), index);
-}
-
-void UBDocumentContainer::reloadThumbnails()
-{
-    emit documentThumbnailsUpdated(this);
-}
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)
 {
@@ -170,9 +99,4 @@ int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)
 int UBDocumentContainer::sceneIndexFromPage(int page)
 {
     return page-1;
-}
-
-void UBDocumentContainer::addEmptyThumbPage()
-{
-    mDocumentThumbs.append(std::shared_ptr<QPixmap>());
 }

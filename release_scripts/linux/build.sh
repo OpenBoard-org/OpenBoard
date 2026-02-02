@@ -17,7 +17,7 @@
 initializeVariables()
 {
   APPLICATION_NAME="OpenBoard"
-  STANDARD_QT_USED=true
+  STANDARD_QT_USED=false
 
   # Root directory
   SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -26,9 +26,9 @@ initializeVariables()
   PRODUCT_PATH="$BUILD_DIR/product"
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
+  QT_PATH="/home/dev/Qt/6.9.3/gcc_64"
   PLUGINS_PATH="$QT_PATH/plugins"
-  GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
   QMAKE_PATH="$QT_PATH/bin/qmake"
   LRELEASES="$QT_PATH/bin/lrelease"
 
@@ -89,25 +89,6 @@ buildWithStandardQt(){
   fi
 }
 
-buildImporter(){
-    IMPORTER_DIR="../OpenBoard-Importer/"
-    IMPORTER_NAME="OpenBoardImporter"
-    checkDir $IMPORTER_DIR
-    cd ${IMPORTER_DIR}
-
-    rm moc_*
-    rm -rf debug release
-    rm *.o
-
-    notifyProgress "Building importer"
-
-    $QMAKE_PATH ${IMPORTER_NAME}.pro
-    make clean
-    make -j4
-    checkExecutable $IMPORTER_NAME
-    cd -
-}
-
 createBuildContext() {
     BUILD_CONTEXT="buildContext"
     echo $ARCHITECTURE > $BUILD_CONTEXT
@@ -139,14 +120,10 @@ checkDir $QT_PATH
 checkDir $PLUGINS_PATH
 checkDir $GUI_TRANSLATIONS_DIRECTORY_PATH
 
+
 checkExecutable $QMAKE_PATH
 checkExecutable $LRELEASES
 checkExecutable $ZIP_PATH
-
-#build third party application
-#buildImporter
-#notifyProgress "OpenBoardImporter" "Built Importer"
-
 
 # cleaning the build directory
 rm -rf $BUILD_DIR

@@ -130,9 +130,11 @@ void UBGraphicsPDFItem::copyItemParameters(UBItem *copy) const
     {
         cp->setPos(this->pos());
         cp->setTransform(this->transform());
+        cp->setScale(this->scale());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
     }
@@ -142,6 +144,10 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 {
     UBItem::setRenderingQuality(pRenderingQuality);
 
+    // Using NoCache on Windows to avoid PDF rendering issues when a DPI scaling is applied (e.g. if a 150% scaling is applied to the screen in the OS screen config).
+#ifdef Q_OS_WIN
+    setCacheMode(QGraphicsItem::NoCache);
+#else
     if (pRenderingQuality == RenderingQualityHigh)
     {
         setCacheMode(QGraphicsItem::NoCache);
@@ -150,6 +156,7 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
     {
         setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     }
+#endif
 }
 
 void UBGraphicsPDFItem::setCacheBehavior(UBItem::CacheBehavior cacheBehavior)

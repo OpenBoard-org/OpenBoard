@@ -88,7 +88,7 @@ void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
         return;
     }
     QString fileName = proxy->persistencePath() + "/" + metadataFilename;
-    qWarning() << "Persisting document; path is" << fileName;
+    qInfo() << "Persisting document metadata; path is" << fileName;
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -239,8 +239,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
     if (!sizeFound)
     {
-        QSize docSize = UBApplication::displayManager->screenSize(ScreenRole::Control);
-        docSize.setHeight(docSize.height() - 70); // 70 = toolbar height
+        QSize docSize = UBSettings::settings()->pageSize->get().toSize();
 
         qWarning() << "Document size not found, using default view size" << docSize;
 

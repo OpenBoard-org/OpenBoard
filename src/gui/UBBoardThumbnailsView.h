@@ -34,42 +34,47 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QMouseEvent>
+#include <QTimer>
 
-#include "document/UBDocumentProxy.h"
+#include "gui/UBThumbnailArranger.h"
+#include "gui/UBThumbnailsView.h"
 
-class UBDraggableLivePixmapItem;
+class UBDocument;
+class UBThumbnail;
 
-class UBBoardThumbnailsView : public QGraphicsView
+class UBBoardThumbnailsView : public UBThumbnailsView
 {
     Q_OBJECT
 public:
     UBBoardThumbnailsView(QWidget* parent=0, const char* name="UBBoardThumbnailsView");
 
+    void setDocument(std::shared_ptr<UBDocument> document);
+
 public slots:
+    void updateActiveThumbnail(int newActiveIndex);
     void ensureVisibleThumbnail(int index);
     void centerOnThumbnail(int index);
 
-    void clearThumbnails();
-    void initThumbnails(std::shared_ptr<UBDocumentProxy> document);
-    void addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
-    void moveThumbnail(int from, int to);
-    void removeThumbnail(int i);
-    void updateThumbnails();
+    void adjustThumbnail();
 
     void longPressTimeout();
     void mousePressAndHoldEvent(QPoint pos);
     void updateThumbnailPixmap(const QRectF region);
 
 protected:
+    virtual bool event(QEvent* event);
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
 
     virtual void dragEnterEvent(QDragEnterEvent* event);
     virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual void dropEvent(QDropEvent* event);
+    virtual void dragLeaveEvent(QDragLeaveEvent* event) override;
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent* event);
 
     virtual void scrollContentsBy(int dx, int dy);
 
@@ -78,23 +83,35 @@ signals:
     void moveThumbnailRequired(int from, int to);
 
 private:
-    UBDraggableLivePixmapItem* createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
-    void updateThumbnailsPos();
-    void updateExposure();
-
-    QList<UBDraggableLivePixmapItem*> mThumbnails;
+    std::shared_ptr<UBDocument> mDocument;
 
     int mThumbnailWidth;
     const int mThumbnailMinWidth;
     const int mMargin;
 
-    UBDraggableLivePixmapItem* mDropSource;
-    UBDraggableLivePixmapItem* mDropTarget;
-    QGraphicsRectItem *mDropBar;
+    UBThumbnail* mDropSource;
+    UBThumbnail* mDropTarget;
+    bool mDropIndicatorVisible{false};
+    QRectF mDropIndicatorRect;
 
     int mLongPressInterval;
     QTimer mLongPressTimer;
     QPoint mLastPressedMousePos;
+
+    int mCurrentIndex{-1};
+    bool mScrollbarVisible{false};
+
+    /**
+     * @brief The UBBoardThumbnailArranger class is the arranger for Board mode.
+     */
+    class UBBoardThumbnailArranger : public UBThumbnailArranger
+    {
+    public:
+        UBBoardThumbnailArranger(UBBoardThumbnailsView* thumbnailView);
+
+        virtual int columnCount() const override;
+        virtual double thumbnailWidth() const override;
+    };
 };
 
 #endif // UBBOARDTHUMBNAILSVIEW_H

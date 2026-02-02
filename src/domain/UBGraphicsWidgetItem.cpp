@@ -59,6 +59,81 @@
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
 
+#ifndef Q_OS_WIN
+/*
+ * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+*/
+const QMap<Qt::Key, QString> UBGraphicsWidgetItem::sDeadKeys
+{
+    {Qt::Key_Dead_Circumflex, "^"},   // ^ (Caret)
+    {Qt::Key_Dead_Grave, "`"},        // ` (Backtick)
+    {Qt::Key_Dead_Tilde, "~"},        // ~ (Tilde)
+    {Qt::Key_Dead_Acute, "´"},        // ´ (Acute Accent)
+    {Qt::Key_Dead_Diaeresis, "¨"}     // ¨ (Diaeresis)
+};
+
+const QMap<QString, QString> UBGraphicsWidgetItem::sAccentedCharacters
+{
+    // Dead Key: ^
+    {"^a", QStringLiteral(u"â")},
+    {"^A", QStringLiteral(u"Â")},
+    {"^e", QStringLiteral(u"ê")},
+    {"^E", QStringLiteral(u"Ê")},
+    {"^i", QStringLiteral(u"î")},
+    {"^I", QStringLiteral(u"Î")},
+    {"^o", QStringLiteral(u"ô")},
+    {"^O", QStringLiteral(u"Ô")},
+    {"^u", QStringLiteral(u"û")},
+    {"^U", QStringLiteral(u"Û")},
+
+    // Dead Key: ´
+    {"´a", QStringLiteral(u"á")},
+    {"´A", QStringLiteral(u"Á")},
+    {"´e", QStringLiteral(u"é")},
+    {"´E", QStringLiteral(u"É")},
+    {"´i", QStringLiteral(u"í")},
+    {"´I", QStringLiteral(u"Í")},
+    {"´o", QStringLiteral(u"ó")},
+    {"´O", QStringLiteral(u"Ó")},
+    {"´u", QStringLiteral(u"ú")},
+    {"´U", QStringLiteral(u"Ú")},
+
+    // Dead Key: `
+    {"`a", QStringLiteral(u"à")},
+    {"`A", QStringLiteral(u"À")},
+    {"`e", QStringLiteral(u"è")},
+    {"`E", QStringLiteral(u"È")},
+    {"`i", QStringLiteral(u"ì")},
+    {"`I", QStringLiteral(u"Ì")},
+    {"`o", QStringLiteral(u"ò")},
+    {"`O", QStringLiteral(u"Ò")},
+    {"`u", QStringLiteral(u"ù")},
+    {"`U", QStringLiteral(u"Ù")},
+
+    // Dead Key: ~
+    {"~n", QStringLiteral(u"ñ")},
+    {"~N", QStringLiteral(u"Ñ")},
+
+    // Dead Key: '
+    {"'c", QStringLiteral(u"ç")},
+    {"'C", QStringLiteral(u"Ç")},
+
+    // Dead Key: ¨
+    {"¨a", QStringLiteral(u"ä")},
+    {"¨A", QStringLiteral(u"Ä")},
+    {"¨e", QStringLiteral(u"ë")},
+    {"¨E", QStringLiteral(u"Ë")},
+    {"¨i", QStringLiteral(u"ï")},
+    {"¨I", QStringLiteral(u"Ï")},
+    {"¨o", QStringLiteral(u"ö")},
+    {"¨O", QStringLiteral(u"Ö")},
+    {"¨u", QStringLiteral(u"ü")},
+    {"¨U", QStringLiteral(u"Ü")},
+    {"¨y", QStringLiteral(u"ÿ")},
+    {"¨Y", QStringLiteral(u"Ÿ")}
+};
+#endif
+
 UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem *parent)
     : QGraphicsProxyWidget(parent)
     , mInitialLoadDone(false)
@@ -92,9 +167,16 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setAcceptDrops(true);
     setAutoFillBackground(false);
 
+    /*
+     * Quick workaround for https://bugreports.qt.io/browse/QTBUG-128241 (bug appearing with Qt 6.7.2)
+     * To test with Qt 6.8.1 and then change the following directive if really fixed with it
+    */
+#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 2))
     mWebEngineView->setAttribute(Qt::WA_TranslucentBackground);
     mWebEngineView->page()->setBackgroundColor(QColor(Qt::transparent));
-
+#else
+    mWebEngineView->page()->setBackgroundColor(QColor(Qt::white));
+#endif
     setDelegate(new UBGraphicsWidgetItemDelegate(this));
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
@@ -108,7 +190,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
         window->installEventFilter(this);
     }
 }
-
 
 UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 {
@@ -615,6 +696,77 @@ void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     }
 }
 
+#ifndef Q_OS_WIN
+/*
+ * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+*/
+QString UBGraphicsWidgetItem::getAccentedLetter(Qt::Key deadKey, const QString &letter) const
+{
+    // suppress blank after dead key
+    const QString combined = sDeadKeys.value(deadKey, "") + (letter == " " ? "" : letter);
+
+    return sAccentedCharacters.value(combined, combined);
+}
+#endif
+
+void UBGraphicsWidgetItem::keyPressEvent(QKeyEvent *event)
+{
+#ifndef Q_OS_WIN
+    const bool isDeadKey = event->key() >= Qt::Key_Dead_Grave && event->key() <= Qt::Key_Dead_Longsolidusoverlay;
+
+    if (isDeadKey)
+    {
+        if (mLastDeadKey != Qt::Key_unknown)
+        {
+            //two dead keys in a row
+            // - same dead keys: write accent
+            // - different dead keys: drop both
+            if (mLastDeadKey == event->key())
+            {
+                QKeyEvent currentDeadKeyEvent(
+                    QEvent::KeyPress,
+                    event->key(),
+                    event->modifiers(),
+                    sDeadKeys.value((Qt::Key)event->key(), "")
+                );
+
+                QGraphicsProxyWidget::keyPressEvent(&currentDeadKeyEvent);
+            }
+
+            mLastDeadKey = Qt::Key_unknown;
+        }
+        else
+        {
+            mLastDeadKey = (Qt::Key)event->key();
+        }
+    }
+    else if (mLastDeadKey != Qt::Key_unknown && !event->text().isEmpty())
+    {
+        const QString accentedText = getAccentedLetter(mLastDeadKey, event->text());
+
+        if (!accentedText.isEmpty())
+        {
+            QKeyEvent accentedLetterEvent(
+                QEvent::KeyPress,
+                event->key(),
+                event->modifiers(),
+                accentedText
+            );
+
+            QGraphicsProxyWidget::keyPressEvent(&accentedLetterEvent);
+        }
+
+        mLastDeadKey = Qt::Key_unknown;
+    }
+    else
+    {
+        QGraphicsProxyWidget::keyPressEvent(event);
+    }
+#else
+    QGraphicsProxyWidget::keyPressEvent(event);
+#endif
+}
+
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!Delegate()->mousePressEvent(event))
@@ -744,6 +896,11 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 {
     mInitialLoadDone = true;
     mLoadIsErronous = !ok;
+
+#ifdef Q_OS_MACOS
+    //partial workaround for https://bugreports.qt.io/browse/QTBUG-118136 on MacOS
+    runScript("el_qtbug_118136 = document.querySelector('input[type=text]'); if (el_qtbug_118136) el_qtbug_118136.focus()");
+#endif
 
     // repaint when initial rendering is done
     update();
@@ -1280,14 +1437,14 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
     if (!sTemplateLoaded) {
         sNPAPIWrapperTemplates.clear();
 
-        QString etcPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/";
+        QString templatePath = UBPlatformUtils::applicationTemplateDirectory();
 
-        QDir etcDir(etcPath);
+        QDir templateDir(templatePath);
 
-        foreach(QString fileName, etcDir.entryList()) {
+        foreach(QString fileName, templateDir.entryList()) {
             if (fileName.startsWith("npapi-wrapper") && (fileName.endsWith(".htm") || fileName.endsWith(".html"))) {
 
-                QString htmlContent = UBFileSystemUtils::readTextFile(etcPath + fileName);
+                QString htmlContent = UBFileSystemUtils::readTextFile(templatePath + fileName);
 
                 if (htmlContent.length() > 0) {
                     QStringList tokens = fileName.split(".");
@@ -1304,7 +1461,7 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
                 }
             }
         }
-        sNPAPIWrappperConfigTemplate = UBFileSystemUtils::readTextFile(etcPath + "npapi-wrapper.config.xml");
+        sNPAPIWrappperConfigTemplate = UBFileSystemUtils::readTextFile(templatePath + "npapi-wrapper.config.xml");
         sTemplateLoaded = true;
     }
 }
@@ -1350,6 +1507,7 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
+        cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSourceUrl(this->sourceUrl());
 
         cp->resize(this->size());

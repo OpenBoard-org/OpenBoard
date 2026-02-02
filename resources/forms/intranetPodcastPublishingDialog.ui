@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Publish Podcast to YouTube</string>
+   <string>Publish to Intranet</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

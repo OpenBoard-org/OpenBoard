@@ -30,13 +30,14 @@
 #ifndef UBDOCUMENTTHUMBNAILWIDGET_H_
 #define UBDOCUMENTTHUMBNAILWIDGET_H_
 
-#include "UBThumbnailWidget.h"
+#include "UBDocumentThumbnailsView.h"
 
-class UBGraphicsScene;
+// forward
+class UBDocumentProxy;
 
-class UBDocumentThumbnailWidget: public UBThumbnailWidget
+class UBDocumentThumbnailWidget: public UBDocumentThumbnailsView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDocumentThumbnailWidget(QWidget* parent);
@@ -46,13 +47,6 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         bool dragEnabled() const;
 
         void hightlightItem(int index);
-
-    public slots:
-            void updateThumbnailPixmap(int index, const QPixmap& newThumbnail);
-            void removeThumbnail(int index);
-            void moveThumbnail(int from, int to);
-            void insertThumbnail(int index, QGraphicsPixmapItem *newThumbnail);
-            virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
 
     signals:
         void sceneDropped(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
@@ -73,7 +67,7 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         void deleteDropCaret();
 
         QGraphicsRectItem *mDropCaretRectItem;
-        UBThumbnailPixmap *mClosestDropItem;
+        UBThumbnail *mClosestDropItem;
         bool mDropIsRight;
         bool mDragEnabled;
         QTimer* mScrollTimer;

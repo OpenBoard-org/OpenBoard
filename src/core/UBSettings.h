@@ -275,8 +275,6 @@ class UBSettings : public QObject
 
         UBSetting* appStartupHintsEnabled;
 
-        UBSetting* appLookForOpenSankoreInstall;
-
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
         UBSetting* boardPenStrongWidth;
@@ -369,8 +367,6 @@ class UBSettings : public QObject
         UBSetting* pdfUsePDFMerger;
         UBSetting* pdfResolution;
 
-        UBSetting* pdfZoomBehavior;
-        UBSetting* enableQualityLossToIncreaseZoomPerfs;
         UBSetting* exportBackgroundGrid;
         UBSetting* exportBackgroundColor;
 
@@ -421,7 +417,7 @@ class UBSettings : public QObject
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
 
-        UBSetting* angleTolerance;
+        UBSetting* rotationAngleStep;
         UBSetting* historyLimit;
 
         UBSetting* libIconSize;

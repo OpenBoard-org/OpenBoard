@@ -32,7 +32,6 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
-#include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -41,7 +40,6 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBMimeData.h"
-#include "core/UBForeignObjectsHandler.h"
 
 #include "adaptors/UBExportPDF.h"
 #include "adaptors/UBThumbnailAdaptor.h"
@@ -51,25 +49,20 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
-#include "board/UBDrawingController.h"
 
-
-#include "gui/UBThumbnailView.h"
-#include "gui/UBMousePressFilter.h"
 #include "gui/UBMessageWindow.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBDocumentToolsPalette.h"
+#include "gui/UBThumbnail.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPixmapItem.h"
 
 #include "board/UBFeaturesController.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "ui_documents.h"
-#include "ui_mainWindow.h"
 
 #include "core/memcheck.h"
 
@@ -320,7 +313,7 @@ QString UBDocumentTreeNode::dirPathInHierarchy()
     }
 
     if (result.endsWith("/")) {
-        result.truncate(result.count() - 1);
+        result.truncate(result.length() - 1);
     }
 
     return result;
@@ -737,7 +730,6 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
             return false;
         }
 
-//        int count = 0;
         int total = ubMime->items().size();
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -748,13 +740,13 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
             int fromIndex = sourceItem.sceneIndex();
             int toIndex = targetDocProxy->pageCount();
 
-            UBPersistenceManager::persistenceManager()->copyDocumentScene(fromProxy, fromIndex,
-                                                                          targetDocProxy, toIndex);
+            auto fromDocument = UBDocument::getDocument(fromProxy);
+            fromDocument->copyPage(fromIndex, targetDocProxy, toIndex);
         }
 
         QApplication::restoreOverrideCursor();
 
-        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
+        UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
 
         return true;
     }
@@ -815,7 +807,6 @@ bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
                 }
             }
         }
-        mNewDocuments.removeAll(curChildNode->proxyData());
         parentNode->removeChild(i);
 
     }
@@ -979,11 +970,6 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
     switch (static_cast<int>(pMode)) {
     case aReference:
         clonedNodeSource = nodeSource->clone();
-        if (mNewDocuments.contains(nodeSource->proxyData())) { //update references for session documents
-            mNewDocuments << clonedNodeSource->proxyData();
-
-            UBPersistenceManager::persistenceManager()->reassignDocProxy(clonedNodeSource->proxyData(), nodeSource->proxyData());
-        }
         break;
 
     case aContentCopy:
@@ -1122,7 +1108,7 @@ QString UBDocumentTreeModel::virtualDirForIndex(const QModelIndex &pIndex) const
     }
 
     if (result.endsWith("/")) {
-        result.truncate(result.count() - 1);
+        result.truncate(result.length() - 1);
     }
 
     return result;
@@ -1228,6 +1214,11 @@ QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
         if (!searchingNode) {
             UBDocumentTreeNode *newChild = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, curLevelName);
             parentIndex = addNode(newChild, parentIndex);
+
+            if (!parentIndex.isValid())
+            {
+                delete newChild;
+            }
         }
     }
 
@@ -1272,13 +1263,15 @@ void UBDocumentTreeModel::addDocument(std::shared_ptr<UBDocumentProxy> pProxyDat
         lParent = goTo(docGroupName);
     }
 
-    addNode(freeNode, lParent);
+    if (!addNode(freeNode, lParent).isValid())
+    {
+        delete freeNode;
+    }
 }
 
 void UBDocumentTreeModel::addNewDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent)
 {
     addDocument(pProxyData, pParent);
-    mNewDocuments << pProxyData;
 }
 
 QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIndex &pParent)
@@ -1288,7 +1281,14 @@ QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIn
     }
 
     UBDocumentTreeNode *catalogNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, pName);
-    return addNode(catalogNode, pParent);
+    QModelIndex index = addNode(catalogNode, pParent);
+
+    if (!index.isValid())
+    {
+        delete catalogNode;
+    }
+
+    return index;
 }
 
 void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &newName)
@@ -1322,6 +1322,7 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
         } else {
             indexNode->setNodeName(newName);
             indexNode->proxyData()->setMetaData(UBSettings::documentName, newName);
+            indexNode->proxyData()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
 
         UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
@@ -1474,7 +1475,7 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
                                                 ? QItemSelectionModel::Select
                                                 : QItemSelectionModel::Deselect;
 
-    setCurrentIndex(indexCurrentDoc);
+    setCurrentIndex(proxy->mapFromSource(indexCurrentDoc));
 
     selectionModel()->setCurrentIndex(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::SelectCurrent);
 
@@ -1575,7 +1576,12 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
         if (!docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex)) {
             event->ignore();
             event->setDropAction(Qt::IgnoreAction);
-            docModel->setHighLighted(QModelIndex());
+
+            if (docModel)
+            {
+                docModel->setHighLighted(QModelIndex());
+            }
+
             acceptIt = false;
         } else {
             docModel->setHighLighted(targetIndex);
@@ -1611,8 +1617,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);
 
     //issue 1629 - NNE - 20131212
-    bool targetIsInTrash = docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex;
-    bool targetIsInMyDocuments = docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex;
+    bool targetIsInTrash = docModel && (docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex);
+    bool targetIsInMyDocuments = docModel && (docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex);
 
     if (!targetIsInMyDocuments && !targetIsInTrash)
         return;
@@ -1620,6 +1626,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     if (isUBPage)
     {
         std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyData(targetIndex);
+        auto targetDocument = UBDocument::getDocument(targetDocProxy);
 
         const UBMimeData *ubMime = qobject_cast <const UBMimeData*>(event->mimeData());
         if (!targetDocProxy || !ubMime || !ubMime->items().count()) {
@@ -1640,10 +1647,14 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
             count++;
 
-            UBApplication::applicationController->showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
+            UBApplication::showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
+            // FIXME code is similar to UBPersistenceManager::copyDocumentScene()
+            // PersistenceManaget works with UBForeignObjectHandler, while we here ask the scene for relative dependencies
+            // one is at file level, the other at scene level. I prefer scene level, as it avoids another SVG parser.
+            // Implement one single UBDocument::copyPage
 
             // TODO UB 4.x Move following code to some controller class
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), sourceItem.sceneIndex());
+            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), fromIndex);
             if (scene)
             {
                 std::shared_ptr<UBGraphicsScene> sceneClone = scene->sceneDeepCopy();
@@ -1668,27 +1679,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
                     }
                 }
 
-                UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(targetDocProxy, sceneClone, targetDocProxy->pageCount());
-
-                QString thumbTmp(fromProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", fromIndex));
-                QString thumbTo(targetDocProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", toIndex));
-
-                QFile::remove(thumbTo);
-                QFile::copy(thumbTmp, thumbTo);
-
-                Q_ASSERT(QFileInfo::exists(thumbTmp));
-                Q_ASSERT(QFileInfo::exists(thumbTo));
-
-                if (UBApplication::documentController->selectedDocument() == targetDocProxy)
-                {
-                    auto pix = std::make_shared<QPixmap>(thumbTmp);
-                    UBApplication::documentController->insertExistingThumbPage(toIndex, pix);
-                    UBApplication::documentController->reloadThumbnails();
-                }
-                if (UBApplication::boardController->selectedDocument() == targetDocProxy)
-                {
-                    emit UBApplication::boardController->addThumbnailRequired(targetDocProxy, toIndex);
-                }
+                targetDocument->insertPage(sceneClone, toIndex);
             }
 
             QApplication::restoreOverrideCursor();
@@ -1696,7 +1687,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             docModel->setHighLighted(QModelIndex());
         }
 
-        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
+        UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
     }
     else
     {
@@ -1728,7 +1719,6 @@ void UBDocumentTreeView::rowsAboutToBeRemoved(const QModelIndex &parent, int sta
 bool UBDocumentTreeView::isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex)
 {
     QModelIndex dragIndexSource = mapIndexToSource(dragIndex);
-    QModelIndex atIndexSource = mapIndexToSource(atIndex);
 
     if (!dragIndexSource.isValid()) {
         return false;
@@ -1835,14 +1825,14 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
         const UBDocumentTreeModel *docModel = 0;
 
         const UBSortFilterProxyModel *proxy = dynamic_cast<const UBSortFilterProxyModel*>(index.model());
+        QModelIndex sourceIndex;
 
         if(proxy){
             docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
+            sourceIndex = proxy->mapToSource(index);
         }else{
             docModel =  dynamic_cast<const UBDocumentTreeModel*>(index.model());
         }
-
-        QModelIndex sourceIndex = proxy->mapToSource(index);
 
         if (docModel)
         {
@@ -1925,11 +1915,6 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
     setupViews();
     setupToolbar();
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
-    connect(this, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(refreshDocumentThumbnailsView(UBDocumentContainer*)));
-    //connect(this, SIGNAL(documentPageInserted(int)), this, SLOT(insertThumbnail(int)));
-    connect(this, SIGNAL(documentPageUpdated(int)), this, SLOT(updateThumbnail(int)));
-    connect(this, SIGNAL(documentPageRemoved(int)), this, SLOT(removeThumbnail(int)));
-    connect(this, SIGNAL(documentPageMoved(int, int)), this, SLOT(moveThumbnail(int, int)));
     connect(this, SIGNAL(reorderDocumentsRequested()), this, SLOT(reorderDocuments()));
 }
 
@@ -1969,9 +1954,6 @@ void UBDocumentController::createNewDocument()
 
     selectDocument(document, true, false, true);
 
-    if (document)
-        pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
-
     pageSelectionChanged();
 }
 
@@ -1990,12 +1972,6 @@ void UBDocumentController::selectDocument(std::shared_ptr<UBDocumentProxy> proxy
         if (indexCurrentDoc.isValid())
         {
             mDocumentUI->documentTreeView->setSelectedAndExpanded(indexCurrentDoc, true, editMode);
-
-            if (proxy != mBoardController->selectedDocument()) // only if wanted Document is different from document actually on Board,  // ALTI/AOU - 20140217
-            {
-                //issue 1629 - NNE - 20131105 : When set a current document, change in the board controller
-                mBoardController->setActiveDocumentScene(proxy, 0, true, onImport);
-            }
         }
         else
         {
@@ -2003,7 +1979,7 @@ void UBDocumentController::selectDocument(std::shared_ptr<UBDocumentProxy> proxy
         }
     }
 
-    setDocument(proxy);
+    setDocument(proxy, true);
 }
 
 void UBDocumentController::createNewDocumentGroup()
@@ -2198,7 +2174,11 @@ void UBDocumentController::setupViews()
         connect(mAddFileToDocumentAction, SIGNAL(triggered(bool)), this, SLOT(addFileToDocument()));
         connect(mAddImagesAction, SIGNAL(triggered(bool)), this, SLOT(addImages()));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        foreach (QObject* menuWidget,  mMainWindow->actionDocumentAdd->associatedObjects())
+#else
         foreach (QWidget* menuWidget,  mMainWindow->actionDocumentAdd->associatedWidgets())
+#endif
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -2230,7 +2210,13 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
+        bool exportMenuAttached = false;
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        foreach (QObject* menuWidget,  mMainWindow->actionExport->associatedObjects())
+#else
         foreach (QWidget* menuWidget,  mMainWindow->actionExport->associatedWidgets())
+#endif
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -2240,7 +2226,13 @@ void UBDocumentController::setupViews()
                 tb->setPopupMode(QToolButton::InstantPopup);
 
                 tb->setMenu(exportMenu);
+                exportMenuAttached = true;
             }
+        }
+
+        if (!exportMenuAttached)
+        {
+            delete exportMenu;
         }
 
 #ifdef Q_OS_OSX
@@ -2309,6 +2301,10 @@ void UBDocumentController::setupViews()
         connect(mDocumentUI->thumbnailWidget, SIGNAL(resized()), this, SLOT(thumbnailViewResized()));
         connect(mDocumentUI->thumbnailWidget, SIGNAL(mouseDoubleClick(QGraphicsItem*,int)), this, SLOT(thumbnailPageDoubleClicked(QGraphicsItem*,int)));
         connect(mDocumentUI->thumbnailWidget, SIGNAL(mouseClick(QGraphicsItem*, int)), this, SLOT(pageClicked(QGraphicsItem*, int)));
+
+        connect(this, &UBDocumentContainer::documentSet, mDocumentUI->thumbnailWidget, [this](std::shared_ptr<UBDocumentProxy> proxy){
+            mDocumentUI->thumbnailWidget->setDocument(UBDocument::getDocument(proxy));
+        });
 
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
@@ -2458,16 +2454,17 @@ void UBDocumentController::openSelectedItem()
 
     if (selectedItems.count() > 0)
     {
-        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
+        UBThumbnail* thumb = dynamic_cast<UBThumbnail*> (selectedItems.last());
 
         if (thumb)
         {
-            std::shared_ptr<UBDocumentProxy> proxy = thumb->documentProxy();
+            std::shared_ptr<UBDocumentProxy> proxy = mDocumentUI->thumbnailWidget->document()->proxy();
 
             if (proxy && isOKToOpenDocument(proxy))
             {
-                mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
+                UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
                 UBApplication::applicationController->showBoard();
+                mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
             }
         }
     }
@@ -2477,10 +2474,13 @@ void UBDocumentController::openSelectedItem()
 
         if (proxy && isOKToOpenDocument(proxy))
         {
+            UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
             mBoardController->setActiveDocumentScene(proxy);
             UBApplication::applicationController->showBoard();
         }
     }
+
+    UBApplication::showMessage(tr("Document opened successfully"), false);
 
     QApplication::restoreOverrideCursor();
 }
@@ -2496,10 +2496,10 @@ void UBDocumentController::duplicateSelectedItem()
         QList<int> selectedSceneIndexes;
         foreach (QGraphicsItem *item, selectedItems)
         {
-            UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
+            UBThumbnail *thumb = dynamic_cast<UBThumbnail*>(item);
             if (thumb)
             {
-                std::shared_ptr<UBDocumentProxy> proxy = thumb->documentProxy();
+                std::shared_ptr<UBDocumentProxy> proxy = mDocumentUI->thumbnailWidget->document()->proxy();
 
                 if (proxy)
                 {
@@ -2510,24 +2510,21 @@ void UBDocumentController::duplicateSelectedItem()
         }
         if (selectedSceneIndexes.count() > 0)
         {
-            duplicatePages(selectedSceneIndexes);
-            if (selectedDocument() == selectedDocumentProxy())
+            auto document = UBDocument::getDocument(selectedDocument());
+            int offset = 0;
+            foreach(int sceneIndex, selectedSceneIndexes)
             {
-                reloadThumbnails();
+                document->duplicatePage(sceneIndex + offset);
+                offset++;
             }
+
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             int selectedThumbnailIndex = selectedSceneIndexes.last() + selectedSceneIndexes.size();
             mDocumentUI->thumbnailWidget->selectItemAt(selectedThumbnailIndex);
             int sceneCount = selectedSceneIndexes.count();
-            showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
-
-            if (selectedDocument() == mBoardController->selectedDocument())
-            {
-                emit mBoardController->addThumbnailRequired(selectedDocument(), selectedThumbnailIndex);
-                mBoardController->setActiveDocumentScene(selectedThumbnailIndex);
-            }
+            UBApplication::showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
         }
     }
     else
@@ -2537,11 +2534,11 @@ void UBDocumentController::duplicateSelectedItem()
 
         Q_ASSERT(!docModel->isConstant(selectedIndex) && !docModel->inTrash(selectedIndex));
 
-        showMessage(tr("Duplicating Document %1").arg(""), true);
+        UBApplication::showMessage(tr("Duplicating Document %1").arg(""), true);
 
         docModel->copyIndexToNewParent(selectedIndex, selectedIndex.parent(), UBDocumentTreeModel::aContentCopy);
 
-        showMessage(tr("Document %1 copied").arg(""), false);
+        UBApplication::showMessage(tr("Document %1 copied").arg(""), false);
     }
 
     emit reorderDocumentsRequested();
@@ -2592,7 +2589,7 @@ void UBDocumentController::deleteMultipleItems(QModelIndexList indexes, UBDocume
                 {
                     deleteIndexAndAssociatedData(indexes.at(i));
                 }
-                emit documentThumbnailsUpdated(this);
+                // reloadThumbnails();
             }
             break;
         }
@@ -2683,7 +2680,7 @@ void UBDocumentController::deleteSingleItem(QModelIndex currentIndex, UBDocument
                 if (accepted)
                 {
                     deleteIndexAndAssociatedData(currentIndex);
-                    emit documentThumbnailsUpdated(this);
+                    // reloadThumbnails();
                 }
             }
             break;
@@ -3156,7 +3153,7 @@ void UBDocumentController::importFile()
                         : docModel->virtualDirForIndex(selectedIndex);
                 }
 
-                showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
+                UBApplication::showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
                 createdDocument = docManager->importFile(selectedFile, groupName);
 
@@ -3165,16 +3162,10 @@ void UBDocumentController::importFile()
                     pageSelectionChanged();
 
                 } else {
-                    showMessage(tr("Failed to import file ... "));
+                    UBApplication::showMessage(tr("Failed to import file ... "));
                 }
             }
         }
-
-        UBApplication::boardController->setActiveDocumentScene(UBApplication::boardController->selectedDocument(), 0, true, true);
-
-        //Replaced document might still be attached to a thumbnail
-        clearThumbPage();
-        reloadThumbnails();
 
         emit UBApplication::documentController->reorderDocumentsRequested();
     }
@@ -3201,24 +3192,19 @@ void UBDocumentController::addFolderOfImages()
         {
             QDir dir(imagesDir);
 
-            int importedImageNumber
-                  = UBDocumentManager::documentManager()->addImageDirToDocument(dir, document);
+            int numberOfImportedImages = UBDocumentManager::documentManager()->addImageDirToDocument(dir, document);
 
-            if (importedImageNumber == 0)
-            {
-                showMessage(tr("Folder does not contain any image files"));
-                UBApplication::applicationController->showDocument();
-            }
-            else
+            if (numberOfImportedImages > 0)
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                reloadThumbnails();
-                if (selectedDocument() == UBApplication::boardController->selectedDocument())
-                    UBApplication::boardController->reloadThumbnails();
-
                 pageSelectionChanged();
+            }
+            else
+            {
+                UBApplication::showMessage(tr("Folder does not contain any image files"));
+                UBApplication::applicationController->showDocument();
             }
         }
     }
@@ -3247,84 +3233,39 @@ bool UBDocumentController::addFileToDocument(std::shared_ptr<UBDocumentProxy> do
     QFileInfo fileInfo(filePath);
     UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
 
-    bool success = false;
+    int numberOfImportedDocuments = 0;
 
     if (filePath.length() > 0)
     {
         QApplication::processEvents(); // NOTE: We performed this just a few lines before. Is it really necessary to do it again here??
         QFile selectedFile(filePath);
 
-        showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
+        UBApplication::showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
         QStringList fileNames;
         fileNames << filePath;
-        success = UBDocumentManager::documentManager()->addFilesToDocument(document, fileNames);
 
-        if (success)
+        numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(document, fileNames);
+
+        if (numberOfImportedDocuments > 0)
         {
             QDateTime now = QDateTime::currentDateTime();
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
             UBMetadataDcSubsetAdaptor::persist(document);
-            reloadThumbnails();
-            if (selectedDocument() == UBApplication::boardController->selectedDocument())
-                UBApplication::boardController->reloadThumbnails();
-
             pageSelectionChanged();
         }
         else
         {
-            showMessage(tr("Failed to import file ... "));
+            UBApplication::showMessage(tr("Failed to import file ... "));
         }
     }
 
     QApplication::restoreOverrideCursor();
 
-    return success;
+    return numberOfImportedDocuments > 0;
 }
 
-
-void UBDocumentController::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target)
-{
-    UBPersistenceManager::persistenceManager()->moveSceneToIndex(proxy, source, target);
-
-    proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-    UBMetadataDcSubsetAdaptor::persist(proxy);
-    //mBoardController->reloadThumbnails();
-
-    UBDocumentContainer::moveThumbPage(source, target);
-    mDocumentUI->thumbnailWidget->hightlightItem(target);
-
-    //mBoardController->setActiveDocumentScene(target);
-}
-
-void UBDocumentController::insertThumbnail(int index, const QPixmap& pix)
-{
-    QGraphicsPixmapItem *newThumbnail = new UBSceneThumbnailPixmap(pix, selectedDocument(), index); // deleted by the tree widget
-
-    mDocumentUI->thumbnailWidget->insertThumbnail(index, newThumbnail);
-}
-
-void UBDocumentController::updateThumbnail(int index)
-{
-    auto pix = pageAt(index);
-
-    if (pix)
-        mDocumentUI->thumbnailWidget->updateThumbnailPixmap(index, *pix);
-    else
-        qWarning() << "could not find a pixmap at index : " << index;
-}
-
-
-void UBDocumentController::removeThumbnail(int index)
-{
-    mDocumentUI->thumbnailWidget->removeThumbnail(index);
-}
-
-void UBDocumentController::moveThumbnail(int from, int to)
-{
-    mDocumentUI->thumbnailWidget->moveThumbnail(from, to);
-}
 
 void UBDocumentController::thumbnailViewResized()
 {
@@ -3380,16 +3321,18 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     }
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    UBSceneThumbnailPixmap* thumb = qgraphicsitem_cast<UBSceneThumbnailPixmap*> (item);
+    UBThumbnail* thumb = qgraphicsitem_cast<UBThumbnail*> (item);
 
     if (thumb) {
-        std::shared_ptr<UBDocumentProxy> proxy = thumb->documentProxy();
+        std::shared_ptr<UBDocumentProxy> proxy = mDocumentUI->thumbnailWidget->document()->proxy();
         if (proxy && isOKToOpenDocument(proxy)) {
+            UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
             mBoardController->setActiveDocumentScene(proxy, index);
             UBApplication::applicationController->showBoard();
         }
     }
 
+    UBApplication::showMessage(tr("Document opened successfully"), false);
     QApplication::restoreOverrideCursor();
 }
 
@@ -3438,11 +3381,13 @@ void UBDocumentController::addToDocument()
 
         foreach (QGraphicsItem* item, selectedItems)
         {
-            UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
+            UBThumbnail* thumb = dynamic_cast<UBThumbnail*> (item);
 
-            if (thumb &&  thumb->documentProxy())
+            auto proxy = mDocumentUI->thumbnailWidget->document()->proxy();
+
+            if (thumb &&  proxy)
             {
-                QPair<std::shared_ptr<UBDocumentProxy>, int> pageInfo(thumb->documentProxy(), thumb->sceneIndex());
+                QPair<std::shared_ptr<UBDocumentProxy>, int> pageInfo(proxy, thumb->sceneIndex());
                 pageInfoList << pageInfo;
             }
         }
@@ -3458,7 +3403,6 @@ void UBDocumentController::addToDocument()
         QDateTime now = QDateTime::currentDateTime();
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
-        //mBoardController->reloadThumbnails();
 
         UBApplication::applicationController->showBoard();
 
@@ -3557,25 +3501,23 @@ void UBDocumentController::addImages()
 
             UBSettings::settings()->lastImportFolderPath->set(QVariant(firstImage.absoluteDir().absolutePath()));
 
-            int importedImageNumber
-                = UBDocumentManager::documentManager()->addFilesToDocument(document, images);
+            int numberOfImportedImages = UBDocumentManager::documentManager()->addFilesToDocument(document, images);
 
-            if (importedImageNumber == 0)
-            {
-                UBApplication::showMessage(tr("Selection does not contain any image files!"));
-                UBApplication::applicationController->showDocument();
-            }
-            else
+            if (numberOfImportedImages > 0)
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                reloadThumbnails();
-                if (selectedDocument() == UBApplication::boardController->selectedDocument())
-                    UBApplication::boardController->reloadThumbnails();
 
+                auto document = UBDocument::getDocument(selectedDocument());
                 pageSelectionChanged();
             }
+            else
+            {
+                UBApplication::showMessage(tr("Selection does not contain any image files!"));
+                UBApplication::applicationController->showDocument();
+            }
+
         }
     }
 }
@@ -3733,7 +3675,7 @@ void UBDocumentController::updateActions()
 
         } else {
             for (int i = 0; i < selection.count() && !firstSceneSelected; i += 1) {
-                if (qgraphicsitem_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0) {
+                if (qgraphicsitem_cast<UBThumbnail*>(selection.at(i))->sceneIndex() == 0) {
                     mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
                     firstSceneSelected = true;
                     break;
@@ -3759,41 +3701,40 @@ void UBDocumentController::updateActions()
 
     switch (static_cast<int>(deletionForSelection)) {
     case MoveToTrash :
+        mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else
         {//can happen ?
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     case DeletePage :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
         mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         break;
     case CompleteDelete :
+        mMainWindow->actionDelete->setText(tr("Delete"));
+        mMainWindow->actionDelete->setToolTip(tr("Delete"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyFolder :
@@ -3801,33 +3742,35 @@ void UBDocumentController::updateActions()
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.png"));
             mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setToolTip(tr("Empty"));
         }
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
             mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setToolTip(tr("Delete"));
         }
         break;
     case EmptyTrash :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.png"));
         mMainWindow->actionDelete->setText(tr("Empty"));
+        mMainWindow->actionDelete->setToolTip(tr("Empty"));
         break;
     case NoDeletion :
     default:
+        mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     }
@@ -3859,70 +3802,23 @@ void UBDocumentController::currentIndexMoved(const QModelIndex &newIndex, const 
 
 void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 {
-    if (itemsToDelete.count() > 0)
+    std::shared_ptr<UBDocumentProxy> proxy = selectedDocumentProxy();
+
+    if (proxy && itemsToDelete.count() > 0)
     {
         QList<int> sceneIndexes;
-        std::shared_ptr<UBDocumentProxy> proxy = nullptr;
 
-        foreach (QGraphicsItem* item, itemsToDelete)
+        foreach (const QGraphicsItem* item, itemsToDelete)
         {
-            UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
+            const UBThumbnail* thumb = dynamic_cast<const UBThumbnail*> (item);
 
             if (thumb)
             {
-                proxy = thumb->documentProxy();
-                if (proxy)
-                {
-                    sceneIndexes.append(thumb->sceneIndex());
-                }
-
+                sceneIndexes.append(thumb->sceneIndex());
             }
         }
 
-        bool accepted = false;
-        if (sceneIndexes.size() > 1)
-        {
-            accepted = UBApplication::mainWindow->yesNoQuestion(tr("Moving %1 pages of the document \"%2\" to trash").arg(QString::number(sceneIndexes.size()), selectedDocument()->name()),
-                                                                tr("You are about to move %1 pages of the document \"%2\" to trash. Are you sure ?").arg(QString::number(sceneIndexes.size()), selectedDocument()->name()),
-                                                                QPixmap(":/images/trash-document-page.png")
-                                                                );
-        }
-        else
-        {
-            accepted = UBApplication::mainWindow->yesNoQuestion(tr("Remove page %1").arg(sceneIndexes.at(0)+1),
-                                                                tr("You are about to remove page %1 of the document \"%2\". Are you sure ?").arg(sceneIndexes.at(0)+1).arg(selectedDocument()->name()),
-                                                                QPixmap(":/images/trash-document-page.png")
-                                                                );
-        }
-
-        if (accepted)
-        {
-            UBDocumentContainer::deletePages(sceneIndexes);
-            if (mBoardController->selectedDocument() == selectedDocument())
-            {
-                std::sort(sceneIndexes.begin(), sceneIndexes.end(), std::greater<>());
-                for (auto index : sceneIndexes)
-                    emit mBoardController->removeThumbnailRequired(index);
-            }
-
-            QDateTime now = QDateTime::currentDateTime();
-            proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-
-            UBMetadataDcSubsetAdaptor::persist(proxy);
-
-            int minIndex = proxy->pageCount() - 1;
-            foreach (int i, sceneIndexes)
-                 minIndex = qMin(i, minIndex);
-
-            if (mBoardController->activeSceneIndex() > minIndex)
-            {
-                mBoardController->setActiveSceneIndex(minIndex);
-            }
-
-            mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
-
-            mBoardController->setActiveDocumentScene(minIndex);
-        }
+        UBDocumentContainer::deletePages(sceneIndexes);
     }
 }
 
@@ -3932,10 +3828,15 @@ int UBDocumentController::getSelectedItemIndex()
 
     if (selectedItems.count() > 0)
     {
-        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
+        UBThumbnail* thumb = dynamic_cast<UBThumbnail*> (selectedItems.last());
         return thumb->sceneIndex();
     }
     else return -1;
+}
+
+void UBDocumentController::setActiveThumbnail(int sceneIndex)
+{
+    mDocumentUI->thumbnailWidget->hightlightItem(sceneIndex);
 }
 
 bool UBDocumentController::pageCanBeMovedUp(int page)
@@ -3956,11 +3857,6 @@ bool UBDocumentController::pageCanBeDuplicated(int page)
 bool UBDocumentController::pageCanBeDeleted(int page)
 {
     return page != 0;
-}
-
-void UBDocumentController::setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload)
-{
-    UBDocumentContainer::setDocument(document, forceReload);
 }
 
 QModelIndex UBDocumentController::firstSelectedTreeIndex()
@@ -4011,10 +3907,10 @@ bool UBDocumentController::everySceneSelected() const
     QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
     if (selection.count() > 0)
     {
-        UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(0));
+        UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(0));
         if (p)
         {
-            return (selection.count() == p->documentProxy()->pageCount());
+            return (selection.count() == mDocumentUI->thumbnailWidget->document()->proxy()->pageCount());
         }
     }
     return false;
@@ -4025,10 +3921,10 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
     QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
     for(int i = 0; i < selection.count(); i += 1)
     {
-        UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
+        UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(i));
         if (p)
         {
-            int pageCount = p->documentProxy()->pageCount();
+            int pageCount = mDocumentUI->thumbnailWidget->document()->proxy()->pageCount();
             if (pageCount > 1) //not the only scene
             {
                 return false;
@@ -4046,82 +3942,6 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
     return false;
 }
 
-void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* source)
-{
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-    UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
-    std::shared_ptr<UBDocumentProxy> currentDocumentProxy = selectedDocument();
-
-    QModelIndex current = docModel->indexForProxy(currentDocumentProxy);
-
-    if (!current.isValid())
-    {
-        mDocumentUI->thumbnailWidget->setGraphicsItems(QList<QGraphicsItem*>()
-                                                       , QList<QUrl>()
-                                                       , QStringList()
-                                                       , UBApplication::mimeTypeUniboardPage);
-
-        QApplication::restoreOverrideCursor();
-        return;
-    }
-
-    if (currentDocumentProxy)
-    {
-        UBThumbnailAdaptor::load(currentDocumentProxy, documentThumbs());
-    }
-
-    QList<QGraphicsItem*> items;
-    QList<QUrl> itemsPath;
-
-    QGraphicsPixmapItem *selection = 0;
-
-    QStringList labels;
-
-    if (currentDocumentProxy)
-    {
-        for (int i = 0; i < currentDocumentProxy->pageCount(); i++)
-        {
-            UBApplication::showMessage(tr("Refreshing Document Thumbnails View (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
-
-            auto pix = documentThumbs().at(i);
-            QGraphicsPixmapItem *pixmapItem = new UBSceneThumbnailPixmap(*pix, currentDocumentProxy, i); // deleted by the tree widget
-
-            if (currentDocumentProxy == mBoardController->selectedDocument() && mBoardController->activeSceneIndex() == i)
-            {
-                selection = pixmapItem;
-            }
-
-            items << pixmapItem;
-            int pageIndex = pageFromSceneIndex(i);
-            if(pageIndex)
-                labels << tr("Page %1").arg(pageIndex);
-            else
-                labels << tr("Title page");
-
-            itemsPath.append(QUrl::fromLocalFile(currentDocumentProxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
-        }
-    }
-
-    mDocumentUI->thumbnailWidget->setGraphicsItems(items, itemsPath, labels, UBApplication::mimeTypeUniboardPage);
-
-    if (docModel->inTrash(current)) {
-        mDocumentUI->thumbnailWidget->setDragEnabled(false);
-    } else {
-        mDocumentUI->thumbnailWidget->setDragEnabled(true);
-    }
-
-    mDocumentUI->thumbnailWidget->ensureVisible(0, 0, 10, 10);
-
-    if (selection)
-    {
-        UBSceneThumbnailPixmap *currentSceneThumbnailPixmap = dynamic_cast<UBSceneThumbnailPixmap*>(selection);
-        if (currentSceneThumbnailPixmap)
-            mDocumentUI->thumbnailWidget->hightlightItem(currentSceneThumbnailPixmap->sceneIndex());
-    }
-
-    QApplication::restoreOverrideCursor();
-}
 
 void UBDocumentController::createNewDocumentInUntitledFolder()
 {
@@ -4132,9 +3952,6 @@ void UBDocumentController::createNewDocumentInUntitledFolder()
 
     std::shared_ptr<UBDocumentProxy> document = pManager->createDocument(groupName);
     selectDocument(document);
-
-    if (document)
-        pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
 
     pageSelectionChanged();
 }
