@@ -751,7 +751,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 
     persistDocumentMetadata(copy);
 
-    copy->setPageCount(copy->pageCount());
+    copy->setPageCount(pDocumentProxy->pageCount());
 
     emit documentCreated(copy);
 
