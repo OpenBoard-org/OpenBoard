@@ -303,7 +303,7 @@ QPixmap UBBackgroundManager::createButtonPixmap(const QDomDocument& bgDoc, bool 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
     auto result = doc.setContent(&templateFile, QDomDocument::ParseOption::UseNamespaceProcessing);
 #else
-    auto result = doc.setContent(&templateFile, true)
+    auto result = doc.setContent(&templateFile, true);
 #endif
     if (!result)
     {
