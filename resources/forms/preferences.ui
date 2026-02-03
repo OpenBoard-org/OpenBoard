@@ -1175,7 +1175,7 @@
          <property name="styleSheet">
           <string notr="true">QScrollArea:disabled {border: 1px solid red;}</string>
          </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents">
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
           <property name="geometry">
            <rect>
             <x>0</x>
