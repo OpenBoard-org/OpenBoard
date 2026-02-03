@@ -52,6 +52,62 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.7.5" date="2026-02-02">
+      <description>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed an issue where duplicating a document and then selecting the newly created document would not show any thumbnail</li>
+          <li>Fix drag&amp;drop multiple pages and selection behavior in document thumbnails view.</li>
+          <li>Fix typos in README.md.</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>On any widget, select options (Drop-down lists) won't appear at the right position. Be careful as it sometimes will appear behind the left or right palette of the Board Mode.</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.7.4" date="2026-01-22">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>Rotate snap indicator and snap rotated items.</li>
+          <li>Webp image support.</li>
+        </ul>
+        <p>Improvements</p>
+        <ul>
+          <li>Performance: background loader</li>
+          <li>Unified thumbnails for board and document mode.</li>
+          <li>README.md - typo.</li>
+          <li>Fix typos</li>
+          <li>German translation for Cache</li>
+        </ul>
+        <p>Bug fixes</p>
+        <ul>
+          <li>Fixed an issue where glitches would appear if a PDF was rendered in a screen with DPI scaling > 100%.</li>
+          <li>Fixed a bug where a PDF would appear blurry when devicepixelratio is not 1.0</li>
+          <li>Fixed a bug where the view would be restored to center when clearing scene.</li>
+          <li>Fix dropping pdf url to board.</li>
+          <li>Fix copy ItemOwnZValue when cloning item.</li>
+          <li>Fix tool usage with tablet eraser</li>
+          <li>Fix delegate handle recognition.</li>
+          <li>Fix small scene shifts when switching pages.</li>
+          <li>Import file only once to document.</li>
+          <li>Fix spinning message after UBZ import.</li>
+          <li>Fix thumbnail sync.</li>
+          <li>Fix incomplete ubdocument.</li>
+          <li>Fix possible crash in UBThumbnailScene.</li>
+          <li>Fix  check for valid document in thumbnails view.</li>
+          <li>Fix thumbnail size and UI buttons.</li>
+          <li>Fix detect delegate handle with tablet pen</li>
+          <li>Worked around a systematic crash on Windows where dropbar would be attached to a dangling scene after a document.</li>
+          <li>Fix blurry screenshots.</li>
+        </ul>
+        <p>Known issues</p>
+        <ul>
+          <li>On any widget, select options (Drop-down lists) won't appear at the right position. Be careful as it sometimes will appear behind the left or right palette of the Board Mode.</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.7.3" date="2024-12-17">
       <description>
         <p>Bug fixes</p>
