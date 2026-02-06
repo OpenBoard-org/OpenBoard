@@ -47,7 +47,7 @@ public:
     explicit UBDesktopPortal(QObject* parent = nullptr);
     virtual ~UBDesktopPortal();
 
-    void grabScreen(QScreen* screen, const QRect& rect = {});
+    void grabScreen(QScreen* screen, bool interactive);
 
 public slots:
     void startScreenCast(bool withCursor);

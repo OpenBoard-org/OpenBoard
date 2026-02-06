@@ -45,6 +45,40 @@
 
 static OnboardListener* listener = nullptr;
 
+// utility function to detect desktop environment
+enum DesktopEnvironment
+{
+    UNKNOWN,
+    GNOME,
+    KDE,
+    OTHER
+};
+
+static DesktopEnvironment desktopEnvironment()
+{
+    static DesktopEnvironment desktop{UNKNOWN};
+
+    if (desktop == UNKNOWN)
+    {
+        const auto xdgCurrentDesktop{QProcessEnvironment::systemEnvironment().value("XDG_CURRENT_DESKTOP", "")};
+
+        if (xdgCurrentDesktop.compare("gnome", Qt::CaseInsensitive) == 0)
+        {
+            desktop = GNOME;
+        }
+        else if (xdgCurrentDesktop.compare("kde", Qt::CaseInsensitive) == 0)
+        {
+            desktop = KDE;
+        }
+        else
+        {
+            desktop = OTHER;
+        }
+    }
+
+    return desktop;
+}
+
 void UBPlatformUtils::init()
 {
     initializeKeyboardLayouts();
@@ -535,7 +569,7 @@ void UBPlatformUtils::showOSK(bool show)
     }
 }
 
-void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, bool crop)
 {
     if (sessionType() == WAYLAND)
     {
@@ -546,15 +580,20 @@ void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> 
             portal->deleteLater();
         });
 
-        portal->grabScreen(screen, rect);
+        portal->grabScreen(screen, crop);
     }
     else
     {
         // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
         // for using window id 0
-        QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        QPixmap pixmap = screen->grabWindow(0);
         callback(pixmap);
     }
+}
+
+bool UBPlatformUtils::grabCanCrop()
+{
+    return sessionType() == WAYLAND && desktopEnvironment() == GNOME;
 }
 
 UBPlatformUtils::SessionType UBPlatformUtils::sessionType()

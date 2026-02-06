@@ -185,20 +185,15 @@ UBDesktopPortal::~UBDesktopPortal()
     }
 }
 
-void UBDesktopPortal::grabScreen(QScreen* screen, const QRect& rect)
+void UBDesktopPortal::grabScreen(QScreen* screen, bool interactive)
 {
     mScreenRect = screen->geometry();
-    mInteractiveScreenshot = false;
-
-    if (!rect.isNull())
-    {
-        mScreenRect = rect.translated(mScreenRect.topLeft());
-    }
+    mInteractiveScreenshot = interactive;
 
     qDebug() << "DesktopPortal: grabScreen"
              << "screen" << (screen ? screen->name() : QStringLiteral("<null>"))
              << "geom" << mScreenRect
-             << "rect" << rect;
+             << "interactive" << interactive;
 
     QDBusInterface screenshotPortal("org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop", "org.freedesktop.portal.Screenshot");
 
@@ -206,8 +201,7 @@ void UBDesktopPortal::grabScreen(QScreen* screen, const QRect& rect)
     {
         QMap<QString, QVariant> options;
         options["handle_token"] = createRequestToken();
-        options["interactive"] = true; // required by some portals (e.g. GNOME)
-        mInteractiveScreenshot = true;
+        options["interactive"] = mInteractiveScreenshot; // required by some portals (e.g. GNOME)
         QDBusReply<QDBusObjectPath> reply = screenshotPortal.call("Screenshot", "", options);
         QDBusObjectPath objectPath = reply.value();
         QString path = objectPath.path();
@@ -318,7 +312,10 @@ void UBDesktopPortal::handleScreenshotResponse(uint code, const QMap<QString, QV
         else
         {
             QRect targetRect = mScreenRect;
-            targetRect.moveTo(0, 0); // portal images are local to the grab
+            // NOTE have to disable this again.
+            // On KDE, the screenshot contains all screens, and I have to cut the desired screen out of this.
+            // What happens for non-interactive screenshots on GNOME? Is this important at all?
+//            targetRect.moveTo(0, 0); // portal images are local to the grab
             targetRect &= pixmap.rect();
             screenshot = pixmap.copy(targetRect);
             qDebug() << "DesktopPortal: cropping screenshot" << "targetRect" << targetRect;
