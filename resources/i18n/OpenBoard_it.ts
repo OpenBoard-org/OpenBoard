@@ -44,9 +44,9 @@
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation>Se vuoi, puoi prosseguire con un certificato non attestato. Accettare un certificato non attestato implica che potresti non essere connesso all&apos;host al quale cerchi di accedere.
+        <translation>Se vuoi, puoi proseguire con un certificato non verificato. Accettare un certificato non verificato implica che potresti non essere connesso all&apos;host al quale cerchi di accedere.
 
- Vuoi comunque prosseguire ?   </translation>
+ Vuoi comunque proseguire ?   </translation>
     </message>
 </context>
 <context>
@@ -64,7 +64,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.cpp" line="82"/>
         <source>Save as</source>
-        <translation>Salvaguardare sotto</translation>
+        <translation>Salva come</translation>
     </message>
 </context>
 <context>
@@ -84,22 +84,22 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="137"/>
         <source>%L1 B</source>
-        <translation>%L1 o</translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="139"/>
         <source>%L1 KiB</source>
-        <translation>%L1 ko</translation>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="141"/>
         <source>%L1 MiB</source>
-        <translation>%L1 Mo</translation>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="143"/>
         <source>%L1 GiB</source>
-        <translation>%L1 Go</translation>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="168"/>
@@ -119,7 +119,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="194"/>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation>Anullato - %1 downloaded - %2/s</translation>
+        <translation>Annullato - %1 downloaded - %2/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="202"/>
@@ -134,7 +134,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="214"/>
         <source>Remove from list</source>
-        <translation>Ritirare dalla lista</translation>
+        <translation>Rimuovere dalla lista</translation>
     </message>
 </context>
 <context>
@@ -1790,12 +1790,12 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2584"/>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation>Cancellazione definitiva des %1 documenti/folders</translation>
+        <translation>Cancellazione definitiva dei %1 documenti/folders</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2585"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation>Stai per cancellare definitivamente %1 documenti et/o folders. Sei sicuro ?</translation>
+        <translation>Stai per cancellare definitivamente %1 documenti e/o folders. Sei sicuro ?</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2669"/>
@@ -2120,7 +2120,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     <message>
         <location filename="../../src/adaptors/UBExportAdaptor.cpp" line="171"/>
         <source>Warnings during export was appeared</source>
-        <translation>È apparso un avviso durante l&apos;esportazione</translation>
+        <translation>Sono apparsi avvisi durante l&apos;esportazione</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportAdaptor.cpp" line="128"/>
@@ -2504,12 +2504,12 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     <message>
         <location filename="../../src/domain/UBGraphicsItemDelegate.cpp" line="218"/>
         <source>Layer up</source>
-        <translation>stratificare</translation>
+        <translation>Strato verso l'alto</translation>
     </message>
     <message>
         <location filename="../../src/domain/UBGraphicsItemDelegate.cpp" line="227"/>
         <source>Layer down</source>
-        <translation>strato verso il basso</translation>
+        <translation>Strato verso il basso</translation>
     </message>
 </context>
 <context>
@@ -3034,7 +3034,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="189"/>
         <source>Background</source>
-        <translation>Fondi</translation>
+        <translation>Sfondi</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="201"/>
@@ -3099,17 +3099,17 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="281"/>
         <source>Scroll page up</source>
-        <translation>Scorri verso l&apos;alto</translation>
+        <translation>Scorri la pagina verso l&apos;alto</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="287"/>
         <source>Scroll down</source>
-        <translation>Scorrere verso il basso</translation>
+        <translation>Scorri verso il basso</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="288"/>
         <source>Scroll page down</source>
-        <translation>Scorrere verso il basso</translation>
+        <translation>Scorri la pagina verso il basso</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="293"/>
@@ -3129,7 +3129,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="472"/>
         <source>Key Sequence</source>
-        <translation>Sequenza di tastiera</translation>
+        <translation>Sequenza di tasti</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="475"/>
@@ -3175,7 +3175,7 @@ Vuoi ignorare gli errori per questo host?</translation>
         <location filename="../../src/core/UBShortcutManager.cpp" line="634"/>
         <source>Task</source>
         <comment>MouseButton</comment>
-        <translation>Macchia</translation>
+        <translation>Compito</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="635"/>
@@ -3224,7 +3224,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="74"/>
         <source>Generating preview thumbnails ...</source>
-        <translation>Generazione della miniatura di anteprima in corso...</translation>
+        <translation>Generazione delle miniature di anteprima in corso...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="80"/>
@@ -3366,7 +3366,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <location filename="../../src/domain/UBWebEngineView.cpp" line="109"/>
         <source>Open Web Inspector</source>
-        <translation>Aprier l’ispettore Web</translation>
+        <translation>Aprire l’ispettore Web</translation>
     </message>
 </context>
 <context>
@@ -3470,7 +3470,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <location filename="../../src/domain/UBGraphicsScene.cpp" line="205"/>
         <source>Bottom layer limit reached</source>
-        <translation>Limite del livello inferiore raggiunto</translation>
+        <translation>Raggiunto il limite inferiore degli strati</translation>
     </message>
 </context>
 <context>
@@ -3520,48 +3520,48 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="159"/>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation>Entra l’utente e la password per  «%1» a %2</translation>
+        <translation>Inserisci l’utente e la password per  «%1» a %2</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="177"/>
         <source>Allow %1 to access your location information?</source>
-        <translation>Autorizzare %1  ad accedere alla tua posizione ?</translation>
+        <translation>Autorizza %1  ad accedere alla tua posizione ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="179"/>
         <source>Allow %1 to access your microphone?</source>
-        <translation>Autorizzare %1  ad accedere al tuo microfono ?</translation>
+        <translation>Autorizza %1  ad accedere al tuo microfono ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="181"/>
         <source>Allow %1 to access your webcam?</source>
-        <translation>Autorizzare %1  ad accedere alla tua webcam ?</translation>
+        <translation>Autorizza %1  ad accedere alla tua webcam ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="183"/>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation>Autorizzare %1  ad accedere al tuo microfono ed alla tua webcam ?</translation>
+        <translation>Autorizza %1  ad accedere al tuo microfono ed alla tua webcam ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="185"/>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation>Autorizzare %1 a bloccare il cursore della tua mouse ?</translation>
+        <translation>Autorizza %1 a bloccare il cursore del tuo mouse ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="187"/>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation>Autorizzare %1 a fare una cattura video del tuo desktop ?</translation>
+        <translation>Autorizza %1 a catturare un video del tuo desktop ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="189"/>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation>Autorizzare %1 a fare una cattura audio e video del tuo desktop ?</translation>
+        <translation>Autorizza %1 a catturare audio e video del tuo desktop ?</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="202"/>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="249"/>
         <source>Permission Request</source>
-        <translation>Chiedere l’autorizzazione</translation>
+        <translation>Richiesta di autorizzazione</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webpage.cpp" line="230"/>
@@ -3579,22 +3579,22 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <location filename="../../src/web/simplebrowser/webview.cpp" line="107"/>
         <source>Render process normal exit</source>
-        <translation>Uscita normale del procedimento resa</translation>
+        <translation>Uscita normale del procedimento di rendering</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webview.cpp" line="110"/>
         <source>Render process abnormal exit</source>
-        <translation>Uscita anomala del procedimento di resa</translation>
+        <translation>Uscita anomala del procedimento di rendering</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webview.cpp" line="113"/>
         <source>Render process crashed</source>
-        <translation>Il procedimento di resa ha subito un crash</translation>
+        <translation>Il procedimento di rendering ha subito un crash</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webview.cpp" line="116"/>
         <source>Render process killed</source>
-        <translation>Il procedimento di resa si è fermato</translation>
+        <translation>Procedimento di rendering interrotto</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/webview.cpp" line="120"/>
@@ -4062,7 +4062,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/preferences.ui" line="624"/>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation>Lista degli schermi utilizzati per le visualizzazioni Principale, Esteso ePpagine precedenti</translation>
+        <translation>Lista degli schermi utilizzati per le visualizzazioni Principale, Esteso e Pagine precedenti</translation>
     </message>
 </context>
 <context>
