@@ -635,7 +635,9 @@ void UBPlatformUtils::keepOnTop()
                 return;
             }
 
-            auto path = "/" + result.arguments().first().toString();
+            const auto kdeSesionVersion = QProcessEnvironment::systemEnvironment().value("KDE_SESSION_VERSION", "0").toInt();
+            const auto prefix = kdeSesionVersion <= 5 ? "/" : "/Scripting/Script";
+            const auto path = prefix + result.arguments().first().toString();
 
             QDBusInterface script("org.kde.KWin", path);
             script.call("run");
