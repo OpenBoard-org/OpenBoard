@@ -360,13 +360,7 @@ void UBDesktopAnnotationController::showWindow()
 
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
-#ifndef Q_OS_LINUX
     UBPlatformUtils::showFullScreen(mTransparentDrawingView);
-#else
-    // this is necessary to avoid hiding the panels on Unity and Cinnamon
-    // if finer control is necessary, use qgetenv("XDG_CURRENT_DESKTOP")
-    mTransparentDrawingView->show();
-#endif
     UBPlatformUtils::hideMenuBarAndDock();
 
     mDesktopPalette->appear();
