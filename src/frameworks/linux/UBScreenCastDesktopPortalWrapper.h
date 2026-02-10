@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2026 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -23,16 +23,13 @@
 #pragma once
 
 #include <QObject>
-#include <QRect>
 #include <QVariantMap>
 #include <QPixmap>
-#include <QUrl>
 
 // forward
 class QDBusInterface;
-class QScreen;
 
-class UBDesktopPortal : public QObject
+class UBScreenCastDesktopPortalWrapper : public QObject
 {
     Q_OBJECT
 
@@ -44,38 +41,28 @@ public:
     } Stream;
     typedef QList<Stream> Streams;
 
-    explicit UBDesktopPortal(QObject* parent = nullptr);
-    virtual ~UBDesktopPortal();
-
-    void grabScreen(QScreen* screen, bool interactive);
+    explicit UBScreenCastDesktopPortalWrapper(QObject* parent = nullptr);
+    virtual ~UBScreenCastDesktopPortalWrapper();
 
 public slots:
     void startScreenCast(bool withCursor);
     void stopScreenCast();
 
 signals:
-    void screenGrabbed(QPixmap pixmap);
     void streamStarted(int fd, int nodeId);
     void screenCastAborted();
+    void showGlassPane(bool show);
 
 private slots:
-    void handleScreenshotResponse(uint code, const QMap<QString, QVariant>& results);
     void handleCreateSessionResponse(uint response, const QVariantMap& results);
     void handleSelectSourcesResponse(uint response, const QVariantMap& results);
     void handleStartResponse(uint response, const QVariantMap& results);
 
 private:
     QDBusInterface* screencastPortal();
-    QString createSessionToken() const;
-    QString createRequestToken() const;
-    void showGlassPane(bool show) const;
-    QPixmap loadScreenshotFromUri(const QUrl& uri) const;
-    QPixmap readClipboardScreenshot() const;
 
 private:
-    QRect mScreenRect;
     bool mWithCursor{false};
-    bool mInteractiveScreenshot{false};
     QString mSession;
     QString mRequestPath;
     uint mScreencastPortalVersion{0};

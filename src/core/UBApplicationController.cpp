@@ -620,6 +620,19 @@ void UBApplicationController::hideDesktop()
     emit desktopMode(false);
 }
 
+void UBApplicationController::showGlassPane(bool show)
+{
+    if (isShowingDesktop())
+    {
+        uninotesController()->drawingView()->setVisible(show);
+
+        if (show)
+        {
+            UBPlatformUtils::keepOnTop();
+        }
+    }
+}
+
 void UBApplicationController::setMirrorSourceWidget(QWidget* pWidget)
 {
     if (mMirror)

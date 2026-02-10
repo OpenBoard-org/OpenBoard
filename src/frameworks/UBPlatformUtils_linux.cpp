@@ -36,7 +36,7 @@
 
 #include <unistd.h>
 
-#include "frameworks/UBDesktopPortal.h"
+#include "frameworks/linux/UBScreenshotDesktopPortalWrapper.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
@@ -573,9 +573,9 @@ void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> 
 {
     if (sessionType() == WAYLAND)
     {
-        UBDesktopPortal* portal = new UBDesktopPortal;
+        auto* portal = new UBScreenshotDesktopPortalWrapper;
 
-        QObject::connect(portal, &UBDesktopPortal::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
+        QObject::connect(portal, &UBScreenshotDesktopPortalWrapper::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
             callback(screenshot);
             portal->deleteLater();
         });
