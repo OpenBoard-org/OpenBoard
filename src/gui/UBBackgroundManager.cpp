@@ -300,8 +300,12 @@ QPixmap UBBackgroundManager::createButtonPixmap(const QDomDocument& bgDoc, bool 
     }
 
     QDomDocument doc;
-
-    if (!doc.setContent(&templateFile, true))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+    auto result = doc.setContent(&templateFile, QDomDocument::ParseOption::UseNamespaceProcessing);
+#else
+    auto result = doc.setContent(&templateFile, true);
+#endif
+    if (!result)
     {
         qWarning() << "Cannot load template file" << templateFile.fileName();
         return {};
