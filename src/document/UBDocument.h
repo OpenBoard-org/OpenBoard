@@ -59,10 +59,10 @@ public:
 
     std::shared_ptr<UBDocumentProxy> proxy() const;
 
-    void deletePages(QList<int> indexes);
-    void duplicatePage(int index);
-    void movePage(int fromIndex, int toIndex);
-    void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
+    bool deletePages(QList<int> indexes, bool approve = true);
+    bool duplicatePage(int index);
+    bool movePage(int fromIndex, int toIndex);
+    bool copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool saveToc = true, bool cached = true,
                                                 bool useUndoRedoStack = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
@@ -85,7 +85,7 @@ public:
 
 private:
     void scan(bool tocPresent);
-    void copyPage(int fromIndex, UBDocument* to, int toIndex);
+    bool copyPage(int fromIndex, UBDocument* to, int toIndex);
     void deleteUnreferencedAssets();
     void assureHeaderLoaderFinished(bool visualFeedback = true);
 

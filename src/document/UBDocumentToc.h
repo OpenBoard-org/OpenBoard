@@ -65,6 +65,7 @@ public:
 
     // next available pageId
     int nextAvailablePageId();
+    bool isValidIndex(int index) const;
 
 private:
     void assureSize(int index);

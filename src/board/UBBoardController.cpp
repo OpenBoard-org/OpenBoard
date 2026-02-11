@@ -566,7 +566,9 @@ void UBBoardController::documentSceneDeleted(UBDocument* document, int index)
         if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
         {
             // directly change scene
+            mDeletingSceneIndex = index;
             setActiveDocumentScene(nextSceneIndex);
+            mDeletingSceneIndex = -1;
         }
         else
         {
@@ -794,32 +796,6 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     }
 
     return retItem;
-}
-
-void UBBoardController::deleteScene(int nIndex)
-{
-    auto document = UBDocument::getDocument(selectedDocument());
-
-    if (document->pageCount() >= 2)
-    {
-        mDeletingSceneIndex = nIndex;
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistCurrentScene();
-        UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
-
-        document->deletePages({nIndex});
-
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
-
-        if (nIndex >= document->pageCount())
-            nIndex = document->pageCount()-1;
-        setActiveDocumentScene(nIndex);
-        UBApplication::showMessage(tr("Page %1 deleted").arg(nIndex+1));
-        QApplication::restoreOverrideCursor();
-        mDeletingSceneIndex = -1;
-    }
 }
 
 
@@ -1802,11 +1778,6 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::activeScene() const
 int UBBoardController::activeSceneIndex() const
 {
     return mActiveSceneIndex;
-}
-
-void UBBoardController::setActiveSceneIndex(int i)
-{
-    mActiveSceneIndex = i;
 }
 
 void UBBoardController::documentSceneChanged(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex)
