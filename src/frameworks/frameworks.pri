@@ -25,22 +25,24 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
 win32 {
 
     SOURCES  += src/frameworks/UBPlatformUtils_win.cpp
-}            
+}
 
 
-macx {                
+macx {
 
     OBJECTIVE_SOURCES  += src/frameworks/UBPlatformUtils_mac.mm
-                
-}       
+
+}
 
 
 linux-g++* {
-    HEADERS  += src/frameworks/UBDesktopPortal.h \
-                src/frameworks/UBPipewireSink.h
+    HEADERS  += src/frameworks/linux/UBScreenCastDesktopPortalWrapper.h \
+                src/frameworks/linux/UBScreenshotDesktopPortalWrapper.h \
+                src/frameworks/linux/UBPipewireSink.h
     SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
-                src/frameworks/UBDesktopPortal.cpp \
-                src/frameworks/UBPipewireSink.cpp
+                src/frameworks/linux/UBScreenCastDesktopPortalWrapper.cpp \
+                src/frameworks/linux/UBScreenshotDesktopPortalWrapper.cpp \
+                src/frameworks/linux/UBPipewireSink.cpp
 
     CONFIG += link_pkgconfig
     PKGCONFIG += libpipewire-0.3

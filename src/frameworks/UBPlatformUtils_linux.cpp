@@ -36,7 +36,7 @@
 
 #include <unistd.h>
 
-#include "frameworks/UBDesktopPortal.h"
+#include "frameworks/linux/UBScreenshotDesktopPortalWrapper.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
@@ -44,6 +44,40 @@
 #include "gui/UBMainWindow.h"
 
 static OnboardListener* listener = nullptr;
+
+// utility function to detect desktop environment
+enum DesktopEnvironment
+{
+    UNKNOWN,
+    GNOME,
+    KDE,
+    OTHER
+};
+
+static DesktopEnvironment desktopEnvironment()
+{
+    static DesktopEnvironment desktop{UNKNOWN};
+
+    if (desktop == UNKNOWN)
+    {
+        const auto xdgCurrentDesktop{QProcessEnvironment::systemEnvironment().value("XDG_CURRENT_DESKTOP", "")};
+
+        if (xdgCurrentDesktop.compare("gnome", Qt::CaseInsensitive) == 0)
+        {
+            desktop = GNOME;
+        }
+        else if (xdgCurrentDesktop.compare("kde", Qt::CaseInsensitive) == 0)
+        {
+            desktop = KDE;
+        }
+        else
+        {
+            desktop = OTHER;
+        }
+    }
+
+    return desktop;
+}
 
 void UBPlatformUtils::init()
 {
@@ -535,26 +569,31 @@ void UBPlatformUtils::showOSK(bool show)
     }
 }
 
-void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, bool crop)
 {
     if (sessionType() == WAYLAND)
     {
-        UBDesktopPortal* portal = new UBDesktopPortal;
+        auto* portal = new UBScreenshotDesktopPortalWrapper;
 
-        QObject::connect(portal, &UBDesktopPortal::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
+        QObject::connect(portal, &UBScreenshotDesktopPortalWrapper::screenGrabbed, portal, [portal,callback](QPixmap screenshot){
             callback(screenshot);
             portal->deleteLater();
         });
 
-        portal->grabScreen(screen, rect);
+        portal->grabScreen(screen, crop);
     }
     else
     {
         // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
         // for using window id 0
-        QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        QPixmap pixmap = screen->grabWindow(0);
         callback(pixmap);
     }
+}
+
+bool UBPlatformUtils::grabCanCrop()
+{
+    return sessionType() == WAYLAND && desktopEnvironment() == GNOME;
 }
 
 UBPlatformUtils::SessionType UBPlatformUtils::sessionType()
@@ -596,7 +635,9 @@ void UBPlatformUtils::keepOnTop()
                 return;
             }
 
-            auto path = "/" + result.arguments().first().toString();
+            const auto kdeSesionVersion = QProcessEnvironment::systemEnvironment().value("KDE_SESSION_VERSION", "0").toInt();
+            const auto prefix = kdeSesionVersion <= 5 ? "/" : "/Scripting/Script";
+            const auto path = prefix + result.arguments().first().toString();
 
             QDBusInterface script("org.kde.KWin", path);
             script.call("run");

@@ -213,7 +213,8 @@ public:
         static void setFrontProcess();
         static void showFullScreen(QWidget * pWidget);
         static void showOSK(bool show);
-        static void grabScreen(QScreen* screen, std::function<void(QPixmap)> callback, QRect rect = {});
+        static void grabScreen(QScreen* screen, std::function<void(QPixmap)> callback, bool crop = false);
+        static bool grabCanCrop();
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);

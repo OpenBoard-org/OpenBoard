@@ -35,8 +35,8 @@
 #include "board/UBBoardController.h"
 
 #ifdef Q_OS_LINUX
-#include "frameworks/UBDesktopPortal.h"
-#include "frameworks/UBPipewireSink.h"
+#include "frameworks/linux/UBScreenCastDesktopPortalWrapper.h"
+#include "frameworks/linux/UBPipewireSink.h"
 #include "frameworks/UBPlatformUtils.h"
 #endif
 
@@ -115,12 +115,14 @@ void UBScreenMirror::startScreenCast()
     // use UBDesktopPortal
     if (!mPortal)
     {
-        mPortal = new UBDesktopPortal(this);
+        mPortal = new UBScreenCastDesktopPortalWrapper(this);
 
-        connect(mPortal, &UBDesktopPortal::streamStarted, this, &UBScreenMirror::playStream);
-        connect(mPortal, &UBDesktopPortal::screenCastAborted, this, [](){
+        connect(mPortal, &UBScreenCastDesktopPortalWrapper::streamStarted, this, &UBScreenMirror::playStream);
+        connect(mPortal, &UBScreenCastDesktopPortalWrapper::screenCastAborted, this, [](){
             UBApplication::applicationController->mirroringEnabled(false);
         });
+        connect(mPortal, &UBScreenCastDesktopPortalWrapper::showGlassPane,
+                UBApplication::applicationController, &UBApplicationController::showGlassPane);
     }
 
     mPortal->startScreenCast(true);

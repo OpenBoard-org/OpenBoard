@@ -64,8 +64,8 @@
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
     #include "ffmpeg/UBMicrophoneInput.h"
 #elif defined(Q_OS_LINUX)
-    #include "frameworks/UBDesktopPortal.h"
-    #include "frameworks/UBPipewireSink.h"
+    #include "frameworks/linux/UBScreenCastDesktopPortalWrapper.h"
+    #include "frameworks/linux/UBPipewireSink.h"
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
     #include "ffmpeg/UBMicrophoneInput.h"
 #endif
@@ -683,21 +683,23 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
             // create a ScreenCast session
             if (!mPortal)
             {
-                mPortal = new UBDesktopPortal{this};
+                mPortal = new UBScreenCastDesktopPortalWrapper{this};
 
                 // delete portal if screencast was aborted
-                connect(mPortal, &UBDesktopPortal::screenCastAborted, this, [this](){
+                connect(mPortal, &UBScreenCastDesktopPortalWrapper::screenCastAborted, this, [this](){
                     mPortal->deleteLater();
                     mPortal = nullptr;
                 });
+                connect(mPortal, &UBScreenCastDesktopPortalWrapper::showGlassPane,
+                        UBApplication::applicationController, &UBApplicationController::showGlassPane);
             }
 
             if (mRecordingState == Recording)
             {
                 mPipewireSink = new UBPipewireSink{this};
 
-                disconnect(mPortal, &UBDesktopPortal::streamStarted, mPortal, &UBDesktopPortal::stopScreenCast);
-                connect(mPortal, &UBDesktopPortal::streamStarted, mPipewireSink, &UBPipewireSink::start);
+                disconnect(mPortal, &UBScreenCastDesktopPortalWrapper::streamStarted, mPortal, &UBScreenCastDesktopPortalWrapper::stopScreenCast);
+                connect(mPortal, &UBScreenCastDesktopPortalWrapper::streamStarted, mPipewireSink, &UBPipewireSink::start);
                 connect(mPipewireSink, &UBPipewireSink::gotImage, this, [this](QImage image){
                     if (mPipewireSink)
                     {
@@ -708,7 +710,7 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
             else
             {
                 // stop stream, we just selected the screen
-                connect(mPortal, &UBDesktopPortal::streamStarted, mPortal, &UBDesktopPortal::stopScreenCast);
+                connect(mPortal, &UBScreenCastDesktopPortalWrapper::streamStarted, mPortal, &UBScreenCastDesktopPortalWrapper::stopScreenCast);
             }
 
             mPortal->startScreenCast(true);
