@@ -720,11 +720,15 @@ void UBFeaturesNewFolderDialog::reactOnTextChanged(const QString &pStr)
 {
     if (validString(pStr)) {
         acceptButton->setEnabled(true);
-        mLineEdit->setStyleSheet("background:white;");
+        mLineEdit->setProperty("invalid", false);
     } else {
         acceptButton->setEnabled(false);
-        mLineEdit->setStyleSheet("background:#FFB3C8;");
+        mLineEdit->setProperty("invalid", true);
     }
+    
+    // Force style update after property change
+    mLineEdit->style()->unpolish(mLineEdit);
+    mLineEdit->style()->polish(mLineEdit);
 }
 
 UBFeaturesProgressInfo::UBFeaturesProgressInfo(QWidget *parent) :
@@ -906,7 +910,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpButtonLayout->addStretch(1);
 
     mpObjInfoLabel = new QLabel(tr("Object informations"));
-    mpObjInfoLabel->setStyleSheet(QString("color: #888888; font-size : 18px; font-weight:bold;"));
+    mpObjInfoLabel->setObjectName("UBFeatureInfoLabel");
     mpLayout->addWidget(mpObjInfoLabel, 0);
 
     mpObjInfos = new QTreeWidget(this);
@@ -915,7 +919,6 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setAlternatingRowColors(true);
     mpObjInfos->setRootIsDecorated(false);
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
-    mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
     mpLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -1108,7 +1111,6 @@ void UBFeatureProperties::onSetAsBackground()
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
 {
     setObjectName(name);
-    setStyleSheet(QString("background-color : #DDDDDD; color : #555555; border-radius : 6px; padding : 5px; font-weight : bold; font-size : 12px;"));
 }
 
 UBFeatureItemButton::~UBFeatureItemButton()

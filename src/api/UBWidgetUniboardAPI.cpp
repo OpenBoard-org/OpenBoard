@@ -35,6 +35,7 @@
 #include "core/UB.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
+#include "core/UBThemeManager.h"
 
 #include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
@@ -478,6 +479,11 @@ QString UBWidgetUniboardAPI::lang() const
         lang[2] = QLatin1Char('-');
 
     return lang;
+}
+
+bool UBWidgetUniboardAPI::isDarkMode() const
+{
+    return UBThemeManager::instance()->isDarkMode();
 }
 
 void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)

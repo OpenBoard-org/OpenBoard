@@ -545,6 +545,14 @@ void UBDockPalette::assignParent(QWidget *widget)
 {
     setParent(widget);
     mTabPalette->setParent(widget);
+    
+    // Update size constraints from new parent to avoid an issue in dark mode where the library dock palette would no longer be correctly sized
+    if (widget)
+    {
+        setMinimumHeight(widget->height());
+        setMaximumHeight(widget->height());
+        resize(width(), widget->height());
+    }
 }
 void UBDockPalette::setVisible(bool visible)
 {

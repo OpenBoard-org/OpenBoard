@@ -46,6 +46,7 @@
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 #include "UBShortcutManager.h"
+#include "UBThemeManager.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -146,9 +147,11 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     setStyle("fusion");
 
-    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationEtcDirectory() + "/"+ qApp->applicationName()+".css");
-    if (css.length() > 0)
-        setStyleSheet(css);
+    UBThemeManager::instance()->applyUserThemePreference();
+    
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, UBThemeManager::instance(), &UBThemeManager::onColorSchemeChanged);
+#endif
 
     QApplication::setStartDragDistance(8); // default is 4, and is a bit small for tablets
 
@@ -813,3 +816,4 @@ bool UBApplication::isFromWeb(QString url)
 
     return res;
 }
+

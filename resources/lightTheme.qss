@@ -1,0 +1,60 @@
+/* 
+ * OpenBoard Light Theme
+ */
+
+QToolButton#ubButtonGroupLeft,
+QToolButton#ubButtonGroupCenter,
+QToolButton#ubButtonGroupRight,
+QToolButton#desktop-ubButtonGroupLeft,
+QToolButton#desktop-ubButtonGroupCenter,
+QToolButton#desktop-ubButtonGroupRight
+{
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #d3d3d3, stop: 1 #c4c4c4);
+    color: palette(button-text);
+    border-radius: 0px;
+    border: 1px solid palette(dark);
+    border-left: none;
+    border-right: none;
+}
+
+QToolButton#ubButtonGroupLeft,
+QToolButton#desktop-ubButtonGroupLeft
+{
+    border-left: 1px solid palette(dark);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+QToolButton#ubButtonGroupRight,
+QToolButton#desktop-ubButtonGroupRight
+{
+    border-right: 1px solid palette(dark);
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+/* Desktop button group variants with lighter gradient */
+QToolButton#desktop-ubButtonGroupLeft,
+QToolButton#desktop-ubButtonGroupCenter,
+QToolButton#desktop-ubButtonGroupRight
+{
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #c3c3c3, stop: 1 #ffffff);
+}
+
+/* Checked state for desktop buttons */
+QToolButton#desktop-ubButtonGroupLeft:checked,
+QToolButton#desktop-ubButtonGroupCenter:checked,
+QToolButton#desktop-ubButtonGroupRight:checked
+{
+    border: 1px solid white;
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #c3c3c3, stop: 1 #ffffff);
+}
+
+/* Checked state for board buttons */
+QToolButton#ubButtonGroupLeft:checked,
+QToolButton#ubButtonGroupCenter:checked,
+QToolButton#ubButtonGroupRight:checked
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(light), stop: 1 palette(midlight));
+    border: 1px solid palette(dark);
+}
