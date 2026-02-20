@@ -730,7 +730,11 @@ void UBDesktopAnnotationController::selectorActionPressed()
 
 void UBDesktopAnnotationController::selectorActionReleased()
 {
+#ifdef UB_REQUIRES_MASK_UPDATE
+    mDesktopPalette->minimizeMe(eMinimizedLocation_None);
+#else
     UBApplication::mainWindow->actionSelector->setChecked(true);
+#endif
     switchCursor(UBStylusTool::Selector);
 }
 
@@ -776,6 +780,9 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 {
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
+#ifdef UB_REQUIRES_MASK_UPDATE
+    UBApplication::mainWindow->actionSelector->setChecked(false);
+#endif
 }
 
 /**
@@ -822,6 +829,11 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
         connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
         connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
     }
+#ifdef UB_REQUIRES_MASK_UPDATE
+    UBApplication::mainWindow->actionSelector->setChecked(false);
+    updateMask(false);
+#endif
+
 }
 
 /**
@@ -940,36 +952,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 
         p.end();
 
-        // Then we add the annotations. We create another painter because we need to
-        // apply transformations on it for coordinates matching
-        QPainter annotationPainter;
-
-        QTransform trans;
-        trans.translate(mTransparentDrawingView->width()/2, mTransparentDrawingView->height()/2);
-
-        annotationPainter.begin(&mMask);
-        annotationPainter.setPen(Qt::red);
-        annotationPainter.setBrush(Qt::red);
-
-        annotationPainter.setTransform(trans);
-
-        QList<QGraphicsItem*> allItems = mTransparentDrawingScene->items();
-
-        for(int i = 0; i < allItems.size(); i++)
-        {
-            QGraphicsItem* pCrntItem = allItems.at(i);
-
-            if(pCrntItem->isVisible() && pCrntItem->type() == UBGraphicsPolygonItem::Type)
-            {
-                QPainterPath crntPath = pCrntItem->shape();
-                QRectF rect = crntPath.boundingRect();
-
-                annotationPainter.drawRect(rect);
-            }
-        }
-
-        annotationPainter.end();
-
         mTransparentDrawingView->setMask(mMask.mask());
     }
     else
@@ -1002,7 +984,7 @@ void UBDesktopAnnotationController::refreshMask()
                 || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
                 || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
         {
-            updateMask(true);
+            updateMask(UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector);
         }
     }
 }

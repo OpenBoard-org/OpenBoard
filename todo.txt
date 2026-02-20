@@ -1,0 +1,10 @@
+
+UBDesktopAnnotationController::onDesktopPaletteMaximized is used for disconnecting buttons. That is incorrect.
+
+Nächste Schritte: adjustSizeAndPosition ruft moveInsideParent auf. Evtl. kann man den Code auch einfach reinkopieren und die Methode auflösen. Sie wird aber woanders auch verwednet.
+Wahrsceinlich geht das nicht. Aber der Code sollte untersucht werden, ob er sinnvoll ist..
+
+moveInsideParent kann Parameter für canBeMaximised übergeben werden. Dann ist die lokale Variable nicht mehr notwendig.
+
+
+Realistisch: connectButtons nicht ständig wiederholen. Dann brauchen wir auch getButtonFromAction nicht
