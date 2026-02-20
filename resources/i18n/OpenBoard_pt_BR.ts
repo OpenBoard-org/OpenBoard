@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR" sourcelanguage="en_GB">
+<TS version="2.1" language="pt_BR" sourcelanguage="fr_CH">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -44,7 +44,7 @@
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+        <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que talvez não se conecte ao host ao qual tentava se conectar.
 
 Deseja substituir a verificação de segurança e continuar?</translation>
     </message>
@@ -155,7 +155,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.ui" line="89"/>
         <source>No downloads</source>
-        <translation>Sem downloads</translation>
+        <translation>Sem transferências</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.cpp" line="82"/>
