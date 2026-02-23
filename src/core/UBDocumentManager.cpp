@@ -320,7 +320,15 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+
+                    // remove all asset entries from new pages to force scanning
+                    for (int index = currentNumberOfPages; index < doc->pageCount(); ++index)
+                    {
+                        doc->toc()->unsetAssets(index);
+                    }
+
                     doc->toc()->save();
+                    doc->scanAssets();
                     UBApplication::showMessage(tr("Import of file %1 successful.").arg(file.fileName()));
                     nImportedDocuments++;
                     break;
