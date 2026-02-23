@@ -3397,9 +3397,9 @@ void UBDocumentController::addToDocument()
             mBoardController->addScene(pageInfoList.at(i).first, pageInfoList.at(i).second, false);
         }
 
+        selectDocument(mBoardController->selectedDocument());
         int newActiveSceneIndex = selectedItems.count() == mBoardController->selectedDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
-        selectDocument(mBoardController->selectedDocument());
         QDateTime now = QDateTime::currentDateTime();
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
