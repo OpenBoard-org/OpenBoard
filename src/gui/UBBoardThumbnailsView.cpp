@@ -160,7 +160,7 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
     bool scrollbarWasHidden = mScrollbarVisible && !verticalScrollBar()->isVisible();
 
     // Refresh the scene, except if resizing because scrollbar was hidden
-    if (event->size().width() > 0 && !scrollbarWasHidden && mDocument)
+    if (event->oldSize().width() == 0 || (event->size().width() > 0 && !scrollbarWasHidden && mDocument))
     {
         mDocument->thumbnailScene()->arrangeThumbnails();
         ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
