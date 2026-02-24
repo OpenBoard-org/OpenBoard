@@ -2183,8 +2183,8 @@ const UBBackgroundRuling* UBGraphicsScene::background() const
 
 QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool center, int margin, bool expand)
 {
-    int maxWidth = mNominalSize.width() - (margin * 2);
-    int maxHeight = mNominalSize.height() - (margin * 2);
+    int maxWidth = nominalSize().width() - (margin * 2);
+    int maxHeight = nominalSize().height() - (margin * 2);
 
     QRectF size = item->sceneBoundingRect();
 

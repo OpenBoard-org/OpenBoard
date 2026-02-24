@@ -197,49 +197,12 @@ std::shared_ptr<UBDocument> UBDocumentManager::importFile(const QFile& pFile, co
                 if (document)
                 {
                     doc = UBDocument::getDocument(document);
-                    QString filepath = pFile.fileName();
-                    QUuid uuid;
-                    if (importAdaptor->folderToCopy() != "")
-                    {
-                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy(), filepath);
-                        if (uuid.isNull())
-                        {
-                            UBApplication::setDisabled(false);
-                            return NULL;
-                        }
-                    }
-
-                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
-                    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
-                    int pageIndex = 0;
-
-                    UBApplication::showMessage(tr("Creating %1 pages. Please wait...").arg(pages.size()), true);
 
                     // create the thumbnail scene before any pages are created
                     doc->thumbnailScene(false);
 
-                    foreach(UBGraphicsItem* page, pages)
-                    {
-    #ifdef Q_WS_MACX
-                        //Workaround for issue 912
-                        QApplication::processEvents();
-    #endif
-                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, false);
-                        importAdaptor->placeImportedItemToScene(scene, page);
-                        doc->persistPage(scene, pageIndex, false, false, false, false);
-                        pageIndex++;
-                    }
+                    importPages(pFile, doc, importAdaptor);
 
-                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-
-                    // remove all asset entries to force scanning
-                    for (int index = 0; index < doc->pageCount(); ++index)
-                    {
-                        doc->toc()->unsetAssets(index);
-                    }
-
-                    doc->toc()->save();
-                    doc->scanAssets();
                     UBApplication::showMessage(tr("Import successful."));
                 }
             }
@@ -257,7 +220,6 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
 {
     int nImportedDocuments = 0;
     auto doc = UBDocument::getDocument(document);
-    const auto currentNumberOfPages = doc->pageCount();
 
     foreach(const QString& fileName, fileNames)
     {
@@ -287,40 +249,8 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                 else
                 {
                     UBPageBasedImportAdaptor* importAdaptor = (UBPageBasedImportAdaptor*)adaptor;
+                    importPages(file, doc, importAdaptor);
 
-                    QByteArray data;
-
-                    if (file.open(QFile::ReadOnly))
-                    {
-                        data = file.readAll();
-                        file.close();
-                    }
-
-                    QString filepath = file.fileName();
-                    QUuid uuid;
-                    if (importAdaptor->folderToCopy() != "")
-                    {
-                        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy(), filepath);
-                        if (uuid.isNull())
-                        {
-                            continue;
-                        }
-                    }
-
-                    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
-                    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
-                    int nPage = 0;
-                    foreach(UBGraphicsItem* page, pages)
-                    {
-                        UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-                        int pageIndex = doc->pageCount();
-                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
-                        importAdaptor->placeImportedItemToScene(scene, page);
-                        doc->persistPage(scene, pageIndex, false, false, false, false);
-                    }
-
-                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-                    doc->toc()->save();
                     UBApplication::showMessage(tr("Import of file %1 successful.").arg(file.fileName()));
                     nImportedDocuments++;
                     break;
@@ -328,9 +258,9 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
             }
         }
 
-        doc->thumbnailScene()->createThumbnails(currentNumberOfPages);
         UBApplication::setDisabled(false);
     }
+
     return nImportedDocuments;
 }
 
@@ -381,4 +311,49 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importDir(const QDir& pDir, 
 QList<UBExportAdaptor*> UBDocumentManager::supportedExportAdaptors()
 {
     return mExportAdaptors;
+}
+
+int UBDocumentManager::importPages(const QFile& file, std::shared_ptr<UBDocument> doc, UBPageBasedImportAdaptor* importAdaptor)
+{
+    std::shared_ptr<UBDocumentProxy> document = doc->proxy();
+    QString filepath = file.fileName();
+    QUuid uuid;
+
+    if (importAdaptor->folderToCopy() != "")
+    {
+        uuid = UBPersistenceManager::persistenceManager()->addFileToDocument(document, file.fileName(), importAdaptor->folderToCopy(), filepath);
+
+        if (uuid.isNull())
+        {
+            return 0;
+        }
+    }
+
+    // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
+    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
+    const int startIndex = doc->pageCount();
+    int pageIndex = startIndex;
+
+    UBApplication::showMessage(tr("Creating %1 pages. Please wait...").arg(pages.size()), true);
+
+    for (UBGraphicsItem* page : pages)
+    {
+        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, false);
+        importAdaptor->placeImportedItemToScene(scene, page);
+        doc->persistPage(scene, pageIndex, false, false, false, false);
+        pageIndex++;
+    }
+
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+
+    // remove all asset entries to force scanning
+    for (int index = startIndex; index < pageIndex; ++index)
+    {
+        doc->toc()->unsetAssets(index);
+    }
+
+    doc->toc()->save();
+    doc->scanAssets();
+
+    return pageIndex - startIndex;
 }
