@@ -39,6 +39,7 @@ class UBGraphicsScene;
 class UBDocumentProxy
 {
     friend class UBPersistenceManager;
+    friend class UBDocumentVersionConverter;
 
     public:
 

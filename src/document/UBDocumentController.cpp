@@ -63,6 +63,7 @@
 
 #include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentVersionConverter.h"
 
 #include "ui_documents.h"
 
@@ -537,30 +538,49 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                 dataNode->proxyData() &&
                 dataNode->proxyData()->isBroken();
 
-            if (isBrokenDocumentNode) {
+            if (isBrokenDocumentNode)
+            {
                 return QIcon(":images/toolbar/warning.png");
             }
 
-            if (mCurrentNode && mCurrentNode == dataNode) {
+            if (mCurrentNode && mCurrentNode == dataNode)
+            {
                 return QIcon(":images/currentDocument.png");
-            } else {
-                if (index == trashIndex()) {
-                    return QIcon(":images/trash.png");
-                } else if (isConstant(index)) {
-                    return QIcon(":images/libpalette/ApplicationsCategory.svg");
-                }
-                switch (static_cast<int>(dataNode->nodeType()))
-                {
-                    case UBDocumentTreeNode::Catalog :
-                        return QIcon(":images/folder.png");
-                    case UBDocumentTreeNode::Document :
-                    {
-                        const auto proxy = dataNode->proxyData();
-                        if (proxy && proxy->isInFavoriteList()) {
-                            return QIcon(":images/libpalette/miniFavorite.png");
-                        }
+            }
 
+            if (index == trashIndex())
+            {
+                return QIcon(":images/trash.png");
+            }
+
+            if (isConstant(index))
+            {
+                return QIcon(":images/libpalette/ApplicationsCategory.svg");
+            }
+
+            switch (static_cast<int>(dataNode->nodeType()))
+            {
+                case UBDocumentTreeNode::Catalog :
+                    return QIcon(":images/folder.png");
+
+                case UBDocumentTreeNode::Document :
+                {
+                    const auto proxy = dataNode->proxyData();
+
+                    if (proxy && proxy->isInFavoriteList())
+                    {
+                        return QIcon(":images/libpalette/miniFavorite.png");
+                    }
+
+                    const auto version = QVersionNumber::fromString(proxy->metaData(UBSettings::documentVersion).toString());
+
+                    if (version <= QVersionNumber::fromString(UBSettings::currentFileVersion))
+                    {
                         return QIcon(":images/toolbar/board.png");
+                    }
+                    else
+                    {
+                        return QIcon(":images/toolbar/warning.png");
                     }
                 }
             }
@@ -2079,8 +2099,6 @@ void UBDocumentController::showBrokenDocumentWarning()
 
 void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    Q_UNUSED(previous)
-
     UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
 
     QModelIndex current_index = mapIndexToSource(current);
@@ -2092,11 +2110,27 @@ void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
 
     if(current_index.isValid() && mDocumentUI->documentTreeView->selectionModel()->selectedRows(0).size() == 1)
     {
-        currentDocumentProxy = docModel->proxyData(current_index);
-        if (docModel->isDocument(current_index) && isBrokenDocument(currentDocumentProxy))
+        if (docModel->isDocument(current_index))
         {
-            showBrokenDocumentWarning();
+            currentDocumentProxy = docModel->proxyData(current_index);
+            const auto converter{UBDocumentVersionConverter{currentDocumentProxy}};
+            const auto result = converter.convert();
+
+            if (result == UBDocumentVersionConverter::DENIED || result == UBDocumentVersionConverter::FAILED)
+            {
+                // deferred selection of previous entry to avoid double triggering of selection change
+                QTimer::singleShot(0, [this, previous](){
+                    mDocumentUI->documentTreeView->selectionModel()->select(previous, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                });
+                return;
+            }
+
+            if (isBrokenDocument(currentDocumentProxy))
+            {
+                showBrokenDocumentWarning();
+            }
         }
+
         setDocument(currentDocumentProxy, false);
     }
     //N/C - NNE  - 20140414 : END
@@ -2179,7 +2213,7 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
         }
         else
         {
-            TreeViewSelectionChanged(selected.indexes().at(0), QModelIndex());
+            TreeViewSelectionChanged(selected.indexes().at(0), deselected.indexes().empty() ? QModelIndex() : deselected.indexes().at(0));
         }
     }
 }
@@ -3494,15 +3528,9 @@ bool UBDocumentController::isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> p
     }
     else
     {
-        if (UBApplication::mainWindow->yesNoQuestion(tr("Open Document"),
-                                                     tr("The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?").arg(proxy->name(), docVersion)))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        const auto converter{UBDocumentVersionConverter{proxy}};
+        const auto result = converter.convert();
+        return result == UBDocumentVersionConverter::CONVERTED || result == UBDocumentVersionConverter::SKIPPED;
     }
 }
 

@@ -167,6 +167,7 @@ class UBPersistenceManager : public QObject
         void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
 
 private:
+        friend class UBDocumentVersionConverter;
         static int sceneCount(const std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         static QStringList getSceneFileNames(const QString& folder);
         void renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
