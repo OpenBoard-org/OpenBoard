@@ -235,7 +235,11 @@ QImage* XPDFRenderer::createPDFImageUncached(int pageNumber, qreal xscale, qreal
         if(mSplashUncached)
             delete mSplashUncached;
 
+#if POPPLER_VERSION_MAJOR > 26 || (POPPLER_VERSION_MAJOR == 26 && POPPLER_VERSION_MINOR >= 2)
+        mSplashUncached = new SplashOutputDev(splashModeRGB8, 1, constants::paperColor);
+#else
         mSplashUncached = new SplashOutputDev(splashModeRGB8, 1, false, constants::paperColor);
+#endif
         mSplashUncached->startDoc(mDocument);
 
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
