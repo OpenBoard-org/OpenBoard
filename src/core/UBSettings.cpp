@@ -452,6 +452,8 @@ void UBSettings::init()
     documentSortOrder           = new UBSetting(this, "Document", "SortOrder", UBSettings::defaultSortOrder);
     documentSplitterLeftSize    = new UBSetting(this, "Document", "SplitterLeftSize", UBSettings::defaultSplitterLeftSize);
     documentSplitterRightSize   = new UBSetting(this, "Document", "SplitterRightSize", UBSettings::defaultSplitterRightSize);
+    showBrokenDocumentWarning   = new UBSetting(this, "Document", "ShowBrokenDocumentWarning", true);
+    supportEmail                = new UBSetting(this, "App", "SupportEmail", "");
 
     libraryShowDetailsForLocalItems = new UBSetting(this, "Library", "ShowDetailsForLocalItems", false);
 

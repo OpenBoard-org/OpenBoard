@@ -549,6 +549,9 @@ class UBDocumentController : public UBDocumentContainer
 
         UBSortFilterProxyModel *mSortFilterProxyModel;
 
+        void showBrokenDocumentWarning();
+        bool isBrokenDocument(const std::shared_ptr<UBDocumentProxy>& proxy) const;
+
     public slots:
         void TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
         void TreeViewSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

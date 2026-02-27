@@ -274,7 +274,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStruct
 
     docProxy->setPageCount(sceneCount(docProxy));
 
-    if (docProxy->pageCount() == 0)
+    if (docProxy->isBroken())
     {
         qWarning() << "No pages found - " << fullPath;
         docProxy->setMetaData(UBSettings::documentName, tr("Broken - %1").arg(contentInfo.baseName()));

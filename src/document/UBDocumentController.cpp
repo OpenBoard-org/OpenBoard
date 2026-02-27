@@ -29,6 +29,8 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QCheckBox>
+#include <QMessageBox>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -529,6 +531,16 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
     if (index.column() == 0) {
         switch (role) {
         case (Qt::DecorationRole) :
+        {
+            const bool isBrokenDocumentNode =
+                dataNode->nodeType() == UBDocumentTreeNode::Document &&
+                dataNode->proxyData() &&
+                dataNode->proxyData()->isBroken();
+
+            if (isBrokenDocumentNode) {
+                return QIcon(":images/toolbar/warning.png");
+            }
+
             if (mCurrentNode && mCurrentNode == dataNode) {
                 return QIcon(":images/currentDocument.png");
             } else {
@@ -543,17 +555,16 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                         return QIcon(":images/folder.png");
                     case UBDocumentTreeNode::Document :
                     {
-                        if (dataNode->proxyData()->isInFavoriteList())
-                        {
+                        const auto proxy = dataNode->proxyData();
+                        if (proxy && proxy->isInFavoriteList()) {
                             return QIcon(":images/libpalette/miniFavorite.png");
                         }
-                        else
-                        {
-                            return QIcon(":images/toolbar/board.png");
-                        }
+
+                        return QIcon(":images/toolbar/board.png");
                     }
                 }
             }
+        }
             break;
         case (Qt::FontRole) :
             if (isConstant(index)) {
@@ -2029,6 +2040,43 @@ std::shared_ptr<UBDocumentProxy> UBDocumentController::firstSelectedTreeProxy()
     return selectedProxies().count() ? selectedProxies().first() : 0;
 }
 
+bool UBDocumentController::isBrokenDocument(const std::shared_ptr<UBDocumentProxy>& proxy) const
+{
+    return proxy && proxy->isBroken();
+}
+
+void UBDocumentController::showBrokenDocumentWarning()
+{
+    auto settings = UBSettings::settings();
+
+    if (!settings || !settings->showBrokenDocumentWarning->get().toBool())
+    {
+        return;
+    }
+
+    const QString supportEmail = settings ? settings->supportEmail->get().toString() : QString();
+    QString messageText = tr("OpenBoard could not recover this file. Please delete it or contact your administrator for help");
+    if (!supportEmail.isEmpty())
+    {
+        messageText.append(QString(" (%1)").arg(supportEmail));
+    }
+
+    QMessageBox messageBox(mParentWidget);
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setWindowTitle(tr("Broken document"));
+    messageBox.setText(messageText);
+
+    QCheckBox dontShowAgain(tr("Don't show this again"));
+    messageBox.setCheckBox(&dontShowAgain);
+    messageBox.setStandardButtons(QMessageBox::Ok);
+    messageBox.exec();
+
+    if (dontShowAgain.isChecked())
+    {
+        settings->showBrokenDocumentWarning->setBool(false);
+    }
+}
+
 void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous)
@@ -2045,6 +2093,10 @@ void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
     if(current_index.isValid() && mDocumentUI->documentTreeView->selectionModel()->selectedRows(0).size() == 1)
     {
         currentDocumentProxy = docModel->proxyData(current_index);
+        if (docModel->isDocument(current_index) && isBrokenDocument(currentDocumentProxy))
+        {
+            showBrokenDocumentWarning();
+        }
         setDocument(currentDocumentProxy, false);
     }
     //N/C - NNE  - 20140414 : END
@@ -3422,6 +3474,12 @@ void UBDocumentController::renameSelectedItem()
 bool UBDocumentController::isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> proxy)
 {
     static UBWidgetUpgradeAdaptor widgetUpgradeAdaptor;
+
+    if (isBrokenDocument(proxy))
+    {
+        showBrokenDocumentWarning();
+        return false;
+    }
 
     //check version
     QString docVersion = proxy->metaData(UBSettings::documentVersion).toString();

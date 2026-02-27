@@ -127,6 +127,11 @@ int UBDocumentProxy::pageCount()
     return mPageCount;
 }
 
+bool UBDocumentProxy::isBroken() const
+{
+    return mPageCount <= 0;
+}
+
 
 void UBDocumentProxy::setPageCount(int pPageCount)
 {
