@@ -709,6 +709,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                     UBGraphicsSvgItem* svgItem = svgItemFromSvg();
                     if (svgItem)
                     {
+                        svgItem->setSourceUrl(QUrl::fromLocalFile(href));
                         svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -725,6 +726,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                     UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
                     if (pixmapItem)
                     {
+                        pixmapItem->setSourceUrl(QUrl::fromLocalFile(href));
                         pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 

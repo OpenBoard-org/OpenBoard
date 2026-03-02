@@ -129,7 +129,9 @@ int UBDocumentProxy::pageCount()
 
 bool UBDocumentProxy::isBroken() const
 {
-    return mPageCount <= 0;
+    const auto documentVersion = QVersionNumber::fromString(metaData(UBSettings::documentVersion).toString());
+
+    return mPageCount <= 0 && documentVersion <= QVersionNumber::fromString(UBSettings::currentFileVersion);
 }
 
 
