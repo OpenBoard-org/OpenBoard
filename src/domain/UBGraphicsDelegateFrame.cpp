@@ -301,6 +301,13 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mCornerPoints << delegated()->mapToScene(bounds.bottomLeft());
     mCornerPoints << delegated()->mapToScene(bounds.bottomRight());
 
+    // add center point for symmetrical shapes
+    if (delegated()->type() == UBGraphicsItemType::GraphicsShapeItemType
+            || delegated()->type() == UBGraphicsItemType::GraphicsRegularPathItemType)
+    {
+        mCornerPoints << delegated()->mapToScene(bounds.center());
+    }
+
     if (mMirrorX)
     {
         std::swap(mCornerPoints[0], mCornerPoints[1]);

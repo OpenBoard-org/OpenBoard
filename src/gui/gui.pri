@@ -105,6 +105,16 @@ SOURCES +=  \
     src/gui/UBBoardThumbnailsView.cpp \
     src/gui/UBSnapIndicator.cpp
 
+HEADERS += src/gui/shapes/UBAbstractSubPalette.h \
+    src/gui/shapes/UBShapesPalette.h \
+    src/gui/shapes/UBStylePalette.h \
+    src/gui/shapes/UBToolbarExtensionPalette.h
+
+SOURCES += src/gui/shapes/UBAbstractSubPalette.cpp \
+    src/gui/shapes/UBShapesPalette.cpp \
+    src/gui/shapes/UBStylePalette.cpp \
+    src/gui/shapes/UBToolbarExtensionPalette.cpp
+
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp
 macx:OBJECTIVE_SOURCES += src/gui/UBKeyboardPalette_mac.mm
 linux-g++:SOURCES += src/gui/UBKeyboardPalette_linux.cpp

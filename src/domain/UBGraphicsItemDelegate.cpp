@@ -505,7 +505,7 @@ void UBGraphicsItemDelegate::positionHandles()
         mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked()));
         updateFrame();
 
-        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool())
+        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool() && mFrame->isEnabled())
             mFrame->show();
 
         updateButtons(true);
@@ -650,6 +650,35 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+void UBGraphicsItemDelegate::showFrame(bool show)
+{
+    if (!mFrame)
+    {
+        createControls();
+    }
+
+    if(!show)
+    {
+        mFrame->hide();
+        mFrame->setEnabled(false);
+
+        for(int i = 0; i < mButtons.size(); i++)
+        {
+            mButtons.at(i)->hide();
+        }
+    }
+    else
+    {
+        mFrame->show();
+        mFrame->setEnabled(true);
+
+        for(int i = 0; i < mButtons.size(); i++)
+        {
+            mButtons.at(i)->show();
+        }
+    }
+}
+
 void UBGraphicsItemDelegate::showOnDisplay(bool show)
 {
     if (!delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
@@ -733,11 +762,20 @@ void UBGraphicsItemDelegate::startUndoStep()
         mPreviousSize = resizableItem->size();
     else
         mPreviousSize = QSizeF();
+
+    mUndoStepStarted = true;
 }
 
 
 void UBGraphicsItemDelegate::commitUndoStep()
 {
+    if (!mUndoStepStarted)
+    {
+        return;
+    }
+
+    mUndoStepStarted = false;
+
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mDelegated);
 
     if (mDelegated->pos() != mPreviousPosition

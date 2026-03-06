@@ -74,7 +74,8 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/trapFlash.ui \
    resources/forms/youTubePublishingDialog.ui \
    resources/forms/capturePublishing.ui \
-   resources/forms/intranetPodcastPublishingDialog.ui
+   resources/forms/intranetPodcastPublishingDialog.ui \
+   resources/forms/shapeActions.ui
 
 UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm
@@ -171,7 +172,7 @@ macx {
 
    LIBS += -L/usr/local/lib -lquazip1-qt6.1.4
    INCLUDEPATH += /opt/local/include/QuaZip-Qt6-1.4/quazip
-   
+
    LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /opt/local/include
@@ -481,6 +482,7 @@ linux-g++* {
 }
 
 RESOURCES += resources/OpenBoard.qrc
+RESOURCES += resources/shapes.qrc
 
 # When adding a translation here, also add it in the macx part
 TRANSLATIONS = resources/i18n/OpenBoard_ar.ts \

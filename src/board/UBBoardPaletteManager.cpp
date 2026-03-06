@@ -75,6 +75,9 @@
 #include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
+#include "gui/shapes/UBShapesPalette.h"
+
+
 inline constexpr int longpress_interval = 350;
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
@@ -232,14 +235,10 @@ void UBBoardPaletteManager::setupPalettes()
 #endif
     }
 
-
     setupDockPaletteWidgets();
 
-
     // Add the other palettes
-    mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
-    connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
-    mStylusPalette->show(); // always show stylus palette at startup
+    changeStylusPaletteOrientation(UBSettings::settings()->appToolBarOrientationVertical->get());
 
     mZoomPalette = new UBZoomPalette(mContainer);
 
@@ -585,7 +584,6 @@ void UBBoardPaletteManager::toggleErasePalette(bool checked)
             (mContainer->height() - mErasePalette->height()) / 5);
     }
 }
-
 
 void UBBoardPaletteManager::erasePaletteClosed()
 {
@@ -942,7 +940,7 @@ void UBBoardPaletteManager::showVirtualKeyboard(bool show)
 void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
 {
     bool bVertical = var.toBool();
-    bool bVisible = mStylusPalette->isVisible();
+    bool bVisible = mStylusPalette ? mStylusPalette->isVisible() : true;
 
     // Clean the old palette
     if(NULL != mStylusPalette)
@@ -963,6 +961,11 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
 
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
+
+    // attach subpalette to line action
+    mShapesPalette = new UBShapesPalette{bVertical ? Qt::Horizontal : Qt::Vertical, mContainer};
+    mShapesPalette->setAutoClose(true);
+    mStylusPalette->attachSubPalette(UBApplication::mainWindow->actionLine, mShapesPalette, true); // TODO add parameter to include subactions in main action group
 }
 
 

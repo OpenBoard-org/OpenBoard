@@ -4,6 +4,7 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
                 src/adaptors/UBExportPDF.h \
                 src/adaptors/UBExportFullPDF.h \
                 src/adaptors/UBExportDocument.h \
+                src/adaptors/UBSvgShapeAdaptor.h \
                 src/adaptors/UBSvgSubsetAdaptor.h \
                 src/adaptors/UBMetadataDcSubsetAdaptor.h \
                 src/adaptors/UBImportAdaptor.h \
@@ -22,6 +23,7 @@ SOURCES      += src/adaptors/UBExportAdaptor.cpp\
                 src/adaptors/UBExportPDF.cpp \
                 src/adaptors/UBExportFullPDF.cpp \
                 src/adaptors/UBExportDocument.cpp \
+                src/adaptors/UBSvgShapeAdaptor.cpp \
                 src/adaptors/UBSvgSubsetAdaptor.cpp \
                 src/adaptors/UBMetadataDcSubsetAdaptor.cpp \
                 src/adaptors/UBImportAdaptor.cpp \
