@@ -1941,7 +1941,12 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
     if (mDisplayView && UBApplication::displayManager->hasDisplay()) {
         UBApplication::applicationController->adjustDisplayView();
         mDisplayView->centerOn(0,0);
-        setBoxing(mDisplayView->geometry());
+        QRect displayGeom = mDisplayView->geometry();
+        if (displayGeom.width() >= displayGeom.height()) {
+            setBoxing(displayGeom);
+        } else {
+            setBoxing(QRect()); // no boxing for portrait display screen
+        }
     }
 
     mPaletteManager->containerResized();
