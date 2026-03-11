@@ -36,6 +36,7 @@ class UBExportAdaptor;
 class UBImportAdaptor;
 class UBDocument;
 class UBDocumentProxy;
+class UBPageBasedImportAdaptor;
 
 
 class UBDocumentManager : public QObject
@@ -64,6 +65,8 @@ class UBDocumentManager : public QObject
 
     private:
         UBDocumentManager(QObject *parent = 0);
+        int importPages(const QFile& file, std::shared_ptr<UBDocument> doc, UBPageBasedImportAdaptor* importAdaptor);
+
         QList<UBExportAdaptor*> mExportAdaptors;
         QList<UBImportAdaptor*> mImportAdaptors;
 
