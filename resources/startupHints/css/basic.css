@@ -1,10 +1,10 @@
 :root {
     /* Default light theme colors */
-    --bg-outer: #aaaaaa;
-    --bg-main: #eeeeee;
-    --border-color: #999999;
-    --separator-color: #ccc;
-    --text-color: #000000;
+    --bg-outer: #e3ebf3;
+    --bg-main: #edf2f7;
+    --border-color: #cfd8e3;
+    --separator-color: #d8e1eb;
+    --text-color: #1f2937;
 }
 
 :root[data-theme="dark"] {

@@ -62,6 +62,7 @@ UBDocumentThumbnailsView::UBDocumentThumbnailsView(QWidget* parent)
     setFrameShape(QFrame::NoFrame);
 
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    QGraphicsView::setBackgroundBrush(QBrush(UBSettings::documentThumbnailsViewColor));
 }
 
 
@@ -133,15 +134,6 @@ void UBDocumentThumbnailsView::clearSelection()
         mDocument->thumbnailScene()->clearSelection();
     }
 }
-
-void UBDocumentThumbnailsView::setBackgroundBrush(const QBrush& brush)
-{
-    if (mDocument)
-    {
-        mDocument->thumbnailScene()->setBackgroundBrush(brush);
-    }
-}
-
 
 void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
 {

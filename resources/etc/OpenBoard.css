@@ -86,29 +86,6 @@ QToolBar::separator
    border: 1px dotted palette(dark); border-left: none; margin-left: 5px; margin-right: 5px; width: 1px;
 }
 
-QToolBar QToolButton
-{
-
-    margin: 4px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding: 0px;
-    border: none;
-    height: 58px;
-}
-
-QToolBar QToolButton:pressed
-{
-    margin: 4px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding: 0px;
-    border: none;
-    height: 58px;
-
-    background: qradialgradient(cx:0.5, cy:0.5, radius: 0.5, fx:0.5, fy:0.5, stop: 0 #d3d3d3, stop: 1  #b3b3b3);
-}
-
 QDialog QToolButton:pressed
 {
    background: qradialgradient(cx:0.5, cy:0.5, radius: 0.5, fx:0.5, fy:0.5, stop: 0 #ffffff, stop: 1  #dddddd);
@@ -143,13 +120,6 @@ QToolButton#desktop-ubButtonGroupRight
 }
 
 
-QToolButton#ubButtonGroupLeft:checked,
-QToolButton#ubButtonGroupCenter:checked,
-QToolButton#ubButtonGroupRight:checked
-{
-   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(light), stop: 1  palette(midlight));
-}
-
 QToolButton#ubButtonGroupLeft:checked
 {
     padding-right: 4px;
@@ -170,12 +140,6 @@ QToolButton#ubButtonMenu
 {
     margin-right: 2px;
     padding-right: 12px;
-}
-
-QToolButton#ubButtonMenu:pressed,
-QToolButton#ubButtonMenu:checked
-{
-   background-color: palette(midlight);
 }
 
 QToolButton#ubActionPaletteButton
@@ -218,23 +182,10 @@ QTreeView
     background-color: palette(base);
 }
 
-QTreeView::item:selected:active
-{
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #AAB7C4, stop: 1  #7e8eA0);
-    border: none;
-}
-
 QTreeView::item
 {
     padding-top: 1.5 px;
     padding-bottom: 1.5 px;
-}
-
-QTreeView::item:selected,
-QTreeView::branch:selected
-{
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #AAB7C4, stop: 1  #7e8eA0);
-    border: none;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item,

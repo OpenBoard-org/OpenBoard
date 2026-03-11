@@ -29,6 +29,7 @@
 
 #include <QtGui>
 #include <QPainterPath>
+#include <QToolButton>
 
 #include "UBFloatingPalette.h"
 
@@ -43,8 +44,10 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     , mCustomPosition(false)
     , mIsMoving(false)
     , mCanBeMinimized(false)
+    , mIsClosable(false)
     , mMinimizedLocation(eMinimizedLocation_None)
     , mDefaultPosition(position)
+    , mCloseButton(nullptr)
 {
     setCursor(Qt::ArrowCursor);
 
@@ -70,7 +73,33 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     }
 
     mBackgroundBrush = QBrush(UBSettings::paletteColor);
+    QPalette pal = palette();
+    pal.setBrush(QPalette::Window, mBackgroundBrush);
+    setPalette(pal);
     mbGrip = true;
+}
+
+void UBFloatingPalette::setClosable(bool closable)
+{
+    mIsClosable = closable;
+
+    if (mIsClosable)
+    {
+        buildCloseButton();
+        mCloseButton->show();
+        mCloseButton->raise();
+    }
+    else if (mCloseButton)
+    {
+        mCloseButton->hide();
+    }
+
+    update();
+}
+
+bool UBFloatingPalette::isClosable() const
+{
+    return mIsClosable;
 }
 
 void UBFloatingPalette::setGrip(bool newGrip)
@@ -85,6 +114,9 @@ void UBFloatingPalette::setBackgroundBrush(const QBrush& brush)
     if (mBackgroundBrush != brush)
     {
         mBackgroundBrush = brush;
+        QPalette pal = palette();
+        pal.setBrush(QPalette::Window, mBackgroundBrush);
+        setPalette(pal);
         update();
     }
 }
@@ -110,6 +142,15 @@ int UBFloatingPalette::border()
     return 0;
 }
 
+int UBFloatingPalette::closeButtonMargin() const
+{
+    return 10;
+}
+
+void UBFloatingPalette::onCloseButtonClicked()
+{
+    hide();
+}
 
 void UBFloatingPalette::enterEvent(UB::EnterEvent *event)
 {
@@ -262,17 +303,13 @@ void UBFloatingPalette::removeAllAssociatedPalette()
     }
 }
 
-void UBFloatingPalette::showEvent(QShowEvent *)
-{
-    moveInsideParent(pos());
-}
-
 void UBFloatingPalette::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
+
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(mBackgroundBrush);
+    painter.setBrush(palette().brush(QPalette::Window));
 
     if(mbGrip)
     {
@@ -282,11 +319,12 @@ void UBFloatingPalette::paintEvent(QPaintEvent *)
         borderPath.addRoundedRect(0, 0, width(), height(), radius(), radius());
         borderPath.addRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
         painter.drawPath(borderPath);
-        painter.setBrush(mBackgroundBrush);
+        painter.setBrush(palette().brush(QPalette::Window));
         painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
     }
     else
     {
+        painter.setBrush(palette().brush(QPalette::Window));
         painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
     }
 }
@@ -294,6 +332,29 @@ void UBFloatingPalette::paintEvent(QPaintEvent *)
 int UBFloatingPalette::gripSize()
 {
     return 5;
+}
+
+void UBFloatingPalette::buildCloseButton()
+{
+    if (mCloseButton)
+        return;
+
+    mCloseButton = new QToolButton(this);
+    mCloseButton->setObjectName("closeButton");
+    mCloseButton->setAutoRaise(true);
+    mCloseButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    mCloseButton->setText(QString());
+    mCloseButton->setFixedSize(28, 28);
+    mCloseButton->setIconSize(QSize(12, 12));
+    mCloseButton->setIcon(QIcon(":/images/close-no-bg.png"));
+    mCloseButton->setToolTip(tr("Close"));
+    const int margin = closeButtonMargin();
+    mCloseButton->move(margin, margin);
+    mCloseButton->hide();
+
+    connect(mCloseButton, &QToolButton::clicked, this, [this]() {
+        onCloseButtonClicked();
+    });
 }
 
 void UBFloatingPalette::minimizePalette(const QPoint& pos)

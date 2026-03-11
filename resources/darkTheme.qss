@@ -31,6 +31,7 @@ QLineEdit, QTextEdit, QPlainTextEdit {
 
 QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
     border: 1px solid #2a82da;
+    background-color: #2a2a2a;
 }
 
 QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
@@ -160,6 +161,10 @@ QComboBox QAbstractItemView::item:hover {
     background-color: #404040;
 }
 
+#UBPageNavigationWidget {
+    background-color: #353535;
+}
+
 /* Spin boxes */
 QSpinBox, QDoubleSpinBox {
     background-color: #2a2a2a;
@@ -176,18 +181,32 @@ QSpinBox:focus, QDoubleSpinBox:focus {
 QSpinBox::up-button, QDoubleSpinBox::up-button {
     background-color: #404040;
     border-left: 1px solid #555555;
+    width: 10px;
     border-top-right-radius: 3px;
 }
 
 QSpinBox::down-button, QDoubleSpinBox::down-button {
     background-color: #404040;
     border-left: 1px solid #555555;
+    width: 10px;
     border-bottom-right-radius: 3px;
 }
 
 QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
 QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
     background-color: #505050;
+}
+
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    image: url(:/images/up_arrow.png);
+    width: 10px;
+    height: 10px;
+}
+
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    image: url(:/images/down_arrow.png);
+    width: 10px;
+    height: 10px;
 }
 
 /* Sliders */
@@ -233,72 +252,68 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-    background: #555555;
+    background: white;
     min-height: 30px;
     border-radius: 6px;
-    border: 1px solid #404040;
+    border: 1px solid #1e5fa0;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #6a6a6a;
+    background: #3d8fd1;
+}
+
+QScrollBar::handle:vertical:pressed {
+    background: #1e5fa0;
 }
 
 QScrollBar::add-line:vertical {
-    background: #404040;
-    height: 16px;
-    subcontrol-position: bottom;
-    subcontrol-origin: margin;
-    border-radius: 6px;
-    margin: 1px 1px 2px 1px;
+    background: transparent;
+    border: none;
+    height: 0px;
 }
 
 QScrollBar::sub-line:vertical {
-    background: #404040;
-    height: 16px;
-    subcontrol-position: top;
-    subcontrol-origin: margin;
-    border-radius: 6px;
-    margin: 2px 1px 1px 1px;
-}
-
-QScrollBar::add-line:vertical:hover,
-QScrollBar::sub-line:vertical:hover {
-    background: #505050;
+    background: transparent;
+    border: none;
+    height: 0px;
 }
 
 QScrollBar:horizontal {
-    background: #2b2b2b;
+    background: #2a82da;
     height: 14px;
     margin: 1px 18px 1px 18px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #555555;
+    background: #2a82da;
     min-width: 30px;
     border-radius: 6px;
-    border: 1px solid #404040;
+    border: 1px solid white;
+}
+
+QScrollBar::handle:horizontal:!hover {
+    background: #2a82da;
+    border: 1px solid #1e5fa0;
 }
 
 QScrollBar::handle:horizontal:hover {
-    background: #6a6a6a;
+    background: #3d8fd1;
+}
+
+QScrollBar::handle:horizontal:pressed {
+    background: #1e5fa0;
 }
 
 QScrollBar::add-line:horizontal {
-    background: #404040;
-    width: 16px;
-    subcontrol-position: right;
-    subcontrol-origin: margin;
-    border-radius: 6px;
-    margin: 1px 2px 1px 1px;
+    background: transparent;
+    border: none;
+    width: 0px;
 }
 
 QScrollBar::sub-line:horizontal {
-    background: #404040;
-    width: 16px;
-    subcontrol-position: left;
-    subcontrol-origin: margin;
-    border-radius: 6px;
-    margin: 1px 1px 1px 2px;
+    background: transparent;
+    border: none;
+    width: 0px;
 }
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical,
@@ -377,6 +392,33 @@ QTreeView::item:hover, QListView::item:hover, QTableView::item:hover {
 QTreeView::item:selected, QListView::item:selected, QTableView::item:selected {
     background-color: #2a82da;
     color: #ffffff;
+}
+
+QTreeView::item:selected:active,
+QListView::item:selected:active,
+QTableView::item:selected:active,
+QTreeView::branch:selected {
+    background: #2a82da;
+    color: #ffffff;
+    border: none;
+}
+
+QTreeView QLineEdit,
+QListView QLineEdit,
+QTableView QLineEdit {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #555555;
+    padding: 1px 6px;
+    selection-background-color: #2a82da;
+    selection-color: #ffffff;
+}
+
+QTreeView QLineEdit:focus,
+QListView QLineEdit:focus,
+QTableView QLineEdit:focus {
+    background-color: #2a2a2a;
+    border: 1px solid #2a82da;
 }
 
 QTreeView::branch {
@@ -570,6 +612,80 @@ QToolTip {
 QScrollArea {
     background-color: #353535;
     border: none;
+}
+
+#BackgroundPaletteScrollArea {
+    background-color: #3f3f3f;
+    border: none;
+}
+#BackgroundPaletteScrollArea QWidget{
+    background-color: transparent;
+}
+
+#BackgroundPalette {
+    background-color: #3f3f3f;
+}
+#AddItemPalette {
+    background-color: #3f3f3f;
+}
+
+#DesktopPropertyPalette {
+    background-color: #3f3f3f;
+}
+
+#UBMessageWindow {
+    color: #ffffff;
+}
+
+#UBMessageWindow QLabel#UBMessageWindowLabel {
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0px 2px 0px 0px;
+}
+
+#UBMessageWindow UBSpinningWheel#UBMessageWindowSpinner {
+    background: transparent;
+    color: #5aa5e0;
+}
+
+#BackgroundPalette QLabel {
+    color: palette(window-text);
+}
+#BackgroundPalette QToolButton#closeButton,
+#AddItemPalette QToolButton#closeButton,
+#UBStartupHintsPalette QToolButton#closeButton {
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 0px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    min-width: 16px;
+    max-width: 16px;
+    min-height: 16px;
+    max-height: 16px;
+}
+
+#UBStartupHintsPalette QCheckBox {
+    background: transparent;
+    color: #ffffff;
+}
+#BackgroundPalette QToolButton#closeButton:hover,
+#AddItemPalette QToolButton#closeButton:hover,
+#UBStartupHintsPalette QToolButton#closeButton:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+#BackgroundPalette QToolButton#closeButton:pressed,
+#AddItemPalette QToolButton#closeButton:pressed,
+#UBStartupHintsPalette QToolButton#closeButton:pressed {
+    background: rgba(255, 255, 255, 0.18);
+}
+#BackgroundPaletteLabel {
+    color: palette(window-text);
 }
 
 /* Calendar widget */

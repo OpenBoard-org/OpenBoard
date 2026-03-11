@@ -62,6 +62,7 @@ void UBSpinningWheel::paintEvent(QPaintEvent *event)
     painter.translate(width() / 2, height() / 2);
 
     QPen pen;
+    pen.setColor(palette().color(QPalette::WindowText));
     pen.setWidthF(side / 6.5);
     pen.setCapStyle(Qt::RoundCap);
 

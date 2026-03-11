@@ -69,8 +69,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
 
     mName = "CachePropWidget";
     mVisibleState = false;
-    mIconToLeft = QPixmap(":images/cache_open.png");
-    mIconToRight = QPixmap(":images/cache_close.png");
+    mTabIcon = QPixmap(":/images/toolPalette/cacheTool.png").scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     setContentsMargins(10, 10, 10, 10);
 
     // Build the UI

@@ -28,12 +28,14 @@
 
 
 #include <QtGui>
-
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "UBApplication.h"
 #include "UBSettings.h"
+#ifdef QT_DEBUG
+#include "UBWidgetInspector.h"
+#endif
 
 /* Uncomment this for memory leaks detection */
 /*
@@ -133,6 +135,10 @@ int main(int argc, char *argv[])
     }
 
     UBApplication app("OpenBoard", argc, argv);
+
+#ifdef QT_DEBUG
+    app.installEventFilter(new UBWidgetInspector(&app));
+#endif
 
     QStringList args = app.arguments();
 

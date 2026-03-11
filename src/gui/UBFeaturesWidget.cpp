@@ -59,8 +59,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
 
     SET_STYLE_SHEET();
 
-    mIconToLeft = QPixmap(":images/library_open.png");
-    mIconToRight = QPixmap(":images/library_close.png");
+    mTabIcon = QPixmap(":/images/libpalette/ApplicationsCategory.svg").scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     setAcceptDrops(true);
 
     //Main UBFeature functionality

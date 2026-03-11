@@ -1302,7 +1302,7 @@ void UBFeaturesController::assignPathListView(UBFeaturesListView *pList)
     pList->setFixedHeight(60);
     pList->setSelectionMode(QAbstractItemView::NoSelection);
     pList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    pList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    pList->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     pList->setFlow(QListView::LeftToRight);
     pList->setWrapping(false);
     pList->setDragDropMode(QAbstractItemView::DropOnly);

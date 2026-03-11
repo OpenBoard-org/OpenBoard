@@ -35,4 +35,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBTextTools.h
     UBThemeManager.cpp
     UBThemeManager.h
+    UBWidgetInspector.cpp
+    UBWidgetInspector.h
 )

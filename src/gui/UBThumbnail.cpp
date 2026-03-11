@@ -259,8 +259,7 @@ QVariant UBThumbnail::itemChange(GraphicsItemChange change, const QVariant& valu
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        const auto penColor = isSelected() ? UBSettings::treeViewBackgroundColor : Qt::transparent;
-        setPen({penColor, cSelectionWidth});
+        update();
     }
 
     return QGraphicsRectItem::itemChange(change, value);
@@ -316,7 +315,7 @@ void UBThumbnail::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
     if (isSelected())
     {
         const auto selectionRect = mapRectFromItem(mPixmapItem, mPixmapItem->boundingRect()) + cSelectionMargins;
-        painter->setPen(pen());
+        painter->setPen(QPen(qApp->palette().color(QPalette::Highlight), cSelectionWidth));
         painter->drawRect(selectionRect);
     }
 

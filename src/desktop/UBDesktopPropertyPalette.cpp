@@ -35,7 +35,6 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolbarButtonGroup.h"
 #include "gui/UBRightPalette.h"
-#include "core/UBThemeManager.h"
 
 #include "core/memcheck.h"
 
@@ -43,25 +42,13 @@ UBDesktopPropertyPalette::UBDesktopPropertyPalette(QWidget *parent, UBRightPalet
     :UBPropertyPalette(Qt::Horizontal, parent)
     ,rightPalette(_rightPalette)
 {
-    updateStyleSheet();
-    connect(UBThemeManager::instance(), &UBThemeManager::themeChanged, this, &UBDesktopPropertyPalette::updateStyleSheet);
+    setObjectName("DesktopPropertyPalette");
+    setAttribute(Qt::WA_StyledBackground, true);
 }
 
 int UBDesktopPropertyPalette::getParentRightOffset()
 {
     return rightPalette->width();
-}
-
-void UBDesktopPropertyPalette::updateStyleSheet()
-{
-    if (UBThemeManager::instance()->isDarkMode())
-    {
-        setStyleSheet("QWidget { background: qlineargradient(x1:0, y1:0.49, x2:0, y2:0.5, stop:0 #505050, stop:1 #3a3a3a); }");
-    }
-    else
-    {
-        setStyleSheet("QWidget { background: qlineargradient(x1:0, y1:0.49, x2:0, y2:0.5, stop:0 #c3c3c3, stop:1 #b4b4b4); }");
-    }
 }
 
 

@@ -33,6 +33,8 @@
 #include "globals/UBGlobals.h"
 
 #include "core/memcheck.h"
+#include <QApplication>
+#include <QStyle>
 
 UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent, name)
   , mpLayout(NULL)
@@ -43,8 +45,7 @@ UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UB
 
     SET_STYLE_SHEET();
 
-    mIconToLeft = QPixmap(":images/download_open.png");
-    mIconToRight = QPixmap(":images/download_close.png");
+    mTabIcon = QApplication::style()->standardIcon(QStyle::SP_DriveHDIcon).pixmap(18, 18);
 
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);

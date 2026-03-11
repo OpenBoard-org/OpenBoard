@@ -53,11 +53,9 @@ public slots:
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent * event);
     virtual void showEvent(QShowEvent *event);
 
 private:
-    void close();
     int border();
     QCheckBox* mShowNextTime;
     QVBoxLayout* mLayout;

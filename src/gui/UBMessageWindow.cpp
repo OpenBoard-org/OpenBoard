@@ -37,14 +37,17 @@ UBMessageWindow::UBMessageWindow(QWidget *parent)
     : UBFloatingPalette(Qt::BottomLeftCorner, parent)
     , mTimerID(-1)
 {
+    setObjectName("UBMessageWindow");
     mLayout = new QHBoxLayout(this);
-    mSpinningWheel = new UBSpinningWheel(parent);
-    mLabel = new QLabel(parent);
-    mLabel->setStyleSheet(QString("QLabel { color: white; background-color: transparent; border: none; font-family: Arial; font-size: 14px }"));
+    mSpinningWheel = new UBSpinningWheel(this);
+    mSpinningWheel->setObjectName("UBMessageWindowSpinner");
+    mLabel = new QLabel(this);
+    mLabel->setObjectName("UBMessageWindowLabel");
 
     mOriginalAlpha = 255;
 
     mLayout->setContentsMargins(radius() + 15, 4, radius() + 15, 4);
+    mLayout->setSpacing(10);
 
 #ifdef Q_OS_OSX
     mLayout->setContentsMargins(radius() + 15, 8, radius() + 15, 10);

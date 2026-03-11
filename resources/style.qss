@@ -71,11 +71,32 @@ QColorDialog
 	color: palette(window-text);
 }
 
+QToolBar QToolButton
+{
+    margin: 4px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
+    border: none;
+    height: 58px;
+    background: transparent;
+}
+
 QLabel#DockPaletteWidgetTitle
 {
 	color: palette(bright-text);
 	font-size : 18px;
 	font-weight:bold;
+}
+
+QWidget#UBPageNavigationWidget QLabel
+{
+    color: palette(window-text);
+    background-color: transparent;
+    border: none;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 QLineEdit#UBTGLineEdit,
@@ -136,93 +157,9 @@ QTextEdit#TeacherStudentBox
 
 QPushButton#DockPaletteWidgetButton::checked
 {
-	background-color: palette(light);
-}
-
-QScrollBar::vertical
-{
-	background:transparent;
-	margin: 23px 1px 25px 1px;
-}
-
-QScrollBar::handle:vertical
-{
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	background: palette(button);
-	min-height:40px;
-}
-
-QScrollBar::add-line:vertical
-{
-	image:url(:/images/down_arrow.png);
-	height:16px;
-	background: palette(button);
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	margin: 1px 1px 4px 1px;
-	subcontrol-position:bottom;
-	subcontrol-origin:margin;
-}
-
-QScrollBar::sub-line:vertical
-{
-	image:url(:/images/up_arrow.png);
-	height:16px;
-	background: palette(button);
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	margin: 2px 1px 1px 1px;
-	subcontrol-position:top;
-	subcontrol-origin:margin;
-}
-
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
-{
-	background:transparent;
-}
-
-QScrollBar::horizontal
-{
-	background:transparent;
-	margin: 1px 23px 1px 25px;
-}
-
-QScrollBar::handle:horizontal
-{
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	background: palette(button);
-	min-width:40px;
-}
-
-QScrollBar::add-line:horizontal
-{
-	image:url(:/images/right_arrow.png);
-	width:16px;
-	background: palette(button);
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	margin: 1px 1px 1px 4px;
-	subcontrol-position:right;
-	subcontrol-origin:margin;
-}
-
-QScrollBar::sub-line:horizontal
-{
-	image:url(:/images/left_arrow.png);
-	width:16px;
-	background: palette(button);
-	border: 2px solid palette(mid);
-	border-radius:6px;
-	margin: 1px 2px 1px 1px;
-	subcontrol-position:left;
-	subcontrol-origin:margin;
-}
-
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
-{
-	background:transparent;
+	background-color: palette(highlight);
+	color: palette(highlighted-text);
+	border: 1px solid palette(highlight);
 }
 
 QSlider::handle::horizontal
@@ -323,6 +260,14 @@ QPushButton#UBFeatureItemButton {
     font-weight: bold;
     font-size: 12px;
     border: 1px solid palette(mid);
+}
+
+QPushButton#UBFeatureItemButton:pressed,
+QPushButton#UBFeatureItemButton:checked,
+QPushButton#UBFeatureItemButton:default {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
+    border: 1px solid palette(highlight);
 }
 
 QLabel#UBFeatureInfoLabel {

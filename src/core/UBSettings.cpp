@@ -97,9 +97,11 @@ QColor UBSettings::documentSizeMarkColorDarkBackground = QColor(44, 44, 44, 200)
 QColor UBSettings::documentSizeMarkColorLightBackground = QColor(241, 241, 241);
 
 QColor UBSettings::paletteColor = QColor(127, 127, 127, 127);
-QColor UBSettings::opaquePaletteColor = QColor(66, 66, 66, 200);
+QColor UBSettings::opaquePaletteColor = QColor(66, 66, 66, 255);
 
-QColor UBSettings::documentViewLightColor = QColor(241, 241, 241);
+QColor UBSettings::documentThumbnailsViewColor = QColor(214, 222, 235);
+QColor UBSettings::boardThumbnailsViewColor = QColor(237, 242, 247);
+QColor UBSettings::pageNavigationWidgetColor = QColor(Qt::white);
 
 QPointer<QSettings> UBSettings::sAppSettings = 0;
 

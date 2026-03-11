@@ -66,7 +66,6 @@ void UBActionPalette::init(Qt::Orientation orientation)
     m_customCloseProcessing = false;
 
     mButtonSize = QSize(32, 32);
-    mIsClosable = false;
     mAutoClose = false;
     mActionGroup = nullptr;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
@@ -228,7 +227,7 @@ void UBActionPalette::updateLayout()
 
 void UBActionPalette::setClosable(bool pClosable)
 {
-    mIsClosable = pClosable;
+    UBFloatingPalette::setClosable(pClosable);
 
     updateLayout();
 }
@@ -236,7 +235,7 @@ void UBActionPalette::setClosable(bool pClosable)
 
 int UBActionPalette::border()
 {
-    if (mIsClosable)
+    if (isClosable())
         return 10;
     else
         return 5;
@@ -246,12 +245,11 @@ int UBActionPalette::border()
 void UBActionPalette::paintEvent(QPaintEvent *event)
 {
     UBFloatingPalette::paintEvent(event);
+}
 
-    if (mIsClosable)
-    {
-        QPainter painter(this);
-        painter.drawPixmap(0, 0, QPixmap(":/images/close.svg"));
-    }
+void UBActionPalette::onCloseButtonClicked()
+{
+    close();
 }
 
 
@@ -266,13 +264,6 @@ void UBActionPalette::close()
 
 void UBActionPalette::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (mIsClosable && event->pos().x() >= 0 && event->pos().x() < QPixmap(":/images/close.svg").width()
-        && event->pos().y() >= 0 && event->pos().y() < QPixmap(":/images/close.svg").height())
-    {
-        event->accept();
-        close();
-    }
-
     UBFloatingPalette::mouseReleaseEvent(event);
 }
 
@@ -310,7 +301,7 @@ UBActionPaletteButton::UBActionPaletteButton(QAction* action, QWidget * parent)
 {
     setIconSize(QSize(32, 32));
     setDefaultAction(action);
-    setStyleSheet(QString("QToolButton {color: white; font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
+    setStyleSheet(QString("QToolButton {color: palette(button-text); font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
 
     setFocusPolicy(Qt::NoFocus);
 

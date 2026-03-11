@@ -1456,7 +1456,7 @@ void DelegateMediaControl::paint(QPainter *painter,
     int radius = frameWidth-clearance;
     QRectF r(position - radius, clearance+mSeecAreaBorderHeight, radius * 2, radius * 2);
 
-    painter->setBrush(UBSettings::documentViewLightColor);
+    painter->setBrush(UBSettings::documentThumbnailsViewColor);
     painter->setPen(Qt::black);
     painter->drawEllipse(r);
 }

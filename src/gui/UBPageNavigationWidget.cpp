@@ -48,13 +48,13 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
   , mClock(NULL)
 {
     setObjectName(name);
+    setAttribute(Qt::WA_StyledBackground, true);
     mName = "PageNavigator";
     mVisibleState = true;
 
     SET_STYLE_SHEET();
 
-    mIconToRight = QPixmap(":images/pages_open.png");
-    mIconToLeft = QPixmap(":images/pages_close.png");
+    mTabIcon = QPixmap(":/images/toolbar/board.png").scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     // Build the gui
     mLayout = new QVBoxLayout(this);
@@ -71,13 +71,9 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mHLayout->addWidget(mPageNbr);
     mHLayout->addWidget(mClock);
 
-    // Configure the page number indicator
-    mPageNbr->setStyleSheet(QString("QLabel { color: white; background-color: transparent; border: none; font-family: Arial; font-weight: bold; font-size: 20px }"));
     setPageNumber(0, 0);
     mPageNbr->setAlignment(Qt::AlignHCenter);
 
-    // Configure the clock
-    mClock->setStyleSheet(QString("QLabel {color: white; background-color: transparent; text-align: center; font-family: Arial; font-weight: bold; font-size: 20px}"));
     mTimeFormat = QLocale::system().timeFormat(QLocale::ShortFormat);
     mClock->setAlignment(Qt::AlignHCenter);
 

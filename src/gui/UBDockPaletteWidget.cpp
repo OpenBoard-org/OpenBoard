@@ -41,16 +41,6 @@ UBDockPaletteWidget::~UBDockPaletteWidget()
 
 }
 
-QPixmap UBDockPaletteWidget::iconToRight()
-{
-    return mIconToRight;
-}
-
-QPixmap UBDockPaletteWidget::iconToLeft()
-{
-    return mIconToLeft;
-}
-
 QString UBDockPaletteWidget::name()
 {
     return mName;

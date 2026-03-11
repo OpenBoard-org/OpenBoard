@@ -624,7 +624,8 @@ void UBTabDockPalette::paintEvent(QPaintEvent *)
         UBDockPaletteWidget* pCrntWidget = dock->mTabWidgets.at(i);
         QPainterPath path;
         path.setFillRule(Qt::WindingFill);
-        QPixmap iconPixmap;
+        Qt::ArrowType arrow = Qt::RightArrow;
+        QPixmap tabIcon;
 
         switch (dock->mOrientation) {
         case eUBDockOrientation_Left:
@@ -632,13 +633,11 @@ void UBTabDockPalette::paintEvent(QPaintEvent *)
             path.addRoundedRect(0, yFrom, width(), TABSIZE, dock->radius(), dock->radius());
             if (pCrntWidget) {
                 if(dock->mCollapseWidth >= dock->width()) {
-                    // Get the collapsed icon
-                    iconPixmap = pCrntWidget->iconToRight();
+                    arrow = Qt::RightArrow;
                 } else {
-                    // Get the expanded icon
-                    iconPixmap = pCrntWidget->iconToLeft();
+                    arrow = Qt::LeftArrow;
                 }
-
+                tabIcon = pCrntWidget->tabIcon();
             }
             break;
 
@@ -647,12 +646,11 @@ void UBTabDockPalette::paintEvent(QPaintEvent *)
             path.addRoundedRect(0, yFrom, width(), TABSIZE, dock->radius(), dock->radius());
             if (pCrntWidget) {
                 if(dock->mCollapseWidth >= dock->width()) {
-                    // Get the collapsed icon
-                    iconPixmap = pCrntWidget->iconToLeft();
+                    arrow = Qt::LeftArrow;
                 } else {
-                    // Get the expanded icon
-                    iconPixmap = pCrntWidget->iconToRight();
+                    arrow = Qt::RightArrow;
                 }
+                tabIcon = pCrntWidget->tabIcon();
             }
             break;
 
@@ -671,7 +669,37 @@ void UBTabDockPalette::paintEvent(QPaintEvent *)
         }
 
         painter.drawPath(path);
-        painter.drawPixmap(2, yFrom + 2, width() - 4, TABSIZE - 4, iconPixmap);
+
+        // Optional tab icon
+        if (!tabIcon.isNull()) {
+            qreal iconTarget = 18.0;
+            QPixmap iconScaled = tabIcon.scaled(iconTarget, iconTarget, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            QPointF iconPos((width() - iconScaled.width()) / 2.0, yFrom + 4);
+            painter.drawPixmap(iconPos, iconScaled);
+        }
+
+        const qreal arrowSize = 18.0;
+        QRectF arrowRect((width() - arrowSize) / 2.0,
+                         yFrom + TABSIZE - arrowSize - 4,
+                         arrowSize,
+                         arrowSize);
+        QPainterPath arrowPath;
+        // right-pointing triangle within arrowRect
+        arrowPath.moveTo(arrowRect.left() + arrowRect.width() * 0.70, arrowRect.center().y());
+        arrowPath.lineTo(arrowRect.left() + arrowRect.width() * 0.35, arrowRect.top() + arrowRect.height() * 0.20);
+        arrowPath.lineTo(arrowRect.left() + arrowRect.width() * 0.35, arrowRect.bottom() - arrowRect.height() * 0.20);
+        arrowPath.closeSubpath();
+        if (arrow == Qt::LeftArrow) {
+            QTransform mirror;
+            mirror.scale(-1, 1);
+            mirror.translate(-(arrowRect.left() + arrowRect.right()), 0);
+            arrowPath = mirror.map(arrowPath);
+        }
+        QColor arrowColor = dock->palette().color(QPalette::ButtonText);
+        if (dock->mCurrentTab != i) {
+            arrowColor.setAlphaF(0.65);
+        }
+        painter.fillPath(arrowPath, arrowColor);
         yFrom += (TABSIZE + dock->tabSpacing());
         painter.restore();
     }

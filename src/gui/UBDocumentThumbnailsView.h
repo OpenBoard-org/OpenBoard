@@ -65,8 +65,6 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
             return mThumbnailWidth;
         }
 
-        void setBackgroundBrush(const QBrush& brush);
-
     public slots:
         void setThumbnailWidth(qreal pThumbnailWidth);
         void sceneSelectionChanged();

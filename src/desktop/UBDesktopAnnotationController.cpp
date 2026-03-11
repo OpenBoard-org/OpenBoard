@@ -99,7 +99,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     mTransparentDrawingView->setAcceptDrops(true);
 
-    QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
+    QString backgroundStyle =
+        "QGraphicsView { background-color: rgba(127, 127, 127, 0); }"
+        "QWidget#qt_scrollarea_viewport { background-color: rgba(127, 127, 127, 0); }";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
     mTransparentDrawingScene = std::make_shared<UBGraphicsScene>(nullptr, false);
@@ -149,10 +151,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView, rightPalette, "desktop");
     mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView, rightPalette, "desktop");
 
-    mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
-    mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
-    mDesktopMarkerPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
-    mDesktopEraserPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
+    mDesktopPalette->setBackgroundBrush(QBrush(UBSettings::settings()->opaquePaletteColor));
 
 
     // Hack : the size of the property palettes is computed the first time the palette is visible

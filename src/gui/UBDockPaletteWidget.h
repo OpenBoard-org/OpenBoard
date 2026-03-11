@@ -54,8 +54,7 @@ public:
     UBDockPaletteWidget(QWidget* parent=0, const char* name="UBDockPaletteWidget");
     ~UBDockPaletteWidget();
 
-    QPixmap iconToRight();
-    QPixmap iconToLeft();
+    QPixmap tabIcon() const { return mTabIcon; }
     QString name();
 
     virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = 0;
@@ -74,8 +73,7 @@ public slots:
 
 
 protected:
-    QPixmap mIconToRight;   // arrow like this: >
-    QPixmap mIconToLeft;    // arrow like this: <
+    QPixmap mTabIcon;       // optional pictogram shown on tab
     QString mName;
 
     /* The current widget available mode list */

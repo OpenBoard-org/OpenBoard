@@ -87,6 +87,7 @@ class UBActionPalette : public UBFloatingPalette
         void customMouseReleased();
 
     protected:
+        void onCloseButtonClicked() override;
         virtual void paintEvent(QPaintEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent * event);
         virtual void init(Qt::Orientation orientation);
@@ -98,7 +99,6 @@ class UBActionPalette : public UBFloatingPalette
         QList<QAction*> mActions;
         QMap<QAction*, UBActionPaletteButton*> mMapActionToButton;
 
-        bool mIsClosable;
         Qt::ToolButtonStyle mToolButtonStyle;
         bool mAutoClose;
         QSize mButtonSize;

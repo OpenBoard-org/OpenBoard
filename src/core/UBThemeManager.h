@@ -149,35 +149,35 @@ namespace UBTheme {
         
         // OpenBoard-specific palette colors
         const QColor PaletteColor(70, 70, 70, 220);
-        const QColor OpaquePaletteColor(50, 50, 50, 240);
+        const QColor OpaquePaletteColor(50, 50, 50, 255);
     }
     
     namespace Light {
-        const QColor Window(240, 240, 240);
-        const QColor WindowText(Qt::black);
+        const QColor Window(237, 242, 247);
+        const QColor WindowText(31, 41, 55);
         const QColor Base(Qt::white);
-        const QColor AlternateBase(245, 245, 245);
-        const QColor ToolTipBase(255, 255, 220);
-        const QColor ToolTipText(Qt::black);
-        const QColor Text(Qt::black);
-        const QColor Button(240, 240, 240);
-        const QColor ButtonText(Qt::black);
+        const QColor AlternateBase(247, 249, 252);
+        const QColor ToolTipBase(Qt::white);
+        const QColor ToolTipText(31, 41, 55);
+        const QColor Text(31, 41, 55);
+        const QColor Button(247, 249, 252);
+        const QColor ButtonText(31, 41, 55);
         const QColor BrightText(Qt::red);
-        const QColor Link(0, 0, 255);
-        const QColor Highlight(0, 120, 215);
+        const QColor Link(61, 143, 209);
+        const QColor Highlight(61, 143, 209);
         const QColor HighlightedText(Qt::white);
-        const QColor Light(245, 245, 245);
-        const QColor Midlight(242, 242, 242);
-        const QColor Dark(160, 160, 160);
-        const QColor Mid(160, 160, 160);
-        const QColor Shadow(105, 105, 105);
-        const QColor DisabledText(120, 120, 120);
-        const QColor DisabledBase(240, 240, 240);
-        const QColor DisabledButton(240, 240, 240);
+        const QColor Light(Qt::white);
+        const QColor Midlight(242, 246, 250);
+        const QColor Dark(179, 191, 205);
+        const QColor Mid(205, 214, 224);
+        const QColor Shadow(143, 154, 168);
+        const QColor DisabledText(148, 163, 184);
+        const QColor DisabledBase(242, 242, 242);
+        const QColor DisabledButton(239, 242, 247);
         
         // OpenBoard-specific palette colors
-        const QColor PaletteColor(180, 180, 180, 220);
-        const QColor OpaquePaletteColor(200, 200, 200, 240);
+        const QColor PaletteColor(236, 241, 247, 235);
+        const QColor OpaquePaletteColor(236, 241, 247, 255);
     }
 }
 

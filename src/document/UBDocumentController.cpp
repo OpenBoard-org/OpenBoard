@@ -1682,7 +1682,7 @@ void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
             }
             else
             {
-                editor->setStyleSheet("background-color: #FFFFFF;");
+                editor->setStyleSheet("");
             }
         }
     }
@@ -2188,8 +2188,6 @@ void UBDocumentController::setupViews()
         connect(this, &UBDocumentContainer::documentSet, mDocumentUI->thumbnailWidget, [this](std::shared_ptr<UBDocumentProxy> proxy){
             mDocumentUI->thumbnailWidget->setDocument(UBDocument::getDocument(proxy));
         });
-
-        mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
         #ifdef Q_WS_MACX
             mMessageWindow = new UBMessageWindow(NULL);

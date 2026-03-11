@@ -31,6 +31,7 @@
 #include <QHeaderView>
 #include <QStyleOptionProgressBar>
 #include <QApplication>
+#include <QStyle>
 
 #include "UBDownloadWidget.h"
 
@@ -135,7 +136,7 @@ void UBDownloadWidget::addCurrentDownloads()
         mpItem = new QTreeWidgetItem(mpTree);
         mpItem->setText(eItemColumn_Desc, actualDL.at(i).name);
         mpItem->setData(eItemColumn_Desc, Qt::UserRole, QVariant(actualDL.at(i).id));
-        mpItem->setIcon(eItemColumn_Close, QIcon(":images/close.svg"));
+        mpItem->setIcon(eItemColumn_Close, style()->standardIcon(QStyle::SP_TitleBarCloseButton, nullptr, this));
         mpTree->addTopLevelItem(mpItem);
         mpItem = new QTreeWidgetItem(mpTree);
         mpItem->setData(eItemColumn_Desc, Qt::UserRole, actualDL.at(i).currentSize);

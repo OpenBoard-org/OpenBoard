@@ -16,6 +16,7 @@ HEADERS      += src/core/UB.h \
                 src/core/UBDownloadManager.h \
                 src/core/UBDownloadThread.h \
                 src/core/UBTextTools.h \
+                src/core/UBWidgetInspector.h \
     src/core/UBPersistenceWorker.h
 
 SOURCES      += src/core/main.cpp \
@@ -35,4 +36,5 @@ SOURCES      += src/core/main.cpp \
                 src/core/UBDownloadManager.cpp \
                 src/core/UBDownloadThread.cpp \
                 src/core/UBTextTools.cpp \
+                src/core/UBWidgetInspector.cpp \
     src/core/UBPersistenceWorker.cpp

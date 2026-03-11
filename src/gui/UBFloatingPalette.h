@@ -32,6 +32,7 @@
 
 #include <QWidget>
 #include <QPoint>
+#include <QToolButton>
 
 #include "core/UB.h"
 
@@ -71,18 +72,20 @@ class UBFloatingPalette : public QWidget
 
         void setBackgroundBrush(const QBrush& brush);
         void setGrip(bool newGrip);
+        void setClosable(bool closable);
+        bool isClosable() const;
 
         void setMinimizePermission(bool permission);
 
     protected:
-
         virtual void enterEvent(UB::EnterEvent *event) override;
-        virtual void showEvent(QShowEvent *event) override;
         virtual void paintEvent(QPaintEvent *event) override;
 
         virtual int radius();
         virtual int border();
         virtual int gripSize();
+        virtual int closeButtonMargin() const;
+        virtual void onCloseButtonClicked();
 
         QBrush mBackgroundBrush;
         bool mbGrip;
@@ -97,14 +100,17 @@ class UBFloatingPalette : public QWidget
         eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
 
     private:
+        void buildCloseButton();
         void removeAllAssociatedPalette();
         void minimizePalette(const QPoint& pos);
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
         bool mCanBeMinimized;
+        bool mIsClosable;
         eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;
+        QToolButton* mCloseButton;
 
     signals:
         void mouseEntered();

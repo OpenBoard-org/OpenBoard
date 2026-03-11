@@ -56,7 +56,6 @@
 
 #include "desktop/UBDesktopAnnotationController.h"
 
-
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"
 
@@ -263,6 +262,7 @@ void UBBoardPaletteManager::setupPalettes()
     addItemActions << UBApplication::mainWindow->actionAddItemToLibrary;
 
     mAddItemPalette = new UBActionPalette(addItemActions, Qt::Horizontal, mContainer);
+    mAddItemPalette->setObjectName("AddItemPalette");
     mAddItemPalette->setButtonIconSize(QSize(128, 128));
     mAddItemPalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     mAddItemPalette->groupActions();

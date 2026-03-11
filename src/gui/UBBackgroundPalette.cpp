@@ -1,8 +1,11 @@
+#include <QToolButton>
+
 #include "UBBackgroundPalette.h"
 
 #include "gui/UBBackgroundManager.h"
 #include "gui/UBFlowLayout.h"
 #include "gui/UBMainWindow.h"
+
 
 UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
      : UBActionPalette(parent)
@@ -16,13 +19,14 @@ UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
 
 void UBBackgroundPalette::init()
 {
+    setObjectName("BackgroundPalette");
+
     UBActionPalette::clearLayout();
     delete layout();
 
     m_customCloseProcessing = false;
 
     mButtonSize = QSize(32, 32);
-    mIsClosable = false;
     mAutoClose = false;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
@@ -33,6 +37,7 @@ void UBBackgroundPalette::init()
     mBottomLayout = new QHBoxLayout();
 
     mButtonScrollArea = new QScrollArea{this};
+    mButtonScrollArea->setObjectName("BackgroundPaletteScrollArea");
     mButtonScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mButtonScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     mButtonScrollArea->setWidgetResizable(true);
@@ -52,17 +57,19 @@ void UBBackgroundPalette::init()
     mSlider->setTracking(true); // valueChanged() is emitted during movement and not just upon releasing the slider
 
     mSliderLabel = new QLabel(tr("Grid size"));
+    mSliderLabel->setObjectName("BackgroundPaletteLabel");
     mLightDarkModeLabel = new QLabel(tr("Switch background color"));
+    mLightDarkModeLabel->setObjectName("BackgroundPaletteLabel");
 
     mResetDefaultGridSizeButton = createPaletteButton(UBApplication::mainWindow->actionDefaultGridSize, this);
-    mResetDefaultGridSizeButton->setFixedSize(24,24);
+    mResetDefaultGridSizeButton->setFixedSize(32,32);
     mActions << UBApplication::mainWindow->actionDefaultGridSize;
     UBApplication::mainWindow->actionDefaultGridSize->setProperty("ungrouped", true); // don't add to action group
 
     connect(UBApplication::mainWindow->actionDefaultGridSize, &QAction::triggered, this, &UBBackgroundPalette::defaultBackgroundGridSize);
 
     mLightDarkModeSwitch = createPaletteButton(UBApplication::mainWindow->actionLightDarkMode, this);
-    mLightDarkModeSwitch->setFixedSize(44,26);
+    mLightDarkModeSwitch->setFixedSize(64,32);
     mLightDarkModeSwitch->setCheckable(true);
     mActions << UBApplication::mainWindow->actionLightDarkMode;
     UBApplication::mainWindow->actionLightDarkMode->setProperty("ungrouped", true); // don't add to action group
@@ -180,15 +187,20 @@ void UBBackgroundPalette::setActions(QList<QAction*> actions)
 void UBBackgroundPalette::updateLayout()
 {
     if (mToolButtonStyle == Qt::ToolButtonIconOnly) {
-        mVLayout->setContentsMargins (sLayoutContentMargin / 2  + border(), sLayoutContentMargin / 2  + border()
-                , sLayoutContentMargin / 2  + border(), sLayoutContentMargin / 2  + border());
+        mVLayout->setContentsMargins(sLayoutContentMargin / 2 + border(),
+                                     sLayoutContentMargin / 2 + border(),
+                                     sLayoutContentMargin / 2 + border(),
+                                     sLayoutContentMargin / 2 + border());
     }
     else
     {
-        mVLayout->setContentsMargins (sLayoutContentMargin  + border(), sLayoutContentMargin  + border()
-                , sLayoutContentMargin  + border(), sLayoutContentMargin + border());
+        mVLayout->setContentsMargins(sLayoutContentMargin + border(),
+                                     sLayoutContentMargin + border(),
+                                     sLayoutContentMargin + border(),
+                                     sLayoutContentMargin + border());
 
     }
+
    update();
 }
 
@@ -276,19 +288,6 @@ void UBBackgroundPalette::changeBackground(bool checked)
 
 void UBBackgroundPalette::backgroundChanged()
 {
-    bool dark = UBApplication::boardController->activeScene()->isDarkBackground();
-
-    if (dark)
-    {
-        mSliderLabel->setStyleSheet("QLabel { color : white; }");
-        mLightDarkModeLabel->setStyleSheet("QLabel { color : white; }");
-    }
-    else
-    {
-        mSliderLabel->setStyleSheet("QLabel { color : black; }");
-        mLightDarkModeLabel->setStyleSheet("QLabel { color : black; }");
-    }
-
     updateActions();
 }
 

@@ -33,13 +33,16 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBBoardThumbnailsView.h"
 #include "gui/UBFloatingPalette.h"
+#include "gui/UBPageNavigationWidget.h"
 #include "gui/UBStartupHintsPalette.h"
-#include "desktop/UBDesktopPropertyPalette.h"
+#include "gui/UBDocumentThumbnailsView.h"
 #include "desktop/UBDesktopAnnotationController.h"
 #include "desktop/UBDesktopPalette.h"
 
 #include <QApplication>
+#include <QGraphicsTextItem>
 #include <QStyleHints>
 #include <QDebug>
 #include <QTimer>
@@ -175,6 +178,10 @@ void UBThemeManager::setupDarkPalette()
     // Update OpenBoard-specific palette colors
     UBSettings::paletteColor = UBTheme::Dark::PaletteColor;
     UBSettings::opaquePaletteColor = UBTheme::Dark::OpaquePaletteColor;
+    UBSettings::documentThumbnailsViewColor = darkPalette.color(QPalette::Window);
+    UBSettings::boardThumbnailsViewColor = darkPalette.color(QPalette::Window);
+    UBSettings::pageNavigationWidgetColor = darkPalette.color(QPalette::Base);
+    UBSettings::treeViewBackgroundColor = darkPalette.color(QPalette::Highlight);
 }
 
 void UBThemeManager::setupLightPalette()
@@ -213,13 +220,24 @@ void UBThemeManager::setupLightPalette()
     // Update OpenBoard-specific palette colors
     UBSettings::paletteColor = UBTheme::Light::PaletteColor;
     UBSettings::opaquePaletteColor = UBTheme::Light::OpaquePaletteColor;
+    UBSettings::documentThumbnailsViewColor = QColor(214, 222, 235);
+    UBSettings::boardThumbnailsViewColor = UBTheme::Light::PaletteColor;
+    UBSettings::pageNavigationWidgetColor = UBTheme::Light::PaletteColor;
+    UBSettings::treeViewBackgroundColor = lightPalette.color(QPalette::Highlight);
 }
 
 void UBThemeManager::loadStylesheets()
 {
     QString fullStylesheet;
-    
-    // Layer 1: Theme-specific stylesheet (dark or light)
+
+    // Layer 1: Embedded base stylesheet shared by light and dark themes
+    QString embeddedStyle = UBFileSystemUtils::readTextFile(":/style.qss");
+    if (!embeddedStyle.isEmpty())
+    {
+        fullStylesheet += embeddedStyle;
+    }
+
+    // Layer 2: Theme-specific stylesheet (dark or light)
     if (mIsDarkMode)
     {
         QString darkThemeCss = UBFileSystemUtils::readTextFile(":/darkTheme.qss");
@@ -227,35 +245,36 @@ void UBThemeManager::loadStylesheets()
             // Fallback to file system if resource not found (allows user customization)
             darkThemeCss = UBFileSystemUtils::readTextFile(
                 UBPlatformUtils::applicationResourcesDirectory() + "/darkTheme.qss");
-            
+
             if (darkThemeCss.isEmpty()) {
                 qWarning() << "Failed to load dark theme stylesheet from resources and filesystem";
             }
         }
-        fullStylesheet = darkThemeCss;
+        if (!darkThemeCss.isEmpty()) {
+            if (!fullStylesheet.isEmpty()) {
+                fullStylesheet += "\n";
+            }
+            fullStylesheet += darkThemeCss;
+        }
     } else {
         QString lightThemeCss = UBFileSystemUtils::readTextFile(":/lightTheme.qss");
         if (lightThemeCss.isEmpty()) {
             // Fallback to file system if resource not found (allows user customization)
             lightThemeCss = UBFileSystemUtils::readTextFile(
                 UBPlatformUtils::applicationResourcesDirectory() + "/lightTheme.qss");
-            
+
             if (lightThemeCss.isEmpty()) {
                 qWarning() << "Failed to load light theme stylesheet from resources and filesystem";
             }
         }
-        fullStylesheet = lightThemeCss;
-    }
-    
-    // Layer 2: Embedded style.qss (palette-aware styling for OpenBoard widgets)
-    QString embeddedStyle = UBFileSystemUtils::readTextFile(":/style.qss");
-    if (!embeddedStyle.isEmpty()) {
-        if (!fullStylesheet.isEmpty()) {
-            fullStylesheet += "\n";
+        if (!lightThemeCss.isEmpty()) {
+            if (!fullStylesheet.isEmpty()) {
+                fullStylesheet += "\n";
+            }
+            fullStylesheet += lightThemeCss;
         }
-        fullStylesheet += embeddedStyle;
     }
-    
+
     // Layer 3: Standard CSS (user customizable, uses palette() references)
     QString css = UBFileSystemUtils::readTextFile(
         UBPlatformUtils::applicationEtcDirectory() + "/" + qApp->applicationName() + ".css");
@@ -313,12 +332,6 @@ void UBThemeManager::updateWidgets()
             desktopController->desktopPalette()->setBackgroundBrush(QBrush(UBSettings::opaquePaletteColor));
         }
 
-        auto desktopPropertyPalettes = desktopController->findChildren<UBDesktopPropertyPalette*>();
-
-        for (auto desktopPropertyPalette : std::as_const(desktopPropertyPalettes))
-        {
-            desktopPropertyPalette->setBackgroundBrush(QBrush(UBSettings::opaquePaletteColor));
-        }
     }
 
     // Update startup hints palette background
@@ -332,6 +345,35 @@ void UBThemeManager::updateWidgets()
         startupHint->setBackgroundBrush(QBrush(UBSettings::paletteColor));
         startupHint->setPalette(QApplication::palette());
         startupHint->update();
+    }
+
+    auto updateThumbnailSceneTextColor = [](QGraphicsScene* thumbnailScene)
+    {
+        if (!thumbnailScene)
+        {
+            return;
+        }
+
+        for (auto item : thumbnailScene->items())
+        {
+            if (auto textItem = dynamic_cast<QGraphicsTextItem*>(item))
+            {
+                textItem->setDefaultTextColor(QApplication::palette().color(QPalette::WindowText));
+            }
+        }
+    };
+
+    auto documentThumbnailViews = UBApplication::mainWindow->findChildren<UBDocumentThumbnailsView*>();
+    for (auto documentThumbnailView : std::as_const(documentThumbnailViews))
+    {
+        documentThumbnailView->QGraphicsView::setBackgroundBrush(QBrush(UBSettings::documentThumbnailsViewColor));
+        updateThumbnailSceneTextColor(documentThumbnailView->scene());
+    }
+
+    auto boardThumbnailViews = UBApplication::mainWindow->findChildren<UBBoardThumbnailsView*>();
+    for (auto boardThumbnailView : std::as_const(boardThumbnailViews))
+    {
+        updateThumbnailSceneTextColor(boardThumbnailView->scene());
     }
 
     // Force all widgets to update their appearance

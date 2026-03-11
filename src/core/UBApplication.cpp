@@ -624,6 +624,7 @@ void UBApplication::updateProtoActionsState()
 void UBApplication::insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width)
 {
     QWidget* spacer = new QWidget();
+    spacer->setStyleSheet("background: transparent;");
 
     if (width >= 0){
         QHBoxLayout *layout = new QHBoxLayout();
