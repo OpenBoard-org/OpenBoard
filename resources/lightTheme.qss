@@ -89,14 +89,14 @@ QDoubleSpinBox::down-button:hover {
 
 QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
-    image: url(:/images/up_arrow.png);
+    image: url(:/images/up_arrow.svg);
     width: 10px;
     height: 10px;
 }
 
 QSpinBox::down-arrow,
 QDoubleSpinBox::down-arrow {
-    image: url(:/images/down_arrow.png);
+    image: url(:/images/down_arrow.svg);
     width: 10px;
     height: 10px;
 }
@@ -107,7 +107,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(:/images/down_arrow.png);
+    image: url(:/images/down_arrow.svg);
     width: 12px;
     height: 12px;
 }
@@ -427,7 +427,17 @@ QScrollBar::sub-page:horizontal {
     background: transparent;
 }
 
-QTreeView,
+QTreeView {
+    background-color: #ffffff;
+    color: #1f2937;
+    border: 1px solid #d9e0e8;
+    alternate-background-color: #fbfcfe;
+    selection-background-color: #eaf4ff;
+    selection-color: #1f2937;
+    show-decoration-selected: 0;
+    outline: none;
+}
+
 QListView,
 QTableView {
     background-color: #ffffff;
@@ -444,7 +454,6 @@ QTreeView::item,
 QListView::item,
 QTableView::item {
     padding: 4px;
-    border-radius: 2px;
 }
 
 QTreeView::item:hover,
@@ -462,10 +471,15 @@ QTableView::item:selected {
 
 QTreeView::item:selected:active,
 QListView::item:selected:active,
-QTableView::item:selected:active,
-QTreeView::branch:selected {
+QTableView::item:selected:active {
     background: #3d8fd1;
     color: #ffffff;
+    border: none;
+}
+
+QTreeView::branch:selected {
+    background: transparent;
+    color: inherit;
     border: none;
 }
 
@@ -624,7 +638,7 @@ QToolTip {
     color: #1f2937;
     border: 1px solid #d9e0e8;
     padding: 6px;
-    border-radius: 6px;
+    border-radius: 3px;
 }
 
 #BackgroundPaletteScrollArea {

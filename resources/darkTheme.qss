@@ -138,7 +138,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(:/images/down_arrow.png);
+    image: url(:/images/down_arrow.svg);
     width: 12px;
     height: 12px;
 }
@@ -198,13 +198,13 @@ QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
 }
 
 QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
-    image: url(:/images/up_arrow.png);
+    image: url(:/images/up_arrow.svg);
     width: 10px;
     height: 10px;
 }
 
 QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
-    image: url(:/images/down_arrow.png);
+    image: url(:/images/down_arrow.svg);
     width: 10px;
     height: 10px;
 }
@@ -370,7 +370,18 @@ QGroupBox::title {
 }
 
 /* Tree and List views */
-QTreeView, QListView, QTableView {
+QTreeView {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #555555;
+    alternate-background-color: #323232;
+    selection-background-color: #2a82da;
+    selection-color: #ffffff;
+    show-decoration-selected: 0;
+    outline: none;
+}
+
+QListView, QTableView {
     background-color: #2a2a2a;
     color: #ffffff;
     border: 1px solid #555555;
@@ -396,10 +407,15 @@ QTreeView::item:selected, QListView::item:selected, QTableView::item:selected {
 
 QTreeView::item:selected:active,
 QListView::item:selected:active,
-QTableView::item:selected:active,
-QTreeView::branch:selected {
+QTableView::item:selected:active {
     background: #2a82da;
     color: #ffffff;
+    border: none;
+}
+
+QTreeView::branch:selected {
+    background: transparent;
+    color: inherit;
     border: none;
 }
 
@@ -716,8 +732,8 @@ QSizeGrip {
     background-color: transparent;
 }
 
-/* Override OpenBoard.css button group styles for dark mode */
-/* Only override colors, preserve the border structure from OpenBoard.css */
+/* Override base button group colors for dark mode */
+/* Only override colors; the shared geometry lives in style.qss. */
 QToolButton#ubButtonGroupLeft,
 QToolButton#ubButtonGroupCenter,
 QToolButton#ubButtonGroupRight,
@@ -757,4 +773,3 @@ QWidget#UBFeaturesActionBar QToolButton
 {
     padding: 0px;
 }
-

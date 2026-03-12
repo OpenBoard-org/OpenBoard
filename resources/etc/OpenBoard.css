@@ -188,28 +188,6 @@ QTreeView::item
     padding-bottom: 1.5 px;
 }
 
-QTreeView::branch:has-siblings:!adjoins-item,
-QTreeView::branch:!has-children:!has-siblings:adjoins-item,
-QTreeView::branch:has-siblings:adjoins-item
-{
-    border-image: none;
-    image: none;
-}
-
-QTreeView::branch:has-children:!has-siblings:closed,
-QTreeView::branch:closed:has-children:has-siblings
-{
-    border-image: none;
-    image: url(:/style/treeview-branch-closed.png);
-}
-
-QTreeView::branch:open:has-children:!has-siblings,
-QTreeView::branch:open:has-children:has-siblings
-{
-    border-image: none;
-    image: url(:/style/treeview-branch-open.png);
-}
-
 QSlider::groove:horizontal
 {
     border: 1px solid palette(mid);
@@ -321,4 +299,3 @@ QLineEdit#ubWebBrowserLineEdit
     padding: 2 2px;
     background: palette(base);
 }
-

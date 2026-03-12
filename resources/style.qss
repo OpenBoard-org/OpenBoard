@@ -82,6 +82,54 @@ QToolBar QToolButton
     background: transparent;
 }
 
+/* Preserve grouped toolbar button geometry across platforms. */
+QToolButton#ubButtonGroupLeft,
+QToolButton#desktop-ubButtonGroupLeft
+{
+    margin-top: 1px;
+    margin-right: 0px;
+    padding: 5px;
+    height: 14px;
+}
+
+QToolButton#ubButtonGroupCenter,
+QToolButton#desktop-ubButtonGroupCenter
+{
+    margin-top: 1px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding: 5px;
+    height: 14px;
+}
+
+QToolButton#ubButtonGroupRight,
+QToolButton#desktop-ubButtonGroupRight
+{
+    margin-top: 1px;
+    margin-left: 0px;
+    padding: 5px;
+    height: 14px;
+}
+
+QToolButton#ubButtonGroupLeft:checked,
+QToolButton#desktop-ubButtonGroupLeft:checked
+{
+    padding-right: 4px;
+}
+
+QToolButton#ubButtonGroupCenter:checked,
+QToolButton#desktop-ubButtonGroupCenter:checked
+{
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+QToolButton#ubButtonGroupRight:checked,
+QToolButton#desktop-ubButtonGroupRight:checked
+{
+    padding-left: 4px;
+}
+
 QLabel#DockPaletteWidgetTitle
 {
 	color: palette(bright-text);
@@ -127,7 +175,7 @@ QComboBox#DockPaletteWidgetComboBox:drop-down
 
 QComboBox#DockPaletteWidgetComboBox::down-arrow
 {
-	image:url(:/images/down_arrow.png);
+	image:url(:/images/down_arrow.svg);
 	background: palette(button);
 	border: 2px solid palette(mid);
 	height:16px;
@@ -179,6 +227,38 @@ QSlider::groove::horizontal
 	height:10px;
 	border-radius:5px;
 	border: 1px solid palette(dark);
+}
+
+QTreeView::branch:has-siblings:!adjoins-item,
+QTreeView::branch:!has-children:!has-siblings:adjoins-item,
+QTreeView::branch:has-siblings:adjoins-item
+{
+    border-image: none;
+    image: none;
+    width: 12px;
+    height: 12px;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings,
+QTreeView::branch:selected:has-children:!has-siblings:closed,
+QTreeView::branch:selected:closed:has-children:has-siblings
+{
+    border-image: none;
+    image: url(:/images/right_arrow.svg);
+    width: 12px;
+    height: 12px;
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings,
+QTreeView::branch:selected:open:has-children:!has-siblings,
+QTreeView::branch:selected:open:has-children:has-siblings
+{
+    border-image: none;
+    image: url(:/images/down_arrow.svg);
+    width: 12px;
+    height: 12px;
 }
 
 QLabel#UBTGEditionDocumentTitle
