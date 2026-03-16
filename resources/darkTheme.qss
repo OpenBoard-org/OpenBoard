@@ -66,11 +66,13 @@ QPushButton:hover {
 
 QPushButton:pressed {
     background-color: #2a82da;
+    color: #ffffff;
     border: 1px solid #2a82da;
 }
 
 QPushButton:checked {
     background-color: #2a82da;
+    color: #ffffff;
 }
 
 QPushButton:disabled {
@@ -81,6 +83,7 @@ QPushButton:disabled {
 
 QPushButton:default {
     background-color: #2a82da;
+    color: #ffffff;
     border: 2px solid #3d8fd1;
 }
 
@@ -529,11 +532,13 @@ QToolButton:hover {
 
 QToolButton:pressed {
     background-color: #2a82da;
+    color: #ffffff;
     border: 1px solid #2a82da;
 }
 
 QToolButton:checked {
     background-color: #2a82da;
+    color: #ffffff;
 }
 
 QToolButton[popupMode="1"] { /* only for MenuButtonPopup */
@@ -766,7 +771,253 @@ QToolButton#desktop-ubButtonGroupCenter:checked,
 QToolButton#desktop-ubButtonGroupRight:checked
 {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2a82da, stop: 1 #1e5fa0);
+    color: #ffffff;
     border: 1px solid #2a82da;
+}
+
+QToolButton#ubButtonGroupRight[colorPaletteConfigButton="true"],
+QToolButton#desktop-ubButtonGroupRight[colorPaletteConfigButton="true"]
+{
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #616161, stop: 1 #4a4a4a);
+    color: #ffffff;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+QToolButton#ubButtonGroupRight[colorPaletteConfigButton="true"]:hover,
+QToolButton#desktop-ubButtonGroupRight[colorPaletteConfigButton="true"]:hover
+{
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #6c6c6c, stop: 1 #555555);
+    color: #ffffff;
+}
+
+QToolButton#ubButtonGroupRight[colorPaletteConfigButton="true"]:pressed,
+QToolButton#desktop-ubButtonGroupRight[colorPaletteConfigButton="true"]:pressed
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #747474, stop: 1 #5e5e5e);
+    color: #ffffff;
+}
+
+QDialog#colorPreferencesDialog {
+    background-color: #353535;
+}
+
+QDialog#colorPreferencesDialog QWidget#colorPreferencesHeader {
+    background-color: #2b2b2b;
+    border: 1px solid #555555;
+    border-radius: 8px;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesHeaderLabel {
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+}
+
+QDialog#colorPreferencesDialog QSlider#colorPreferencesPaletteSizeSlider {
+    min-width: 190px;
+    background: transparent;
+}
+
+QDialog#colorPreferencesDialog QSlider#colorPreferencesPaletteSizeSlider::groove:horizontal {
+    height: 6px;
+    background-color: #404040;
+    border: none;
+    border-radius: 3px;
+}
+
+QDialog#colorPreferencesDialog QSlider#colorPreferencesPaletteSizeSlider::handle:horizontal {
+    width: 18px;
+    margin: -7px 0;
+    background-color: #2a82da;
+    border: 1px solid #3d8fd1;
+    border-radius: 9px;
+}
+
+QDialog#colorPreferencesDialog QSlider#colorPreferencesPaletteSizeSlider::sub-page:horizontal {
+    background-color: #2a82da;
+    border-radius: 3px;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesPaletteSizeValue {
+    min-width: 32px;
+    padding: 4px 8px;
+    background: #2a2a2a;
+    color: #f8fafc;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QDialog#colorPreferencesDialog QWidget#colorPreferencesHint {
+    background: #4b4324;
+    border: 1px solid #7b6b33;
+    border-radius: 6px;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesHintIcon {
+    background: transparent;
+    min-width: 20px;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesHintText {
+    background: transparent;
+    color: #f1e3a8;
+    font-size: 12px;
+    line-height: 1.3em;
+}
+
+QDialog#colorPreferencesDialog QTabWidget#colorPreferencesTabWidget::pane {
+    border: none;
+    background: transparent;
+    top: -1px;
+}
+
+QDialog#colorPreferencesDialog QTabBar::tab,
+QDialog#colorPreferencesDialog QTabBar::tab:top {
+    background: #2b2b2b;
+    color: #b7c3d4;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    padding: 8px 18px;
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+QDialog#colorPreferencesDialog QTabBar::tab:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2a82da, stop: 1 #1e5fa0);
+    color: #ffffff;
+    border: 1px solid #2a82da;
+}
+
+QDialog#colorPreferencesDialog QTabBar::tab:hover:!selected {
+    background: #404040;
+    color: #ffffff;
+}
+
+QDialog#colorPreferencesDialog QWidget#colorPreferencesSection {
+    background: #2b2b2b;
+    border: 1px solid #555555;
+    border-radius: 8px;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesSectionTitle {
+    background: transparent;
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame {
+    border-radius: 6px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="light"] {
+    background: #ffffff;
+    border: 1px solid #d9e0e8;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] {
+    background: #1f1f1f;
+    border: 1px solid #555555;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorShortcutLabel {
+    background: transparent;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QLabel#colorShortcutLabel {
+    color: #e2e8f0;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame QToolButton#ubButtonGroupLeft,
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame QToolButton#ubButtonGroupCenter,
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame QToolButton#ubButtonGroupRight {
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #fdfefe, stop: 1 #e7edf4);
+    border-top: 1px solid #d9e0e8;
+    border-bottom: 1px solid #d9e0e8;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="light"] QToolButton#ubButtonGroupLeft {
+    border-left: 1px solid #d9e0e8;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="light"] QToolButton#ubButtonGroupRight {
+    border-right: 1px solid #d9e0e8;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton#ubButtonGroupLeft,
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton#ubButtonGroupCenter,
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton#ubButtonGroupRight {
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #505050, stop: 1 #3a3a3a);
+    border-top: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton#ubButtonGroupLeft {
+    border-left: 1px solid #555555;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton#ubButtonGroupRight {
+    border-right: 1px solid #555555;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame QToolButton:hover {
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #f4f9ff, stop: 1 #dcebf9);
+    border-top-color: #c6d9ec;
+    border-bottom-color: #c6d9ec;
+}
+
+QDialog#colorPreferencesDialog QFrame#colorPreviewFrame[previewMode="dark"] QToolButton:hover {
+    background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #606060, stop: 1 #4a4a4a);
+    border-top-color: #6a6a6a;
+    border-bottom-color: #6a6a6a;
+}
+
+QDialog#colorPreferencesDialog QLabel#colorPreferencesOpacityValue {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    background: transparent;
+}
+
+QDialog#colorPreferencesDialog QPushButton#colorPreferencesResetButton {
+    padding: 7px 14px;
+    background: #454545;
+    color: #f8fafc;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+QDialog#colorPreferencesDialog QPushButton#colorPreferencesResetButton:hover {
+    background: #505050;
+    border: 1px solid #6a6a6a;
+}
+
+QDialog#colorPreferencesDialog QDialogButtonBox#colorPreferencesButtonBox QPushButton {
+    min-width: 92px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-weight: 600;
 }
 
 QWidget#UBFeaturesActionBar QToolButton

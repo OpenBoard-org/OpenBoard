@@ -50,7 +50,10 @@ int UBSettings::crossSize = 24;
 int UBSettings::defaultCrossSize = 24;
 int UBSettings::minCrossSize = 12;
 int UBSettings::maxCrossSize = 96; //TODO: user-settable?
-int UBSettings::colorPaletteSize = 5;
+const int UBSettings::minColorPaletteSize = 5;
+const int UBSettings::maxColorPaletteSize = 10;
+const int UBSettings::defaultColorPaletteSize = 8;
+int UBSettings::colorPaletteSize = UBSettings::defaultColorPaletteSize;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;
 
@@ -137,6 +140,30 @@ QColor UBSettings::treeViewBackgroundColor = QColor(209, 215, 226); //in synch w
 int UBSettings::objectInControlViewMargin = 100;
 
 QString UBSettings::appPingMessage = "__uniboard_ping";
+
+QList<QColor> UBSettings::normalizedColors(const QList<QColor>& current,
+                                           const QList<QColor>& defaults,
+                                           int targetSize,
+                                           bool& changed)
+{
+    QList<QColor> result = current;
+
+    if (result.size() < targetSize)
+    {
+        for (int i = result.size(); i < targetSize; ++i)
+        {
+            result.append(defaults.value(i % defaults.size(), QColor(Qt::black)));
+        }
+        changed = true;
+    }
+    else if (result.size() > targetSize)
+    {
+        result = result.mid(0, targetSize);
+        changed = true;
+    }
+
+    return result;
+}
 
 UBSettings* UBSettings::settings()
 {
@@ -304,6 +331,13 @@ void UBSettings::init()
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C8C0C0C0");
     boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
+    boardColorPaletteSize = new UBSetting(this, "Board", "ColorPaletteSize", defaultColorPaletteSize);
+    colorPaletteSize = qBound(minColorPaletteSize, boardColorPaletteSize->get().toInt(), maxColorPaletteSize);
+    if (colorPaletteSize != boardColorPaletteSize->get().toInt())
+    {
+        boardColorPaletteSize->set(colorPaletteSize);
+    }
+
     QStringList gridLightBackgroundColors;
     gridLightBackgroundColors << "#000000" << "#FF0000" << "#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080" << "#A5E1FF";
     boardGridLightBackgroundColors = new UBColorListSetting(this, "Board", "GridLightBackgroundColors", gridLightBackgroundColors, -1.0);
@@ -317,17 +351,17 @@ void UBSettings::init()
     boardPenLightBackgroundColors = new UBColorListSetting(this, "Board", "PenLightBackgroundColors", penLightBackgroundColors, 1.0);
 
     QStringList penDarkBackgroundColors;
-    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#000000";
+    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#C8C0C0" << "#000000";
     boardPenDarkBackgroundColors = new UBColorListSetting(this, "Board", "PenDarkBackgroundColors", penDarkBackgroundColors, 1.0);
 
     boardMarkerAlpha = new UBSetting(this, "Board", "MarkerAlpha", 0.5);
 
     QStringList markerLightBackgroundColors;
-    markerLightBackgroundColors << "#E3FF00" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#000000";
+    markerLightBackgroundColors << "#E3FF00" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#000000" << "#FFA500" << "#8000FF";
     boardMarkerLightBackgroundColors = new UBColorListSetting(this, "Board", "MarkerLightBackgroundColors", markerLightBackgroundColors, boardMarkerAlpha->get().toDouble());
 
     QStringList markerDarkBackgroundColors;
-    markerDarkBackgroundColors << "#FFFF00" << "#FF4400" <<"#66C0FF" << "#81FF5C" << "#B68360" << "#FF497E" << "#8D69FF" << "#FFFFFF";
+    markerDarkBackgroundColors << "#FFFF00" << "#FF4400" <<"#66C0FF" << "#81FF5C" << "#B68360" << "#FF497E" << "#8D69FF" << "#FFFFFF" << "#00FFFF" << "#FFD700";
     boardMarkerDarkBackgroundColors = new UBColorListSetting(this, "Board", "MarkerDarkBackgroundColors", markerDarkBackgroundColors, boardMarkerAlpha->get().toDouble());
 
     QStringList penLightBackgroundSelectedColors;
@@ -336,7 +370,7 @@ void UBSettings::init()
     QStringList markerLightBackgroundSelectedColors;
     QStringList markerDarkBackgroundSelectedColors;
 
-    for (int i = 0; i < colorPaletteSize; i++)
+    for (int i = 0; i < maxColorPaletteSize; i++)
     {
         penLightBackgroundSelectedColors << penLightBackgroundColors[i];
         penDarkBackgroundSelectedColors << penDarkBackgroundColors[i];
@@ -644,20 +678,25 @@ QColor UBSettings::currentPenColor()
 QColor UBSettings::penColor(bool onDarkBackground)
 {
     QList<QColor> colors = penColors(onDarkBackground);
-    return colors.at(penColorIndex());
+    int index = qBound(0, penColorIndex(), colors.size() - 1);
+    return colors.value(index, colors.isEmpty() ? QColor(Qt::black) : colors.first());
 }
 
 
 QList<QColor> UBSettings::penColors(bool onDarkBackground)
 {
-    if (onDarkBackground)
+    UBColorListSetting* selected = onDarkBackground ? boardPenDarkBackgroundSelectedColors : boardPenLightBackgroundSelectedColors;
+    UBColorListSetting* defaultsSetting = onDarkBackground ? boardPenDarkBackgroundColors : boardPenLightBackgroundColors;
+
+    bool changed = false;
+    QList<QColor> normalized = normalizedColors(selected->colors(), defaultsSetting->colors(), maxColorPaletteSize, changed);
+
+    if (changed)
     {
-        return boardPenDarkBackgroundSelectedColors->colors();
+        selected->setColors(normalized);
     }
-    else
-    {
-        return boardPenLightBackgroundSelectedColors->colors();
-    }
+
+    return normalized.mid(0, colorPaletteSize);
 }
 
 
@@ -726,20 +765,79 @@ QColor UBSettings::currentMarkerColor()
 QColor UBSettings::markerColor(bool onDarkBackground)
 {
     QList<QColor> colors = markerColors(onDarkBackground);
-    return colors.at(markerColorIndex());
+    int index = qBound(0, markerColorIndex(), colors.size() - 1);
+    return colors.value(index, colors.isEmpty() ? QColor(Qt::black) : colors.first());
 }
 
 
 QList<QColor> UBSettings::markerColors(bool onDarkBackground)
 {
-    if (onDarkBackground)
+    UBColorListSetting* selected = onDarkBackground ? boardMarkerDarkBackgroundSelectedColors : boardMarkerLightBackgroundSelectedColors;
+    UBColorListSetting* defaultsSetting = onDarkBackground ? boardMarkerDarkBackgroundColors : boardMarkerLightBackgroundColors;
+
+    bool changed = false;
+    QList<QColor> normalized = normalizedColors(selected->colors(), defaultsSetting->colors(), maxColorPaletteSize, changed);
+
+    if (changed)
     {
-        return boardMarkerDarkBackgroundSelectedColors->colors();
+        selected->setColors(normalized);
     }
-    else
+
+    return normalized.mid(0, colorPaletteSize);
+}
+
+
+QList<QColor> UBSettings::defaultPenColors(bool onDarkBackground) const
+{
+    UBColorListSetting* setting = onDarkBackground ? boardPenDarkBackgroundColors : boardPenLightBackgroundColors;
+    return setting->defaultColors();
+}
+
+
+QList<QColor> UBSettings::defaultMarkerColors(bool onDarkBackground) const
+{
+    UBColorListSetting* setting = onDarkBackground ? boardMarkerDarkBackgroundColors : boardMarkerLightBackgroundColors;
+    return setting->defaultColors();
+}
+
+
+void UBSettings::setColorPaletteSize(int size)
+{
+    int clamped = qBound(minColorPaletteSize, size, maxColorPaletteSize);
+
+    if (clamped == colorPaletteSize)
+        return;
+
+    colorPaletteSize = clamped;
+    boardColorPaletteSize->set(colorPaletteSize);
+
+    auto normalizeSelected = [this](UBColorListSetting* selected, UBColorListSetting* defaultsSetting)
     {
-        return boardMarkerLightBackgroundSelectedColors->colors();
+        bool changed = false;
+        QList<QColor> normalized = normalizedColors(selected->colors(), defaultsSetting->colors(), maxColorPaletteSize, changed);
+        if (changed)
+        {
+            selected->setColors(normalized);
+        }
+    };
+
+    normalizeSelected(boardPenLightBackgroundSelectedColors, boardPenLightBackgroundColors);
+    normalizeSelected(boardPenDarkBackgroundSelectedColors, boardPenDarkBackgroundColors);
+    normalizeSelected(boardMarkerLightBackgroundSelectedColors, boardMarkerLightBackgroundColors);
+    normalizeSelected(boardMarkerDarkBackgroundSelectedColors, boardMarkerDarkBackgroundColors);
+
+    int maxIndex = qMax(0, colorPaletteSize - 1);
+    if (penColorIndex() > maxIndex)
+    {
+        setPenColorIndex(maxIndex);
     }
+
+    if (markerColorIndex() > maxIndex)
+    {
+        setMarkerColorIndex(maxIndex);
+    }
+
+    emit colorContextChanged();
 }
 
 //----------------------------------------//
@@ -1455,7 +1553,7 @@ void UBSettings::checkNewSettings()
                   << boardMarkerLightBackgroundSelectedColors;
 
     foreach (UBColorListSetting* setting, colorSettings) {
-        if (setting->colors().size() < 5)
+        if (setting->colors().size() < minColorPaletteSize)
             setting->reset();
     }
 
@@ -1484,6 +1582,15 @@ void UBSettings::checkNewSettings()
 
         setting->set(currentColors);
     }
+
+    int storedPaletteSize = boardColorPaletteSize->get().toInt();
+    if (storedPaletteSize < minColorPaletteSize || storedPaletteSize > maxColorPaletteSize)
+    {
+        storedPaletteSize = defaultColorPaletteSize;
+        boardColorPaletteSize->set(storedPaletteSize);
+    }
+
+    setColorPaletteSize(storedPaletteSize);
 
 
     // A typo was corrected in version 1.3

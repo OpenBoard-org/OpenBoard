@@ -36,6 +36,7 @@
 
 #include "board/UBBoardPaletteManager.h"
 #include "board/UBBoardView.h"
+#include "board/UBColorPreferencesDialog.h"
 #include "board/UBDrawingController.h"
 #include "board/UBFeaturesController.h"
 
@@ -352,31 +353,23 @@ void UBBoardController::setupToolbar()
 {
     UBSettings *settings = UBSettings::settings();
 
-    // Setup color choice widget
-    QList<QAction *> colorActions;
-    colorActions.append(mMainWindow->actionColor0);
-    colorActions.append(mMainWindow->actionColor1);
-    colorActions.append(mMainWindow->actionColor2);
-    colorActions.append(mMainWindow->actionColor3);
-    colorActions.append(mMainWindow->actionColor4);
+    buildColorActions();
 
-    UBToolbarButtonGroup *colorChoice =
-            new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
-    colorChoice->setLabel(tr("Color"));
+    mColorChoice = new UBToolbarButtonGroup(mMainWindow->boardToolBar, mColorActions, QString(), settings->colorPaletteSize);
+    mColorChoice->setLabel(tr("Color"));
 
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, colorChoice);
+    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, mColorChoice);
 
-    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), colorChoice, SLOT(displayText(QVariant)));
-    connect(colorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
+    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), mColorChoice, SLOT(displayText(QVariant)));
+    connect(mColorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), mColorChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), mColorChoice, SLOT(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(colorPaletteChanged()));
+    connect(mMainWindow->actionColorPreferences, SIGNAL(triggered()), this, SLOT(openColorPreferencesDialog()));
 
-    colorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
-    colorChoice->colorPaletteChanged();
-    colorChoice->setCurrentIndex(settings->penColorIndex());
-    colorActions.at(settings->penColorIndex())->setChecked(true);
+    mColorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    updateColorButtonsForPaletteSize();
 
     // Setup line width choice widget
     QList<QAction *> lineWidthActions;
@@ -438,6 +431,73 @@ void UBBoardController::setupToolbar()
     initToolbarTexts();
 
     UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
+}
+
+
+void UBBoardController::buildColorActions()
+{
+    mColorActions.clear();
+
+    mColorActions << mMainWindow->actionColor0
+                  << mMainWindow->actionColor1
+                  << mMainWindow->actionColor2
+                  << mMainWindow->actionColor3
+                  << mMainWindow->actionColor4
+                  << mMainWindow->actionColor5
+                  << mMainWindow->actionColor6
+                  << mMainWindow->actionColor7
+                  << mMainWindow->actionColor8
+                  << mMainWindow->actionColor9
+                  << mMainWindow->actionColorPreferences;
+}
+
+
+int UBBoardController::currentToolColorIndex() const
+{
+    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
+    {
+        return UBSettings::settings()->markerColorIndex();
+    }
+
+    return UBSettings::settings()->penColorIndex();
+}
+
+
+void UBBoardController::updateColorButtonsForPaletteSize()
+{
+    const int paletteSize = UBSettings::settings()->colorPaletteSize;
+
+    for (int i = 0; i < mColorActions.size(); ++i)
+    {
+        QAction* action = mColorActions.at(i);
+
+        if (!action)
+            continue;
+
+        if (!action->isCheckable())
+        {
+            action->setEnabled(true);
+            continue;
+        }
+
+        const bool enabled = i < paletteSize;
+        action->setEnabled(enabled);
+        action->setVisible(true);
+
+        if (!enabled)
+        {
+            action->setChecked(false);
+        }
+    }
+
+    if (mColorChoice)
+    {
+        mColorChoice->setSelectableCount(paletteSize);
+        mColorChoice->colorPaletteChanged();
+
+        int index = qBound(0, currentToolColorIndex(), paletteSize - 1);
+        mColorChoice->setCurrentIndex(index);
+    }
 }
 
 
@@ -1876,6 +1936,9 @@ void UBBoardController::setColorIndex(int pColorIndex)
 {
     UBDrawingController::drawingController()->setColorIndex(pColorIndex);
 
+    const bool isMarkerTool = (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker);
+    const int appliedIndex = isMarkerTool ? UBSettings::settings()->markerColorIndex() : UBSettings::settings()->penColorIndex();
+
     if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker &&
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Line &&
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Text &&
@@ -1889,8 +1952,10 @@ void UBBoardController::setColorIndex(int pColorIndex)
             UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Text ||
             UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
-        mPenColorOnDarkBackground = UBSettings::settings()->penColors(true).at(pColorIndex);
-        mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(pColorIndex);
+        QList<QColor> darkColors = UBSettings::settings()->penColors(true);
+        QList<QColor> lightColors = UBSettings::settings()->penColors(false);
+        mPenColorOnDarkBackground = darkColors.value(appliedIndex, darkColors.value(0, Qt::white));
+        mPenColorOnLightBackground = lightColors.value(appliedIndex, lightColors.value(0, Qt::black));
 
         if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
         {
@@ -1904,10 +1969,12 @@ void UBBoardController::setColorIndex(int pColorIndex)
 
         emit penColorChanged();
     }
-    else if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
+    else if (isMarkerTool)
     {
-        mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(pColorIndex);
-        mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(pColorIndex);
+        QList<QColor> darkColors = UBSettings::settings()->markerColors(true);
+        QList<QColor> lightColors = UBSettings::settings()->markerColors(false);
+        mMarkerColorOnDarkBackground = darkColors.value(appliedIndex, darkColors.value(0, Qt::white));
+        mMarkerColorOnLightBackground = lightColors.value(appliedIndex, lightColors.value(0, Qt::black));
     }
 }
 
@@ -1917,6 +1984,84 @@ void UBBoardController::colorPaletteChanged()
     mPenColorOnLightBackground = UBSettings::settings()->penColor(false);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColor(true);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColor(false);
+}
+
+
+void UBBoardController::openColorPreferencesDialog()
+{
+    if (mColorPreferencesDialog)
+    {
+        mColorPreferencesDialog->raise();
+        mColorPreferencesDialog->activateWindow();
+        return;
+    }
+
+    UBSettings* settings = UBSettings::settings();
+    const int paletteSize = settings->colorPaletteSize;
+
+    QList<QColor> penLightColors = settings->boardPenLightBackgroundSelectedColors->colors();
+    QList<QColor> penDarkColors = settings->boardPenDarkBackgroundSelectedColors->colors();
+    QList<QColor> markerLightColors = settings->boardMarkerLightBackgroundSelectedColors->colors();
+    QList<QColor> markerDarkColors = settings->boardMarkerDarkBackgroundSelectedColors->colors();
+
+    mColorPreferencesDialog = new UBColorPreferencesDialog(mMainWindow,
+                                                           paletteSize,
+                                                           penLightColors,
+                                                           penDarkColors,
+                                                           markerLightColors,
+                                                           markerDarkColors,
+                                                           qRound(settings->boardMarkerAlpha->get().toDouble() * 100.0));
+    mColorPreferencesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(mColorPreferencesDialog, SIGNAL(accepted()), this, SLOT(colorPreferencesDialogAccepted()));
+    mColorPreferencesDialog->open();
+}
+
+
+void UBBoardController::colorPreferencesDialogAccepted()
+{
+    UBColorPreferencesDialog* dialog = qobject_cast<UBColorPreferencesDialog*>(sender());
+    if (!dialog)
+        return;
+
+    UBSettings* settings = UBSettings::settings();
+
+    const int selectedPaletteSize = dialog->paletteSize();
+    settings->setColorPaletteSize(selectedPaletteSize);
+
+    auto applyColors = [](UBColorListSetting* target, const QList<QColor>& defaults, const QList<QColor>& updated)
+    {
+        QList<QColor> stored = target->colors();
+
+        QList<QColor> normalized = stored;
+        for (int i = normalized.size(); i < UBSettings::maxColorPaletteSize; ++i)
+        {
+            normalized.append(defaults.value(i % defaults.size(), QColor(Qt::black)));
+        }
+
+        if (normalized.size() > UBSettings::maxColorPaletteSize)
+        {
+            normalized = normalized.mid(0, UBSettings::maxColorPaletteSize);
+        }
+
+        const int limit = qMin(normalized.size(), updated.size());
+        for (int i = 0; i < limit; ++i)
+        {
+            normalized[i] = updated.at(i);
+        }
+
+        target->setColors(normalized);
+    };
+
+    applyColors(settings->boardPenLightBackgroundSelectedColors, settings->defaultPenColors(false), dialog->penLightColors());
+    applyColors(settings->boardPenDarkBackgroundSelectedColors, settings->defaultPenColors(true), dialog->penDarkColors());
+    applyColors(settings->boardMarkerLightBackgroundSelectedColors, settings->defaultMarkerColors(false), dialog->markerLightColors());
+    applyColors(settings->boardMarkerDarkBackgroundSelectedColors, settings->defaultMarkerColors(true), dialog->markerDarkColors());
+
+    const qreal markerAlpha = dialog->markerOpacity() / 100.0;
+    UBDrawingController::drawingController()->setMarkerAlpha(markerAlpha);
+
+    updateColorButtonsForPaletteSize();
+    UBDrawingController::drawingController()->refreshColorPalette();
 }
 
 

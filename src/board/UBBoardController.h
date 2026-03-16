@@ -34,6 +34,7 @@
 
 #include <QObject>
 #include <QHBoxLayout>
+#include <QPointer>
 #include <QUndoCommand>
 
 #include "core/UB.h"
@@ -62,6 +63,8 @@ class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 class UBItem;
 class UBGraphicsItem;
+class UBToolbarButtonGroup;
+class UBColorPreferencesDialog;
 
 
 class UBBoardController : public UBDocumentContainer
@@ -296,6 +299,9 @@ class UBBoardController : public UBDocumentContainer
         void initBackgroundGridSize();
         void updatePageSizeState();
         int autosaveTimeoutFromSettings() const;
+        void buildColorActions();
+        void updateColorButtonsForPaletteSize();
+        int currentToolColorIndex() const;
 
         UBMainWindow *mMainWindow;
         std::shared_ptr<UBGraphicsScene> mActiveScene;
@@ -316,6 +322,7 @@ class UBBoardController : public UBDocumentContainer
         QColor mPenColorOnLightBackground;
         QColor mMarkerColorOnDarkBackground;
         QColor mMarkerColorOnLightBackground;
+        QPointer<UBColorPreferencesDialog> mColorPreferencesDialog;
         qreal mSystemScaleFactor;
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
@@ -327,6 +334,8 @@ class UBBoardController : public UBDocumentContainer
         QString mActionUngroupText;
         std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
         QList<std::shared_ptr<UBDocument>> mRecentDocuments;
+        QList<QAction*> mColorActions;
+        UBToolbarButtonGroup* mColorChoice{nullptr};
 
         QTimer *mAutosaveTimer;
 
@@ -334,6 +343,8 @@ class UBBoardController : public UBDocumentContainer
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
         void colorPaletteChanged();
+        void openColorPreferencesDialog();
+        void colorPreferencesDialogAccepted();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();
         void onDownloadModalFinished();

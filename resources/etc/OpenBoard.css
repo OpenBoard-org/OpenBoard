@@ -15,6 +15,17 @@ QComboBox QAbstractItemView
     background: palette(button);
 }
 
+QPushButton:focus,
+QPushButton:pressed,
+QPushButton:checked,
+QPushButton:default,
+QToolButton:focus,
+QToolButton:pressed,
+QToolButton:checked
+{
+    color: palette(highlighted-text);
+}
+
 QTextEdit,
 QLineEdit,
 QComboBox#DockPaletteWidgetComboBox QAbstractItemView

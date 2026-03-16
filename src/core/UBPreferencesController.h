@@ -99,8 +99,6 @@ class UBPreferencesController : public QObject
         void darkBackgroundCrossOpacityValueChanged(int value);
         void lightBackgroundCrossOpacityValueChanged(int value);
         void widthSliderChanged(int value);
-        void opacitySliderChanged(int value);
-        void colorSelected(const QColor&);
         void setCrossColorOnDarkBackground(const QColor& color);
         void setCrossColorOnLightBackground(const QColor& color);
         void toolbarPositionChanged(bool checked);
@@ -126,14 +124,9 @@ class UBPreferencesController : public QObject
 
 class UBBrushPropertiesFrame : public Ui::brushProperties
 {
-
-    public:
-        UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller);
-
-        virtual ~UBBrushPropertiesFrame(){}
-
-        QList<UBColorPicker*> lightBackgroundColorPickers;
-        QList<UBColorPicker*> darkBackgroundColorPickers;
+public:
+    explicit UBBrushPropertiesFrame(QFrame* owner);
+    virtual ~UBBrushPropertiesFrame(){}
 
 };
 

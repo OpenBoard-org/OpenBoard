@@ -52,6 +52,10 @@ class UBSettings : public QObject
         UBSettings(QObject *parent = 0);
         virtual ~UBSettings();
         void cleanNonPersistentSettings();
+        static QList<QColor> normalizedColors(const QList<QColor>& current,
+                                              const QList<QColor>& defaults,
+                                              int targetSize,
+                                              bool& changed);
 
     public:
 
@@ -69,6 +73,7 @@ class UBSettings : public QObject
         QColor currentPenColor();
         QColor penColor(bool onDarkBackground);
         QList<QColor> penColors(bool onDarkBackground);
+        QList<QColor> defaultPenColors(bool onDarkBackground) const;
 
         // Marker related
         int markerWidthIndex();
@@ -77,6 +82,12 @@ class UBSettings : public QObject
         QColor currentMarkerColor();
         QColor markerColor(bool onDarkBackground);
         QList<QColor> markerColors(bool onDarkBackground);
+        QList<QColor> defaultMarkerColors(bool onDarkBackground) const;
+
+        // Palette size
+        void setColorPaletteSize(int size);
+        int colorPaletteMin() const { return minColorPaletteSize; }
+        int colorPaletteMax() const { return maxColorPaletteSize; }
 
         // Eraser related
         int eraserWidthIndex();
@@ -195,6 +206,9 @@ class UBSettings : public QObject
         static int maxCrossSize;
 
         static int colorPaletteSize;
+        static const int minColorPaletteSize;
+        static const int maxColorPaletteSize;
+        static const int defaultColorPaletteSize;
         static int objectFrameWidth;
 
         static QString documentGroupName;
@@ -301,6 +315,7 @@ class UBSettings : public QObject
 
         UBSetting* boardCrossColorDarkBackground;
         UBSetting* boardCrossColorLightBackground;
+        UBSetting* boardColorPaletteSize;
 
         UBColorListSetting* boardGridLightBackgroundColors;
         UBColorListSetting* boardGridDarkBackgroundColors;

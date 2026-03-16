@@ -40,10 +40,11 @@
 
 #include "core/memcheck.h"
 
-UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions, QString objectNameprefix)
+UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions, QString objectNameprefix, int selectableCount)
     : QWidget(toolBar)
     , mActions(actions)
     , mCurrentIndex(-1)
+    , mSelectableCount(selectableCount <= 0 ? actions.size() : qMin(selectableCount, actions.size()))
     , mDisplayLabel(true)
     , mActionGroup(0)
 {
@@ -68,12 +69,17 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
 
     foreach(QAction *action, actions)
     {
-        mActionGroup->addAction(action);
+        if (action->isCheckable())
+            mActionGroup->addAction(action);
 
         QToolButton *button = new QToolButton(this);
         mButtons.append(button);
         button->setDefaultAction(action);
-        button->setCheckable(true);
+        button->setCheckable(action->isCheckable());
+        if (action->objectName() == QLatin1String("actionColorPreferences"))
+        {
+            button->setProperty("colorPaletteConfigButton", true);
+        }
 
         if(i == 0)
         {
@@ -95,13 +101,15 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
                 : button->setObjectName("ubButtonGroupCenter");
         }
 
-        connect(button, SIGNAL(triggered(QAction*)), this, SLOT(selected(QAction*)));
+        connect(button, SIGNAL(triggered(QAction*)), this, SLOT(setSelected(QAction*)));
 
         horizontalLayout->addWidget(button);
         mLabel = action->text();
         buttonSize = button->sizeHint();
         i++;
     }
+
+    setSelectableCount(mSelectableCount);
 }
 
 UBToolbarButtonGroup::~UBToolbarButtonGroup()
@@ -112,6 +120,33 @@ UBToolbarButtonGroup::~UBToolbarButtonGroup()
 void UBToolbarButtonGroup::setLabel(const QString& label)
 {
     mLabel = label;
+}
+
+void UBToolbarButtonGroup::setSelectableCount(int count)
+{
+    mSelectableCount = qBound(0, count, mActions.size());
+
+    for (int i = 0; i < mButtons.size(); ++i)
+    {
+        QAction* action = mActions.at(i);
+        bool selectable = action->isCheckable() && i < mSelectableCount;
+
+        if (action->isCheckable())
+        {
+            action->setEnabled(selectable);
+            mButtons.at(i)->setVisible(selectable);
+        }
+        else
+        {
+            action->setEnabled(true);
+            mButtons.at(i)->setVisible(true);
+        }
+    }
+
+    if (mCurrentIndex >= mSelectableCount)
+    {
+        mCurrentIndex = -1;
+    }
 }
 
 void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
@@ -144,30 +179,17 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
     setIcon(icon, index);
 }
 
-void UBToolbarButtonGroup::selected(QAction *action)
+void UBToolbarButtonGroup::setSelected(QAction *action)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    foreach(QObject *widget, action->associatedObjects())
-#else
-    foreach(QWidget *widget, action->associatedWidgets())
-#endif
-    {
-        QToolButton *button = qobject_cast<QToolButton*>(widget);
-        if (button)
-        {
-            int i = 0;
-            foreach(QAction *eachAction, mActions)
-            {
-                if (eachAction == action)
-                {
-                    setCurrentIndex(i);
-                    emit activated(i);
-                    break;
-                }
-                i++;
-            }
-        }
-    }
+    int index = mActions.indexOf(action);
+    if (index < 0 || index >= mSelectableCount)
+        return;
+
+    if (!action->isCheckable())
+        return;
+
+    setCurrentIndex(index);
+    emit activated(index);
 }
 
 int UBToolbarButtonGroup::currentIndex() const
@@ -177,7 +199,10 @@ int UBToolbarButtonGroup::currentIndex() const
 
 void UBToolbarButtonGroup::setCurrentIndex(int index)
 {
-    Q_ASSERT(index < mButtons.size());
+    Q_ASSERT(index < mSelectableCount || mSelectableCount == 0);
+
+    if (mSelectableCount == 0)
+        return;
 
     if (index != mCurrentIndex)
     {
@@ -224,6 +249,8 @@ void UBToolbarButtonGroup::paintEvent(QPaintEvent *)
 
 void UBToolbarButtonGroup::colorPaletteChanged()
 {
+    setSelectableCount(qMin(UBSettings::settings()->colorPaletteSize, mActions.size()));
+
     bool isDarkBackground = UBSettings::settings()->isDarkBackground();
 
     QList<QColor> colors;
@@ -238,7 +265,7 @@ void UBToolbarButtonGroup::colorPaletteChanged()
         colors = UBSettings::settings()->markerColors(isDarkBackground);
     }
 
-    for (int i = 0; i < mButtons.size() && i < colors.size(); i++)
+    for (int i = 0; i < mSelectableCount && i < colors.size(); i++)
     {
         setColor(colors.at(i), i);
     }

@@ -283,7 +283,11 @@ QColor UBDrawingController::toolColor(bool onDarkBackground)
 
 void UBDrawingController::setColorIndex(int index)
 {
-    Q_ASSERT(index >= 0 && index < UBSettings::settings()->colorPaletteSize);
+    int paletteSize = UBSettings::settings()->colorPaletteSize;
+    if (paletteSize <= 0)
+        return;
+
+    index = qBound(0, index, paletteSize - 1);
 
     if (stylusTool() == UBStylusTool::Marker)
     {
@@ -344,6 +348,12 @@ void UBDrawingController::setMarkerAlpha(qreal alpha)
 
     UBSettings::settings()->boardMarkerAlpha->set(alpha);
 
+    emit colorPaletteChanged();
+}
+
+
+void UBDrawingController::refreshColorPalette()
+{
     emit colorPaletteChanged();
 }
 
@@ -445,4 +455,3 @@ void UBDrawingController::captureToolSelected(bool checked)
     if (checked)
         setStylusTool(UBStylusTool::Capture);
 }
-

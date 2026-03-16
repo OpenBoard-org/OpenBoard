@@ -5,6 +5,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBBoardPaletteManager.h
     UBBoardView.cpp
     UBBoardView.h
+    UBColorPreferencesDialog.cpp
+    UBColorPreferencesDialog.h
     UBDrawingController.cpp
     UBDrawingController.h
     UBFeaturesController.cpp

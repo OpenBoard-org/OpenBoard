@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1074</width>
-    <height>566</height>
+    <height>816</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,10 +24,7 @@
    <item row="4" column="0">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Shadow::Raised</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
@@ -51,9 +48,6 @@
       </item>
       <item>
        <spacer name="bottomHSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
@@ -82,7 +76,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -148,11 +142,8 @@
             </item>
             <item row="0" column="0">
              <spacer name="horizontalSpacer_11">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -164,9 +155,6 @@
             </item>
             <item row="0" column="3">
              <spacer name="horizontalSpacer_12">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
@@ -219,11 +207,8 @@
             </item>
             <item row="0" column="0">
              <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -235,9 +220,6 @@
             </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
@@ -303,11 +285,8 @@
             </item>
             <item row="0" column="0" rowspan="2">
              <spacer name="horizontalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Fixed</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -319,9 +298,6 @@
             </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_10">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
@@ -353,11 +329,8 @@
            <layout class="QGridLayout" name="gridLayout_9">
             <item row="0" column="3">
              <spacer name="toolbarRSpacer">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Expanding</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -394,11 +367,8 @@
             </item>
             <item row="0" column="0">
              <spacer name="toolbarLSpacer">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -435,7 +405,7 @@
             <item row="0" column="1">
              <layout class="QGridLayout" name="gridLayout_5">
               <property name="sizeConstraint">
-               <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+               <enum>QLayout::SetDefaultConstraint</enum>
               </property>
               <item row="0" column="0">
                <widget class="QRadioButton" name="horizontalChoice">
@@ -471,9 +441,6 @@
               </item>
               <item row="2" column="0">
                <spacer name="verticalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Orientation::Vertical</enum>
-                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
@@ -486,11 +453,8 @@
             </item>
             <item row="0" column="0">
              <spacer name="horizontalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -502,11 +466,8 @@
             </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -593,9 +554,6 @@
               </item>
               <item row="0" column="2">
                <spacer name="horizontalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Orientation::Horizontal</enum>
-                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>40</width>
@@ -608,11 +566,8 @@
             </item>
             <item row="0" column="0">
              <spacer name="horizontalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
+               <enum>QSizePolicy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -766,7 +721,7 @@
             <x>0</x>
             <y>0</y>
             <width>1032</width>
-            <height>220</height>
+            <height>470</height>
            </rect>
           </property>
          </widget>
@@ -778,19 +733,13 @@
           <bool>true</bool>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_11">
           <item row="2" column="0">
            <widget class="QFrame" name="crossColorLightBackgroundFrame">
             <property name="frameShape">
-             <enum>QFrame::Shape::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <layout class="QHBoxLayout" name="crossColorLightBackgroundLayout">
              <item>
@@ -802,9 +751,6 @@
              </item>
              <item>
               <spacer name="horizontalSpacer_7">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -822,10 +768,7 @@
                 </size>
                </property>
                <property name="frameShape">
-                <enum>QFrame::Shape::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Raised</enum>
+                <enum>QFrame::NoFrame</enum>
                </property>
               </widget>
              </item>
@@ -835,17 +778,11 @@
           <item row="5" column="0">
            <widget class="QFrame" name="darkBackgroundOpacityFrame">
             <property name="frameShape">
-             <enum>QFrame::Shape::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
               <spacer name="wSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>154</width>
@@ -873,10 +810,10 @@
                 <number>50</number>
                </property>
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
                <property name="tickPosition">
-                <enum>QSlider::TickPosition::TicksAbove</enum>
+                <enum>QSlider::NoTicks</enum>
                </property>
                <property name="tickInterval">
                 <number>20</number>
@@ -885,9 +822,6 @@
              </item>
              <item>
               <spacer name="eSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>156</width>
@@ -902,10 +836,7 @@
           <item row="4" column="0">
            <widget class="QFrame" name="crossColorDarkBackgroundFrame">
             <property name="frameShape">
-             <enum>QFrame::Shape::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <layout class="QHBoxLayout" name="crossColorDarkBackgroundLayout">
              <item>
@@ -917,9 +848,6 @@
              </item>
              <item>
               <spacer name="horizontalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -937,10 +865,7 @@
                 </size>
                </property>
                <property name="frameShape">
-                <enum>QFrame::Shape::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Raised</enum>
+                <enum>QFrame::NoFrame</enum>
                </property>
               </widget>
              </item>
@@ -950,17 +875,11 @@
           <item row="3" column="0">
            <widget class="QFrame" name="lightBackgroundOpacityFrame">
             <property name="frameShape">
-             <enum>QFrame::Shape::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
               <spacer name="wSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>154</width>
@@ -988,10 +907,10 @@
                 <number>50</number>
                </property>
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
                <property name="tickPosition">
-                <enum>QSlider::TickPosition::TicksAbove</enum>
+                <enum>QSlider::NoTicks</enum>
                </property>
                <property name="tickInterval">
                 <number>20</number>
@@ -1000,9 +919,6 @@
              </item>
              <item>
               <spacer name="eSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>156</width>
@@ -1019,9 +935,6 @@
        </item>
        <item row="1" column="0">
         <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
@@ -1037,13 +950,19 @@
        <string>Pen</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0" colspan="2">
+       <item row="0" column="0" colspan="2" alignment="Qt::AlignTop">
         <widget class="QFrame" name="penFrame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
+         <property name="contextMenuPolicy">
+          <enum>Qt::DefaultContextMenu</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
         </widget>
        </item>
@@ -1054,13 +973,10 @@
        <string>Marker</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
+       <item alignment="Qt::AlignTop">
         <widget class="QFrame" name="markerFrame">
          <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
         </widget>
        </item>
@@ -1151,7 +1067,7 @@
                <item>
                 <widget class="QLineEdit" name="proxyPassword">
                  <property name="echoMode">
-                  <enum>QLineEdit::EchoMode::Password</enum>
+                  <enum>QLineEdit::Password</enum>
                  </property>
                 </widget>
                </item>
@@ -1162,11 +1078,8 @@
           </item>
           <item row="0" column="0">
            <spacer name="internetLSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Policy::Preferred</enum>
+             <enum>QSizePolicy::Fixed</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1181,9 +1094,6 @@
        </item>
        <item row="2" column="0">
         <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
@@ -1208,11 +1118,17 @@
        </item>
        <item>
         <widget class="QScrollArea" name="shortcutScrollArea">
-         <property name="widgetResizable">
-          <bool>true</bool>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="styleSheet">
           <string notr="true">QScrollArea:disabled {border: 1px solid red;}</string>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
          <widget class="QWidget" name="scrollAreaWidgetContents_2">
           <property name="geometry">
@@ -1220,7 +1136,7 @@
             <x>0</x>
             <y>0</y>
             <width>1032</width>
-            <height>173</height>
+            <height>423</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_41">
@@ -1296,10 +1212,10 @@
             </item>
             <item row="0" column="1">
              <widget class="QKeySequenceEdit" name="keySequence">
-              <property name="clearButtonEnabled">
+              <property name="clearButtonEnabled" stdset="0">
                <bool>true</bool>
               </property>
-              <property name="maximumSequenceLength">
+              <property name="maximumSequenceLength" stdset="0">
                <longLong>1</longLong>
               </property>
              </widget>
@@ -1375,9 +1291,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="recordButton">
-             <property name="styleSheet">
-              <string notr="true">QPushButton:checked {background-color: red}</string>
-             </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {background-color: red}</string>
+              </property>
               <property name="text">
                <string>Record</string>
               </property>
@@ -1553,7 +1469,7 @@
  */</string>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -1598,7 +1514,7 @@ Jean-loup Gailly        Mark Adler
 jloup@gzip.org          madler@alumni.caltech.edu</string>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -2310,7 +2226,7 @@ Public License instead of this License.  But first, please read
 --8&lt;---------------cut here---------------end---------------&gt;8---</string>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -2680,7 +2596,7 @@ Public License instead of this License.
 --8&lt;---------------cut here---------------end---------------&gt;8---</string>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -3387,7 +3303,7 @@ Public License instead of this License.  But first, please read
 --8&lt;---------------cut here---------------end---------------&gt;8---</string>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -3601,7 +3517,7 @@ hr { height: 1px; border-width: 0; }
    <class>UBPreferredBackgroundWidget</class>
    <extends>QWidget</extends>
    <header>gui/UBPreferredBackgroundWidget.h</header>
-   </customwidget>
+  </customwidget>
   <customwidget>
    <class>UBScreenLayoutPreview</class>
    <extends>QWidget</extends>

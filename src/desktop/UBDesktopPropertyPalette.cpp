@@ -63,9 +63,15 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    colorActions.append(UBApplication::mainWindow->actionColor5);
+    colorActions.append(UBApplication::mainWindow->actionColor6);
+    colorActions.append(UBApplication::mainWindow->actionColor7);
+    colorActions.append(UBApplication::mainWindow->actionColor8);
+    colorActions.append(UBApplication::mainWindow->actionColor9);
+    colorActions.append(UBApplication::mainWindow->actionColorPreferences);
 
     UBToolbarButtonGroup *colorChoice =
-            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions, objectNamePrefix);
+            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions, objectNamePrefix, UBSettings::settings()->colorPaletteSize);
 
     colorChoice->displayText(false);
 
@@ -160,8 +166,14 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    colorActions.append(UBApplication::mainWindow->actionColor5);
+    colorActions.append(UBApplication::mainWindow->actionColor6);
+    colorActions.append(UBApplication::mainWindow->actionColor7);
+    colorActions.append(UBApplication::mainWindow->actionColor8);
+    colorActions.append(UBApplication::mainWindow->actionColor9);
+    colorActions.append(UBApplication::mainWindow->actionColorPreferences);
 
-    UBToolbarButtonGroup *colorChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions, objectNamePrefix);
+    UBToolbarButtonGroup *colorChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions, objectNamePrefix, UBSettings::settings()->colorPaletteSize);
     colorChoice->displayText(false);
 
     //connect(colorChoice, SIGNAL(activated(int)), this, SLOT(UBApplication::boardController->setColorIndex(int)));
@@ -188,4 +200,3 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
 
     layout()->addWidget(lineWidthChoice);
 }
-

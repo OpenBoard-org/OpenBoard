@@ -104,8 +104,12 @@ class UBColorListSetting : public UBSetting
         virtual QVariant reset();
 
         QList<QColor> colors() const;
+        QList<QColor> defaultColors() const;
 
         void setColor(int pIndex, const QColor& color);
+
+        // Replace the entire color list and persist it.
+        void setColors(const QList<QColor>& colors);
 
         void setAlpha(qreal pAlpha);
 

@@ -379,16 +379,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->darkBackgroundOpacitySlider, SIGNAL(valueChanged(int)), this, SLOT(darkBackgroundCrossOpacityValueChanged(int)));
 
     // pen
-    QList<QColor> penLightBackgroundColors = settings->boardPenLightBackgroundColors->colors();
-    QList<QColor> penDarkBackgroundColors = settings->boardPenDarkBackgroundColors->colors();
-    QList<QColor> penLightBackgroundSelectedColors = settings->boardPenLightBackgroundSelectedColors->colors();
-    QList<QColor> penDarkBackgroundSelectedColors = settings->boardPenDarkBackgroundSelectedColors->colors();
-
-    mPenProperties = new UBBrushPropertiesFrame(mPreferencesUI->penFrame,
-                                                penLightBackgroundColors, penDarkBackgroundColors, penLightBackgroundSelectedColors,
-                                                penDarkBackgroundSelectedColors, this);
-
-    mPenProperties->opacityFrame->hide();
+    mPenProperties = new UBBrushPropertiesFrame(mPreferencesUI->penFrame);
 
     connect(mPenProperties->fineSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
@@ -398,14 +389,7 @@ void UBPreferencesController::wire()
     connect(mPenProperties->circleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(penPreviewFromSizeChanged(int)));
 
     // marker
-    QList<QColor> markerLightBackgroundColors = settings->boardMarkerLightBackgroundColors->colors();
-    QList<QColor> markerDarkBackgroundColors = settings->boardMarkerDarkBackgroundColors->colors();
-    QList<QColor> markerLightBackgroundSelectedColors = settings->boardMarkerLightBackgroundSelectedColors->colors();
-    QList<QColor> markerDarkBackgroundSelectedColors = settings->boardMarkerDarkBackgroundSelectedColors->colors();
-
-    mMarkerProperties = new UBBrushPropertiesFrame(mPreferencesUI->markerFrame, markerLightBackgroundColors,
-                                                   markerDarkBackgroundColors, markerLightBackgroundSelectedColors,
-                                                   markerDarkBackgroundSelectedColors, this);
+    mMarkerProperties = new UBBrushPropertiesFrame(mPreferencesUI->markerFrame);
 
     mMarkerProperties->pressureSensitiveCheckBox->setText(tr("Marker is pressure sensitive"));
 
@@ -415,7 +399,6 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
-    connect(mMarkerProperties->opacitySlider, SIGNAL(valueChanged(int)), this, SLOT(opacitySliderChanged(int)));
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
@@ -518,8 +501,6 @@ void UBPreferencesController::init()
     mMarkerProperties->strongSlider->setValue(settings->boardMarkerStrongWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->pressureSensitiveCheckBox->setChecked(settings->boardMarkerPressureSensitive->get().toBool());
 
-    mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
-
     // shortcut tab
     mPreferencesUI->shortcutTableView->setModel(UBShortcutManager::shortcutManager());
     mPreferencesUI->shortcutTableView->horizontalHeader()->setModel(UBShortcutManager::shortcutManager());
@@ -587,18 +568,6 @@ void UBPreferencesController::defaultSettings()
         mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->reset().toBool());
         mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->reset().toBool());
         mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->reset().toInt());
-
-        settings->boardPenLightBackgroundSelectedColors->reset();
-        QList<QColor> lightBackgroundSelectedColors = settings->boardPenLightBackgroundSelectedColors->colors();
-
-        settings->boardPenDarkBackgroundSelectedColors->reset();
-        QList<QColor> darkBackgroundSelectedColors = settings->boardPenDarkBackgroundSelectedColors->colors();
-
-        for (int i = 0 ; i < settings->colorPaletteSize ; i++)
-        {
-            mPenProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->penColors(false).at(i)));
-            mPenProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->penColors(true).at(i)));
-        }
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->markerTab)
     {
@@ -606,20 +575,6 @@ void UBPreferencesController::defaultSettings()
         mMarkerProperties->mediumSlider->setValue(settings->boardMarkerMediumWidth->reset().toDouble() * sSliderRatio);
         mMarkerProperties->strongSlider->setValue(settings->boardMarkerStrongWidth->reset().toDouble() * sSliderRatio);
         mMarkerProperties->pressureSensitiveCheckBox->setChecked(settings->boardMarkerPressureSensitive->reset().toBool());
-
-        mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->reset().toDouble() * 100);
-
-        settings->boardMarkerLightBackgroundSelectedColors->reset();
-        QList<QColor> lightBackgroundSelectedColors = settings->boardMarkerLightBackgroundSelectedColors->colors();
-
-        settings->boardMarkerDarkBackgroundSelectedColors->reset();
-        QList<QColor> darkBackgroundSelectedColors = settings->boardMarkerDarkBackgroundSelectedColors->colors();
-
-        for (int i = 0 ; i < settings->colorPaletteSize ; i++)
-        {
-            mMarkerProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->markerColors(false).at(i)));
-            mMarkerProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->markerColors(true).at(i)));
-        }
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->aboutTab)
     {
@@ -788,54 +743,6 @@ void UBPreferencesController::widthSliderChanged(int value)
 }
 
 
-void UBPreferencesController::opacitySliderChanged(int value)
-{
-    qreal opacity = ((qreal)value) / 100;
-
-    QObject *slider = sender();
-
-    if (slider == mMarkerProperties->opacitySlider)
-    {
-        UBDrawingController::drawingController()->setMarkerAlpha(opacity);
-    }
-}
-
-
-void UBPreferencesController::colorSelected(const QColor& color)
-{
-    UBColorPicker *colorPicker = qobject_cast<UBColorPicker*>(sender());
-
-    int index = mPenProperties->lightBackgroundColorPickers.indexOf(colorPicker);
-
-    if (index >= 0)
-    {
-        UBDrawingController::drawingController()->setPenColor(false, color, index);
-        return;
-    }
-
-    index = mPenProperties->darkBackgroundColorPickers.indexOf(colorPicker);
-
-    if (index >= 0)
-    {
-        UBDrawingController::drawingController()->setPenColor(true, color, index);
-    }
-
-    index = mMarkerProperties->lightBackgroundColorPickers.indexOf(colorPicker);
-
-    if (index >= 0)
-    {
-        UBDrawingController::drawingController()->setMarkerColor(false, color, index);
-    }
-
-    index = mMarkerProperties->darkBackgroundColorPickers.indexOf(colorPicker);
-
-    if (index >= 0)
-    {
-        UBDrawingController::drawingController()->setMarkerColor(true, color, index);
-    }
-
-}
-
 void UBPreferencesController::setCrossColorOnDarkBackground(const QColor& color)
 {
     UBSettings::settings()->boardCrossColorDarkBackground->set(color.name(QColor::HexArgb));
@@ -964,79 +871,9 @@ void UBPreferencesController::resetClicked()
     mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
 }
 
-UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
-                                               const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
-                                               const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
+UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner)
 {
     setupUi(owner);
-
-    QPalette lightBackgroundPalette = QApplication::palette();
-    lightBackgroundPalette.setColor(QPalette::Window, Qt::white);
-
-    lightBackgroundFrame->setAutoFillBackground(true);
-    lightBackgroundFrame->setPalette(lightBackgroundPalette);
-
-    QPalette darkBackgroundPalette = QApplication::palette();
-    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
-    darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
-    darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
-
-    darkBackgroundFrame->setAutoFillBackground(true);
-    darkBackgroundFrame->setPalette(darkBackgroundPalette);
-    darkBackgroundLabel->setPalette(darkBackgroundPalette);
-
-    QList<QColor> firstLightBackgroundColor;
-    firstLightBackgroundColor.append(lightBackgroundColors[0]);
-
-    lightBackgroundColorPicker0->setColors(firstLightBackgroundColor);
-    lightBackgroundColorPicker0->setSelectedColorIndex(0);
-    lightBackgroundColorPickers.append(lightBackgroundColorPicker0);
-
-    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
-    {
-        UBColorPicker *picker = new UBColorPicker(lightBackgroundFrame);
-        picker->setObjectName(QString("penLightBackgroundColor%1").arg(i));
-        picker->setMinimumSize(QSize(32, 32));
-        picker->setFrameShape(QFrame::StyledPanel);
-        picker->setFrameShadow(QFrame::Raised);
-
-        lightBackgroundLayout->addWidget(picker);
-
-        picker->setColors(lightBackgroundColors);
-
-        picker->setSelectedColorIndex(lightBackgroundColors.indexOf(lightBackgroundSelectedColors.at(i)));
-
-        lightBackgroundColorPickers.append(picker);
-
-        QObject::connect(picker, SIGNAL(colorSelected(const QColor&)), controller, SLOT(colorSelected(const QColor&)));
-
-    }
-
-    QList<QColor> firstDarkBackgroundColor;
-    firstDarkBackgroundColor.append(darkBackgroundColors[0]);
-
-    darkBackgroundColorPicker0->setColors(firstDarkBackgroundColor);
-    darkBackgroundColorPicker0->setSelectedColorIndex(0);
-    darkBackgroundColorPickers.append(darkBackgroundColorPicker0);
-
-    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
-    {
-        UBColorPicker *picker = new UBColorPicker(darkBackgroundFrame);
-        picker->setObjectName(QString("penDarkBackgroundColor%1").arg(i));
-        picker->setMinimumSize(QSize(32, 32));
-        picker->setFrameShape(QFrame::StyledPanel);
-        picker->setFrameShadow(QFrame::Raised);
-
-        darkBackgroundLayout->addWidget(picker);
-
-        picker->setColors(darkBackgroundColors);
-        picker->setSelectedColorIndex(darkBackgroundColors.indexOf(darkBackgroundSelectedColors.at(i)));
-
-        darkBackgroundColorPickers.append(picker);
-
-        QObject::connect(picker, SIGNAL(colorSelected(const QColor&)), controller, SLOT(colorSelected(const QColor&)));
-
-    }
 }
 
 UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)

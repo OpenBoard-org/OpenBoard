@@ -156,6 +156,29 @@ QList<QColor> UBColorListSetting::colors() const
     return mColors;
 }
 
+QList<QColor> UBColorListSetting::defaultColors() const
+{
+    QList<QColor> colors;
+
+    for (const auto& serializedColor : defaultValue().toStringList())
+    {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(serializedColor);
+#else
+        QColor color;
+        color.setNamedColor(serializedColor);
+#endif
+        if (mAlpha >= 0)
+        {
+            color.setAlphaF(mAlpha);
+        }
+
+        colors.append(color);
+    }
+
+    return colors;
+}
+
 void UBColorListSetting::setColor(int pIndex, const QColor& color)
 {
     QStringList list = get().toStringList();
@@ -169,6 +192,28 @@ void UBColorListSetting::setColor(int pIndex, const QColor& color)
     else
         mColors.replace(pIndex, color);
     set(list);
+}
+
+void UBColorListSetting::setColors(const QList<QColor>& colors)
+{
+    mColors.clear();
+
+    QStringList serialized;
+    serialized.reserve(colors.size());
+
+    for (const QColor& inputColor : colors)
+    {
+        QColor color = inputColor;
+        if (mAlpha >= 0)
+        {
+            color.setAlphaF(mAlpha);
+        }
+
+        serialized << color.name(QColor::HexArgb);
+        mColors << color;
+    }
+
+    set(serialized);
 }
 
 void UBColorListSetting::setAlpha(qreal pAlpha)
