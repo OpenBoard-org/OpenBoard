@@ -168,10 +168,9 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setAutoFillBackground(false);
 
     /*
-     * Quick workaround for https://bugreports.qt.io/browse/QTBUG-128241 (bug appearing with Qt 6.7.2)
-     * To test with Qt 6.8.1 and then change the following directive if really fixed with it
+     * Quick workaround for https://bugreports.qt.io/browse/QTBUG-128241 (bug appearing with Qt 6.7.2, fixed in 6.8.1)
     */
-#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 2))
+#if (QT_VERSION < QT_VERSION_CHECK(6, 7, 2) || QT_VERSION > QT_VERSION_CHECK(6, 8, 0))
     mWebEngineView->setAttribute(Qt::WA_TranslucentBackground);
     mWebEngineView->page()->setBackgroundColor(QColor(Qt::transparent));
 #else
