@@ -672,18 +672,13 @@ qreal UBDisplayManager::logicalDpi(ScreenRole role) const
     return scr ? scr->logicalDotsPerInch() : 96.;
 }
 
-void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callback, QRect rect) const
+void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callback, bool crop) const
 {
     QScreen* scr = screen(role);
 
     if (scr)
     {
-        if (!rect.isValid())
-        {
-            rect = QRect(QPoint(0, 0), scr->geometry().size());
-        }
-
-        UBPlatformUtils::grabScreen(scr, callback, rect);
+        UBPlatformUtils::grabScreen(scr, callback, crop);
     }
     else
     {
