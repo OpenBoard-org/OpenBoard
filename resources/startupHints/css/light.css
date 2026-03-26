@@ -1,0 +1,46 @@
+:root,
+:root[data-theme="light"] {
+  /* Core colors */
+  --bg: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --brand: #6682b5;
+  --brand-soft: #ffffff;
+  --surface: #ffffff;
+  --line: #e5e7eb;
+  --tip-bg: #f8fafc;
+
+  /* Host and navigation shell */
+  --host-content-bg: #fafafa;
+  --host-frame-bg: #ffffff;
+  --nav-shell-bg: rgba(246, 250, 255, 0.94);
+  --nav-shell-border: rgba(147, 175, 226, 0.44);
+  --nav-shell-shadow: 0 4px 12px rgba(27, 58, 114, 0.1), 0 1px 2px rgba(17, 24, 39, 0.08);
+  --nav-btn-border: rgba(145, 172, 223, 0.58);
+  --nav-btn-bg: #f5f8fe;
+  --nav-btn-shadow: 0 1px 2px rgba(31, 59, 102, 0.08);
+  --nav-btn-hover-border: rgba(66, 104, 172, 0.7);
+  --nav-btn-hover-shadow: 0 2px 6px rgba(33, 76, 149, 0.16);
+  --nav-btn-active-shadow: 0 1px 2px rgba(33, 76, 149, 0.18);
+  --nav-btn-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.26);
+  --nav-btn-focus-border: #2f5fb3;
+  --nav-title-color: #6682b5;
+  --nav-title-bg: rgba(255, 255, 255, 0.82);
+  --nav-title-border: rgba(139, 167, 214, 0.35);
+  --nav-divider: rgba(93, 125, 181, 0.34);
+  --nav-icon-filter: none;
+  --nav-icon-hover-filter: brightness(0) saturate(100%) invert(42%) sepia(31%) saturate(1014%) hue-rotate(181deg) brightness(90%) contrast(91%);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+#content {
+  background: var(--host-content-bg);
+}
+
+#source {
+  background: var(--host-frame-bg);
+}

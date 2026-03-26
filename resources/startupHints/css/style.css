@@ -1,0 +1,439 @@
+/*
+  Startup hints stylesheet
+  Scope:
+  - Host viewer (index.html)
+  - Hint page content rendered inside the iframe (all locales)
+*/
+
+/* =========================
+  1) Base and typography
+   ========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+/* =========================
+  2) Host viewer (index.html)
+   ========================= */
+#main:not(.container) {
+  min-height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+#content {
+  min-height: 0;
+  background: var(--host-content-bg);
+}
+
+#source {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: var(--host-frame-bg);
+}
+
+#controls {
+  margin: 0;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-top: 1px solid var(--line);
+}
+
+#navigation {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+  align-items: center;
+  gap: 8px;
+  width: min(400px, calc(100vw - 20px));
+  padding: 0;
+}
+
+#left,
+#right {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  opacity: 0.86;
+  transition: transform 0.14s ease, opacity 0.18s ease;
+}
+
+.nav-icon {
+  width: 30px;
+  height: 30px;
+  display: block;
+  filter: var(--nav-icon-filter);
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+#left:hover,
+#right:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+#left:hover .nav-icon,
+#right:hover .nav-icon {
+  transform: scale(1.03);
+  filter: var(--nav-icon-hover-filter);
+}
+
+#left:active,
+#right:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+#left:active .nav-icon,
+#right:active .nav-icon {
+  transform: scale(0.98);
+}
+
+#left:focus-visible,
+#right:focus-visible {
+  outline: none;
+  opacity: 1;
+  border-radius: 4px;
+  box-shadow: var(--nav-btn-focus-ring);
+}
+
+#title {
+  min-width: 120px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--nav-title-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#title::before,
+#title::after {
+  content: "";
+  flex: 1 1 auto;
+  max-width: 44px;
+  height: 1px;
+  background: var(--nav-divider);
+}
+
+#title span {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+@media (max-width: 520px) {
+  #navigation {
+    width: min(350px, calc(100vw - 12px));
+    gap: 6px;
+    padding: 0;
+  }
+
+  #left,
+  #right {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  #title {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  #title::before,
+  #title::after {
+    max-width: 28px;
+  }
+}
+
+/* =========================
+  3) Hint page content (iframe)
+   ========================= */
+.container {
+  width: min(920px, 92vw);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.page-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--brand-soft);
+}
+
+.page-footer {
+  background: var(--bg);
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  color: var(--brand);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: 700;
+}
+
+/* Keep a fixed header title size across FR hint pages (1-12). */
+html[lang="fr"] .title {
+  font-size: 1.8rem;
+}
+
+#logo {
+  width: 36px;
+  height: 36px;
+}
+
+#logo-small {
+  width: 48px;
+  height: 48px;
+}
+
+.lead {
+  font-size: 1.05rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+}
+
+.modes {
+  margin-top: 0.75rem;
+}
+
+.modes-grid {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mode-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mode-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.mode-title {
+  margin: 0 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.mode-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
+.mode-text {
+  margin: 0;
+}
+
+.start {
+  margin-top: 0.75rem;
+}
+
+.image {
+  margin: 20px 0 12px;
+  text-align: center;
+}
+
+.image figcaption {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.features {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.features li {
+  position: relative;
+  margin: 0.25rem 0;
+  padding-left: 1.1rem;
+}
+
+.features li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--brand);
+  line-height: 1.2;
+}
+
+.file-extension {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.95em;
+  color: var(--brand);
+}
+
+.non-clickable {
+  cursor: default;
+  text-decoration: underline dotted;
+}
+
+.non-clickable:focus {
+  outline: none;
+}
+
+.tip {
+  margin-top: 1.5rem;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px dashed var(--brand);
+  border-radius: 10px;
+  background: var(--tip-bg);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.tip p {
+  margin: 0;
+}
+
+.tip-icon {
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+}
+
+.inline-icon {
+  vertical-align: -4px;
+  margin-left: 4px;
+}
+
+/* Semantic screenshot sizing helpers used across hint pages. */
+.hint-shot,
+.hint-shot--standard {
+  width: 100%;
+  max-width: min(360px, 92vw);
+  height: auto;
+}
+
+.hint-shot--narrow {
+  width: 100%;
+  max-width: min(240px, 92vw);
+  height: auto;
+}
+
+.hint-shot--wide {
+  width: 100%;
+  max-width: min(420px, 92vw);
+  height: auto;
+}
+
+/* =========================
+  4) Responsive and accessibility
+   ========================= */
+@media (max-width: 640px) {
+  .modes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  #navigation {
+    grid-template-columns: 30px minmax(120px, 1fr) 30px;
+    gap: 6px;
+    padding: 4px;
+  }
+
+  #left,
+  #right {
+    width: 28px;
+    height: 28px;
+  }
+
+  #title {
+    min-width: 120px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-card,
+  #left,
+  #right {
+    transition: none;
+  }
+}

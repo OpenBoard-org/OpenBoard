@@ -1,124 +1,32 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Introduce</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="css/basic.css"/>
-        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-        <script type="text/javascript">
-            var current = 1, files_count = 0, currentTheme = 'light';
+<html lang="fr">
 
-            function applyTheme(isDark) {
-                // Update current theme and reload current page with ?theme=
-                currentTheme = isDark ? 'dark' : 'light';
-                // Reflect theme on outer frame (basic.css uses data-theme on :root)
-                document.documentElement.setAttribute('data-theme', currentTheme);
-                if (typeof current !== 'undefined' && current > 0) {
-                    var lang = (window.sankore) ? sankore.lang.substr(0,2) : 'en';
-                    loadPage(lang, current);
-                }
-            }
+<head>
+  <meta charset="UTF-8" />
+  <title>Startuphints</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
 
-            function initTheme() {
-                if (window.sankore && typeof window.sankore.isDarkMode !== 'undefined') {
-                    // Initialize and listen for theme changes from C++
-                    applyTheme(window.sankore.isDarkMode);
-                    if (window.sankore.themeChanged && typeof window.sankore.themeChanged.connect === 'function') {
-                        window.sankore.themeChanged.connect(applyTheme);
-                    }
-                }
-            }
+<body>
+  <div id="main">
+  <div id="content">
+      <iframe id="source" src="" title="Contenu pédagogique"></iframe>
+  </div>
+    <div id="controls">
+      <div id="navigation">
+        <button id="left" type="button" aria-label="Astuce précédente">
+          <img class="nav-icon" src="assets/common/left.png" alt="" width="18" height="18" />
+        </button>
+        <div id="title"><span></span></div>
+        <button id="right" type="button" aria-label="Astuce suivante">
+          <img class="nav-icon" src="assets/common/right.png" alt="" width="18" height="18" />
+        </button>
+      </div>
+    </div>
+  </div>
 
-            function loadPage(lang, pageNumber) {
-                $("#source").attr("src", "locales/" + lang + "/" + pageNumber + ".html?theme=" + currentTheme);
-            }
-            
-            async function init(){
-                var lang = (window.sankore)?sankore.lang.substr(0,2):"en", tmp = false;
-
-                while(1){
-                    try {
-                        const data = await makeRequest('locales/' + lang + '/' + (files_count + 1) + '.html');
-                        files_count ++;
-                    } catch (error) {
-                        if(files_count == 0 && lang != "en")
-                            lang = "en";
-                        else
-                            tmp = true;
-                    }
-
-                    if(tmp)
-                        break;
-                }
-
-                if(files_count > 0){
-                    loadPage(lang, 1);
-                    
-                    $("#right").click(function(){
-                        if(current < files_count){
-                            current++;
-                        } else
-                            current = 1;
-                        loadPage(lang, current);
-                    })
-
-                    $("#left").click(function(){
-                        if(current > 1){
-                            current--;
-                        } else
-                            current = files_count;
-                        loadPage(lang, current);
-                    })
-                } else
-                    $("#source").attr("src", "locales/" + lang + "/error.html");
-            }
-
-            function makeRequest(url) {
-                return new Promise(function(resolve, reject) {
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        success: function(data) {
-                            resolve(data);
-                        },
-                        error: function(error) {
-                            reject(error);
-                        }
-                    });
-                });
-            }
-
-            function setTitle(){
-                var iframe = document.getElementById("source");
-                var title = iframe.contentWindow.document.getElementsByTagName("title");
-                if (title.length) {
-                    $("#title span").html(current + "/" + files_count + ": " + title[0].innerHTML);
-                }
-            }
-
-            $(document).ready(function(){
-                // Ensure default before init (light by default)
-                document.documentElement.setAttribute('data-theme', currentTheme);
-                initTheme();
-                init();
-            });
-        </script>
-    </head>
-    <body>
-        <div id="main">
-        <div id="content">
-            <iframe width='98%' height='95%' src='' id='source' onload='setTitle()'></iframe>
-        </div>
-        <div id="separator"></div>
-        <div id="controls">
-            <div id="navigation">
-                <div id="left"></div>
-                <div id="title"><span style='display: table-cell; vertical-align: inherit; width: 100%;'></span></div>
-                <div id="right"></div>
-               
-            </div>
-        </div>
-        </div>
-    </body>
+  <!-- App script -->
+  <script src="js/app.js"></script>
+</body>
 </html>
