@@ -151,6 +151,9 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     mainLayout->addLayout(labelLayout);
     mainLayout->addLayout(buttonLayout);
 
+    // resize dialog to minimum fitting size, necessary since Qt 6
+    resize({});
+
     acceptButton->setEnabled(false);
 
     connect(acceptButton, SIGNAL(clicked()), this, SLOT(accept()));
