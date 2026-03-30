@@ -2,22 +2,21 @@
 ![GitHub Repo forks](https://img.shields.io/github/forks/OpenBoard-org/openboard)
 # OpenBoard
 [![latest release](https://img.shields.io/github/v/release/OpenBoard-org/openboard.svg)]()
-[![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.6/dev)]()
+[![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.7/dev)]()
 [![Github Repo Contributors](https://img.shields.io/github/contributors/OpenBoard-org/openboard.svg)]()
-[![downloads v1.7.6](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.6/total)]()
+[![downloads v1.7.7](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.7/total)]()
 [![Github All Releases](https://img.shields.io/github/downloads/OpenBoard-org/OpenBoard/total.svg)]()
 
 OpenBoard is an open-source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
 ### Installing
-1.7.6 installers are available for Windows, macOS and Debian on the [Downloads page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
+1.7.7 installers are available for Windows, macOS and Debian on the [Downloads page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads).
 
 ### Supported platforms 
 
 | Version   | officially maintained platforms | branch |
 |------------|--------------------------------------------------------|----|
-| 1.7.6 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
-| 1.7.7 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `1.7.7-dev` |
+| 1.7.7 (latest stable)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12  | `master` |
 | 1.8.0 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Debian 12 | `dev` |
 
 ### Community-driven packages
@@ -30,7 +29,7 @@ If you didn't find any installer for your platform, or if you want to modify Ope
 OpenBoard can be compiled with the latest open-source binaries of Qt 6. Support for Qt 5.15 was recently dropped, but you can still build OpenBoard with it, after addressing some minor compiling issues.
 
 ### Contribute
-You don't need to be a C++ developer to contribute to OpenBoard.
+You can contribute to OpenBoard by helping on translations, creating new web widgets or improving existing ones, or by developing new features and submit them as pull requests.
 
 #### Translations
 OpenBoard is available, thanks to the work of its community, in 35 languages. If you want to contribute to OpenBoard or its dedicated website by adding a new language or updating an existing one, your help will be greatly appreciated.
