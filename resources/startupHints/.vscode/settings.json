@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^python3 -m pip install --user deep-translator beautifulsoup4$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

@@ -1,38 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-     <title>Internet-Modus</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Webmodus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Internet-Modus</h1>
-	</header>
-	<main>
-		Der Internetmodus ist ein interner Browser, der einen traditionelleren Browser um einige sehr interessante Funktionen erweitert.
-		<h3>Verwendung des internen Browsers</h3>
-		<p>Mithilfe des internen Browsers haben Sie die Möglichkeit, das Internet zu durchsuchen, ohne OpenBoard zu minimieren oder zu verlassen, mit zusätzlichen Funktionen, die es Ihnen ermöglichen, einen Teil oder den gesamten Bildschirm zu erfassen oder Apps von Websites zu erstellen und sie dem Board hinzuzufügen!</p>
-		
-		<div class="image"><img src="../../assets/hint6/app1.png" alt=""></div>
-		
-		<h3>Eine App erstellen</h3>
-		<p>Sie können eine App von jeder beliebigen Website aus erstellen, um sie dem Board hinzuzufügen und mit ihr zu interagieren, genau wie mit den Standardanwendungen.</p>
-		<p>Gehen Sie dazu auf die Website, die Sie erfassen möchten, klicken Sie auf <span class="icon"><img src="../../assets/hint6/addToolToLibrary.png" alt="Capture Web Content"></span> und bestätigen Sie ihre Erstellung, indem Sie auf "Anwendung erstellen" klicken.</p>
-		<div class="image"><img src="../../assets/hint6/app-gif2.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Webmodus</h1>
+     <img id="logo" src="../../assets/common/web.png" alt="Webmodus-Symbol">
+    </div>
+  </header>
 
-		<p>Wenn eine Anwendung erstellt wird, wird sie automatisch in der OpenBoard-Bibliothek gespeichert, sodass Sie sie in jedem beliebigen Dokument wiederverwenden können. Sie finden sie unter dem Ordner "Anwendungen" in einem Unterordner namens "Internet".</p>
-		
-		<div class="image"><img src="../../assets/hint6/app-gif3.gif" alt=""></div>
-		
-		<h3>Verwendung des externen Browsers</h3>
-		<p>Sie können auch einen externen Browser verwenden, indem Sie die entsprechende Option in den Einstellungen ankreuzen. Wenn Sie auf <span class="icon"><img src="../../assets/common/web.png" alt=""></span> klicken, wird Ihr bevorzugter Browser dann im Desktopmodus gestartet.</p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Wenn Sie einen externen Browser verwenden, können Sie immer noch eine App von einer Website aus erstellen, indem Sie die URL in der Adresszeile Ihres Browsers kopieren und sie dann einfügen, wenn Sie wieder im Boardmodus sind!</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-web-title">
+      <h2 id="intro-web-title" class="h2">Der integrierte Browser</h2>
+      <p>
+        DER <strong>Webmodus</strong> ist ein interner Browser von OpenBoard, der zu einem Browser hinzugefügt wird
+        klassische, sehr praktische Features für den Unterricht.
+      </p>
+      <p>
+        Es ermöglicht Ihnen, im Internet zu surfen, ohne OpenBoard zu verlassen, um Inhalte (teilweise oder teilweise) zu erfassen
+        Vollbild) und sogar <strong>Apps erstellen</strong> von Websites für
+        Wiederverwendung in Ihren Dokumenten.
+      </p>
 
-	</footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint6/web-browser-integrated-view.png" alt="Beispiel für die Verwendung des integrierten Browsers von OpenBoard" loading="eager" decoding="async" />
+      </figure>
+    </section>
+
+    <!-- Créer une application -->
+    <section aria-labelledby="creer-app-title" class="start">
+      <h2 id="creer-app-title" class="h2">Erstellen Sie eine Anwendung von einer Site</h2>
+      <p>
+        Von jeder Site aus können Sie eine erstellen <strong>Anwendung</strong> um es hinzuzufügen
+        auf dem Board und interagieren Sie damit wie mit den Standardanwendungen.
+      </p>
+      <p>
+        Gehen Sie zur gewünschten Seite und klicken Sie auf
+        <img class="inline-icon" src="../../assets/hint6/add-tool-to-library-icon.png" alt="Symbol „Zur Bibliothek hinzufügen“." width="20" height="20" />
+        Anschließend durch Auswählen bestätigen <em>Erstellen Sie eine App</em>.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-create-library-app.gif" alt="Erstellen einer Webanwendung über den integrierten Browser" loading="lazy" decoding="async" />
+        <figcaption>Erstellung einer Anwendung aus dem Webmodus.</figcaption>
+      </figure>
+
+      <p>
+        Nach der Erstellung wird die Anwendung automatisch im gespeichert
+        <strong>Bibliothek OpenBoard</strong>. Sie finden es weiter unten <em>Anwendungen > Web</em>
+        und kann es in jedem Dokument wiederverwenden.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-saved-in-library.gif" alt="Anwendung in Bibliothek, Webordner gespeichert" loading="lazy" decoding="async" />
+        <figcaption>Suchen Sie eine in Ihrer Bibliothek erstellte Anwendung.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Navigateur externe -->
+    <section aria-labelledby="navigateur-externe-title" class="start">
+      <h2 id="navigateur-externe-title" class="h2">Verwenden Sie einen externen Browser</h2>
+      <p>
+        Sie können die Links in einem öffnen <strong>externer Browser</strong> durch Überprüfung
+        die entsprechende Option in den Einstellungen. Klicken Sie auf
+        <img class="inline-icon" src="../../assets/common/web.png" alt="Webmodus-Symbol" width="20" height="20" />
+        startet dann Ihren Lieblingsbrowser als Desktop-Modus.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Tipp zum Erstellen einer Anwendung über einen externen Browser">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Auch mit einem externen Browser ist das möglich <strong>eine App erstellen</strong> von einer Website:
+          Kopieren Sie die URL in die Adressleiste des Browsers und kehren Sie zur zurück <strong>Tafelmodus</strong> und klebe es fest
+          wenn Sie die Anwendung erstellen.
+        </p>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

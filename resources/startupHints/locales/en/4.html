@@ -1,32 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <title>Documents Mode</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Documents Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Documents Mode</h1>
-	</header>
-	<main>
-		<p>OpenBoard comes with a documents handler. You can access it by simply clicking on <span class="icon"><img src="../../assets/common/documents.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint4/document1.png" alt=""></div>
-		
-		<h3>Create folders and organize your work</h3>
-		<p>You can create a folder by clicking on the "New Folder" icon. Name it, and drag and drop your documents in. The same way, you can move an entire folder in another one.</p>
-		<div class="image"><img src="../../assets/hint4/gif-document1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Documents Mode</h1>
+     <img id="logo" src="../../assets/common/documents.png" alt="board OpenBoard">
+    </div>
+  </header>
+  
+  <main id="main" class="container" role="main">
+    <!-- Accès au gestionnaire de documents -->
+    <section aria-labelledby="doc-acces-title">
+      <h2 id="doc-acces-title" class="h2">Access the document manager</h2>
+      <p>
+        OpenBoard offers a <strong>document manager</strong>. Click on
+        <img class="inline-icon" src="../../assets/common/documents.png" alt="Documents icon" width="20" height="20" />
+        to open it.
+      </p>
+      <figure class="image" >
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint4/documents-manager-view.png" alt="Document manager view" loading="eager" decoding="async" />
+      </figure>
+    </section>
 
-		<h3>Handle pages</h3>
-		<p>An OpenBoard document can contain multiple pages. You can duplicate them, move them to trash or to another document, create new ones from folders of images, ...</p>
-		<div class="image"><img src="../../assets/hint4/gif-document2.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Note that available actions are updated according to what is selected</span>
-	</main>
-	<footer>
+    <!-- Dossiers et organisation -->
+    <section aria-labelledby="doc-dossiers-title" class="start">
+      <h2 id="doc-dossiers-title" class="h2">Create folders and organize your work</h2>
+      <p>
+        Create a folder via
+        <img class="inline-icon" src="../../assets/common/newFolder.png" alt="New folder" width="20" height="20" />,
+        name it, then <strong>drag and drop</strong> your documents inside.
+        Likewise, you can move an entire folder to another.
+      </p>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-folder-organization.gif" alt="Creating and organizing files" loading="lazy" decoding="async" />
+		<figcaption>Example of creating and organizing folders.</figcaption>
+      </figure>
+    </section>
 
-	</footer>
+    <!-- Gestion des pages -->
+    <section aria-labelledby="doc-pages-title" class="start">
+      <h2 id="doc-pages-title" class="h2">Page management</h2>
+      <p>
+        A OpenBoard document can contain <strong>several pages</strong>. From Documents Mode, you can:
+      </p>
+      <ul class="features" role="list">
+        <li>Duplicate pages</li>
+        <li>Send them to the trash</li>
+        <li>Copy them to another document</li>
+        <li>Create new pages from an images folder</li>
+      </ul>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-page-actions.gif" alt="Examples of actions on pages" loading="lazy" decoding="async" />
+		 <figcaption>Example of document handling.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Selection tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          THE <strong>actions available</strong> adapt according to what is
+          <strong>selected</strong> (folder, document, page).
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>

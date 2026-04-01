@@ -1,48 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Modalità Lavagna</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Modalita Lavagna</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
 <body>
-    <header>
-        <h1 class="title">Modalità Lavagna</h1>
-    </header>
-    <main>
-        <h3>La palette della penna</h3>
-        <p>La palette della penna ti offre accesso agli strumenti essenziali quando lavori su una lavagna.</p>
-        <div class="image"><img id="bo1" src="../../assets/hint2/bo1.png" alt=""></div>
+  <header class="page-header" role="banner">
+    <div class="container logo-title">
+      <h1 class="title">Modalita Lavagna</h1>
+      <img id="logo" src="../../assets/common/board.png" alt="tabellone OpenBoard">
+    </div>
+  </header>
 
-        <p>Qui troverai la penna (<span class="icon"><img src="../../assets/common/pen.png" alt=""></span>), la gomma (<span class="icon"><img src="../../assets/common/eraser.png" alt=""></span>) e il marcatore (<span class="icon"><img src="../../assets/common/marker.png" alt=""></span>). OpenBoard offre anche altre funzionalità che una lavagna classica non può fornire:</p>
-        <ul>
-            <li><span class="icon"><img src="../../assets/common/arrow.png" alt=""></span> è il selettore. Con esso, puoi selezionare oggetti e interagire con essi.</li>
-            <li><span class="icon"><img src="../../assets/common/handPlay.png" alt=""></span> è il dito magico. Puoi spostare gli oggetti o interagire con essi senza la necessità di selezionarli.</li>
-            <li><span class="icon"><img src="../../assets/common/hand.png" alt=""></span> è la mano. Puoi muoverti sulla pagina con essa. Molto utile quando combinata con le funzioni di zoom!</li>
-            <li><span class="icon"><img src="../../assets/common/zoomIn.png" alt=""></span><span class="icon"><img src="../../assets/common/zoomOut.png" alt=""></span> ti danno la possibilità di ingrandire e rimpicciolire. Scegli semplicemente quello che desideri e fai clic sulla pagina dove vuoi applicare lo zoom!</li>
-            <li><span class="icon"><img src="../../assets/common/laser.png" alt=""></span> è un puntatore laser, utile per evidenziare elementi sulla lavagna senza interagire con essi.</li>
-            <li><span class="icon"><img src="../../assets/common/line.png" alt=""></span> è utilizzato per disegnare linee rette facilmente.</li>
-            <li><span class="icon"><img src="../../assets/common/text.png" alt=""></span> è uno strumento di testo, per scrivere un testo utilizzando la tastiera invece della penna.</li>
-        </ul>
-        
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Puoi avere un controllo più preciso dello zoom con il mouse! Usa Ctrl/Cmd + la rotellina del mouse per ingrandire/ridurre con maggiore precisione!</span>
+  <main id="main" class="container" role="main">
+    <!-- Section : Palette des stylets -->
+    <section aria-labelledby="palette-title">
+      <h2 id="palette-title" class="h2">La tavolozza dello stilo</h2>
+      <p>
+        La tavolozza dello stilo consente di accedere agli strumenti essenziali quando si lavora su una lavagna.
+      </p>
 
-        <h3>La barra degli strumenti della lavagna</h3>
-        <p>La barra degli strumenti della lavagna ti offre la possibilità di cambiare colore e dimensione della penna o del marcatore, tra altre cose.</p>
-        <div class="image"><img id="bo9" src="../../assets/hint2/bo9.png" alt=""></div>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint2/board-mode-pen-palette.png" alt="OpenBoard tavolozza dello stilo" loading="eager" decoding="async" />
+      </figure>
 
-        <p>Troverai anche la possibilità di cambiare lo sfondo della lavagna, cliccando su <span class="icon"><img src="../../assets/common/background.png" alt=""></span></p>
-        <div class="image"><img src="../../assets/hint2/bo-gif1.gif" alt=""></div>
+      <p>
+        Lì troverai la matita
+        <img class="inline-icon" src="../../assets/common/pen.png" alt="Matita" width="20" height="20" />,
+        la gomma
+        <img class="inline-icon" src="../../assets/common/eraser.png" alt="Gomma per cancellare" width="20" height="20" />
+        e l'evidenziatore
+        <img class="inline-icon" src="../../assets/common/marker.png" alt="Evidenziatore" width="20" height="20" />.
+        OpenBoard fornisce inoltre funzionalità che una lavagna tradizionale non può:
+      </p>
 
-        <p>Troverai anche pulsanti per annullare/ripristinare azioni, creare e navigare tra le pagine, cancellare l'intera lavagna, ...</p>
+      <ul role="list" class="features">
+        <li>
+          <img class="inline-icon" src="../../assets/common/arrow.png" alt="" width="20" height="20" />
+          <strong>Selettore</strong> : seleziona e interagisci con gli oggetti.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/handPlay.png" alt="" width="20" height="20" />
+          <strong>Dito magico</strong> : muoversi/interagire senza prima selezionare.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/hand.png" alt="" width="20" height="20" />
+          <strong>Mano</strong> : sposta la pagina (molto utile abbinato allo zoom).
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/zoomIn.png" alt="" width="20" height="20" />
+          <img class="inline-icon" src="../../assets/common/zoomOut.png" alt="" width="20" height="20" />
+          <strong>Zoom/Rimpicciolisci</strong> : fare clic su dove applicare l'effetto dopo averlo selezionato.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/laser.png" alt="" width="20" height="20" />
+          <strong>Puntatore laser</strong> : punta agli elementi senza interagire con essi.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/line.png" alt="" width="20" height="20" />
+          <strong>Linea</strong> : traccia facilmente linee rette.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/text.png" alt="" width="20" height="20" />
+          <strong>Testo</strong> : inserisce una casella di testo per la digitazione da tastiera.
+        </li>
+      </ul>
 
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Puoi cancellare parti più precise della lavagna facendo clic prolungato su <span class="icon"><img src="../../assets/common/clearPage.png" alt="l'icona per cancellare"></span>. Alcune funzioni nascoste anche su <span class="icon"><img src="../../assets/common/newDocument.png" alt="l'icona per cancellare"></span>!</span>
-    </main>
-    <footer>
+      <aside class="tip" role="note" aria-label="Suggerimento per lo zoom">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Per un controllo più preciso dello zoom con il mouse, utilizzare
+          <strong>Ctrl/Cmd + rotellina</strong> per ingrandire/ridurre con precisione.
+        </p>
+      </aside>
+    </section>
 
-    </footer>
+    <!-- Section : Barre du tableau -->
+    <section aria-labelledby="barre-title" class="start">
+      <h2 id="barre-title" class="h2">Il tavolo-bar</h2>
+      <p>
+        La barra della tabella consente di modificare il <strong>colore</strong> e/o il <strong>misurare </strong> matita ed evidenziatore, tra le altre cose.
+      </p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint2/board-mode-toolbar.png" alt="OpenBoard barra della tabella" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        Puoi anche modificare il file <strong>sfondo del tavolo</strong> cliccando su
+        <img class="inline-icon" src="../../assets/common/background.png" alt="Cambia lo sfondo" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint2/board-mode-background-change.gif" alt="Esempio di modifica dello sfondo del tavolo" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        Sono disponibili altre funzioni: <em>annullare/rifare</em>, creare pagine, navigare tra le pagine, cancellare la tabella, ecc.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Suggerimento e opzioni chiari">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Per cancellare elementi specifici, eseguire a <strong>clic lungo</strong> SU
+          <img class="inline-icon" src="../../assets/common/clearPage.png" alt="Cancella pagina" width="20" height="20" />.
+          Esistono anche opzioni aggiuntive tramite
+          <img class="inline-icon" src="../../assets/common/newDocument.png" alt="Nuovo documento" width="20" height="20" />.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>
-

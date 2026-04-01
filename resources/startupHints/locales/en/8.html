@@ -1,36 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Images</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Pictures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Images</h1>
-	</header>
-	<main>
-		In OpenBoard, you can have access to images in several ways.
-		<h3>Organize your Pictures folder</h3>
-		<p>Screen captures added to the Library are saved to the Pictures folder : <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span><br>You can create folders using <span class="icon"><img src="../../assets/common/miniNewFolder.png" alt=""></span> at the bottom of the Library. Then, drag and drop your images in the different folders you created.</p>
-		<div class="image"><img src="../../assets/hint8/image-gif1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>No matter where you are in the OpenBoard Library, images you add will be automatically placed inside the Pictures folder, to keep things organized.</span>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Pictures</h1>
+     <img id="logo" src="../../assets/common/PicturesCategory.svg" alt="Icon Images">
+    </div>
+  </header>
 
-		<h3>Add images from your computer</h3>
-		<p>You can also add images directly from your computer, like illustrated below :</p>
-		<div class="image"><img src="../../assets/hint8/image-gif3.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-images-title">
+      <h2 id="intro-images-title" class="h2">Access and organize your images</h2>
+      <p>
+        In OpenBoard you can access and add images in different ways from your <b>library</b>. The latter is located on the right of the screen. This is also where you can store sounds, videos and find different applications.
+      </p>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint8/documents-import-export-zone.png" alt="Import and export area in Documents Mode" loading="eager" decoding="async" />
+		<figcaption>Image of the library located on the right in the software.</figcaption>
+      </figure>
+    </section>
 
-		<h3>Add images from the search engines</h3>
-		<p>Last but not least, you can search and add to your board royalty free images, using the search engines located in the Web Search folder : <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint8/image-gif2.gif" alt=""></div>
+    <!-- Organisation du dossier Images -->
+    <section aria-labelledby="orga-images-title" class="start">
+      <h2 id="orga-images-title" class="h2">Organize your Pictures folder</h2>
+      <p>
+        Screenshots added to the library are grouped in the folder
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icon Images" width="20" height="20" />.
+        You can create <strong>subfolders</strong> via
+        <img class="inline-icon" src="../../assets/common/miniNewFolder.png" alt="New folder icon" width="20" height="20" />
+        (at the bottom of the library), then drag and drop your images into the different folders created.
+      </p>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Instead of using drag and drop, just click on one of the images returned by your search, to see details about the image, and find an option to add it to the Library, without adding it to your current document. Useful when preparing a lesson !</span>
-	</main>
-	<footer>
+      <figure class="image">
+        <img src="../../assets/hint8/images-folder-organization.gif" alt="Organizing the Pictures folder with subfolders" loading="eager" decoding="async" />
+        <figcaption>Example of organizing and classifying images in the library.</figcaption>
+      </figure>
 
-	</footer>
+      <aside class="tip" role="note" aria-label="Organization tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Regardless of your position in the library, added images are automatically placed in the
+          folder <em>Pictures</em>
+          <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icon Images" width="20" height="20" />,
+          which keeps your library organized.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Ajouter depuis l’ordinateur -->
+    <section aria-labelledby="ordi-images-title" class="start">
+      <h2 id="ordi-images-title" class="h2">Add images from your computer</h2>
+      <p>
+        You can import your own image files directly into OpenBoard, as shown below:
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-local-import.gif" alt="Adding images from the computer" loading="lazy" decoding="async" />
+        <figcaption>Importing a local image into OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Ajouter depuis le Web -->
+    <section aria-labelledby="web-images-title" class="start">
+      <h2 id="web-images-title" class="h2">Add images from the web</h2>
+      <p>
+        You can also search for <strong>royalty free images</strong> via integrated search engines,
+        located in the folder <em>Web Search</em>
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icon Images" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-web-search-import.gif" alt="Adding images from an integrated search engine" loading="lazy" decoding="async" />
+        <figcaption>Example of finding and adding images from the web.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Tip adding from the Web">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          No need to drag and drop: click on a found image to view its details
+          and directly use the option <strong>Add to library</strong>.
+          This is very practical when preparing lessons.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

@@ -1,26 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-     <title>Suggerimenti e consigli</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Benvenuto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
-
 <body>
-	<header>
-		<h1 class="title">Benvenuti in OpenBoard</h1>
-	</header>
-	<main>
-		<div class="image"><img src="../../assets/hint1/openboard-logo.png" alt=""></div>
-		<br>
-		<p>Ecco alcuni suggerimenti per aiutarti a familiarizzare con OpenBoard.</p>
-		<p>OpenBoard è una lavagna interattiva progettata da insegnanti, per insegnanti. Dispone di 4 modalità: Modalità Lavagna, Modalità Desktop, Modalità Documenti e Modalità Web.</p>
-		<p>Iniziamo con la prima e più importante: la Modalità Lavagna.</p>
-	</main>
-	<footer>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Puoi riaprire il dialogo "Suggerimenti e consigli" in qualsiasi momento, utilizzando il pulsante dedicato nel menu di OpenBoard (<span class="icon"><img src="../../assets/hint1/menu.png" alt="il menu di OpenBoard"></span>)<span>
-	</footer>
+  <header class="page-header" role="banner">
+    <div class="container logo-title">
+      <h1 class="title">Benvenuto in OpenBoard</h1>
+      <img id="logo-small" src="../../assets/hint1/openboard-main-logo.png" alt="Logo OpenBoard" />
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main">
+
+
+    <p class="lead">
+      Ecco alcuni suggerimenti per aiutarti a familiarizzare con OpenBoard.
+    </p>
+
+    <p>
+      OpenBoard e una lavagna interattiva progettata da insegnanti, per insegnanti.
+      Offre <strong>quattro modalità</strong> complementari per coprire i tuoi usi in classe.
+    </p>
+
+    <section aria-labelledby="modes-title" class="modes">
+      <h2 id="modes-title" class="h2">Le 4 modalita di OpenBoard</h2>
+      <ul class="modes-grid" role="list">
+        <li class="mode-card">
+          <h3 class="mode-title">Modalita Lavagna<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Il cuore di OpenBoard: scrivi, disegna, annota e manipola oggetti su una tela infinita.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Modalita Desktop<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Mostra il desktop del computer mantenendo gli strumenti di annotazione a portata di mano.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Modalita Documenti<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Organizza le tue pagine, importa contenuti multimediali e prepara le tue sequenze didattiche.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Modalita Web<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Naviga in Internet direttamente in OpenBoard e acquisisci contenuti utili.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="start">
+      <p>Prima di tutto, e cosa più importante: <strong>Modalita Lavagna</strong>.</p>
+    </section>
+
+    <aside class="tip"> 
+      <img class="tip-icon" src="../../assets/common/tip.png" alt="" />
+      <p>
+        Puoi <strong>riaprire</strong> questa finestra in qualsiasi momento tramite il pulsante
+        "Suggerimenti e consigli" nel menu OpenBoard
+        <img class="inline-icon" src="../../assets/hint1/openboard-menu-icon.png" alt="OpenBoard-menu" width="20" height="20" />.
+      </p>
+    </aside>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>
-

@@ -1,44 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-	<title>Applications</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Applications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
-<body>
-	<header>
-		<h1 class="title">Applications</h1>
-	</header>
-	<main>
-		<p>OpenBoard comes with serveral applications and tools. You can access them by clicking on <span class="icon"><img src="../../assets/common/ApplicationsCategory.png" alt=""></span> on the OpenBoard Library</p>
-		<h3>Default applications</h3>
-		<p>You'll find geometric tools, a calculator, Google Map, a QR code generator and more ! Combine them to create stimulating lessons !</p>
-		<div class="image"><img src="../../assets/hint10/application-gif1.gif" alt=""></div>
-		<h3>Create applications</h3>
-		<p>Like explained in the Web Mode section, you can create applications from sites, using the internal navigator, or by copy-pasting urls to the Board.</p>
-		<p>This way, you can support your lessons with powerful online tools directly on the Board ! Here's some examples of interesting apps to create (Drag and drop them to the Board to test them !) : </p>
-		<ul>
-			<li><a class="non-clickable" href="https://scratch.mit.edu/">Scratch</a></li>
-			<li><a class="non-clickable" href="https://phet.colorado.edu">PhET simulations</a></li>
-			<li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a></li>
-			<li><a class="non-clickable" href="https://flockmod.com">Flockmod</a></li>
-			<li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a></li>
-		</ul>
-		
-		<p>... and much more !</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>You need a more powerful calculator than the one provided by OpenBoard ? Remember ! You can create your own applications ! Simply drag and drop the following link on the Board : <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a></span>
-	</main>
-	<footer>
 
-	</footer>
-	<script>
-		document.querySelectorAll('.non-clickable').forEach(e => e.addEventListener('click', e => {
-			e.stopPropagation();
-			e.preventDefault();
-		}));
-	</script>
+<body>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Applications</h1>
+     <img id="logo" src="../../assets/common/ApplicationsCategory.png" alt="Applications icon">
+    </div>
+  </header>
+
+
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-apps-title">
+      <h2 id="intro-apps-title" class="h2">Access apps</h2>
+      <p>
+        OpenBoard offers different <strong>apps and tools</strong>.
+        Find them in the library by clicking on
+        <img class="inline-icon" src="../../assets/common/ApplicationsCategory.png" alt="Applications icon" width="20" height="20" />.
+      </p>
+    </section>
+
+    <!-- Applications par défaut -->
+    <section aria-labelledby="default-apps-title" class="start">
+      <h2 id="default-apps-title" class="h2">Default apps</h2>
+      <p>
+        You will find geometric tools, a calculator, Google Maps, a QR code generator and much more.
+        Combine them to create engaging educational experiences!
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint10/built-in-applications-demo.gif" alt="Example of using integrated applications" loading="eager" decoding="async" />
+        <figcaption>Example of using OpenBoard built-in applications.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Créer ses propres applications -->
+    <section aria-labelledby="custom-apps-title" class="start">
+      <h2 id="custom-apps-title" class="h2">Create your own apps</h2>
+      <p>
+        As explained in section <em>Web Mode</em>, you can create an application from a site,
+        using the internal browser or by copying and pasting a URL onto the board.
+      </p>
+      <p>
+        This allows you to enhance your courses with powerful online tools, which can be used directly in OpenBoard.
+        Here are some interesting examples (drag and drop the links onto the board to test them):
+      </p>
+
+      <ul class="features" role="list">
+        <li><a class="non-clickable" href="https://scratch.mit.edu/">Scratch</a> — visual programming</li>
+        <li><a class="non-clickable" href="https://phet.colorado.edu">PhET simulations</a> — interactive science experiments</li>
+        <li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a> — exploration of the globe in 3D</li>
+        <li><a class="non-clickable" href="https://flockmod.com">Flockmod</a> — online collaborative drawing</li>
+        <li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a> — language learning</li>
+      </ul>
+
+      <p>...and much more!</p>
+
+      <aside class="tip" role="note" aria-label="Custom application tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Need a more advanced calculator than OpenBoard? Create your own
+          application by dragging and dropping this link onto the table:
+          <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a>
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+ 
+  </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".non-clickable").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault(); // prevents opening the link
+        event.stopPropagation(); // blocks all propagation
+      });
+    });
+  });
+</script>
+
+
 </body>
 </html>

@@ -1,39 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-     <title>Modalità Web</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Modalita Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-    <header>
-        <h1 class="title">Modalità Web</h1>
-    </header>
-    <main>
-        La Modalità Web è un browser interno che aggiunge alcune funzionalità interessanti a uno più standard.
-        <h3>Usa il browser interno</h3>
-        <p>Utilizzando il browser interno, sarai in grado di navigare su Internet senza la necessità di ridurre o uscire da OpenBoard, con alcune funzionalità aggiuntive che ti consentiranno di catturare parte dello schermo o creare applicazioni dai siti web e aggiungerle alla lavagna!</p>
-        
-        <div class="image"><img src="../../assets/hint6/app1.png" alt=""></div>
-        
-        <h3>Crea un'applicazione</h3>
-        <p>Puoi creare un'applicazione da qualsiasi sito web, in modo da aggiungerla alla lavagna e interagire con essa come con le applicazioni predefinite.</p>
-        <p>Per farlo, vai al sito web che desideri catturare, fai clic su <span class="icon"><img src="../../assets/hint6/addToolToLibrary.png" alt="Cattura contenuto web"></span> e conferma la creazione cliccando su "Crea un'applicazione".</p>
-        <div class="image"><img src="../../assets/hint6/app-gif2.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Modalita Web</h1>
+         <img id="logo" src="../../assets/common/web.png" alt="Icona modalita Web">
+    </div>
+  </header>
 
-        <p>Quando un'applicazione viene creata, viene automaticamente salvata nella libreria di OpenBoard, in modo da poterla utilizzare in qualsiasi documento. Le troverai nella cartella delle applicazioni, sotto una dedicata chiamata "Web".</p>
-        
-        <div class="image"><img src="../../assets/hint6/app-gif3.gif" alt=""></div>
-        
-        <h3>Usa un browser esterno</h3>
-        <p>Puoi anche scegliere di utilizzare un browser esterno, selezionando l'opzione corrispondente nelle preferenze. Cliccando sull'icona Web lancerà il tuo browser preferito in Modalità Desktop.</p>
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Usando un browser esterno, sarai comunque in grado di creare applicazioni da un sito web, copiando l'URL nella barra degli indirizzi del tuo browser, tornando su Board e incollandolo!</span>
-    </main>
-    <footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-web-title">
+      <h2 id="intro-web-title" class="h2">Il browser integrato</h2>
+      <p>
+        La <strong>modalita Web</strong> e un browser interno di OpenBoard che aggiunge, rispetto a un browser
+        tradizionale, funzioni molto utili per la didattica.
+      </p>
+      <p>
+        Permette di navigare su Internet senza uscire da OpenBoard, catturare contenuti (parziali o a schermo intero)
+        e perfino <strong>creare applicazioni</strong> a partire da siti web per riutilizzarle nei tuoi documenti.
+      </p>
 
-    </footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint6/web-browser-integrated-view.png" alt="Esempio di uso del browser integrato di OpenBoard" loading="eager" decoding="async" />
+      </figure>
+    </section>
+
+    <!-- Créer une application -->
+    <section aria-labelledby="creer-app-title" class="start">
+      <h2 id="creer-app-title" class="h2">Creare un'applicazione a partire da un sito</h2>
+      <p>
+        Da qualsiasi sito puoi creare una <strong>applicazione</strong> da aggiungere alla lavagna
+        e utilizzare come le applicazioni predefinite.
+      </p>
+      <p>
+        Apri il sito desiderato, fai clic su
+        <img class="inline-icon" src="../../assets/hint6/add-tool-to-library-icon.png" alt="Icona Aggiungi alla libreria" width="20" height="20" />
+        e conferma selezionando <em>Crea un'applicazione</em>.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-create-library-app.gif" alt="Creazione di un'applicazione Web dal browser integrato" loading="lazy" decoding="async" />
+        <figcaption>Creazione di un'applicazione dalla modalita Web.</figcaption>
+      </figure>
+
+      <p>
+        Una volta creata, l'applicazione viene salvata automaticamente nella
+        <strong>libreria OpenBoard</strong>. La troverai in <em>Applicazioni &gt; Web</em>
+        e potrai riutilizzarla in qualsiasi documento.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-saved-in-library.gif" alt="Applicazione salvata nella libreria, cartella Web" loading="lazy" decoding="async" />
+        <figcaption>Ritrovare un'applicazione creata nella libreria.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Navigateur externe -->
+    <section aria-labelledby="navigateur-externe-title" class="start">
+      <h2 id="navigateur-externe-title" class="h2">Usare un browser esterno</h2>
+      <p>
+        Puoi scegliere di aprire i link in un <strong>browser esterno</strong> attivando
+        l'opzione nelle preferenze. Facendo clic su
+        <img class="inline-icon" src="../../assets/common/web.png" alt="Icona modalita Web" width="20" height="20" />
+        verra avviato il tuo browser preferito in modalita Desktop.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Suggerimento: creazione app da browser esterno">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Anche con un browser esterno puoi <strong>creare un'applicazione</strong> da un sito:
+          copia l'URL dalla barra degli indirizzi, torna in <strong>modalita Lavagna</strong> e incollala
+          quando crei l'applicazione.
+        </p>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
 

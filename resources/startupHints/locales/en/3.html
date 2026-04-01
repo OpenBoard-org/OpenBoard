@@ -1,30 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <title>Desktop Mode</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Desktop Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Desktop Mode</h1>
-	</header>
-	<main>
-		<h3>Interacting with other softwares</h3>
-		<p>Using Desktop mode, you can interact with your entire computer and other softwares, while keeping OpenBoard as an overlay !</p>
-		<p>Just click on the following icon :</p>
-		<div class="image"><img id="bureau1" src="../../assets/hint3/bureau1.png" alt=""></div>
-		<div>Use the selector (<span class="icon"><img src="../../assets/common/arrow.png" alt=""></span>) to interact with the desktop and other softwares.</div>
-		<h3>Make annotations on top of an application or a website</h3>
-		<div>You can add annotations on top of any software, using the pen (<span class="icon"><img src="../../assets/common/penArrow.svg" alt=""></span>) or the marker (<span class="icon"><img src="../../assets/common/markerArrow.svg" alt=""></span>).</div>
-		<div class="image"><img src="../../assets/hint3/bureau-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Desktop Mode</h1>
+     <img id="logo" src="../../assets/common/display.png" alt="board OpenBoard">
+    </div>
+  </header>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>You can access to more options for <span class="icon"><img src="../../assets/common/penArrow.svg" alt="the pen"></span>, <span class="icon"><img src="../../assets/common/markerArrow.svg" alt="the marker"></span> and <span class="icon"><img src="../../assets/common/eraserArrow.svg" alt="the eraser"></span> by doing a long click on them, or by clicking on the small black arrow.</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Section : Interagir avec d'autres applications -->
+    <section aria-labelledby="interagir-title">
+      <h2 id="interagir-title" class="h2">Interact with other apps</h2>
+      <p>
+        The <strong>Office mode</strong> allows you to interact with your operating system and software,
+        while retaining the OpenBoard tools on top.
+      </p>
+      <p>Simply click on the following icon:</p>
 
-	</footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint3/desktop-mode-icon.png" alt="Icon to activate Desktop Mode" loading="eager" decoding="async" />
+      </figure>
+
+      <p>
+        Use the <strong>selector</strong>
+        <img class="inline-icon" src="../../assets/common/arrow.png" alt="Selector" width="20" height="20" />
+        to interact with the desktop and other applications.
+      </p>
+    </section>
+
+    <!-- Section : Annoter des applications ou sites web -->
+    <section aria-labelledby="annoter-title" class="start">
+      <h2 id="annoter-title" class="h2">Annotate apps or websites</h2>
+      <p>
+        You can annotate any software with the <strong>pencil</strong>
+        <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Pencil" width="20" height="20" />
+        or the <strong>marker</strong>
+        <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marker" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint3/desktop-mode-annotation.gif" alt="Annotating an application in Desktop Mode" loading="lazy" decoding="async" />
+         <figcaption>Example of annotation on a web page.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Annotation tools tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Access more options for
+          <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Pencil" width="20" height="20" />,
+          <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marker" width="20" height="20" />
+          And
+          <img class="inline-icon" src="../../assets/common/eraserArrow.svg" alt="Eraser" width="20" height="20" />
+          by performing a <strong>long click</strong> on the tool, or by clicking on the <strong>little black arrow</strong>.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>

@@ -1,37 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Favoriten-Dokumente</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Lieblingsdokumente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Favoriten-Dokumente</h1>
-	</header>
-	<main>
-		<h3>OpenBoard-Dokumente zu Favoriten hinzufügen</h3>
-		<p>Als neue Funktion in Version 1.7 können Sie OpenBoard-Dokumente zu Ihren Favoriten hinzufügen!</p>
-		<p>Gehen Sie dazu in den Dokumentenmodus, wählen Sie ein Dokument aus und klicken Sie auf <span class="icon"><img src="../../assets/common/addToFavorites.png" alt=""></span> in der Symbolleiste des Dokumentenmodus.</p>
-		
-		<div class="image"><img src="../../assets/hint12/favorites.png" alt=""></div>
-		
-		<h3>Schnell von einem Dokument zum anderen wechseln</h3>
-		<p>Ihre Lieblingsdokumente erscheinen in der OpenBoard-Bibliothek unter <span class="icon"><img src="../../assets/common/FavoritesCategory.png" alt=""></span><br>
-		Jedes dieser OpenBoard-Dokumente (<span class="icon"><img src="../../assets/common/openboard-document.png" alt=""></span>) kann dann per Drag & Drop auf das Board gezogen werden!</p>
-		<div class="image"><img src="../../assets/hint12/favorites2.png" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Lieblingsdokumente</h1>
+     <img id="logo" src="../../assets/common/favorites.png" alt="Symbol „Lieblingsdokumente“.">
+    </div>
+  </header>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Sie können die Suchleiste am unteren Rand der OpenBoard Bibliothek verwenden, um ein Dokument anhand seines Namens zu finden</span>
-		
-		<h3>Zuletzt geöffnete Dokumente</h3>
-		<p>Jedes geöffnete Dokument wird vorübergehend zu den Favoriten hinzugefügt, sodass Sie während einer Sitzung schnell zwischen ihnen wechseln können, ohne sie explizit als Favoriten markieren zu müssen.</p>
-		<div class="image"><img src="../../assets/hint12/favorites3.png" alt=""></div>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Wenn Sie ein kürzlich geöffnetes Dokument dauerhaft zu den Favoriten hinzufügen möchten, können Sie dies über den Ordner Favoriten in der OpenBoard Bibliothek tun: Markieren Sie es und klicken Sie auf <span class="icon"><img src="../../assets/common/addToFavorites.png" alt=""></span></span>
-	</main>
-	<footer>
 
-	</footer>
+  <main id="main" class="container" role="main">
+    <!-- Ajout aux favoris -->
+    <section aria-labelledby="ajout-fav-title">
+      <h2 id="ajout-fav-title" class="h2">Fügen Sie OpenBoard Dokumente zu Ihren Favoriten hinzu</h2>
+      <p>
+        Eingeführt in die <strong>Version 1.7</strong>Mit dieser Funktion können Sie Ihre OpenBoard-Dokumente hinzufügen
+        in <strong>Favoriten</strong>.
+      </p>
+      <p>
+        Gehen Sie dazu zu <em>Dokumentenmodus</em>, wählen Sie ein Dokument aus und klicken Sie auf
+        <img class="inline-icon" src="../../assets/common/addToFavorites.png" alt="Symbol „Zu Favoriten hinzufügen“." width="20" height="20" />
+        in der Symbolleiste.
+      </p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--wide" src="../../assets/hint12/favorites-add-document.png" alt="Hinzufügen eines OpenBoard-Dokuments zu den Favoriten" loading="eager" decoding="async" />
+       
+      </figure>
+    </section>
+
+    <!-- Utiliser les favoris -->
+    <section aria-labelledby="utiliser-fav-title" class="start">
+      <h2 id="utiliser-fav-title" class="h2">Wechseln Sie schnell von einem Dokument zum anderen</h2>
+      <p>
+        Ihre Lieblingsdokumente werden im angezeigt <strong>Bibliothek OpenBoard</strong>, unten
+        <img class="inline-icon" src="../../assets/common/FavoritesCategory.png" alt="Favoriten-Symbol" width="20" height="20" />.
+      </p>
+      <p>
+        Jedes Lieblingsdokument
+        <img class="inline-icon" src="../../assets/common/openboard-document.png" alt="Dokumentsymbol OpenBoard" width="20" height="20" />
+        können per Drag & Drop direkt auf den Tisch gezogen werden.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint12/favorites-library-view.png" alt="Favoriten in der Bibliothek OpenBoard anzeigen" loading="lazy" decoding="async" />
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Permanenter Zusatztipp">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Benutzen Sie die <strong>Suchleiste</strong> unten in der Bibliothek, damit Sie ein Dokument schnell anhand des Namens finden können.
+        </p>
+      </aside>
+
+    </section>
+
+    <!-- Documents récents -->
+    <section aria-labelledby="recents-title" class="start">
+      <h2 id="recents-title" class="h2">Kürzlich geöffnete Dokumente</h2>
+      <p>
+        Jedes geöffnete Dokument wird vorübergehend zu den Favoriten hinzugefügt, um schnell von einem zum anderen wechseln zu können
+        während derselben Sitzung, ohne sie explizit markieren zu müssen.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint12/recent-documents-view.png" alt="Beispiel für kürzlich geöffnete Dokumente in OpenBoard" loading="lazy" decoding="async" />
+    
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Permanenter Zusatztipp">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Zu machen <strong>dauerhaft</strong> Um ein kürzlich geöffnetes Dokument anzuzeigen, wählen Sie es im Ordner „Favoriten“ aus
+          und klicken
+          <img class="inline-icon" src="../../assets/common/addToFavorites.png" alt="Symbol „Zu Favoriten hinzufügen“." width="20" height="20" />.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>

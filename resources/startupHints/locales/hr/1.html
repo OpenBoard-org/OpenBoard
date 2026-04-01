@@ -1,26 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Savjeti</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Dobrodošli</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
-
 <body>
-	<header>
-		<h1 class="title">Dobro došao, dobro došla u OpenBoard</h1>
-	</header>
-	<main>
-		<div class="image"><img src="../../assets/hint1/openboard-logo.png" alt=""></div>
-		<br>
-		<p>Ovdje se nalaze savjeti koji pomažu naučiti koristiti OpenBoard.</p>
-		<p>OpenBoard je interaktivna ploča koju su dizajnirali učitelji za učitelje. Postoje četiri modusa:﻿ploča, radna površina, dokumenti i web.</p>
-		<p>Krenimo s prvim i najvažnijim: modus ploče.</p>
-	</main>
-	<footer>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Dijalog „Savjeti” možeš otvoriti u bilo kojem trenutku pomoću gumba (<span class="icon"><img src="../../assets/hint1/menu.png" alt="the OpenBoard menu"></span>) u OpenBoard izborniku<span>
-	</footer>
+  <header class="page-header" role="banner">
+    <div class="container logo-title">
+      <h1 class="title">Dobro došli u OpenBoard</h1>
+      <img id="logo-small" src="../../assets/hint1/openboard-main-logo.png" alt="Logotip OpenBoard" />
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main">
+
+
+    <p class="lead">
+      Evo nekoliko savjeta i trikova koji će vam pomoći da se upoznate s OpenBoard.
+    </p>
+
+    <p>
+      OpenBoard je interaktivna ploča koju su dizajnirali učitelji za učitelje.
+      Nudi <strong>cetiri nacina</strong> koji pokrivaju najcesce potrebe u nastavi.
+    </p>
+
+    <section aria-labelledby="modes-title" class="modes">
+      <h2 id="modes-title" class="h2">4 načina OpenBoard</h2>
+      <ul class="modes-grid" role="list">
+        <li class="mode-card">
+          <h3 class="mode-title">Nacin Ploca<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Srce OpenBoard: pišite, crtajte, komentirajte i manipulirajte objektima na beskonačnom platnu.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Nacin Radna Povrsina<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Prikažite radnu površinu računala dok alate za bilješke držite pri ruci.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Nacin Dokumenti<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Organizirajte svoje stranice, uvezite medije i pripremite svoje obrazovne sekvence.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Nacin Web<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Pretražujte internet izravno u OpenBoard i snimite koristan sadržaj.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="start">
+      <p>Počnimo s prvim i najvažnijim: <strong>Nacin Ploca</strong>.</p>
+    </section>
+
+    <aside class="tip"> 
+      <img class="tip-icon" src="../../assets/common/tip.png" alt="" />
+      <p>
+        možete <strong>ponovo otvoriti</strong> u bilo kojem trenutku ovaj prozor putem gumba
+        "Savjeti i trikovi" u izborniku OpenBoard
+        <img class="inline-icon" src="../../assets/hint1/openboard-menu-icon.png" alt="OpenBoard-izbornik" width="20" height="20" />.
+      </p>
+    </aside>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>
-

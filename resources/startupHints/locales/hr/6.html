@@ -1,38 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Web modus</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Nacin Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Web modus</h1>
-	</header>
-	<main>
-		Web modus je interni navigator s dodatnim funkcijama.
-		<h3>Korištenje internog navigatora</h3>
-		<p>Interni navigator omogućuje pregledavanje interneta bez potrebe za smanjivanjem prozora ili zatvaranjem OpenBoarda. Pored toga omogućuje snimanja dijela ekrana ili stvaranje programa iz web stranica koje se mogu dodati na ploču!</p>
-		
-		<div class="image"><img src="../../assets/hint6/app1.png" alt=""></div>
-		
-		<h3>Stvaranje programa</h3>
-		<p>Program se može stvoriti s bilo kojeg mjesta i dodati na ploču te s njom interagirati kao sa standardnim programima.</p>
-		<p>Otvori web stranicu koju želiš snimiti, pritisni na <span class="icon"><img src="../../assets/hint6/addToolToLibrary.png" alt="Capture Web Content"></span> te potvrdi izradu pritiskom na „Stvori program”.</p>
-		<div class="image"><img src="../../assets/hint6/app-gif2.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Nacin Web</h1>
+     <img id="logo" src="../../assets/common/web.png" alt="Nacin Web ikona">
+    </div>
+  </header>
 
-		<p>Kad je program stvoren, on se automatski sprema u OpenBoard biblioteku, tako da se može koristiti u bilo kojem dokumentu. Programi se nalaze u mapi s programima koja se zove „Web”.</p>
-		
-		<div class="image"><img src="../../assets/hint6/app-gif3.gif" alt=""></div>
-		
-		<h3>Korištenje eksternog navigatora</h3>
-		<p>Označavanjem odgovarajuće opcije u postavkama može se koristiti i eksterni navigator. Tada će se pritiskom na web ikonu pokrenuti favorizirani navigator u modusu radne površine.</p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Koristeći eksterni navigator, i dalje ćeš moći stvarati programe s web  stranice. Kopiraj URL-adresu u adresnu traku navigatora, vrati se na ploču i umetni je!</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-web-title">
+      <h2 id="intro-web-title" class="h2">Integrirani preglednik</h2>
+      <p>
+        THE <strong>Nacin Web</strong> je interni preglednik za OpenBoard koji dodaje pregledniku
+        klasične, vrlo praktične značajke za učionicu.
+      </p>
+      <p>
+        Omogućuje vam pregledavanje interneta bez napuštanja OpenBoard, za snimanje sadržaja (djelomičnog ili
+        preko cijelog zaslona) i čak <strong>stvarati aplikacije</strong> s web stranica za
+        ponovno koristiti u svojim dokumentima.
+      </p>
 
-	</footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint6/web-browser-integrated-view.png" alt="Primjer korištenja ugrađenog preglednika OpenBoard" loading="eager" decoding="async" />
+      </figure>
+    </section>
+
+    <!-- Créer une application -->
+    <section aria-labelledby="creer-app-title" class="start">
+      <h2 id="creer-app-title" class="h2">Napravite aplikaciju sa stranice</h2>
+      <p>
+        S bilo kojeg mjesta možete generirati a <strong>primjena</strong> dodati ga
+        na ploči i komunicirati s njim kao sa zadanim aplikacijama.
+      </p>
+      <p>
+        Idite na željenu stranicu, kliknite na
+        <img class="inline-icon" src="../../assets/hint6/add-tool-to-library-icon.png" alt="Ikona Dodaj u knjižnicu" width="20" height="20" />
+        zatim potvrdite odabirom <em>Napravite aplikaciju</em>.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-create-library-app.gif" alt="Izrada web aplikacije iz ugrađenog preglednika" loading="lazy" decoding="async" />
+        <figcaption>Izrada aplikacije iz web moda.</figcaption>
+      </figure>
+
+      <p>
+        Jednom kreirana aplikacija se automatski sprema u
+        <strong>knjižnica OpenBoard</strong>. Naći ćete ga ispod <em>Aplikacije > Web</em>
+        i može ga ponovno koristiti u bilo kojem dokumentu.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-saved-in-library.gif" alt="Aplikacija spremljena u biblioteku, web mapu" loading="lazy" decoding="async" />
+        <figcaption>Pronađite aplikaciju stvorenu u svojoj knjižnici.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Navigateur externe -->
+    <section aria-labelledby="navigateur-externe-title" class="start">
+      <h2 id="navigateur-externe-title" class="h2">Koristite vanjski preglednik</h2>
+      <p>
+        Možete izabrati da otvorite veze u a <strong>vanjski preglednik</strong> provjerom
+        odgovarajuću opciju u postavkama. Kliknite na
+        <img class="inline-icon" src="../../assets/common/web.png" alt="Nacin Web ikona" width="20" height="20" />
+        će zatim pokrenuti vaš omiljeni preglednik kao Nacin Radna Povrsina.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Savjet za izradu aplikacije iz vanjskog preglednika">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Čak i s vanjskim preglednikom možete <strong>izraditi aplikaciju</strong> sa stranice:
+          kopirajte URL u adresnu traku preglednika, vratite se na <strong>Nacin Ploca</strong> i zalijepite ga
+          kada kreirate aplikaciju.
+        </p>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

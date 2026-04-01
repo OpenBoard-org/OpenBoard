@@ -1,44 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Snimanje ekrana</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Snimka zaslona</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Snimanje ekrana</h1>
-	</header>
-	<main>
-		Jedna od najjednostavnijih ali vrlo korisnih OpenBoard funkcija je snimanje ekrana, što omogućuje snimanje bilo kojeg određenog stanja ploče tijekom nastave.
-		<h3>U modusu ploče</h3>
-		<p>Traži<span class="icon"><img src="../../assets/common/captureAreaBoard.png" alt="the screen capture icon"></span> u paleti alata. Pritisni ikonu i odaberi područje za snimanje. Nakon toga postoje tri mogućnosti: </p>
-		<ul>
-			<li><b>Dodaj u trenutačnu stranicu</b></li>
-			<li><b>Dodaj u novu stranicu</b></li>
-			<li><b>Dodaj u biblioteku</b>(dodaje snimku u mapu „Slike” kako bi se mogla ponovo koristiti u bilo kojem trenutku)</li>
-		</ul>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Snimka zaslona</h1>
+     <img id="logo-small" src="../../assets/common/captureAreaDesktop.png" alt="Ikona snimke zaslona"/>
+    </div>
+  </header>
 
-		<p>Primjer cijelog postupka: </p>
-		<div class="image"><img src="../../assets/hint7/gif-capture1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Paleta alata, prikaz minijatura te OpenBoard biblioteka se neće snimiti pri odabiru sadržaja!</span>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-cap-title">
+      <h2 id="intro-cap-title" class="h2">Jednostavna i vrlo korisna značajka</h2>
+      <p>
+        Snimka zaslona omogućuje vam stvaranje a <strong>trenutak</strong> stanje ploče (ili vašeg zaslona)
+        tijekom tečaja, za arhiviranje, dijeljenje ili ponovno korištenje sadržaja.
+      </p>
+    </section>
 
-		<h3>U modusu radne površine</h3>
-		<p>Za snimanje vlastitog rada u drugim programima, isto se može obaviti u modusu radne površine. Prijeđi u modus radne površine pritiskom na <span class="icon"><img src="../../assets/common/display.png" alt=""></span></p>
-		<p>Prikazat će se dvije ikone: <span class="icon"><img src="../../assets/common/captureScreen.png" alt=""></span> za snimanje cijelog ekrana i <span class="icon"><img src="../../assets/common/captureAreaDesktop.png" alt=""></span> za snimanje dijelova ekrana. Kao u modusu ploče, morat ćeš odabrati mjesto za ispuštanje snimke</p>
-		
-		<p>Prikaz cijelog postupka</p>
-		<div class="image"><img src="../../assets/hint7/capture-gif2.gif" alt=""></div>
+    <!-- Nacin Ploca -->
+    <section aria-labelledby="tableau-title" class="start">
+      <h2 id="tableau-title" class="h2">U Nacin Ploca</h2>
+      <p>
+        U paleti olovke kliknite
+        <img class="inline-icon" src="../../assets/common/captureAreaBoard.png" alt="Ikona područja snimanja (Nacin Ploca)" width="20" height="20" />,
+        zatim odaberite područje za snimanje. Zatim možete odabrati:
+      </p>
+      <ul class="features" role="list">
+        <li><strong>Dodaj trenutnoj stranici</strong></li>
+        <li><strong>Dodaj na novu stranicu</strong></li>
+        <li>
+          <strong>Dodaj u knjižnicu</strong> — snimak se sprema u mapu <em>Slike</em>
+          za kasniju ponovnu upotrebu.
+        </li>
+      </ul>
 
+      <figure class="image">
+        <img src="../../assets/hint7/board-area-capture.gif" alt="Primjer snimanja područja u Nacin Ploca" loading="eager" decoding="async" />
+        <figcaption>Primjer ugradnje snimke zaslona u OpenBoard.</figcaption>
+      </figure>
 
-		<h3>U web modusu</h3>
-		<p>Isti postupak je dostupan u web modusu, gdje ja moguće snimiti dio ekrana ili trenutačnu karticu pomoću <span class="icon"><img src="../../assets/common/captureWindow.png" alt=""></span></p>
-	</main>
-	<footer>
+      <aside class="tip" role="note" aria-label="Nezarobljeni predmeti Savjet">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Paleta olovke, pregled stranice i kartica knjižnice <strong>nisu zarobljeni</strong>
+          by lasso: samo vaše napomene i vaš sadržaj.
+        </p>
+      </aside>
+    </section>
 
-	</footer>
+    <!-- Nacin Radna Povrsina -->
+    <section aria-labelledby="bureau-title" class="start">
+      <h2 id="bureau-title" class="h2">U Nacin Radna Povrsina</h2>
+      <p>
+        Prebacite se na Nacin Radna Povrsina putem
+        <img class="inline-icon" src="../../assets/common/display.png" alt="Nacin Radna Povrsina ikona" width="20" height="20" />
+        za snimanje drugog softvera.
+      </p>
+      <p>Dostupne su dvije opcije:</p>
+      <ul class="features" role="list">
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureScreen.png" alt="Ikona snimanja zaslona" width="20" height="20" />
+          <strong>Snimanje cijelog zaslona</strong>
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureAreaDesktop.png" alt="Ikona područja snimanja" width="20" height="20" />
+          <strong>Snimanje područja</strong>
+        </li>
+      </ul>
+      <p>Kao u Nacin Ploca, odaberite gdje ćete dodati snimanje.</p>
+
+      <figure class="image">
+        <img src="../../assets/hint7/desktop-area-capture.gif" alt="Primjer snimanja u Nacin Radna Povrsina" loading="lazy" decoding="async" />
+        <figcaption>Cijeli ili djelomični snimak zaslona u Nacin Radna Povrsina.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Nacin Web -->
+    <section aria-labelledby="web-title" class="start">
+      <h2 id="web-title" class="h2">U Nacin Web</h2>
+      <p>
+        U Nacin Web možete <strong>uhvatiti područje</strong> ekrana ili
+        <strong>snimi aktivnu karticu</strong> iz preglednika sa
+        <img class="inline-icon" src="../../assets/common/captureWindow.png" alt="Ikona kartice za snimanje" width="20" height="20" />.
+      </p>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+
 </body>
 </html>

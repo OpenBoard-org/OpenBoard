@@ -1,45 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Cattura Schermo</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Cattura schermo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-    <header>
-        <h1 class="title">Cattura Schermo</h1>
-    </header>
-    <main>
-        Una delle funzionalità più semplici ma davvero utili di OpenBoard è la cattura schermo. Con essa, puoi creare uno snapshot di uno stato particolare della lavagna durante la tua sessione di classe.
-        <h3>In Modalità Lavagna</h3>
-        <p>Cerca<span class="icon"><img src="../../assets/common/captureAreaBoard.png" alt="l'icona di cattura schermo"></span> nella palette dello stilo, cliccaci sopra e seleziona l'area da catturare. Successivamente, avrai tre opzioni :</p>
-        <ul>
-            <li><b>Aggiungi alla pagina corrente</b></li>
-            <li><b>Aggiungi in una nuova pagina</b></li>
-            <li><b>Aggiungi alla libreria</b> (aggiunge la cattura alla cartella Immagini, in modo da poterla riutilizzare in qualsiasi momento)</li>
-        </ul>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Cattura schermo</h1>
+         <img id="logo-small" src="../../assets/common/captureAreaDesktop.png" alt="Icona Cattura schermo"/>
+    </div>
+  </header>
 
-        <p>Ecco un esempio di tutto il processo :</p>
-        <div class="image"><img src="../../assets/hint7/gif-capture1.gif" alt=""></div>
-        
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Non devi preoccuparti della palette dello stilo, della vista delle miniature della lavagna o della libreria di OpenBoard, non verranno catturati dal tuo lasso!</span>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-cap-title">
+      <h2 id="intro-cap-title" class="h2">Une fonctionnalité simple et très utile</h2>
+      <p>
+        La cattura schermo ti permette di creare un <strong>istantanea</strong> dello stato della lavagna (o dello schermo)
+        durante la lezione, per archiviare, condividere o riutilizzare i contenuti.
+      </p>
+    </section>
 
-        <h3>In Modalità Desktop</h3>
-        <p>Puoi fare la stessa cosa anche in Modalità Desktop per catturare il tuo lavoro su altri software. Vai in Modalità Desktop cliccando su <span class="icon"><img src="../../assets/common/display.png" alt=""></span></p>
-        <p>Troverai due icone : <span class="icon"><img src="../../assets/common/captureScreen.png" alt=""></span> per catturare l'intero schermo e <span class="icon"><img src="../../assets/common/captureAreaDesktop.png" alt=""></span> per catturare solo una parte. Come in Modalità Lavagna, dovrai scegliere dove posizionare la cattura effettuata</p>
-        
-        <p>Ecco un'illustrazione di tutto il processo</p>
-        <div class="image"><img src="../../assets/hint7/capture-gif2.gif" alt=""></div>
+    <!-- Modalita Lavagna -->
+    <section aria-labelledby="tableau-title" class="start">
+      <h2 id="tableau-title" class="h2">In modalita Lavagna</h2>
+      <p>
+        Nella palette degli strumenti, fai clic su
+        <img class="inline-icon" src="../../assets/common/captureAreaBoard.png" alt="Icona Cattura area (modalita Lavagna)" width="20" height="20" />,
+        poi seleziona la zona da catturare. In seguito potrai scegliere:
+      </p>
+      <ul class="features" role="list">
+        <li><strong>Aggiungi alla pagina corrente</strong></li>
+        <li><strong>Aggiungi a una nuova pagina</strong></li>
+        <li>
+          <strong>Aggiungi alla libreria</strong> — la cattura viene salvata nella cartella <em>Immagini</em>
+          per un uso successivo.
+        </li>
+      </ul>
 
+      <figure class="image">
+        <img src="../../assets/hint7/board-area-capture.gif" alt="Esempio di cattura di un'area in modalita Lavagna" loading="eager" decoding="async" />
+        <figcaption>Esempio di integrazione di una cattura schermo in OpenBoard.</figcaption>
+      </figure>
 
-        <h3>In Modalità Web</h3>
-        <p>Di nuovo, lo stesso processo è disponibile in Modalità Web, dove sarai in grado di catturare solo una parte dello schermo o catturare la scheda corrente con <span class="icon"><img src="../../assets/common/captureWindow.png" alt=""></span></p>
-    </main>
-    <footer>
+      <aside class="tip" role="note" aria-label="Suggerimento: elementi non catturati">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          La palette strumenti, l'anteprima pagine e la scheda libreria <strong>non vengono catturate</strong>
+          dal lazo: vengono catturate solo annotazioni e contenuti.
+        </p>
+      </aside>
+    </section>
 
-    </footer>
+    <!-- Modalita Desktop -->
+    <section aria-labelledby="bureau-title" class="start">
+      <h2 id="bureau-title" class="h2">In modalita Desktop</h2>
+      <p>
+        Passa alla modalita Desktop tramite
+        <img class="inline-icon" src="../../assets/common/display.png" alt="Icona modalita Desktop" width="20" height="20" />
+        per catturare altre applicazioni.
+      </p>
+      <p>Sono disponibili due opzioni:</p>
+      <ul class="features" role="list">
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureScreen.png" alt="Icona Cattura schermo" width="20" height="20" />
+          <strong>Cattura schermo intero</strong>
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureAreaDesktop.png" alt="Icona Cattura area" width="20" height="20" />
+          <strong>Cattura di un'area</strong>
+        </li>
+      </ul>
+      <p>Come in modalita Lavagna, scegli dove aggiungere la cattura.</p>
+
+      <figure class="image">
+        <img src="../../assets/hint7/desktop-area-capture.gif" alt="Esempio di cattura in modalita Desktop" loading="lazy" decoding="async" />
+        <figcaption>Cattura schermo completa o parziale in modalita Desktop.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Modalita Web -->
+    <section aria-labelledby="web-title" class="start">
+      <h2 id="web-title" class="h2">In modalita Web</h2>
+      <p>
+        In modalita Web puoi <strong>catturare un'area</strong> dello schermo oppure
+        <strong>catturare la scheda attiva</strong> del browser con
+        <img class="inline-icon" src="../../assets/common/captureWindow.png" alt="Icona Cattura scheda" width="20" height="20" />.
+      </p>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+
 </body>
 </html>
-

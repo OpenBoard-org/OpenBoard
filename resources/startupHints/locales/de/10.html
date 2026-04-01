@@ -1,44 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-	<title>Applikationen</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Anwendungen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
-<body>
-	<header>
-		<h1 class="title">Applikationen</h1>
-	</header>
-	<main>
-		<p>OpenBoard bietet verschiedene Apps und Werkzeuge. Sie können auf diese zugreifen, indem Sie auf <span class="icon"><img src="../../assets/common/ApplicationsCategory.png" alt=""></span> in der OpenBoard-Bibliothek klicken</p>
-		<h3>Standard-Apps</h3>
-		<p>Hier finden Sie geometrische Werkzeuge, einen Taschenrechner, Google Map, einen QR-Code-Generator und vieles mehr! Kombinieren Sie sie, um anregende Lernerfahrungen zu schaffen!</p>
-		<div class="image"><img src="../../assets/hint10/application-gif1.gif" alt=""></div>
-		<h3>Erstellen Sie Apps</h3>
-		<p>Wie im Abschnitt Internetmodus erläutert, können Sie eine App von einer Website aus erstellen, indem Sie den internen Browser verwenden oder eine URL mit Kopieren und Einfügen auf das Board einfügen.</p>
-		<p>Damit können Sie Ihren Unterricht mit leistungsstarken Online-Tools aufpeppen, die Sie direkt auf dem Board verwenden können! Hier sind einige Beispiele interessanter Apps (Ziehen Sie sie auf das Board, um sie zu testen!) :</p>
-		<ul>
-			<li><a class="non-clickable" href="https://scratch.mit.edu/">Scratch</a></li>
-			<li><a class="non-clickable" href="https://phet.colorado.edu">Die PhET-Simulationen</a></li>
-			<li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a></li>
-			<li><a class="non-clickable" href="https://flockmod.com">Flockmod</a></li>
-			<li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a></li>
-		</ul>
-		
-		<p>... und noch viel mehr!</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Benötigen Sie einen leistungsfähigeren Taschenrechner als den, der standardmäßig in OpenBoard enthalten ist? Denken Sie daran! Sie können Ihre eigenen Anwendungen erstellen! Ziehen Sie den folgenden Link per Drag & Drop auf Ihr Board: <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a></span>
-	</main>
-	<footer>
 
-	</footer>
-	<script>
-		document.querySelectorAll('.non-clickable').forEach(e => e.addEventListener('click', e => {
-			e.stopPropagation();
-			e.preventDefault();
-		}));
-	</script>
+<body>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Anwendungen</h1>
+     <img id="logo" src="../../assets/common/ApplicationsCategory.png" alt="Anwendungssymbol">
+    </div>
+  </header>
+
+
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-apps-title">
+      <h2 id="intro-apps-title" class="h2">Auf Apps zugreifen</h2>
+      <p>
+        OpenBoard bietet verschiedene <strong>Apps und Tools</strong>.
+        Finden Sie sie in der Bibliothek, indem Sie auf klicken
+        <img class="inline-icon" src="../../assets/common/ApplicationsCategory.png" alt="Anwendungssymbol" width="20" height="20" />.
+      </p>
+    </section>
+
+    <!-- Applications par défaut -->
+    <section aria-labelledby="default-apps-title" class="start">
+      <h2 id="default-apps-title" class="h2">Standard-Apps</h2>
+      <p>
+        Sie finden geometrische Werkzeuge, einen Taschenrechner, Google Maps, einen QR-Code-Generator und vieles mehr.
+        Kombinieren Sie sie, um spannende Bildungserlebnisse zu schaffen!
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint10/built-in-applications-demo.gif" alt="Beispiel für die Verwendung integrierter Anwendungen" loading="eager" decoding="async" />
+        <figcaption>Beispiel für die Verwendung der integrierten Anwendungen OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Créer ses propres applications -->
+    <section aria-labelledby="custom-apps-title" class="start">
+      <h2 id="custom-apps-title" class="h2">Erstellen Sie Ihre eigenen Apps</h2>
+      <p>
+        Wie im Abschnitt erläutert <em>Webmodus</em>, Sie können eine Anwendung von einer Site aus erstellen,
+        über den internen Browser oder durch Kopieren und Einfügen einer URL auf die Pinnwand.
+      </p>
+      <p>
+        Dadurch können Sie Ihre Kurse mit leistungsstarken Online-Tools erweitern, die direkt in OpenBoard verwendet werden können.
+        Hier sind einige interessante Beispiele (ziehen Sie die Links per Drag-and-Drop auf die Pinnwand, um sie zu testen):
+      </p>
+
+      <ul class="features" role="list">
+        <li><a class="non-clickable" href="https://scratch.mit.edu/">Kratzen</a> — visuelle Programmierung</li>
+        <li><a class="non-clickable" href="https://phet.colorado.edu">PhET-Simulationen</a> — interaktive wissenschaftliche Experimente</li>
+        <li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a> — Erkundung des Globus in 3D</li>
+        <li><a class="non-clickable" href="https://flockmod.com">Flockmod</a> – gemeinsames Online-Zeichnen</li>
+        <li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a> — Sprachenlernen</li>
+      </ul>
+
+      <p>...und noch viel mehr!</p>
+
+      <aside class="tip" role="note" aria-label="Individueller Anwendungstipp">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Benötigen Sie einen fortgeschritteneren Rechner als OpenBoard? Erstellen Sie Ihr eigenes
+          Anwendung durch Ziehen und Ablegen dieses Links auf die Tabelle:
+          <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a>
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+ 
+  </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".non-clickable").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault(); // verhindert das Öffnen des Links
+        event.stopPropagation(); // blockiert jegliche Ausbreitung
+      });
+    });
+  });
+</script>
+
+
 </body>
 </html>

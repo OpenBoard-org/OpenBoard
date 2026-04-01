@@ -1,26 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <title>Hints and tips</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Welcome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
-
 <body>
-	<header>
-		<h1 class="title">Welcome to OpenBoard</h1>
-	</header>
-	<main>
-		<div class="image"><img src="../../assets/hint1/openboard-logo.png" alt=""></div>
-		<br>
-		<p>Here's some hints and tips in order to help you familiarize with OpenBoard.</p>
-		<p>OpenBoard is an interactive whiteboard designed by teachers, for teachers. It comes with 4 modes : Board Mode, Desktop Mode, Documents Mode and Web Mode.</p>
-		<p>Let's jump in the first, and most important one : the Board Mode.</p>
-	</main>
-	<footer>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>You can reopen the "Hints and tips" dialog at any time, using the dedicated button on the OpenBoard menu (<span class="icon"><img src="../../assets/hint1/menu.png" alt="the OpenBoard menu"></span>)<span>
-	</footer>
+  <header class="page-header" role="banner">
+    <div class="container logo-title">
+      <h1 class="title">Welcome to OpenBoard</h1>
+      <img id="logo-small" src="../../assets/hint1/openboard-main-logo.png" alt="Logo OpenBoard" />
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main">
+
+
+    <p class="lead">
+      Here are some tips and tricks to help you get familiar with OpenBoard.
+    </p>
+
+    <p>
+      OpenBoard is an interactive whiteboard designed by teachers, for teachers.
+      It offers <strong>four complementary modes</strong> for classroom use.
+    </p>
+
+    <section aria-labelledby="modes-title" class="modes">
+      <h2 id="modes-title" class="h2">The 4 modes of OpenBoard</h2>
+      <ul class="modes-grid" role="list">
+        <li class="mode-card">
+          <h3 class="mode-title">Board Mode<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">The heart of OpenBoard: write, draw, annotate and manipulate objects on an infinite canvas.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Desktop Mode<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Display your computer desktop while keeping annotation tools close at hand.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Documents Mode<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Organize your pages, import media and prepare your educational sequences.</p>
+        </li>
+        <li class="mode-card">
+          <h3 class="mode-title">Web Mode<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+          <p class="mode-text">Browse the Internet directly in OpenBoard and capture useful content.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="start">
+      <p>Let's start with the first, and most important: <strong>Board Mode</strong>.</p>
+    </section>
+
+    <aside class="tip"> 
+      <img class="tip-icon" src="../../assets/common/tip.png" alt="" />
+      <p>
+        You can <strong>reopen</strong> this window at any time via the button
+        "Hints and tips" in the OpenBoard menu
+        <img class="inline-icon" src="../../assets/hint1/openboard-menu-icon.png" alt="OpenBoard-menu" width="20" height="20" />.
+      </p>
+    </aside>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>
-

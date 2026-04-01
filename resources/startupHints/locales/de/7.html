@@ -1,44 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-     <title>Bildschirmaufnahme</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Screenshot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Bildschirmaufnahme</h1>
-	</header>
-	<main>
-		Eine der grundlegenden, aber wirklich nützlichen Funktionen von OpenBoard ist der Screenshot. Damit können Sie während Ihres Unterrichts einen Schnappschuss von einem beliebigen Zustand des Boards erstellen.
-		<h3>Im Boardmodus</h3>
-		<p>Suchen Sie <span class="icon"><img src="../../assets/common/captureAreaBoard.png" alt="the screen capture icon"></span> in der Stiftpalette,  klicken Sie darauf und wählen Sie den Bereich aus, den Sie erfassen möchten. Anschließend werden Ihnen drei Optionen angeboten :</p>
-		<ul>
-			<li><b>Zur aktuellen Seite hinzufügen</b></li>
-			<li><b>Zur neuen Seite hinzufügen</b></li>
-			<li><b>Zur Bibliothek hinzufügen</b> (fügt den Schnappschuss dem Bilder Ordner hinzu, sodass Sie ihn jederzeit wiederverwenden können)</li>
-		</ul>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Screenshot</h1>
+     <img id="logo-small" src="../../assets/common/captureAreaDesktop.png" alt="Screenshot-Symbol"/>
+    </div>
+  </header>
 
-		<p>Hier ein Beispiel für den gesamten Prozess :</p>
-		<div class="image"><img src="../../assets/hint7/gif-capture1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Sie müssen sich keine Gedanken um die Stiftpalette, die Seitenvorschau oder die Registerkarte für die OpenBoard-Bibliothek machen - sie werden nicht von Ihrem Lasso eingefangen!</span>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-cap-title">
+      <h2 id="intro-cap-title" class="h2">Eine einfache und sehr nützliche Funktion</h2>
+      <p>
+        Mit dem Screenshot können Sie einen erstellen <strong>sofort</strong> der Zustand des Boards (oder Ihres Bildschirms)
+        während Ihres Kurses, um Inhalte zu archivieren, zu teilen oder wiederzuverwenden.
+      </p>
+    </section>
 
-		<h3>Im Desktop-Modus</h3>
-		<p>Dasselbe können Sie im Desktop-Modus tun, um Ihre Arbeit in anderen Programmen zu erfassen. Wechseln Sie in den Desktop-Modus, indem Sie auf <span class="icon"><img src="../../assets/common/display.png" alt=""></span> klicken.</p>
-		<p>Sie finden zwei Symbole: <span class="icon"><img src="../../assets/common/captureScreen.png" alt=""></span> um den gesamten Bildschirm zu erfassen, und <span class="icon"><img src="../../assets/common/captureAreaDesktop.png" alt=""></span> um nur einen Teil davon zu erfassen. Wie im Boardmodus müssen Sie auswählen, wo Sie die Aufnahme hinzufügen möchten</p>
-		
-		<p>Hier eine Illustration des gesamten Prozesses :</p>
-		<div class="image"><img src="../../assets/hint7/capture-gif2.gif" alt=""></div>
+    <!-- Tafelmodus -->
+    <section aria-labelledby="tableau-title" class="start">
+      <h2 id="tableau-title" class="h2">Im Tafelmodus</h2>
+      <p>
+        Klicken Sie in der Stiftpalette auf
+        <img class="inline-icon" src="../../assets/common/captureAreaBoard.png" alt="Symbol für den Erfassungsbereich (Tafelmodus)" width="20" height="20" />,
+        Wählen Sie dann den zu erfassenden Bereich aus. Sie können dann wählen:
+      </p>
+      <ul class="features" role="list">
+        <li><strong>Zur aktuellen Seite hinzufügen</strong></li>
+        <li><strong>Zu neuer Seite hinzufügen</strong></li>
+        <li>
+          <strong>Zur Bibliothek hinzufügen</strong> — Die Aufnahme wird im Ordner gespeichert <em>Bilder</em>
+          zur späteren Wiederverwendung.
+        </li>
+      </ul>
 
+      <figure class="image">
+        <img src="../../assets/hint7/board-area-capture.gif" alt="Beispiel für die Erfassung eines Bereichs in Tafelmodus" loading="eager" decoding="async" />
+        <figcaption>Beispiel für die Einbettung eines Screenshots in OpenBoard.</figcaption>
+      </figure>
 
-		<h3>Im Internetmodus</h3>
-		<p>In ähnlicher Weise ist dies auch im Internetmodus möglich, wo Sie eine Teilaufnahme des Bildschirms machen oder den aktiven Tab des Browsers erfassen können, indem Sie <span class="icon"><img src="../../assets/common/captureWindow.png" alt=""></span> anklicken</p>
-	</main>
-	<footer>
+      <aside class="tip" role="note" aria-label="Tipp für nicht erfasste Gegenstände">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Die Registerkarte „Stiftpalette“, „Seitenvorschau“ und „Bibliothek“. <strong>werden nicht erfasst</strong>
+          per Lasso: Nur Ihre Anmerkungen und Ihre Inhalte.
+        </p>
+      </aside>
+    </section>
 
-	</footer>
+    <!-- Desktop-Modus -->
+    <section aria-labelledby="bureau-title" class="start">
+      <h2 id="bureau-title" class="h2">In Desktop-Modus</h2>
+      <p>
+        Wechseln Sie zu Desktop-Modus über
+        <img class="inline-icon" src="../../assets/common/display.png" alt="Desktop-Modus-Symbol" width="20" height="20" />
+        um andere Software zu erfassen.
+      </p>
+      <p>Es stehen zwei Optionen zur Verfügung:</p>
+      <ul class="features" role="list">
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureScreen.png" alt="Symbol für Bildschirmaufnahme" width="20" height="20" />
+          <strong>Vollbildaufnahme</strong>
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureAreaDesktop.png" alt="Symbol für den Erfassungsbereich" width="20" height="20" />
+          <strong>Erfassen eines Bereichs</strong>
+        </li>
+      </ul>
+      <p>Wahlen Sie wie im Tafelmodus aus, wo die Aufnahme eingefugt werden soll.</p>
+
+      <figure class="image">
+        <img src="../../assets/hint7/desktop-area-capture.gif" alt="Beispiel für die Erfassung in Desktop-Modus" loading="lazy" decoding="async" />
+        <figcaption>Vollständiger oder teilweiser Screenshot in Desktop-Modus.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Webmodus -->
+    <section aria-labelledby="web-title" class="start">
+      <h2 id="web-title" class="h2">In Webmodus</h2>
+      <p>
+        In Webmodus können Sie <strong>einen Bereich erobern</strong> des Bildschirms bzw
+        <strong>Aktive Registerkarte erfassen</strong> aus dem Browser mit
+        <img class="inline-icon" src="../../assets/common/captureWindow.png" alt="Symbol für die Registerkarte „Aufnahme“." width="20" height="20" />.
+      </p>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+
 </body>
 </html>

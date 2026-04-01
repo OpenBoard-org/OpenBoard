@@ -1,39 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Video Capture</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Video Capture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Video Capture</h1>
-	</header>
-	<main>
-		<h3>Record your class session</h3>
-		<p>OpenBoard gives you the ability to make an audio and video capture of your class session.</p>
-		<p>This, for example, can be helpful to share additional exercises or information via a video clip, or to record a class session in order to share it with missing students.</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>In Board mode, the toolbars and palettes won't appear in the video clip, so don't worry about them ! Same in Web Mode, where only the current tab will appear on the capture.</span>
-		
-		<p>You can open this tool like this : </p>
-		<div class="image"><img src="../../assets/hint11/podcast-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Video Capture</h1>
+     <img id="logo-record" src="../../assets/common/record.png" alt="Video Capture Icon"/>
+    </div>
+  </header>
 
-		<p>You'll see the folowwing interface appear at the bottom right of the whiteboard :</p>
-		<div class="image"><img src="../../assets/hint11/podcast2.png" alt=""></div>
 
-		<p>Click on the red button to start recording.</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>You can adjust settings by clicking on <span class="icon"><img src="../../assets/common/settings.png" alt=""></span>. You'll find audio settings (select a microphone, or none), video settings (resolution of the video capture) and configurable publishing options</span>
-			
-		<p>Once the capture is done, it will be automatically saved to the computer's desktop</p>
-		<div class="image"><img src="../../assets/hint11/podcast-gif2.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-capvideo-title">
+      <h2 id="intro-capvideo-title" class="h2">Record your course</h2>
+      <p>
+        OpenBoard allows you to save <strong>audio</strong> and the <strong>video</strong> of your course.
+        Ideal for sharing additional exercises, publishing a short explanatory clip or
+        make a course available to absent students.
+      </p>
 
-	</main>
-	<footer>
+      <aside class="tip" role="note" aria-label="Uncaptured Items Tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          In <strong>Board Mode</strong>, toolbars and palettes do not appear in the video.
+          In <strong>Web Mode</strong>, only the active tab is captured.
+        </p>
+      </aside>
+    </section>
 
-	</footer>
+    <!-- Accès à l’outil -->
+    <section aria-labelledby="acces-title" class="start">
+      <h2 id="acces-title" class="h2">Access the registration tool</h2>
+      <p>Open the Snipping Tool as shown below:</p>
+
+      <figure class="image">
+        <img src="../../assets/hint11/video-capture-open-tool.gif" alt="Opening the Video Capture tool in OpenBoard" loading="eager" decoding="async" />
+        <figcaption>Quick access to the registration tool from the OpenBoard interface.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Interface de contrôle -->
+    <section aria-labelledby="ui-title" class="start">
+      <h2 id="ui-title" class="h2">Control interface</h2>
+      <p>The interface appears at the bottom right of the Table:</p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--narrow" src="../../assets/hint11/video-recorder-interface.png" alt="Recorder interface (bottom right controls)" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>Click on the <strong>red button</strong> to start recording.</p>
+
+      <aside class="tip" role="note" aria-label="Record Settings Tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Customize the recording via
+          <img class="inline-icon" src="../../assets/common/settings.png" alt="Settings icon" width="20" height="20" /> :
+          selection of <strong>microphone</strong> (or none), choice of <strong>video resolution</strong> and options <strong>publication</strong>.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Fin et récupération -->
+    <section aria-labelledby="fin-title" class="start">
+      <h2 id="fin-title" class="h2">Finish and recover the video</h2>
+      <p>
+        Once recording is completed, the video is automatically <strong>saved to desktop</strong> of your computer.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint11/video-capture-save-to-desktop.gif" alt="End recording and save the video to the Desktop" loading="lazy" decoding="async" />
+        <figcaption>Stop recording and video file available on Desktop.</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>

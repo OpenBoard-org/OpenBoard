@@ -1,38 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <title>Web Mode</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Web Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Web Mode</h1>
-	</header>
-	<main>
-		The Web Mode is an internal navigator that adds some cool features to a more standard one.
-		<h3>Use the internal navigator</h3>
-		<p>Using the internal navigator, you'll be able to browse the Internet without the need for reducing or exiting OpenBoard, with some additional features giving the ability to capture part of the screen or create applications from sites, and add them to the whiteboard !</p>
-		
-		<div class="image"><img src="../../assets/hint6/app1.png" alt=""></div>
-		
-		<h3>Create an application</h3>
-		<p>You can create an application from any site, in order to add it to the board and interact with it like with default applications.</p>
-		<p>To do so, go to the website you want to capture, click on <span class="icon"><img src="../../assets/hint6/addToolToLibrary.png" alt="Capture Web Content"></span> and confirm the creation by clicking on "Create an application".</p>
-		<div class="image"><img src="../../assets/hint6/app-gif2.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Web Mode</h1>
+     <img id="logo" src="../../assets/common/web.png" alt="Web Mode icon">
+    </div>
+  </header>
 
-		<p>When an application is created, it is automatically saved in the OpenBoard library, so you can use it in any document. You'll find them on the applications folder, under a dedicated one called "Web".</p>
-		
-		<div class="image"><img src="../../assets/hint6/app-gif3.gif" alt=""></div>
-		
-		<h3>Use an external navigator</h3>
-		<p>You can also choose to use an external navigator, by checking the corresponding option in the preferences. Clicking on the Web icon will then launch your favorite navigator in Desktop Mode.</p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Using an external navigator, you will still be able to create applications from a site, by copying the URL in the address bar of your navigator, coming back to Board, and pasting it !</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-web-title">
+      <h2 id="intro-web-title" class="h2">The integrated browser</h2>
+      <p>
+        THE <strong>Web Mode</strong> is a browser internal to OpenBoard which adds to a browser
+        classic, very practical features for the classroom.
+      </p>
+      <p>
+        It allows you to browse the Internet without leaving OpenBoard, to capture content (partial or
+        full screen) and even <strong>create apps</strong> from websites for
+        reuse in your documents.
+      </p>
 
-	</footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint6/web-browser-integrated-view.png" alt="Example of using the built-in browser of OpenBoard" loading="eager" decoding="async" />
+      </figure>
+    </section>
+
+    <!-- Créer une application -->
+    <section aria-labelledby="creer-app-title" class="start">
+      <h2 id="creer-app-title" class="h2">Create an application from a site</h2>
+      <p>
+        From any site, you can generate a <strong>application</strong> to add it
+        on the board and interact with it as with the default applications.
+      </p>
+      <p>
+        Go to the desired site, click on
+        <img class="inline-icon" src="../../assets/hint6/add-tool-to-library-icon.png" alt="Add to Library icon" width="20" height="20" />
+        then confirm by selecting <em>Create an app</em>.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-create-library-app.gif" alt="Creating a web application from the built-in browser" loading="lazy" decoding="async" />
+        <figcaption>Creation of an application from web mode.</figcaption>
+      </figure>
+
+      <p>
+        Once created, the application is automatically saved in the
+        <strong>library OpenBoard</strong>. You will find it under <em>Applications > Web</em>
+        and can reuse it in any document.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint6/web-saved-in-library.gif" alt="Application saved in library, web folder" loading="lazy" decoding="async" />
+        <figcaption>Find an application created in your library.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Navigateur externe -->
+    <section aria-labelledby="navigateur-externe-title" class="start">
+      <h2 id="navigateur-externe-title" class="h2">Use an external browser</h2>
+      <p>
+        You can choose to open the links in a <strong>external browser</strong> by checking
+        the corresponding option in the preferences. Click on
+        <img class="inline-icon" src="../../assets/common/web.png" alt="Web Mode icon" width="20" height="20" />
+        will then launch your favorite browser as Desktop Mode.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Tip for creating an application from an external browser">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Even with an external browser, you can <strong>create an app</strong> from a site:
+          copy the URL into the browser address bar, return to the <strong>Board Mode</strong> and stick it
+          when you create the application.
+        </p>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

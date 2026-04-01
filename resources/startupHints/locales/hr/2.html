@@ -1,48 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Modus ploče</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Nacin Ploca</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
 <body>
-	<header>
-		<h1 class="title">Modus ploče</h1>
-	</header>
-	<main>
-		<h3>Paleta alata</h3>
-		<p>Paleta alata sadrži osnovne alate za rad na ploči.</p>
-		<div class="image"><img id="bo1" src="../../assets/hint2/bo1.png" alt=""></div>
+  <header class="page-header" role="banner">
+    <div class="container logo-title">
+      <h1 class="title">Nacin Ploca</h1>
+      <img id="logo" src="../../assets/common/board.png" alt="ploča OpenBoard">
+    </div>
+  </header>
 
-		<p>Sadrži pisaljku (<span class="icon"><img src="../../assets/common/pen.png" alt=""></span>), gumicu (<span class="icon"><img src="../../assets/common/eraser.png" alt=""></span>) i marker (<span class="icon"><img src="../../assets/common/marker.png" alt=""></span>). OpenBoard također sadrži daljnje funkcije koje klasična ploča ne pruža:</p>
-		<ul>
-			<li><span class="icon"><img src="../../assets/common/arrow.png" alt=""></span> je selektor. Omogućuje biranje objekata kao i interakciju s njima.</li>
-			<li><span class="icon"><img src="../../assets/common/handPlay.png" alt=""></span> je čarobni prst. Omogućuje pomicanje objekata ili interakciju s njima bez da se moraju odabrati.</li>
-			<li><span class="icon"><img src="../../assets/common/hand.png" alt=""></span> je ruka. Omogućuje kretanje po stranici. Vrlo korisno u kombinaciji sa zumiranjem!</li>
-			<li><span class="icon"><img src="../../assets/common/zoomIn.png" alt=""></span><span class="icon"><img src="../../assets/common/zoomOut.png" alt=""></span> omogućuje zumiranje. Odaberi vrstu zumiranja i pritisni stranicu na koju želiš primijeniti zumiranje!</li>
-			<li><span class="icon"><img src="../../assets/common/laser.png" alt=""></span> je laserski pokazivač. Koristno za označavanje elemenata na ploči bez interakcije s njima.</li>
-			<li><span class="icon"><img src="../../assets/common/line.png" alt=""></span> se koristi za jednostavno crtanje ravnih crta.</li>
-			<li><span class="icon"><img src="../../assets/common/text.png" alt=""></span> je alat za pisanje teksta pomoću tipkovnice umjesto pisaljke.</li>
-		</ul>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Zumiranje možeš preciznije odrediti pomoću miša! Koristi Ctrl/Cmd + kotačić miša za preciznije zumiranje!</span>
+  <main id="main" class="container" role="main">
+    <!-- Section : Palette des stylets -->
+    <section aria-labelledby="palette-title">
+      <h2 id="palette-title" class="h2">Paleta olovki</h2>
+      <p>
+        Paleta olovki vam daje pristup osnovnim alatima kada radite na bijeloj ploči.
+      </p>
 
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint2/board-mode-pen-palette.png" alt="OpenBoard paleta stilusa" loading="eager" decoding="async" />
+      </figure>
 
-		<h3>Alatna traka ploče</h3>
-		<p>Alatna traka ploče omogućuje pored ostalog mijenjanje boje i debljine pisaljke ili markera.</p>
-		<div class="image"><img id="bo9" src="../../assets/hint2/bo9.png" alt=""></div>
+      <p>
+        Tamo ćete pronaći olovku
+        <img class="inline-icon" src="../../assets/common/pen.png" alt="Olovka" width="20" height="20" />,
+        guma
+        <img class="inline-icon" src="../../assets/common/eraser.png" alt="Gumica za brisanje" width="20" height="20" />
+        i highlighter
+        <img class="inline-icon" src="../../assets/common/marker.png" alt="Highlighter" width="20" height="20" />.
+        OpenBoard također pruža značajke koje tradicionalna pametna ploča ne može:
+      </p>
 
-		<p>Omogućuje mijenjanje pozadine ploče pritiskom na <span class="icon"><img src="../../assets/common/background.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint2/bo-gif1.gif" alt=""></div>
-		
-		<p>Sadrži gumbe za poništavanje/ponavljanje radnji, stvaranje i kretanje po stranicama, brisanje cijele ploče …</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Dijelove ploče možeš preciznije obrisati dugim pritiskom na <span class="icon"><img src="../../assets/common/clearPage.png" alt="the erase icon"></span>. Neke skrivene funkcije i na <span class="icon"><img src="../../assets/common/newDocument.png" alt="the erase icon"></span>!</span>
-	</main>
-	<footer>
+      <ul role="list" class="features">
+        <li>
+          <img class="inline-icon" src="../../assets/common/arrow.png" alt="" width="20" height="20" />
+          <strong>Selektor</strong> : odabir i interakcija s objektima.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/handPlay.png" alt="" width="20" height="20" />
+          <strong>Čarobni prst</strong> : pomicanje/interakcija bez prethodnog odabira.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/hand.png" alt="" width="20" height="20" />
+          <strong>Ruka</strong> : pomicanje stranice (vrlo korisno u kombinaciji sa zumiranjem).
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/zoomIn.png" alt="" width="20" height="20" />
+          <img class="inline-icon" src="../../assets/common/zoomOut.png" alt="" width="20" height="20" />
+          <strong>Zumiraj / Smanji</strong> : Kliknite gdje želite primijeniti efekt nakon što ga odaberete.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/laser.png" alt="" width="20" height="20" />
+          <strong>Laserski pokazivač</strong> : pokažite na elemente bez interakcije s njima.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/line.png" alt="" width="20" height="20" />
+          <strong>Linija</strong> : lako crtajte ravne linije.
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/text.png" alt="" width="20" height="20" />
+          <strong>Tekst</strong> : umetnite tekstualni okvir za tipkanje na tipkovnici.
+        </li>
+      </ul>
 
-	</footer>
+      <aside class="tip" role="note" aria-label="Savjet za zumiranje">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Za finiju kontrolu zumiranja pomoću miša, koristite
+          <strong>Ctrl/Cmd + kotačić</strong> za precizno zumiranje.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Section : Barre du tableau -->
+    <section aria-labelledby="barre-title" class="start">
+      <h2 id="barre-title" class="h2">Stolna traka</h2>
+      <p>
+        Traka tablice omogućuje vam promjenu <strong>boja</strong> i/ili <strong>veličina </strong> između ostalog olovka i highlighter.
+      </p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint2/board-mode-toolbar.png" alt="OpenBoard traka tablice" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        Također možete promijeniti <strong>pozadina stola</strong> klikom na
+        <img class="inline-icon" src="../../assets/common/background.png" alt="Promjena pozadine" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint2/board-mode-background-change.gif" alt="Primjer mijenjanja pozadine stola" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>
+        Dostupne su i druge funkcije: <em>poništiti/ponoviti</em>, stvarati stranice, kretati se između stranica, čistiti tablicu itd.
+      </p>
+
+      <aside class="tip" role="note" aria-label="Jasan savjet i opcije">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Za brisanje određenih stavki, učinite a <strong>dugi klik</strong> na
+          <img class="inline-icon" src="../../assets/common/clearPage.png" alt="Očisti stranicu" width="20" height="20" />.
+          Dodatne mogućnosti također postoje putem
+          <img class="inline-icon" src="../../assets/common/newDocument.png" alt="Novi dokument" width="20" height="20" />.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  
+  </footer>
 </body>
 </html>

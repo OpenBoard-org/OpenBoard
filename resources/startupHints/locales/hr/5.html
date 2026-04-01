@@ -1,39 +1,105 @@
 <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Modus dokumenata</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Uvoz i izvoz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Modus dokumenata</h1>
-	</header>
-	<main>
-		<p>U ovom se modusu nalaze dvije važne funkcije: uvoz i izvoz.</p>
-		<div class="image"><img id="importation1" src="../../assets/hint5/img1.png" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Uvoz i izvoz</h1>
+     <img id="logo" src="../../assets/common/import.png" alt="Ikona uvoza">
+     <img id="logo" src="../../assets/common/export.png" alt="Ikona izvoza">
+    </div>
+  </header>
+  
 
-		<h3>Uvoz</h3>
-		<p>Omogućuje uvoz PDF datoteka (<span class="file-extension">.pdf</span>), slika (<span class="file-extension">.png</span>, <span class="file-extension">.jpg</span>), OpenBoard dokumenata (<span class="file-extension">.ubz</span>) ili OpenBoard mapa (<span class="file-extension">.ubx</span>) pritiskom na <span class="icon"><img src="../../assets/common/import.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint5/gif1.gif" alt=""></div>
-		<p>OpenBoard dokument (<span class="file-extension">.ubz</span>) se može otvoriti i dvostrukim pritiskom na dokument. Ako OpenBoard još nije pokrenut, program će se pokrenuti i dokument će se uvesti (ili će se zatražiti zamjena ako već postoji).</p>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Također je moguće uvesti više elemenata odjednom, bez potrebe za višestrukim pritiskom na <span class="icon"><img src="../../assets/common/import.png" alt=""></span>.</span>
-		<h3>Izvoz</h3>
-		<p>Omogućuje izvoz OpenBoard dokumenta u PDF ili UBZ format kao i izvoz OpenBoard mape u UBX format. Na taj način je moguće:
-			<ul>
-				<li>Spremiti rad obavljen tijekom predavanja i dijeliti ga s učenicima koji nisu prisutni</li>
-				<li>Dijeliti ga s drugim učiteljima ili ga spremiti na USB uređaj i otvoriti ga na jednom drugom računalu</li>
-				<li>Uvesti domaću zadaću učenika u PDF formatu, dodati pribilješku te izvesti i učeniku poslati komentirani PDF</li>
-			</ul>
-		</p>
-		<div class="image"><img src="../../assets/hint5/gif2.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Izvezi sve tvoje dokumente biranjem mape „Moji dokumenti” prije pritiskanja gumba za izvoz kako bi se izvezli kao UBX datoteke, a zatim ih uvezi na jednom drugom računalu. To je također dobar način za spremanje sigurnosne kopije tvog rada!</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-title">
+      <h2 id="intro-title" class="h2">Uvoz i izvoz</h2>
+      <p>
+        U ovom načinu rada imate dvije bitne značajke: <strong>uvoz</strong> I <strong>izvoz</strong>.
+      </p>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint5/documents-import-export-panel.png" alt="Područje uvoza i izvoza u Nacin Dokumenti" loading="eager" decoding="async" />
+	
+      </figure>
+    </section>
 
-	</footer>
+    <!-- Import -->
+    <section aria-labelledby="import-title" class="start">
+      <h2 id="import-title" class="h2">Uvoz sadržaja</h2>
+      <p>
+        Možete uvesti datoteke <strong>PDF</strong> (<span class="file-extension">.pdf</span>),
+        od <strong>slike</strong> (<span class="file-extension">.png</span>, <span class="file-extension">.jpg</span>),
+        od <strong>dokumenti OpenBoard</strong> (<span class="file-extension">.ubz</span>) ili
+        <strong>OpenBoard mapa</strong> (<span class="file-extension">.ubx</span>) klikom na
+        <img class="inline-icon" src="../../assets/common/import.png" alt="Ikona uvoza" width="20" height="20" />.
+	
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint5/documents-import-files.gif" alt="Primjer uvoza datoteka u OpenBoard" loading="lazy" decoding="async" />
+		<figcaption>Primjer uvoza datoteka u OpenBoard.</figcaption>
+      </figure>
+
+      <p>
+        Također možete uvesti OpenBoard dokument (<span class="file-extension">.ubz</span>) u
+        <strong>dupli klik</strong> na njemu iz vašeg sustava. OpenBoard pokrenut će se ako je potrebno i
+        će ponuditi uvoz (ili zamjenu ako već postoji).
+      </p>
+
+      <aside class="tip" role="note" aria-label="Savjet za višestruki uvoz">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Moguće je da se<strong>uvoz više stavki odjednom</strong>,
+          bez ponovnog klika
+          <img class="inline-icon" src="../../assets/common/import.png" alt="Uvoz" width="20" height="20" />
+          svaki put.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Export -->
+    <section aria-labelledby="export-title" class="start">
+      <h2 id="export-title" class="h2">Izvezite svoje dokumente</h2>
+      <p>
+        Možete izvesti a <strong>dokument OpenBoard</strong> u formatu <strong>PDF</strong> Ili <strong>UBZ</strong>,
+        i a <strong>mapa OpenBoard</strong> u formatu <strong>UBX</strong>. Na primjer:
+      </p>
+      <ul class="features" role="list">
+        <li>Zabilježite rad obavljen tijekom lekcije i podijelite ga s odsutnim učenikom.</li>
+        <li>Podijelite s drugim učiteljima ili spremite na USB ključ za uvoz na drugo mjesto.</li>
+        <li>Uvezite studentov rad kao PDF, označite ga, zatim izvezite komentirani PDF za ponovno slanje.</li>
+      </ul>
+
+      <figure class="image">
+        <img src="../../assets/hint5/documents-export-files.gif" alt="Primjeri izvoza dokumenata i mapa OpenBoard" loading="lazy" decoding="async" />
+		<figcaption>Primjer izvoza datoteka iz OpenBoard.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Savjet za globalni izvoz">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Za izvoz <strong>sve svoje dokumente</strong>, prvo odaberite korijensku mapu
+          <em>Moji dokumenti</em>, zatim kliknite
+          <img class="inline-icon" src="../../assets/common/export.png" alt="Ikona izvoza" width="20" height="20" />.
+          Dobit ćete a <strong>UBX</strong> prenosivo na drugo računalo — savršeno za
+          <strong>sigurnosna kopija</strong> ili a <strong>arhiva</strong> kompletno!
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>
+

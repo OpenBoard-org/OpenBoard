@@ -1,37 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-    <title>Favoriti</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Omiljeni dokumenti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Favoriti</h1>
-	</header>
-	<main>
-		<h3>Dodavanje OpenBoard dokumenata u favorite</h3>
-		<p>OpenBoard verzija 1.7 omogućuje dodavanje OpenBoard dokumenata u favorite!</p>
-		<p>Idi u modus dokumenata, odaberi jedan dokument i pritisni na<span class="icon"><img src="../../assets/common/addToFavorites.png" alt=""></span> u alatnoj traci dokumenata.</p>
-		
-		<div class="image"><img src="../../assets/hint12/favorites.png" alt=""></div>
-		
-		<h3>Brzo prebacivanje s jednog dokumenta na drugi</h3>
-		<p>Omiljeni dokumenti će se pojaviti u OpenBoard biblioteci pod <span class="icon"><img src="../../assets/common/FavoritesCategory.png" alt=""></span><br>
-		Svaki OpenBoard dokument (<span class="icon"><img src="../../assets/common/openboard-document.png" alt=""></span>) se može povući i ispustiti na ploču!</p>
-		<div class="image"><img src="../../assets/hint12/favorites2.png" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Omiljeni dokumenti</h1>
+     <img id="logo" src="../../assets/common/favorites.png" alt="Ikona omiljenih dokumenata">
+    </div>
+  </header>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Koristi traku za pretraživanje na dnu OpenBoard biblioteke za brzo pronalaženje dokumenta na osnovi imena</span>
-		
-		<h3>Nedavno otvoreni dokumenti</h3>
-		<p>Svaki dokument koji se otvori privremeno se dodaje u favorite za brzo prebacivanje između dokumenata, bez da moraju biti izričito označeni kao favoriti.</p>
-		<div class="image"><img src="../../assets/hint12/favorites3.png" alt=""></div>
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Ako nedavno otvoreni dokument želiš trajno dodati u favorite, to možeš obaviti putem OpenBoard biblioteke: odaberi ga i pritisni na <span class="icon"><img src="../../assets/common/addToFavorites.png" alt=""></span></span>
-	</main>
-	<footer>
 
-	</footer>
+  <main id="main" class="container" role="main">
+    <!-- Ajout aux favoris -->
+    <section aria-labelledby="ajout-fav-title">
+      <h2 id="ajout-fav-title" class="h2">Dodajte OpenBoard dokumenata u favorite</h2>
+      <p>
+        Uveden u <strong>verzija 1.7</strong>, ova vam funkcija omogućuje dodavanje vaših OpenBoard dokumenata
+        u <strong>favoriti</strong>.
+      </p>
+      <p>
+        Da biste to učinili, idite na <em>Nacin Dokumenti</em>, odaberite dokument i kliknite
+        <img class="inline-icon" src="../../assets/common/addToFavorites.png" alt="Ikona Dodaj u favorite" width="20" height="20" />
+        na alatnoj traci.
+      </p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--wide" src="../../assets/hint12/favorites-add-document.png" alt="Dodavanje OpenBoard dokumenta u favorite" loading="eager" decoding="async" />
+       
+      </figure>
+    </section>
+
+    <!-- Utiliser les favoris -->
+    <section aria-labelledby="utiliser-fav-title" class="start">
+      <h2 id="utiliser-fav-title" class="h2">Brzo prijeđite s jednog dokumenta na drugi</h2>
+      <p>
+        Vaši omiljeni dokumenti pojavljuju se u <strong>knjižnica OpenBoard</strong>, u nastavku
+        <img class="inline-icon" src="../../assets/common/FavoritesCategory.png" alt="Ikona favorita" width="20" height="20" />.
+      </p>
+      <p>
+        Svaki omiljeni dokument
+        <img class="inline-icon" src="../../assets/common/openboard-document.png" alt="Ikona dokumenta OpenBoard" width="20" height="20" />
+        može se povući i ispustiti izravno na stol.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint12/favorites-library-view.png" alt="Pregledavanje favorita u biblioteci OpenBoard" loading="lazy" decoding="async" />
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Savjet za trajno dodavanje">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Koristite <strong>traka za pretraživanje</strong> na dnu biblioteke tako da možete brzo pronaći dokument po imenu.
+        </p>
+      </aside>
+
+    </section>
+
+    <!-- Documents récents -->
+    <section aria-labelledby="recents-title" class="start">
+      <h2 id="recents-title" class="h2">Nedavno otvoreni dokumenti</h2>
+      <p>
+        Svaki otvoreni dokument privremeno se dodaje u favorite, radi brzog prebacivanja s jednog na drugi
+        tijekom iste sesije, bez potrebe da ih izričito označite.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint12/recent-documents-view.png" alt="Primjer nedavno otvorenih dokumenata u OpenBoard" loading="lazy" decoding="async" />
+    
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Savjet za trajno dodavanje">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Napraviti <strong>trajnog</strong> nedavno otvoreni dokument, odaberite ga iz mape Favoriti
+          i kliknite
+          <img class="inline-icon" src="../../assets/common/addToFavorites.png" alt="Ikona Dodaj u favorite" width="20" height="20" />.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>

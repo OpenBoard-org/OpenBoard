@@ -1,39 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-    <title>Snimanje videa</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Video snimanje</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Snimanje videa</h1>
-	</header>
-	<main>
-		<h3>Snimanje nastave</h3>
-		<p>OpenBoard omogućuje snimanja videa nastave.</p>
-		<p>Vrlo korisno za dijeljenje dodatnih vježbi ili informacija putem videa ili za snimanje nastave za učenike koji nisu prisutni.</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>U modusu ploče se alatne trake i palete neće vidjeti u videu! Isto vrijedi i za web modus, gdje će se na snimci vidjeti samo trenutačna kartica.</span>
-		
-		<p>Otvori ovaj alat ovako: </p>
-		<div class="image"><img src="../../assets/hint11/podcast-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Video snimanje</h1>
+     <img id="logo-record" src="../../assets/common/record.png" alt="Ikona snimanja videozapisa"/>
+    </div>
+  </header>
 
-		<p>U donjem desnom kutu ploče će se pojaviti sljedeće sučelje:</p>
-		<div class="image"><img src="../../assets/hint11/podcast2.png" alt=""></div>
 
-		<p>Pritisni crveni gumb za pokretanje snimanja.</p>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Postavke se mogu prilagoditi pritiskom na <span class="icon"><img src="../../assets/common/settings.png" alt=""></span>. Tamo se nalaze postavke za zvuk (odaberi mikrofon ili ništa), postavke za video (razlučivost videa) i opcije za objavljivanje</span>
-			
-		<p>Nakon što je snimanje gotovo, snimka će se automatski spremiti na radnu površinu računala</p>
-		<div class="image"><img src="../../assets/hint11/podcast-gif2.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <!-- Intro -->
+    <section aria-labelledby="intro-capvideo-title">
+      <h2 id="intro-capvideo-title" class="h2">Snimite svoj tečaj</h2>
+      <p>
+        OpenBoard vam omogućuje spremanje <strong>audio</strong> i <strong>video</strong> vašeg tečaja.
+        Idealno za dijeljenje dodatnih vježbi, objavljivanje kratkog isječka s objašnjenjem ili
+        učiniti tečaj dostupnim odsutnim studentima.
+      </p>
 
-	</main>
-	<footer>
+      <aside class="tip" role="note" aria-label="Nezarobljeni predmeti Savjet">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          U <strong>Nacin Ploca</strong>, alatne trake i palete ne pojavljuju se u videu.
+          U <strong>Nacin Web</strong>, snima se samo aktivna kartica.
+        </p>
+      </aside>
+    </section>
 
-	</footer>
+    <!-- Accès à l’outil -->
+    <section aria-labelledby="acces-title" class="start">
+      <h2 id="acces-title" class="h2">Pristupite alatu za registraciju</h2>
+      <p>Otvorite alat za izrezivanje kao što je prikazano u nastavku:</p>
+
+      <figure class="image">
+        <img src="../../assets/hint11/video-capture-open-tool.gif" alt="Otvaranje alata za video snimanje u OpenBoard" loading="eager" decoding="async" />
+        <figcaption>Brzi pristup alatu za registraciju sa sučelja OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Interface de contrôle -->
+    <section aria-labelledby="ui-title" class="start">
+      <h2 id="ui-title" class="h2">Upravljačko sučelje</h2>
+      <p>Sučelje se pojavljuje u donjem desnom kutu tablice:</p>
+
+      <figure class="image">
+        <img class="hint-shot hint-shot--narrow" src="../../assets/hint11/video-recorder-interface.png" alt="Sučelje snimača (kontrole dolje desno)" loading="lazy" decoding="async" />
+      </figure>
+
+      <p>Kliknite na <strong>crveni gumb</strong> za početak snimanja.</p>
+
+      <aside class="tip" role="note" aria-label="Savjet za postavke snimanja">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Prilagodite snimanje putem
+          <img class="inline-icon" src="../../assets/common/settings.png" alt="Ikona postavki" width="20" height="20" /> :
+          izbor od <strong>mikrofon</strong> (ili nijedan), izbor <strong>video rezolucija</strong> i opcije <strong>objavljivanje</strong>.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Fin et récupération -->
+    <section aria-labelledby="fin-title" class="start">
+      <h2 id="fin-title" class="h2">Završite i oporavite videozapis</h2>
+      <p>
+        Nakon što je snimanje završeno, video se automatski pokreće <strong>spremljeno na radnu površinu</strong> vašeg računala.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint11/video-capture-save-to-desktop.gif" alt="Završite snimanje i spremite video na radnu površinu" loading="lazy" decoding="async" />
+        <figcaption>Zaustavite snimanje i video datoteka dostupna na radnoj površini.</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>

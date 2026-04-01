@@ -1,44 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <title>Screen Capture</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Screenshot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Screen Capture</h1>
-	</header>
-	<main>
-		One of the simplest but really useful features of OpenBoard is screen capture. With it, you can create a snapshot of any particular state of the Board, during your class session.
-		<h3>In Board Mode</h3>
-		<p>Search for<span class="icon"><img src="../../assets/common/captureAreaBoard.png" alt="the screen capture icon"></span> in the Stylus palette, click on it and select the area to capture. Then, you'll have three options : </p>
-		<ul>
-			<li><b>Add to current page</b></li>
-			<li><b>Add in a new page</b></li>
-			<li><b>Add to library</b>(adds the capture to the Pictures folder, so you can reuse it at any time)</li>
-		</ul>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Screenshot</h1>
+     <img id="logo-small" src="../../assets/common/captureAreaDesktop.png" alt="Screenshot icon"/>
+    </div>
+  </header>
 
-		<p>Here's an example of the whole process : </p>
-		<div class="image"><img src="../../assets/hint7/gif-capture1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>You don't have to worry about the Stylus palette, the Board's thumbnails view or the OpenBoard Library, they won't be captured by your lasso !</span>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-cap-title">
+      <h2 id="intro-cap-title" class="h2">A simple and very useful feature</h2>
+      <p>
+        Screenshot allows you to create a <strong>instant</strong> the state of the board (or your screen)
+        during your course, to archive, share or reuse content.
+      </p>
+    </section>
 
-		<h3>In Desktop Mode</h3>
-		<p>You can do the same thing in Desktop Mode, to capture your work on other softwares. Go to Desktop Mode by clicking on <span class="icon"><img src="../../assets/common/display.png" alt=""></span></p>
-		<p>You'll find two icons : <span class="icon"><img src="../../assets/common/captureScreen.png" alt=""></span> to capture the whole screen, and <span class="icon"><img src="../../assets/common/captureAreaDesktop.png" alt=""></span> to capture just a part of it. Like in Board Mode, you'll have to choose where to drop the capture you made</p>
-		
-		<p>Here's an illustration of the whole process</p>
-		<div class="image"><img src="../../assets/hint7/capture-gif2.gif" alt=""></div>
+    <!-- Board Mode -->
+    <section aria-labelledby="tableau-title" class="start">
+      <h2 id="tableau-title" class="h2">In Board Mode</h2>
+      <p>
+        In the Pen palette, click
+        <img class="inline-icon" src="../../assets/common/captureAreaBoard.png" alt="Capture Area Icon (Board Mode)" width="20" height="20" />,
+        then select the area to capture. You can then choose:
+      </p>
+      <ul class="features" role="list">
+        <li><strong>Add to current page</strong></li>
+        <li><strong>Add to new page</strong></li>
+        <li>
+          <strong>Add to library</strong> — the capture is saved in the folder <em>Pictures</em>
+          for later reuse.
+        </li>
+      </ul>
 
+      <figure class="image">
+        <img src="../../assets/hint7/board-area-capture.gif" alt="Example of capturing an area in Board Mode" loading="eager" decoding="async" />
+        <figcaption>Example of embedding a screenshot in OpenBoard.</figcaption>
+      </figure>
 
-		<h3>In Web Mode</h3>
-		<p>Again, the same process is available in Web Mode, where you will be able to capture just a part of the screen, or capture the current tab with <span class="icon"><img src="../../assets/common/captureWindow.png" alt=""></span></p>
-	</main>
-	<footer>
+      <aside class="tip" role="note" aria-label="Uncaptured Items Tip">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          The pen palette, page preview and library tab <strong>are not captured</strong>
+          by lasso: only your annotations and your content are.
+        </p>
+      </aside>
+    </section>
 
-	</footer>
+    <!-- Desktop Mode -->
+    <section aria-labelledby="bureau-title" class="start">
+      <h2 id="bureau-title" class="h2">In Desktop Mode</h2>
+      <p>
+        Switch to Desktop Mode via
+        <img class="inline-icon" src="../../assets/common/display.png" alt="Desktop Mode icon" width="20" height="20" />
+        to capture other software.
+      </p>
+      <p>Two options are available:</p>
+      <ul class="features" role="list">
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureScreen.png" alt="Screen Capture icon" width="20" height="20" />
+          <strong>Full screen capture</strong>
+        </li>
+        <li>
+          <img class="inline-icon" src="../../assets/common/captureAreaDesktop.png" alt="Capture area icon" width="20" height="20" />
+          <strong>Capturing an area</strong>
+        </li>
+      </ul>
+      <p>As in Board Mode, choose where to add the capture.</p>
+
+      <figure class="image">
+        <img src="../../assets/hint7/desktop-area-capture.gif" alt="Example of capture in Desktop Mode" loading="lazy" decoding="async" />
+        <figcaption>Full or partial screenshot in Desktop Mode.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Web Mode -->
+    <section aria-labelledby="web-title" class="start">
+      <h2 id="web-title" class="h2">In Web Mode</h2>
+      <p>
+        In Web Mode you can <strong>capture an area</strong> of the screen or
+        <strong>capture active tab</strong> from the browser with
+        <img class="inline-icon" src="../../assets/common/captureWindow.png" alt="Capture tab icon" width="20" height="20" />.
+      </p>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+
 </body>
 </html>

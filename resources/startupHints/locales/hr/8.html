@@ -1,36 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-    <title>Slike</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Slike</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Slike</h1>
-	</header>
-	<main>
-		OpenBoard omogućuje pristup slikama na nekoliko načina.
-		<h3>Organiziranje mape „Slike”</h3>
-		<p>Snimke ekrana koje se dodaju u biblioteku spremaju se u mapu „Slike”: <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span><br>Mape se mogu stvoriti koristeći <span class="icon"><img src="../../assets/common/miniNewFolder.png" alt=""></span> na dnu biblioteke. Zatim povuci i ispusti slike u stvorene mape.</p>
-		<div class="image"><img src="../../assets/hint8/image-gif1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Bez obzira gdje se nalaziš u OpenBoard biblioteci, slike koje dodaš će se automatski smjestiti u mapu „Slike”.</span>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Slike</h1>
+     <img id="logo" src="../../assets/common/PicturesCategory.svg" alt="Slike ikona">
+    </div>
+  </header>
 
-		<h3>Dodavanje slika iz računala</h3>
-		<p>Prikaz dodavanja slika koja su spremljena na računalu:</p>
-		<div class="image"><img src="../../assets/hint8/image-gif3.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-images-title">
+      <h2 id="intro-images-title" class="h2">Pristupite svojim slikama i organizirajte ih</h2>
+      <p>
+        U OpenBoard možete pristupiti i dodavati slike na različite načine od svojih <b>knjižnica</b>. Potonji se nalazi na desnoj strani ekrana. Ovdje također možete pohraniti zvukove, video zapise i pronaći različite aplikacije.
+      </p>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint8/documents-import-export-zone.png" alt="Područje uvoza i izvoza u Nacin Dokumenti" loading="eager" decoding="async" />
+		<figcaption>Slika knjižnice koja se nalazi desno u softveru.</figcaption>
+      </figure>
+    </section>
 
-		<h3>Dodavanje slika iz tražilica</h3>
-		<p>Besplatne slike možeš tražiti i dodati na ploču koristeći tražilice koje se nalaze u mapi „Web pretraga”: <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint8/image-gif2.gif" alt=""></div>
+    <!-- Organisation du dossier Images -->
+    <section aria-labelledby="orga-images-title" class="start">
+      <h2 id="orga-images-title" class="h2">Organizirajte svoju mapu Slike</h2>
+      <p>
+        Snimke zaslona dodane u biblioteku grupirane su u mapi
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Slike ikona" width="20" height="20" />.
+        Možete stvarati <strong>podmape</strong> preko
+        <img class="inline-icon" src="../../assets/common/miniNewFolder.png" alt="Nova ikona mape" width="20" height="20" />
+        (na dnu biblioteke), zatim povucite i ispustite svoje slike u različite stvorene mape.
+      </p>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Umjesto korištenja tehnike povuci i ispusti, jednostavno pritisni sliku koju je pronašla tražilica za prikaz detalja slike i pronađi opciju za dodavanje slike u biblioteku, bez dodavanja slike u trenutačni dokument. Korisno za pripremanje nastave!</span>
-	</main>
-	<footer>
+      <figure class="image">
+        <img src="../../assets/hint8/images-folder-organization.gif" alt="Organiziranje mape Slike s podmapama" loading="eager" decoding="async" />
+        <figcaption>Primjer organizacije i klasifikacije slika u knjižnici.</figcaption>
+      </figure>
 
-	</footer>
+      <aside class="tip" role="note" aria-label="Organizacijski savjet">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Bez obzira na vaš položaj u biblioteci, dodane slike automatski se stavljaju u
+          mapa <em>Slike</em>
+          <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Slike ikona" width="20" height="20" />,
+          koji održava vašu knjižnicu organiziranom.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Ajouter depuis l’ordinateur -->
+    <section aria-labelledby="ordi-images-title" class="start">
+      <h2 id="ordi-images-title" class="h2">Dodajte slike sa svog računala</h2>
+      <p>
+        Možete uvesti vlastite slikovne datoteke izravno u OpenBoard, kao što je prikazano u nastavku:
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-local-import.gif" alt="Dodavanje slika s računala" loading="lazy" decoding="async" />
+        <figcaption>Uvoz lokalne slike u OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Ajouter depuis le Web -->
+    <section aria-labelledby="web-images-title" class="start">
+      <h2 id="web-images-title" class="h2">Dodajte slike s weba</h2>
+      <p>
+        Također možete tražiti <strong>slike bez naknade</strong> putem integriranih tražilica,
+        koji se nalazi u mapi <em>Web pretraživanje</em>
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Slike ikona" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-web-search-import.gif" alt="Dodavanje slika iz integrirane tražilice" loading="lazy" decoding="async" />
+        <figcaption>Primjer pronalaženja i dodavanja slika s weba.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Dodavanje savjeta s weba">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Nema potrebe za povlačenjem i ispuštanjem: kliknite na pronađenu sliku da vidite njezine detalje
+          i izravno koristiti opciju <strong>Dodaj u knjižnicu</strong>.
+          Ovo je vrlo praktično kada pripremate lekcije.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

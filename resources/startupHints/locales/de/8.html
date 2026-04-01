@@ -1,36 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Bilder</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Bilder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Bilder</h1>
-	</header>
-	<main>
-		In OpenBoard können Sie auf Bilder auf verschiedene Arten zugreifen.
-		<h3>Organisieren Sie Ihren Bilder-Ordner</h3>
-		<p>Screenshots, die der Bibliothek hinzugefügt wurden, finden Sie im Ordner Bilder : <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span><br>Sie können Unterordner erstellen, indem Sie <span class="icon"><img src="../../assets/common/miniNewFolder.png" alt=""></span> ganz unten in der Bibliothek verwenden. Ziehen Sie dann Ihre Bilder per Drag & Drop in die verschiedenen Ordner, die Sie erstellt haben.</p>
-		<div class="image"><img src="../../assets/hint8/image-gif1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Egal, wo Sie sich in der OpenBoard-Bibliothek befinden, die Bilder, die Sie hinzufügen, werden automatisch innerhalb des Bilder-Ordners platziert , so dass die Bibliothek organisiert bleibt.</span>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Bilder</h1>
+     <img id="logo" src="../../assets/common/PicturesCategory.svg" alt="Symbolbilder">
+    </div>
+  </header>
 
-		<h3>Fügen Sie Bilder von Ihrem Computer hinzu</h3>
-		<p>Sie können auch Bilder von Ihrem Computer hinzufügen, wie hier dargestellt :</p>
-		<div class="image"><img src="../../assets/hint8/image-gif3.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-images-title">
+      <h2 id="intro-images-title" class="h2">Greifen Sie auf Ihre Bilder zu und organisieren Sie sie</h2>
+      <p>
+        In OpenBoard können Sie von Ihrem aus auf verschiedene Arten auf Bilder zugreifen und diese hinzufügen <b>Bibliothek</b>. Letzteres befindet sich auf der rechten Seite des Bildschirms. Hier können Sie auch Sounds und Videos speichern und verschiedene Anwendungen finden.
+      </p>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint8/documents-import-export-zone.png" alt="Import- und Exportbereich in Dokumentenmodus" loading="eager" decoding="async" />
+		<figcaption>Bild der Bibliothek rechts in der Software.</figcaption>
+      </figure>
+    </section>
 
-		<h3>Fügen Sie Bilder aus Suchmaschinen hinzu</h3>
-		<p>Schließlich können Sie auch nach lizenzfreien Bildern suchen und diese zum Board hinzufügen, indem Sie die Suchmaschinen im Ordner "Websuche" verwenden: <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint8/image-gif2.gif" alt=""></div>
+    <!-- Organisation du dossier Images -->
+    <section aria-labelledby="orga-images-title" class="start">
+      <h2 id="orga-images-title" class="h2">Organisieren Sie Ihren Bilderordner</h2>
+      <p>
+        Zur Bibliothek hinzugefügte Screenshots werden im Ordner gruppiert
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Symbolbilder" width="20" height="20" />.
+        Sie können erstellen <strong>Unterordner</strong> über
+        <img class="inline-icon" src="../../assets/common/miniNewFolder.png" alt="Neues Ordnersymbol" width="20" height="20" />
+        (unten in der Bibliothek) und ziehen Sie Ihre Bilder dann per Drag & Drop in die verschiedenen erstellten Ordner.
+      </p>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Anstatt Drag-and-Drop zu verwenden, klicken Sie einfach auf ein Bild, das als Suchergebnis erscheint, um Details zu sehen und Optionen wie Zur Bibliothek hinzufügen zu finden. Nützlich bei der Vorbereitung einer Unterrichtsstunde!</span>
-	</main>
-	<footer>
+      <figure class="image">
+        <img src="../../assets/hint8/images-folder-organization.gif" alt="Organisieren des Bilderordners mit Unterordnern" loading="eager" decoding="async" />
+        <figcaption>Beispiel für die Organisation und Klassifizierung von Bildern in der Bibliothek.</figcaption>
+      </figure>
 
-	</footer>
+      <aside class="tip" role="note" aria-label="Organisationstipp">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Unabhängig von Ihrer Position in der Bibliothek werden hinzugefügte Bilder automatisch in der platziert
+          Ordner <em>Bilder</em>
+          <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Symbolbilder" width="20" height="20" />,
+          So bleibt Ihre Bibliothek organisiert.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Ajouter depuis l’ordinateur -->
+    <section aria-labelledby="ordi-images-title" class="start">
+      <h2 id="ordi-images-title" class="h2">Fügen Sie Bilder von Ihrem Computer hinzu</h2>
+      <p>
+        Sie können Ihre eigenen Bilddateien direkt in OpenBoard importieren, wie unten gezeigt:
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-local-import.gif" alt="Bilder vom Computer hinzufügen" loading="lazy" decoding="async" />
+        <figcaption>Importieren eines lokalen Bildes in OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Ajouter depuis le Web -->
+    <section aria-labelledby="web-images-title" class="start">
+      <h2 id="web-images-title" class="h2">Fügen Sie Bilder aus dem Internet hinzu</h2>
+      <p>
+        Sie können auch nach suchen <strong>lizenzfreie Bilder</strong> über integrierte Suchmaschinen,
+        befindet sich im Ordner <em>Websuche</em>
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Symbolbilder" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-web-search-import.gif" alt="Hinzufügen von Bildern aus einer integrierten Suchmaschine" loading="lazy" decoding="async" />
+        <figcaption>Beispiel für das Suchen und Hinzufügen von Bildern aus dem Internet.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Tipp zum Hinzufügen aus dem Internet">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Kein Ziehen und Ablegen erforderlich: Klicken Sie auf ein gefundenes Bild, um dessen Details anzuzeigen
+          und direkt die Option nutzen <strong>Zur Bibliothek hinzufügen</strong>.
+          Das ist bei der Unterrichtsvorbereitung sehr praktisch.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
+

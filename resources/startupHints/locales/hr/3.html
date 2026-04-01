@@ -1,30 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
-    <meta charset="UTF-8">
-     <title>Modus radne površine</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Nacin Radna Povrsina</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Modus radne površine</h1>
-	</header>
-	<main>
-		<h3>Interakcija s drugim programima</h3>
-		<p>Modus radne površine omogućuje interakciju s računalom i drugim programima, zadržavajući OpenBoard u prednjem planu!</p>
-		<p>Jednostavno pritisni sljedeću ikonu:</p>
-		<div class="image"><img id="bureau1" src="../../assets/hint3/bureau1.png" alt=""></div>
-		<div>Koristi selektor (<span class="icon"><img src="../../assets/common/arrow.png" alt=""></span>) za interakciju s radnom površinom i drugim programima.</div>
-		<h3>Dodavanje pribilješki programu ili web stranici</h3>
-		<div>Pribilješke se mogu dodati bilo kojem programu koristeći pisaljku (<span class="icon"><img src="../../assets/common/penArrow.svg" alt=""></span>) ili marker (<span class="icon"><img src="../../assets/common/markerArrow.svg" alt=""></span>).</div>
-		<div class="image"><img src="../../assets/hint3/bureau-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Nacin Radna Povrsina</h1>
+     <img id="logo" src="../../assets/common/display.png" alt="ploča OpenBoard">
+    </div>
+  </header>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Pristupi daljnjim opcijama za <span class="icon"><img src="../../assets/common/penArrow.svg" alt="the pen"></span>, <span class="icon"><img src="../../assets/common/markerArrow.svg" alt="the marker"></span> i <span class="icon"><img src="../../assets/common/eraserArrow.svg" alt="the eraser"></span> dugim pritiskom na ikonu ili pritiskom na malu crnu strelicu.</span>
-	</main>
-	<footer>
+  <main id="main" class="container" role="main">
+    <!-- Section : Interagir avec d'autres applications -->
+    <section aria-labelledby="interagir-title">
+      <h2 id="interagir-title" class="h2">Interakcija s drugim aplikacijama</h2>
+      <p>
+        Opcija <strong>Uredski način rada</strong> omogućuje vam interakciju s vašim operativnim sustavom i softverom,
+        zadržavajući OpenBoard alate na vrhu.
+      </p>
+      <p>Jednostavno kliknite na sljedeću ikonu:</p>
 
-	</footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint3/desktop-mode-icon.png" alt="Ikona za aktiviranje Nacin Radna Povrsina" loading="eager" decoding="async" />
+      </figure>
+
+      <p>
+        Koristite <strong>selektor</strong>
+        <img class="inline-icon" src="../../assets/common/arrow.png" alt="Selektor" width="20" height="20" />
+        za interakciju s radnom površinom i drugim aplikacijama.
+      </p>
+    </section>
+
+    <!-- Section : Annoter des applications ou sites web -->
+    <section aria-labelledby="annoter-title" class="start">
+      <h2 id="annoter-title" class="h2">Označite aplikacije ili web stranice</h2>
+      <p>
+        Možete označiti bilo koji softver s <strong>olovka</strong>
+        <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Olovka" width="20" height="20" />
+        ili <strong>marker</strong>
+        <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marker" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint3/desktop-mode-annotation.gif" alt="Označavanje aplikacije u Nacin Radna Povrsina" loading="lazy" decoding="async" />
+         <figcaption>Primjer anotacije na web stranici.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Savjet za alate za bilješke">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Pristupite više opcija za
+          <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Olovka" width="20" height="20" />,
+          <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Marker" width="20" height="20" />
+          I
+          <img class="inline-icon" src="../../assets/common/eraserArrow.svg" alt="Gumica za brisanje" width="20" height="20" />
+          izvođenjem a <strong>dugi klik</strong> na alatu ili klikom na <strong>mala crna strelica</strong>.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>

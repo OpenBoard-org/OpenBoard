@@ -1,37 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Immagini</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Images</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Immagini</h1>
-	</header>
-	<main>
-		In OpenBoard, puoi accedere alle immagini in diversi modi.
-		<h3>Organizza la tua cartella Immagini</h3>
-		<p>Le catture dello schermo aggiunte alla Libreria vengono salvate nella cartella Immagini : <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span><br>Puoi creare cartelle utilizzando <span class="icon"><img src="../../assets/common/miniNewFolder.png" alt=""></span> nella parte inferiore della Libreria. Quindi, trascina e rilascia le tue immagini nelle diverse cartelle che hai creato.</p>
-		<div class="image"><img src="../../assets/hint8/image-gif1.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Non importa dove ti trovi nella Libreria di OpenBoard, le immagini che aggiungi saranno automaticamente collocate all'interno della cartella Immagini, per mantenere l'organizzazione.</span>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Immagini</h1>
+         <img id="logo" src="../../assets/common/PicturesCategory.svg" alt="Icona Immagini">
+    </div>
+  </header>
 
-		<h3>Aggiungi immagini dal tuo computer</h3>
-		<p>Puoi anche aggiungere immagini direttamente dal tuo computer, come illustrato di seguito :</p>
-		<div class="image"><img src="../../assets/hint8/image-gif3.gif" alt=""></div>
+  <main id="main" class="container" role="main">
+    <section aria-labelledby="intro-images-title">
+      <h2 id="intro-images-title" class="h2">Accedere e organizzare le immagini</h2>
+      <p>
+        In OpenBoard puoi accedere e aggiungere immagini in diversi modi dalla tua <b>libreria</b>. La libreria si trova a destra dello schermo. Qui puoi anche archiviare suoni, video e trovare varie applicazioni.
+      </p>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint8/documents-import-export-zone.png" alt="Area libreria a destra nell'interfaccia" loading="eager" decoding="async" />
+                <figcaption>Vista della libreria posizionata a destra nel software.</figcaption>
+      </figure>
+    </section>
 
-		<h3>Aggiungi immagini dai motori di ricerca</h3>
-		<p>Ultimo ma non meno importante, puoi cercare e aggiungere alla tua lavagna immagini royalty free utilizzando i motori di ricerca situati nella cartella Ricerca Web : <span class="icon"><img src="../../assets/common/PicturesCategory.png" alt=""></span></p>
-		<div class="image"><img src="../../assets/hint8/image-gif2.gif" alt=""></div>
+    <!-- Organisation du dossier Images -->
+    <section aria-labelledby="orga-images-title" class="start">
+      <h2 id="orga-images-title" class="h2">Organizza la cartella Immagini</h2>
+      <p>
+        Le catture schermo aggiunte alla libreria sono raggruppate nella cartella
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icona Immagini" width="20" height="20" />.
+        Puoi creare <strong>sottocartelle</strong> tramite
+        <img class="inline-icon" src="../../assets/common/miniNewFolder.png" alt="Icona Nuova cartella" width="20" height="20" />
+        (in basso nella libreria), poi trascinare le immagini nelle cartelle create.
+      </p>
 
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Al posto di utilizzare il trascinamento, basta fare clic su una delle immagini restituite dalla tua ricerca per visualizzare i dettagli sull'immagine e trovare un'opzione per aggiungerla alla Libreria senza aggiungerla al tuo documento attuale. Utile quando si prepara una lezione!</span>
-	</main>
-	<footer>
+      <figure class="image">
+        <img src="../../assets/hint8/images-folder-organization.gif" alt="Organizzazione della cartella Immagini con sottocartelle" loading="eager" decoding="async" />
+        <figcaption>Esempio di organizzazione e classificazione delle immagini nella libreria.</figcaption>
+      </figure>
 
-	</footer>
+      <aside class="tip" role="note" aria-label="Suggerimento organizzazione">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Qualunque sia la tua posizione nella libreria, le immagini aggiunte vengono collocate automaticamente nella
+          cartella <em>Immagini</em>
+          <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icona Immagini" width="20" height="20" />,
+          mantenendo la libreria ordinata.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Ajouter depuis l’ordinateur -->
+    <section aria-labelledby="ordi-images-title" class="start">
+      <h2 id="ordi-images-title" class="h2">Aggiungere immagini dal computer</h2>
+      <p>
+        Puoi importare i tuoi file immagine direttamente in OpenBoard, come mostrato qui sotto:
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-local-import.gif" alt="Aggiunta di immagini dal computer" loading="lazy" decoding="async" />
+        <figcaption>Importazione di un'immagine locale in OpenBoard.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Ajouter depuis le Web -->
+    <section aria-labelledby="web-images-title" class="start">
+      <h2 id="web-images-title" class="h2">Aggiungere immagini dal Web</h2>
+      <p>
+        Puoi anche cercare <strong>immagini libere da diritti</strong> tramite i motori di ricerca integrati,
+        disponibili nella cartella <em>Ricerca Web</em>
+        <img class="inline-icon" src="../../assets/common/PicturesCategory.png" alt="Icona Immagini" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint8/images-web-search-import.gif" alt="Aggiunta di immagini da un motore di ricerca integrato" loading="lazy" decoding="async" />
+        <figcaption>Esempio di ricerca e aggiunta di immagini dal Web.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Suggerimento aggiunta dal Web">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Non serve trascinare: fai clic su un'immagine trovata per vedere i dettagli
+          e usa direttamente l'opzione <strong>Aggiungi alla libreria</strong>.
+          E molto pratico durante la preparazione delle lezioni.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+   
+  </footer>
 </body>
 </html>
 

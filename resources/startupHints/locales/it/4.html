@@ -1,33 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Modalità Documenti</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Modalita Documenti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-    <header>
-        <h1 class="title">Modalità Documenti</h1>
-    </header>
-    <main>
-        <p>OpenBoard dispone di un gestore documenti. Puoi accedervi semplicemente facendo clic su <span class="icon"><img src="../../assets/common/documents.png" alt=""></span></p>
-        <div class="image"><img src="../../assets/hint4/document1.png" alt=""></div>
-        
-        <h3>Crea cartelle e organizza il tuo lavoro</h3>
-        <p>Puoi creare una cartella cliccando sull'icona "Nuova Cartella". Assegnale un nome e trascina i tuoi documenti all'interno. Allo stesso modo, puoi spostare un'intera cartella in un'altra.</p>
-        <div class="image"><img src="../../assets/hint4/gif-document1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Modalita Documenti</h1>
+         <img id="logo" src="../../assets/common/documents.png" alt="lavagna OpenBoard">
+    </div>
+  </header>
+  
+  <main id="main" class="container" role="main">
+    <!-- Accesso al gestore documenti -->
+    <section aria-labelledby="doc-acces-title">
+      <h2 id="doc-acces-title" class="h2">Accedere al gestore documenti</h2>
+      <p>
+        OpenBoard offre un <strong>gestore documenti</strong>. Fai clic su
+        <img class="inline-icon" src="../../assets/common/documents.png" alt="Icona Documenti" width="20" height="20" />
+        per aprirlo.
+      </p>
+      <figure class="image" >
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint4/documents-manager-view.png" alt="Vista del gestore documenti" loading="eager" decoding="async" />
+      </figure>
+    </section>
 
-        <h3>Gestisci le pagine</h3>
-        <p>Un documento OpenBoard può contenere molte pagine. Puoi duplicarle, spostarle nel cestino o in un altro documento, crearne di nuove da cartelle di immagini, ...</p>
-        <div class="image"><img src="../../assets/hint4/gif-document2.gif" alt=""></div>
-        
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Tieni presente che le azioni disponibili vengono aggiornate in base a ciò che è selezionato</span>
-    </main>
-    <footer>
+    <!-- Cartelle e organizzazione -->
+    <section aria-labelledby="doc-dossiers-title" class="start">
+      <h2 id="doc-dossiers-title" class="h2">Crea cartelle e organizza il tuo lavoro</h2>
+      <p>
+        Crea una cartella tramite
+        <img class="inline-icon" src="../../assets/common/newFolder.png" alt="Nuova cartella" width="20" height="20" />,
+        assegnale un nome, poi <strong>trascina e rilascia</strong> i documenti al suo interno.
+        Allo stesso modo puoi spostare un'intera cartella dentro un'altra.
+      </p>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-folder-organization.gif" alt="Creazione e organizzazione di cartelle" loading="lazy" decoding="async" />
+                <figcaption>Esempio di creazione e organizzazione delle cartelle.</figcaption>
+      </figure>
+    </section>
 
-    </footer>
+    <!-- Gestione delle pagine -->
+    <section aria-labelledby="doc-pages-title" class="start">
+      <h2 id="doc-pages-title" class="h2">Gestione delle pagine</h2>
+      <p>
+        Un documento OpenBoard puo contenere <strong>piu pagine</strong>. Dalla modalita Documenti puoi:
+      </p>
+      <ul class="features" role="list">
+        <li>Duplicare pagine</li>
+        <li>Inviarle nel cestino</li>
+        <li>Copiarle in un altro documento</li>
+        <li>Creare nuove pagine a partire da una cartella di immagini</li>
+      </ul>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-page-actions.gif" alt="Esempi di azioni sulle pagine" loading="lazy" decoding="async" />
+                 <figcaption>Esempio di gestione dei documenti.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Suggerimento selezione">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Le <strong>azioni disponibili</strong> si adattano in base a cio che e
+          <strong>selezionato</strong> (cartella, documento, pagina).
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>
-

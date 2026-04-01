@@ -1,31 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Modalità Desktop</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Modalita Desktop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-    <header>
-        <h1 class="title">Modalità Desktop</h1>
-    </header>
-    <main>
-        <h3>Interagire con altri software</h3>
-        <p>Utilizzando la Modalità Desktop, puoi interagire con l'intero computer e altri software, mantenendo OpenBoard come sovrapposizione!</p>
-        <p>Basta cliccare sull'icona seguente:</p>
-        <div class="image"><img id="bureau1" src="../../assets/hint3/bureau1.png" alt=""></div>
-        <div>Usa il selettore (<span class="icon"><img src="../../assets/common/arrow.png" alt=""></span>) per interagire con il desktop e altri software.</div>
-        <h3>Fare annotazioni sopra un'applicazione o un sito web</h3>
-        <div>Puoi aggiungere annotazioni sopra qualsiasi software, utilizzando la penna (<span class="icon"><img src="../../assets/common/penArrow.svg" alt=""></span>) o il marcatore (<span class="icon"><img src="../../assets/common/markerArrow.svg" alt=""></span>).</div>
-        <div class="image"><img src="../../assets/hint3/bureau-gif1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Modalita Desktop</h1>
+         <img id="logo" src="../../assets/common/display.png" alt="lavagna OpenBoard">
+    </div>
+  </header>
 
-        <span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Puoi accedere a ulteriori opzioni per <span class="icon"><img src="../../assets/common/penArrow.svg" alt="la penna"></span>, <span class="icon"><img src="../../assets/common/markerArrow.svg" alt="il marcatore"></span> e <span class="icon"><img src="../../assets/common/eraserArrow.svg" alt="la gomma"></span> facendo un clic prolungato su di essi o facendo clic sulla piccola freccia nera.</span>
-    </main>
-    <footer>
+  <main id="main" class="container" role="main">
+    <!-- Sezione: interagire con altre applicazioni -->
+    <section aria-labelledby="interagir-title">
+      <h2 id="interagir-title" class="h2">Interagire con altre applicazioni</h2>
+      <p>
+        La <strong>modalita Desktop</strong> ti permette di interagire con il sistema operativo e le tue applicazioni,
+        mantenendo gli strumenti di OpenBoard sempre in primo piano.
+      </p>
+      <p>Fai semplicemente clic sull'icona seguente:</p>
 
-    </footer>
+      <figure class="image">
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint3/desktop-mode-icon.png" alt="Icona per attivare la modalita Desktop" loading="eager" decoding="async" />
+      </figure>
+
+      <p>
+        Usa il <strong>selettore</strong>
+        <img class="inline-icon" src="../../assets/common/arrow.png" alt="Selettore" width="20" height="20" />
+        per interagire con il desktop e con le altre applicazioni.
+      </p>
+    </section>
+
+    <!-- Sezione: annotare applicazioni o siti web -->
+    <section aria-labelledby="annoter-title" class="start">
+      <h2 id="annoter-title" class="h2">Annotare applicazioni o siti web</h2>
+      <p>
+        Puoi annotare qualsiasi software con la <strong>penna</strong>
+        <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Penna" width="20" height="20" />
+        o con l'<strong>evidenziatore</strong>
+        <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Evidenziatore" width="20" height="20" />.
+      </p>
+
+      <figure class="image">
+        <img src="../../assets/hint3/desktop-mode-annotation.gif" alt="Annotazione di un'applicazione in modalita Desktop" loading="lazy" decoding="async" />
+         <figcaption>Esempio di annotazione su una pagina web.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Suggerimento strumenti di annotazione">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          Accedi a piu opzioni per
+          <img class="inline-icon" src="../../assets/common/penArrow.svg" alt="Penna" width="20" height="20" />,
+          <img class="inline-icon" src="../../assets/common/markerArrow.svg" alt="Evidenziatore" width="20" height="20" />
+          e
+          <img class="inline-icon" src="../../assets/common/eraserArrow.svg" alt="Gomma" width="20" height="20" />
+          eseguendo un <strong>clic prolungato</strong> sullo strumento oppure cliccando sulla <strong>piccola freccia nera</strong>.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+
+  </footer>
 </body>
 </html>
-

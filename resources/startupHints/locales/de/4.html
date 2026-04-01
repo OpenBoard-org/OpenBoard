@@ -1,32 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-     <title>Dokumenten-Modus</title>
-     <link rel="stylesheet" href="css/style.css" type="text/css">
-     <meta name="viewport" content="width=device-width" />
+  <meta charset="UTF-8" />
+  <title>Dokumentenmodus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <script src="../../js/theme-loader.js"></script>
 </head>
 
+
 <body>
-	<header>
-		<h1 class="title">Dokumenten-Modus</h1>
-	</header>
-	<main>
-		<p>OpenBoard bietet einen Dokumentenmanager. Sie können darauf zugreifen, indem Sie einfach auf <span class="icon"><img src="../../assets/common/documents.png" alt=""></span> klicken.</p>
-		<div class="image"><img src="../../assets/hint4/document1.png" alt=""></div>
-		
-		<h3>Legen Sie Ordner an und organisieren Sie Ihre Arbeit</h3>
-		<p>Sie können einen Ordner erstellen, indem Sie auf "Neuer Ordner" klicken. Benennen Sie ihn und ziehen Sie Ihre Dokumente per Drag & Drop hinein. Auf die gleiche Weise können Sie einen ganzen Ordner in einen anderen verschieben.</p>
-		<div class="image"><img src="../../assets/hint4/gif-document1.gif" alt=""></div>
+  <header class="page-header" role="banner">
+     <div class="container logo-title">
+      <h1 class="title">Dokumentenmodus</h1>
+     <img id="logo" src="../../assets/common/documents.png" alt="Brett OpenBoard">
+    </div>
+  </header>
+  
+  <main id="main" class="container" role="main">
+    <!-- Accès au gestionnaire de documents -->
+    <section aria-labelledby="doc-acces-title">
+      <h2 id="doc-acces-title" class="h2">Greifen Sie auf den Dokumentenmanager zu</h2>
+      <p>
+        OpenBoard bietet a <strong>Dokumentenmanager</strong>. Klicken Sie auf
+        <img class="inline-icon" src="../../assets/common/documents.png" alt="Symbol „Dokumente“." width="20" height="20" />
+        um es zu öffnen.
+      </p>
+      <figure class="image" >
+        <img class="hint-shot hint-shot--standard" src="../../assets/hint4/documents-manager-view.png" alt="Ansicht des Dokumentenmanagers" loading="eager" decoding="async" />
+      </figure>
+    </section>
 
-		<h3>Seitenverwaltung</h3>
-		<p>Ein OpenBoard-Dokument kann mehrere Seiten enthalten. Über den Dokumentenmodus können Sie sie duplizieren, in den Papierkorb legen oder in ein anderes Dokument kopieren, neue Seiten aus einem Bildordner erstellen, ...</p>
-		<div class="image"><img src="../../assets/hint4/gif-document2.gif" alt=""></div>
-		
-		<span class="tip"><span class="icon"><img src="../../assets/common/tip.png" alt=""></span>Beachten Sie, dass die verfügbaren Aktionen je nachdem, was ausgewählt wird, aktualisiert werden.</span>
-	</main>
-	<footer>
+    <!-- Dossiers et organisation -->
+    <section aria-labelledby="doc-dossiers-title" class="start">
+      <h2 id="doc-dossiers-title" class="h2">Erstellen Sie Ordner und organisieren Sie Ihre Arbeit</h2>
+      <p>
+        Erstellen Sie einen Ordner über
+        <img class="inline-icon" src="../../assets/common/newFolder.png" alt="Neuer Ordner" width="20" height="20" />,
+        Nennen Sie es dann <strong>Drag & Drop</strong> Ihre Dokumente darin.
+        Ebenso können Sie einen ganzen Ordner in einen anderen verschieben.
+      </p>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-folder-organization.gif" alt="Dateien erstellen und organisieren" loading="lazy" decoding="async" />
+		<figcaption>Beispiel für das Erstellen und Organisieren von Ordnern.</figcaption>
+      </figure>
+    </section>
 
-	</footer>
+    <!-- Gestion des pages -->
+    <section aria-labelledby="doc-pages-title" class="start">
+      <h2 id="doc-pages-title" class="h2">Seitenverwaltung</h2>
+      <p>
+        Ein OpenBoard-Dokument kann enthalten <strong>mehrere Seiten</strong>. Von Dokumentenmodus aus können Sie:
+      </p>
+      <ul class="features" role="list">
+        <li>Doppelte Seiten</li>
+        <li>Schicken Sie sie in den Papierkorb</li>
+        <li>Kopieren Sie sie in ein anderes Dokument</li>
+        <li>Erstellen Sie neue Seiten aus einem Bilderordner</li>
+      </ul>
+      <figure class="image">
+        <img src="../../assets/hint4/documents-page-actions.gif" alt="Beispiele für Aktionen auf Seiten" loading="lazy" decoding="async" />
+		 <figcaption>Beispiel für den Umgang mit Dokumenten.</figcaption>
+      </figure>
+
+      <aside class="tip" role="note" aria-label="Auswahltipp">
+        <img class="tip-icon" src="../../assets/common/tip.png" alt="" width="24" height="24" />
+        <p>
+          DER <strong>Aktionen verfügbar</strong> Passen Sie sich dem an, was ist
+          <strong>ausgewählt</strong> (Ordner, Dokument, Seite).
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
 </body>
 </html>
