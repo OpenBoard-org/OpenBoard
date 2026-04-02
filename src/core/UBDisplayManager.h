@@ -107,7 +107,7 @@ class UBDisplayManager : public QObject
         qreal physicalDpi(ScreenRole role) const;
         qreal logicalDpi(ScreenRole role) const;
 
-        void grab(ScreenRole role, std::function<void(QPixmap)> callback, QRect rect = {}) const;
+        void grab(ScreenRole role, std::function<void(QPixmap)> callback, bool crop = false) const;
         QPixmap grabGlobal(QRect rect) const;
 
         void initScreensByRole();

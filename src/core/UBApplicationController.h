@@ -132,8 +132,8 @@ class UBApplicationController : public QObject
 
         // defaulting to false to match QAction triggered(bool checked = false)
         void showDesktop(bool dontSwitchFrontProcess = false);
-
         void hideDesktop();
+        void showGlassPane(bool show);
 
         void useMultiScreen(bool use);
 

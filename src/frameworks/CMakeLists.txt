@@ -23,10 +23,14 @@ target_sources(openboard PRIVATE
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
     target_sources(openboard PRIVATE
-        UBDesktopPortal.cpp
-        UBDesktopPortal.h
-        UBPipewireSink.cpp
-        UBPipewireSink.h
+        linux/UBScreenCastDesktopPortalWrapper.cpp
+        linux/UBScreenCastDesktopPortalWrapper.h
+        linux/UBScreenshotDesktopPortalWrapper.cpp
+        linux/UBScreenshotDesktopPortalWrapper.h
+        linux/UBDesktopPortalTokenGenerator.cpp
+        linux/UBDesktopPortalTokenGenerator.h
+        linux/UBPipewireSink.cpp
+        linux/UBPipewireSink.h
         UBPlatformUtils_linux.cpp
     )
 endif()
