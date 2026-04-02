@@ -64,7 +64,7 @@ public:
     bool movePage(int fromIndex, int toIndex);
     bool copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool saveToc = true, bool cached = true,
-                                                bool useUndoRedoStack = true);
+                                                bool useUndoRedoStack = true, bool createThumbnail = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false, bool persistThumbnail = true, bool addToCache = true);
     std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);

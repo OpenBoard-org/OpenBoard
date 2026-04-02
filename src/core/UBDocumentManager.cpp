@@ -338,7 +338,7 @@ int UBDocumentManager::importPages(const QFile& file, std::shared_ptr<UBDocument
 
     for (UBGraphicsItem* page : pages)
     {
-        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, false);
+        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, false, true, false);
         importAdaptor->placeImportedItemToScene(scene, page);
         doc->persistPage(scene, pageIndex, false, false, false, false);
         pageIndex++;
