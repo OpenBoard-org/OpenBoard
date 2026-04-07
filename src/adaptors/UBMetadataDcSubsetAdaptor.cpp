@@ -125,6 +125,11 @@ void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
     // introduced in UB 4.4
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
 
+    // bookmarks (JSON string)
+    QString bookmarks = proxy->metaData(UBSettings::documentBookmarks).toString();
+    if (!bookmarks.isEmpty())
+        xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "bookmarks", bookmarks);
+
     xmlWriter.writeEndElement(); //dc:Description
     xmlWriter.writeEndElement(); //RDF
 
@@ -224,6 +229,11 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                 {
                     metadata.insert(UBSettings::documentUpdatedAt, xml.readElementText());
                     updatedAtFound = true;
+                }
+                else if (name == "bookmarks" // introduced for bookmarks
+                        && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
+                {
+                    metadata.insert(UBSettings::documentBookmarks, xml.readElementText());
                 }
                 metadata.insert(UBSettings::documentVersion, docVersion);
             }

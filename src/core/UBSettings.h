@@ -206,6 +206,7 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+        static QString documentBookmarks;
 
         static QString documentDate;
 

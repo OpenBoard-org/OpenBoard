@@ -137,6 +137,17 @@ public:
     eUBDockPaletteWidgetMode mCurrentMode;
 
     QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
+    
+    UBDockPaletteWidget* currentTabWidget() { 
+        if (mCurrentTab >= 0 && mCurrentTab < mTabWidgets.size()) 
+            return mTabWidgets.at(mCurrentTab); 
+        return nullptr; 
+    }
+    
+    void setCurrentTabWidget(UBDockPaletteWidget* widget) {
+        int idx = mTabWidgets.indexOf(widget);
+        if (idx >= 0) showTabWidget(idx);
+    }
 
 public:
     bool isTabFlotable() {return mTabPalette->mFlotable;}

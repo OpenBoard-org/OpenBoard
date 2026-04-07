@@ -124,6 +124,7 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
                    mainWindow->actionDocument,
                    mainWindow->actionDesktop,
                    mainWindow->actionLibrary,
+                   mainWindow->actionBookmarks,
                    mainWindow->actionVirtualKeyboard,
                    mainWindow->actionOpenTutorial,
                    mainWindow->actionHideApplication,

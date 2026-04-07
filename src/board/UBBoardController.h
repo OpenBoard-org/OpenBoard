@@ -198,6 +198,8 @@ class UBBoardController : public UBDocumentContainer
         void showKeyboard(bool show);
         void togglePodcast(bool checked);
         void blackout();
+        void addBookmark();
+        void jumpToBookmark(const QVariantMap& bookmarkMap);
         void addScene();
         void addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
         void addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty = false);

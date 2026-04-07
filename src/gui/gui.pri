@@ -37,6 +37,7 @@ HEADERS +=  \
     src/gui/UBLeftPalette.h \
     src/gui/UBRightPalette.h \
     src/gui/UBPageNavigationWidget.h \
+    src/gui/UBBookmarksWidget.h \
     src/gui/UBMagnifer.h \
     src/gui/UBCachePropertiesWidget.h \
     src/gui/UBDownloadWidget.h \
@@ -86,6 +87,7 @@ SOURCES +=  \
     src/gui/UBLeftPalette.cpp \
     src/gui/UBRightPalette.cpp \
     src/gui/UBPageNavigationWidget.cpp \
+    src/gui/UBBookmarksWidget.cpp \
     src/gui/UBMagnifer.cpp \
     src/gui/UBCachePropertiesWidget.cpp \
     src/gui/UBDownloadWidget.cpp \

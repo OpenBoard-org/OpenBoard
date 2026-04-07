@@ -718,6 +718,24 @@
     <string>Ctrl+L</string>
    </property>
   </action>
+  <action name="actionBookmarks">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/bookmarks.png</normaloff>:/images/toolbar/bookmarks.png</iconset>
+   </property>
+   <property name="text">
+    <string>Bookmarks</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Bookmarks</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
   <action name="actionMenu">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">

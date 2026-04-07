@@ -54,6 +54,7 @@ class UBMainWindow;
 class UBApplicationController;
 class UBStartupHintsPalette;
 class UBPageNavigationWidget;
+class UBBookmarksWidget;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -144,6 +145,9 @@ class UBBoardPaletteManager : public QObject
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
 
+        /** The bookmarks widget */
+        UBBookmarksWidget* mpBookmarksWidget;
+
         UBFeaturesWidget *mpFeaturesWidget;
 
         /** The download widget */
@@ -160,6 +164,7 @@ class UBBoardPaletteManager : public QObject
 
         void toggleStylusPalette(bool checked);
         void tooglePodcastPalette(bool checked);
+        void toggleBookmarkPalette();
 
         void erasePaletteButtonPressed();
         void erasePaletteButtonReleased();

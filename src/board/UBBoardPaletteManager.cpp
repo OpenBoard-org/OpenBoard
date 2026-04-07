@@ -54,6 +54,7 @@
 
 #include "desktop/UBDesktopAnnotationController.h"
 
+#include "gui/UBBookmarksWidget.h"
 
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"
@@ -139,6 +140,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpCachePropWidget = new UBCachePropertiesWidget();
 
     mpDownloadWidget = new UBDockDownloadWidget();
+    
+    mpBookmarksWidget = new UBBookmarksWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
@@ -146,6 +149,9 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // LEFT palette widgets
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
+
+    mLeftPalette->registerWidget(mpBookmarksWidget);
+    mLeftPalette->addTab(mpBookmarksWidget);
 
     mLeftPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
@@ -403,6 +409,11 @@ void UBBoardPaletteManager::purchaseLinkActivated(const QString& link)
 
 void UBBoardPaletteManager::connectPalettes()
 {
+    connect(mpBookmarksWidget, SIGNAL(addBookmarkClicked()), mBoardControler, SLOT(addBookmark()));
+    connect(mpBookmarksWidget, SIGNAL(bookmarkClicked(QVariantMap)), mBoardControler, SLOT(jumpToBookmark(QVariantMap)));
+
+    connect(UBApplication::mainWindow->actionBookmarks, SIGNAL(triggered()), this, SLOT(toggleBookmarkPalette()));
+
     connect(UBApplication::mainWindow->actionStylus, SIGNAL(toggled(bool)), this, SLOT(toggleStylusPalette(bool)));
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
@@ -580,6 +591,11 @@ void UBBoardPaletteManager::activeSceneChanged()
         mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
+    if (mpBookmarksWidget)
+    {
+        mpBookmarksWidget->activeSceneChanged();
+    }
+
     if (mZoomPalette)
         connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene.get(), SLOT(hideTool()));
 
@@ -615,6 +631,22 @@ void UBBoardPaletteManager::backgroundPaletteClosed()
 void UBBoardPaletteManager::toggleStylusPalette(bool checked)
 {
     mStylusPalette->setVisible(checked);
+}
+
+void UBBoardPaletteManager::toggleBookmarkPalette()
+{
+    if (mLeftPalette && mpBookmarksWidget)
+    {
+        if (!mLeftPalette->isVisible() || mLeftPalette->currentTabWidget() != mpBookmarksWidget)
+        {
+            mLeftPalette->setVisible(true);
+            mLeftPalette->setCurrentTabWidget(mpBookmarksWidget);
+        }
+        else
+        {
+            mLeftPalette->hide();
+        }
+    }
 }
 
 

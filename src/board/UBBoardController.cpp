@@ -86,6 +86,10 @@
 
 #include "core/memcheck.h"
 
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
@@ -638,6 +642,65 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     }
 }
 
+void UBBoardController::addBookmark()
+{
+    if (!mControlView) return;
+    
+    // Map center coordinate exactly as used by UBBoardController::centerOn() manually translated matrix.
+    // This perfectly bypasses any QGraphicsView scrollbar offsets that cause drift.
+    qreal x = -mControlView->transform().m31() / mControlView->transform().m11();
+    qreal y = -mControlView->transform().m32() / mControlView->transform().m22();
+    qreal currentZoomLevel = currentZoom();
+    
+    QVariantMap map;
+    map["x"] = x;
+    map["y"] = y;
+    map["zoom"] = currentZoomLevel;
+    map["page"] = mActiveSceneIndex;
+    map["id"] = QString::number(QDateTime::currentMSecsSinceEpoch()); // unique string ID
+    
+    auto documentProxy = selectedDocument();
+    if (!documentProxy) return;
+    
+    QString bookmarksJson = documentProxy->metaData(UBSettings::documentBookmarks).toString();
+    QJsonDocument doc = QJsonDocument::fromJson(bookmarksJson.toUtf8());
+    QJsonArray array;
+    if (doc.isArray()) array = doc.array();
+
+    QJsonObject obj = QJsonObject::fromVariantMap(map);
+    obj["name"] = tr("Bookmark %1 (Page %2)").arg(array.size() + 1).arg(mActiveSceneIndex + 1);
+    array.append(obj);
+
+    documentProxy->setMetaData(UBSettings::documentBookmarks, QJsonDocument(array).toJson(QJsonDocument::Compact));
+    
+    if (mPaletteManager && mPaletteManager->leftPalette() && selectedDocument() == documentProxy) {
+        mPaletteManager->activeSceneChanged();
+    }
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(documentProxy);
+}
+
+void UBBoardController::jumpToBookmark(const QVariantMap& bookmarkMap)
+{
+    qreal x = bookmarkMap["x"].toDouble();
+    qreal y = bookmarkMap["y"].toDouble();
+    qreal targetZoom = bookmarkMap["zoom"].toDouble();
+    
+    if (bookmarkMap.contains("page")) {
+        int targetPage = bookmarkMap["page"].toInt();
+        if (targetPage >= 0 && targetPage != mActiveSceneIndex) {
+            setActiveDocumentScene(targetPage);
+        }
+    }
+    
+    QPointF targetPoint(x, y);
+    
+    if (targetZoom > 0 && targetZoom != currentZoom()) {
+        qreal ratio = targetZoom / currentZoom();
+        zoom(ratio, targetPoint);
+    }
+    
+    centerOn(targetPoint);
+}
 
 
 void UBBoardController::addScene()
