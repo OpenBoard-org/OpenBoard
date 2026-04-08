@@ -111,6 +111,8 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     connect(UBApplication::webController, SIGNAL(activeWebPageChanged(WebView*)),
             this, SLOT(webActiveWebPageChanged(WebView*)));
 
+    connect(UBApplication::mainWindow->actionPodcastPreferences, SIGNAL(triggered()), this, SLOT(openPodcastPreferencesDialog()));
+
     connect(UBApplication::mainWindow, &UBMainWindow::closeEvent_Signal, this, &UBPodcastController::applicationAboutToQuit);
 }
 
@@ -151,6 +153,73 @@ void UBPodcastController::actionToggled(bool checked)
     updateActionState();
 }
 
+void UBPodcastController::openPodcastPreferencesDialog()
+{
+    if (mPodcastPreferencesDialog)
+    {
+        mPodcastPreferencesDialog->raise();
+        mPodcastPreferencesDialog->activateWindow();
+        return;
+    }
+
+    UBSettings* settings = UBSettings::settings();
+
+    QString podcastAudioRecordingDeviceSetting = settings->podcastAudioRecordingDevice->get().toString();
+    if (podcastAudioRecordingDeviceSetting != "Default" &&
+        podcastAudioRecordingDeviceSetting != "None" &&
+        !audioRecordingDevices().contains(podcastAudioRecordingDeviceSetting))
+    {
+        podcastAudioRecordingDeviceSetting = settings->podcastAudioRecordingDevice->reset().toString();
+    }
+    const QString podcastAudioRecordingDevice = podcastAudioRecordingDeviceSetting;
+    const QStringList podcastProfileNames = QStringList({"Full", "Medium", "Small"});
+    if (!podcastProfileNames.contains(settings->podcastVideoSize->get().toString()))
+    {
+       settings->podcastVideoSize->reset().toString();
+    }
+    const QString podcastProfile = settings->podcastVideoSize->get().toString();
+    mVideoFramesPerSecondAtStart = settings->podcastFramesPerSecond->get().toInt();
+    const int fullBitRate = settings->podcastWindowsMediaBitsPerSecond->get().toInt();
+    const QSize viewportSize = UBApplication::boardController->controlView()->size();
+
+    const QList<int> podcastBitRateDivisors = QList({1, 2, 4});
+    const QList<int> podcastVerticalResolution = QList({viewportSize.height(), 768, 480});
+    const QList<int> podcastHorizontalResolution = QList({viewportSize.width(), 1024, 640});
+
+    mPodcastPreferencesDialog = new UBPodcastPreferencesDialog(UBApplication::mainWindow,
+                                                           audioRecordingDevices(),
+                                                           podcastAudioRecordingDevice,
+                                                           podcastProfileNames,
+                                                           podcastProfile,
+                                                           mVideoFramesPerSecondAtStart,
+                                                           fullBitRate,
+                                                           podcastBitRateDivisors,
+                                                           podcastVerticalResolution,
+                                                           podcastHorizontalResolution);
+    mPodcastPreferencesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(mPodcastPreferencesDialog, SIGNAL(accepted()), this, SLOT(podcastPreferencesDialogAccepted()));
+    mPodcastPreferencesDialog->open();
+}
+
+void UBPodcastController::podcastPreferencesDialogAccepted()
+{
+    UBPodcastPreferencesDialog* dialog = qobject_cast<UBPodcastPreferencesDialog*>(sender());
+    if (!dialog)
+        return;
+
+    UBSettings* settings = UBSettings::settings();
+    const QString podcastAudioRecordingDevice = dialog->podcastAudioRecordingOption();
+    settings->podcastAudioRecordingDevice->set(podcastAudioRecordingDevice);
+
+    const QString podcastProfile = dialog->podcastProfile();
+    settings->podcastVideoSize->set(podcastProfile);
+
+    mVideoBitsPerSecondAtStart = dialog->podcastBitRate();
+    settings->podcastWindowsMediaBitsPerSecond->set(QVariant::fromValue(mVideoBitsPerSecondAtStart));
+
+    mVideoFramesPerSecondAtStart = dialog->podcastFrameRate();
+    settings->podcastFramesPerSecond->set(mVideoFramesPerSecondAtStart);
+}
 
 void UBPodcastController::updateActionState()
 {
@@ -282,19 +351,21 @@ void UBPodcastController::start()
 
         QSize recommendedSize(1024, 768);
 
-        int fullBitRate = UBSettings::settings()->podcastWindowsMediaBitsPerSecond->get().toInt();
+        UBSettings* settings = UBSettings::settings();
+        int fullBitRate = settings->podcastWindowsMediaBitsPerSecond->get().toInt();
+        QString podcastProfile = settings->podcastVideoSize->get().toString();
 
-        if (mSmallVideoSizeAction && mSmallVideoSizeAction->isChecked())
+        if (podcastProfile == "Small")
         {
             recommendedSize = QSize(640, 480);
             mVideoBitsPerSecondAtStart = fullBitRate / 4;
         }
-        else if (mMediumVideoSizeAction && mMediumVideoSizeAction->isChecked())
+        else if (podcastProfile == "Medium")
         {
             recommendedSize = QSize(1024, 768);
             mVideoBitsPerSecondAtStart = fullBitRate / 2;
         }
-        else if (mFullVideoSizeAction && mFullVideoSizeAction->isChecked())
+        else if (podcastProfile == "Full")
         {
             recommendedSize = UBApplication::boardController->controlView()->size();
             mVideoBitsPerSecondAtStart = fullBitRate;
@@ -337,20 +408,14 @@ void UBPodcastController::start()
                         , mRecordingPalette, SLOT(audioLevelChanged(quint8)));
             }
 
-            mVideoEncoder->setRecordAudio(!mNoAudioInputDeviceAction->isChecked());
+            QString podcastAudioRecordingOption = settings->podcastAudioRecordingDevice->get().toString();
+            mVideoEncoder->setRecordAudio(podcastAudioRecordingOption != "None");
 
             QString recordingDevice = "";
 
-            if (!mNoAudioInputDeviceAction->isChecked() && !mDefaultAudioInputDeviceAction->isChecked())
+            if (podcastAudioRecordingOption != "None" && podcastAudioRecordingOption != "Default")
             {
-                foreach(QAction* audioDevice, mAudioInputDevicesActions)
-                {
-                    if (audioDevice->isChecked())
-                    {
-                        recordingDevice = audioDevice->text();
-                        break;
-                    }
-                }
+                recordingDevice = podcastAudioRecordingOption;
             }
 
             mVideoEncoder->setAudioRecordingDevice(recordingDevice);

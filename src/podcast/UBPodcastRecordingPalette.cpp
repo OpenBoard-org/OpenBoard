@@ -56,7 +56,7 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
     mLevelMeter->setMinimumSize(6, 32);
 
     layout()->addWidget(mLevelMeter);
-
+    addAction(UBApplication::mainWindow->actionPodcastPreferences);
     addAction(UBApplication::mainWindow->actionPodcastConfig);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))

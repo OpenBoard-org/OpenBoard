@@ -33,6 +33,7 @@
 #include <QtGui>
 
 #include "UBAbstractVideoEncoder.h"
+#include "UBPodcastPreferencesDialog.h"
 
 #include "core/UBApplicationController.h"
 
@@ -87,6 +88,9 @@ class UBPodcastController : public QObject
 
         void recordToggled(bool record);
         void pauseToggled(bool pause);
+
+        void openPodcastPreferencesDialog();
+        void podcastPreferencesDialogAccepted();
 
     protected:
 
@@ -179,6 +183,8 @@ class UBPodcastController : public QObject
 
         QList<QAction*> mAudioInputDevicesActions;
         QList<QAction*> mVideoSizesActions;
+
+        QPointer<UBPodcastPreferencesDialog> mPodcastPreferencesDialog;
 
         QAction* mSmallVideoSizeAction;
         QAction* mMediumVideoSizeAction;
