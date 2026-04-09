@@ -186,6 +186,9 @@ void UBPodcastController::openPodcastPreferencesDialog()
     const QList<int> podcastVerticalResolution = QList({viewportSize.height(), 768, 480});
     const QList<int> podcastHorizontalResolution = QList({viewportSize.width(), 1024, 640});
 
+    const bool podcastPublishToIntranet = settings->podcastPublishToIntranet->get().toBool();
+    const bool podcastPublishToYoutube = settings->podcastPublishToYoutube->get().toBool();
+
     mPodcastPreferencesDialog = new UBPodcastPreferencesDialog(UBApplication::mainWindow,
                                                            audioRecordingDevices(),
                                                            podcastAudioRecordingDevice,
@@ -195,7 +198,9 @@ void UBPodcastController::openPodcastPreferencesDialog()
                                                            fullBitRate,
                                                            podcastBitRateDivisors,
                                                            podcastVerticalResolution,
-                                                           podcastHorizontalResolution);
+                                                           podcastHorizontalResolution,
+                                                           podcastPublishToIntranet,
+                                                           podcastPublishToYoutube);
     mPodcastPreferencesDialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(mPodcastPreferencesDialog, SIGNAL(accepted()), this, SLOT(podcastPreferencesDialogAccepted()));
     mPodcastPreferencesDialog->open();
@@ -219,6 +224,11 @@ void UBPodcastController::podcastPreferencesDialogAccepted()
 
     mVideoFramesPerSecondAtStart = dialog->podcastFrameRate();
     settings->podcastFramesPerSecond->set(mVideoFramesPerSecondAtStart);
+
+    const bool podcastPublishToIntranet = dialog->podcastPublishToIntranet();
+    UBSettings::settings()->podcastPublishToIntranet->set(podcastPublishToIntranet);
+    const bool podcastPublishToYoutube = dialog->podcastPublishToYoutube();
+    UBSettings::settings()->podcastPublishToYoutube->set(podcastPublishToYoutube);
 }
 
 void UBPodcastController::updateActionState()
@@ -432,7 +442,7 @@ void UBPodcastController::start()
 
             QString videoFileName;
 
-            if (mIntranetPublicationAction && mIntranetPublicationAction->isChecked())
+            if (settings->podcastPublishToIntranet->get().toBool())
             {
                 videoFileName = mPodcastRecordingPath + "/" + "Podcast-"
                         + QDateTime::currentDateTime().toString("yyyyMMddhhmmss")
@@ -822,13 +832,13 @@ void UBPodcastController::encodingFinished(bool ok)
 
                 UBApplication::showMessage(tr("Podcast created %1").arg(location), false);
 
-                if (mIntranetPublicationAction && mIntranetPublicationAction->isChecked())
+                if (UBSettings::settings()->podcastPublishToIntranet->get().toBool())
                 {
                     UBIntranetPodcastPublisher* intranet = new UBIntranetPodcastPublisher(this); // Self destroyed
                     intranet->publishVideo(mVideoEncoder->videoFileName(), elapsedRecordingMs());
                 }
 
-                if (mYoutubePublicationAction && mYoutubePublicationAction->isChecked())
+                if (UBSettings::settings()->podcastPublishToYoutube->get().toBool())
                 {
                     UBYouTubePublisher* youTube = new UBYouTubePublisher(this); // Self destroyed
                     youTube->uploadVideo(mVideoEncoder->videoFileName());

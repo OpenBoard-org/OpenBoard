@@ -57,12 +57,16 @@ class UBPodcastPreferencesDialog : public QDialog
                                  const int podcastBitRate,
                                  const QList<int>& podcastBitRateDivisors,
                                  const QList<int>& podcastVerticalResolution,
-                                 const QList<int>& podcastHorizontalResolution);
+                                 const QList<int>& podcastHorizontalResolution,
+                                 const bool podcastPublishToIntranet,
+                                 const bool podcastPublishToYoutube);
 
         QString podcastAudioRecordingOption() const;
         QString podcastProfile() const;
         int podcastBitRate() const;
         int podcastFrameRate() const;
+        bool podcastPublishToIntranet() const;
+        bool podcastPublishToYoutube() const;
 
     private slots:
         void bitRateChanged(int bitRate);
@@ -87,6 +91,8 @@ class UBPodcastPreferencesDialog : public QDialog
         QSpinBox* mBitRateSpinBox{nullptr};
         QSpinBox* mFrameRateSpinBox{nullptr};
         QTabWidget* mTabWidget{nullptr};
+        QCheckBox* mPublishToIntranet{nullptr};
+        QCheckBox* mPublishToYoutube{nullptr};
         QPushButton* mResetPenButton{nullptr};
         QPushButton* mResetMarkerButton{nullptr};
         QList<QLabel*> mBitRateProfileValues;

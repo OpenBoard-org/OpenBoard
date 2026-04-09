@@ -50,7 +50,9 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
                                                    const int podcastBitRate,
                                                    const QList<int>& podcastBitRateDivisor,
                                                    const QList<int>& podcastVerticalResolution,
-                                                   const QList<int>& podcastHorizontalResolution)
+                                                   const QList<int>& podcastHorizontalResolution,
+                                                   const bool podcastPublishToIntranet,
+                                                   const bool podcastPublishToYoutube)
     : QDialog(parent)
     , mPodcastAudioRecordingDevices(podcastAudioRecordingDevices)
     , mPodcastProfileNames(podcastProfileNames)
@@ -65,9 +67,14 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
     mainLayout->setContentsMargins(20, 18, 20, 18);
     mainLayout->setSpacing(16);
 
+    QWidget* recordingWidget = new QWidget(this);
+    QVBoxLayout* recordingLayout = new QVBoxLayout(recordingWidget);
+    recordingLayout->setContentsMargins(20, 18, 20, 18);
+    recordingLayout->setSpacing(16);
+
     const QString audioDeviceSelectorToolTip = tr("The selected audio device applies to all profiles.");
 
-    QWidget* audioWidget = new QWidget(this);
+    QWidget* audioWidget = new QWidget(recordingWidget);
     audioWidget->setObjectName(QStringLiteral("podcastPreferencesHeader"));
     QHBoxLayout* audioLayout = new QHBoxLayout(audioWidget);
     audioLayout->setContentsMargins(14, 12, 14, 12);
@@ -101,11 +108,11 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
     audioLayout->addWidget(mNoAudioCheckBox);
     audioLayout->addWidget(mDefaultAudioCheckBox);
     audioLayout->addWidget(mAudioDeviceSelector);
-    mainLayout->addWidget(audioWidget);
+    recordingLayout->addWidget(audioWidget);
 
     const QString frameRateFormToolTip = tr("The global frame rate applies to all profiles.");
 
-    QWidget* frameRateFormWidget = new QWidget(this);
+    QWidget* frameRateFormWidget = new QWidget(recordingWidget);
     frameRateFormWidget->setObjectName(QStringLiteral("podcastPreferencesSpinBox"));
     QHBoxLayout* frameRateFormLayout = new QHBoxLayout(frameRateFormWidget);
     frameRateFormLayout->setContentsMargins(14, 12, 14, 12);
@@ -121,11 +128,11 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
     frameRateLabel->setToolTip(frameRateFormToolTip);
     frameRateFormLayout->addWidget(frameRateLabel);
     frameRateFormLayout->addWidget(mFrameRateSpinBox);
-    mainLayout->addWidget(frameRateFormWidget);
+    recordingLayout->addWidget(frameRateFormWidget);
 
     const QString bitRateFormToolTip = tr("The base bit rate is scaled depending on the profile.");
 
-    QWidget* bitRateFormWidget = new QWidget(this);
+    QWidget* bitRateFormWidget = new QWidget(recordingWidget);
     bitRateFormWidget->setObjectName(QStringLiteral("podcastPreferencesSpinBox"));
     QHBoxLayout* bitRateFormLayout = new QHBoxLayout(bitRateFormWidget);
     bitRateFormLayout->setContentsMargins(14, 12, 14, 12);
@@ -141,9 +148,9 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
     bitRateLabel->setToolTip(bitRateFormToolTip);
     bitRateFormLayout->addWidget(bitRateLabel);
     bitRateFormLayout->addWidget(mBitRateSpinBox);
-    mainLayout->addWidget(bitRateFormWidget);
+    recordingLayout->addWidget(bitRateFormWidget);
 
-    mTabWidget = new QTabWidget(this);
+    mTabWidget = new QTabWidget(recordingWidget);
     mTabWidget->setObjectName(QStringLiteral("podcastPreferencesTabWidget"));
     mTabWidget->setIconSize(QSize(18, 18));
 
@@ -163,9 +170,9 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
         mTabWidget->addTab(tab, tabLabel);
     }
     mTabWidget->setCurrentIndex(mPodcastProfileNames.indexOf(podcastProfile));
-    mainLayout->addWidget(mTabWidget);
+    recordingLayout->addWidget(mTabWidget);
 
-    QWidget* hintWidget = new QWidget(this);
+    QWidget* hintWidget = new QWidget(recordingWidget);
     hintWidget->setObjectName(QStringLiteral("podcastPreferencesHint"));
     QHBoxLayout* hintLayout = new QHBoxLayout(hintWidget);
     hintLayout->setContentsMargins(14, 10, 14, 10);
@@ -184,7 +191,26 @@ UBPodcastPreferencesDialog::UBPodcastPreferencesDialog(QWidget* parent,
 
     hintLayout->addWidget(hintIcon, 0, Qt::AlignTop);
     hintLayout->addWidget(hintLabel, 1);
-    mainLayout->addWidget(hintWidget);
+    recordingLayout->addWidget(hintWidget);
+
+    QWidget* publish = new QWidget(this);
+    QVBoxLayout* publishLayout = new QVBoxLayout(publish);
+    publishLayout->setContentsMargins(8, 14, 8, 6);
+    publishLayout->setSpacing(14);
+
+    mPublishToIntranet = new QCheckBox(tr("Publish to Intranet"));
+    mPublishToIntranet->setChecked(podcastPublishToIntranet);
+    mPublishToYoutube = new QCheckBox(tr("Publish to Youtube"));
+    mPublishToYoutube->setChecked(podcastPublishToYoutube);
+    publishLayout->addWidget(mPublishToIntranet);
+    publishLayout->addWidget(mPublishToYoutube);
+
+    publishLayout->addStretch();
+
+    QTabWidget* mainTabs = new QTabWidget(this);
+    mainTabs->addTab(recordingWidget, tr("Recording"));
+    mainTabs->addTab(publish, tr("Upload"));
+    mainLayout->addWidget(mainTabs);
 
     QDialogButtonBox* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     buttons->setObjectName(QStringLiteral("podcastPreferencesButtonBox"));
@@ -233,6 +259,16 @@ int UBPodcastPreferencesDialog::podcastBitRate() const
 int UBPodcastPreferencesDialog::podcastFrameRate() const
 {
     return mFrameRateSpinBox->value();
+}
+
+bool UBPodcastPreferencesDialog::podcastPublishToIntranet() const
+{
+    return mPublishToIntranet->isChecked();
+}
+
+bool UBPodcastPreferencesDialog::podcastPublishToYoutube() const
+{
+    return mPublishToYoutube->isChecked();
 }
 
 void UBPodcastPreferencesDialog::bitRateChanged(int bitRate)
@@ -299,6 +335,8 @@ void UBPodcastPreferencesDialog::resetDefaultSettings()
     mTabWidget->setCurrentIndex(mPodcastProfileNames.indexOf("Medium"));
     mBitRateSpinBox->setValue(1700000);
     mFrameRateSpinBox->setValue(10);
+    mPublishToIntranet->setChecked(false);
+    mPublishToYoutube->setChecked(false);
 }
 
 
