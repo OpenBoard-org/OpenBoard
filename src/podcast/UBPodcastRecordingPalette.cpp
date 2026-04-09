@@ -57,48 +57,6 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
 
     layout()->addWidget(mLevelMeter);
     addAction(UBApplication::mainWindow->actionPodcastPreferences);
-    addAction(UBApplication::mainWindow->actionPodcastConfig);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    foreach(QObject* menuWidget,  UBApplication::mainWindow->actionPodcastConfig->associatedObjects())
-#else
-    foreach(QWidget* menuWidget,  UBApplication::mainWindow->actionPodcastConfig->associatedWidgets())
-#endif
-    {
-        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
-
-        tb->setIconSize(QSize(16, 16));
-
-        if (tb && !tb->menu())
-        {
-            tb->setObjectName("ubButtonMenu");
-            tb->setPopupMode(QToolButton::InstantPopup);
-            QMenu* menu = new QMenu(this);
-
-            foreach(QAction* audioInputAction, UBPodcastController::instance()->audioRecordingDevicesActions())
-            {
-                menu->addAction(audioInputAction);
-            }
-
-            menu->addSeparator();
-
-            foreach(QAction* videoSizeAction, UBPodcastController::instance()->videoSizeActions())
-            {
-                menu->addAction(videoSizeAction);
-            }
-
-            menu->addSeparator();
-
-            QList<QAction*> podcastPublication = UBPodcastController::instance()->podcastPublicationActions();
-
-            foreach(QAction* publicationAction, podcastPublication)
-            {
-                menu->addAction(publicationAction);
-            }
-
-            tb->setMenu(menu);
-        }
-    }
 }
 
 
@@ -120,7 +78,7 @@ void UBPodcastRecordingPalette::recordingStateChanged(UBPodcastController::Recor
 
         //UBApplication::mainWindow->actionPodcastMic->setEnabled(false);
 
-        UBApplication::mainWindow->actionPodcastConfig->setEnabled(false);
+        UBApplication::mainWindow->actionPodcastPreferences->setEnabled(false);
     }
     else if (state == UBPodcastController::Stopped)
     {
@@ -131,7 +89,7 @@ void UBPodcastRecordingPalette::recordingStateChanged(UBPodcastController::Recor
         UBApplication::mainWindow->actionPodcastPause->setEnabled(false);
 
         //UBApplication::mainWindow->actionPodcastMic->setEnabled(true);
-        UBApplication::mainWindow->actionPodcastConfig->setEnabled(true);
+        UBApplication::mainWindow->actionPodcastPreferences->setEnabled(true);
     }
     else if (state == UBPodcastController::Paused)
     {
@@ -142,13 +100,13 @@ void UBPodcastRecordingPalette::recordingStateChanged(UBPodcastController::Recor
         UBApplication::mainWindow->actionPodcastPause->setEnabled(true);
 
         //UBApplication::mainWindow->actionPodcastMic->setEnabled(false);
-        UBApplication::mainWindow->actionPodcastConfig->setEnabled(false);
+        UBApplication::mainWindow->actionPodcastPreferences->setEnabled(false);
     }
     else
     {
         UBApplication::mainWindow->actionPodcastRecord->setEnabled(false);
         UBApplication::mainWindow->actionPodcastPause->setEnabled(false);
-        UBApplication::mainWindow->actionPodcastConfig->setEnabled(false);
+        UBApplication::mainWindow->actionPodcastPreferences->setEnabled(false);
     }
 }
 

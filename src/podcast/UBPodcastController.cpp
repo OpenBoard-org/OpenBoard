@@ -94,13 +94,6 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     , mRecordingState(Stopped)
     , mApplicationIsClosing(false)
     , mRecordingTimestampOffset(0)
-    , mDefaultAudioInputDeviceAction(0)
-    , mNoAudioInputDeviceAction(0)
-    , mSmallVideoSizeAction(0)
-    , mMediumVideoSizeAction(0)
-    , mFullVideoSizeAction(0)
-    , mYoutubePublicationAction(0)
-    , mIntranetPublicationAction(0)
 {
     connect(UBApplication::applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
             this, SLOT(applicationMainModeChanged(UBApplicationController::MainMode)));
@@ -137,20 +130,6 @@ void UBPodcastController::applicationAboutToQuit()
     {
         stop();
     }
-}
-
-
-void UBPodcastController::groupActionTriggered(QAction* action)
-{
-    Q_UNUSED(action);
-    updateActionState();
-}
-
-
-void UBPodcastController::actionToggled(bool checked)
-{
-    Q_UNUSED(checked);
-    updateActionState();
 }
 
 void UBPodcastController::openPodcastPreferencesDialog()
@@ -231,37 +210,6 @@ void UBPodcastController::podcastPreferencesDialogAccepted()
     UBSettings::settings()->podcastPublishToYoutube->set(podcastPublishToYoutube);
 }
 
-void UBPodcastController::updateActionState()
-{
-    if (mSmallVideoSizeAction && mSmallVideoSizeAction->isChecked())
-        UBSettings::settings()->podcastVideoSize->set("Small");
-    else if (mFullVideoSizeAction && mFullVideoSizeAction->isChecked())
-        UBSettings::settings()->podcastVideoSize->set("Full");
-    else
-        UBSettings::settings()->podcastVideoSize->reset();
-
-    UBSettings::settings()->podcastAudioRecordingDevice->reset();
-
-    if (mDefaultAudioInputDeviceAction && mDefaultAudioInputDeviceAction->isChecked())
-         UBSettings::settings()->podcastAudioRecordingDevice->set("Default");
-    else if (mNoAudioInputDeviceAction && mNoAudioInputDeviceAction->isChecked())
-         UBSettings::settings()->podcastAudioRecordingDevice->set("None");
-    else
-    {
-        foreach(QAction* action, mAudioInputDevicesActions)
-        {
-            if (action->isChecked())
-            {
-                UBSettings::settings()->podcastAudioRecordingDevice->set(action->text());
-                break;
-            }
-        }
-    }
-
-    UBSettings::settings()->podcastPublishToYoutube->set(mYoutubePublicationAction && mYoutubePublicationAction->isChecked());
-    UBSettings::settings()->podcastPublishToIntranet->set(mIntranetPublicationAction && mIntranetPublicationAction->isChecked());
-
-}
 
 void UBPodcastController::widgetSizeChanged(const QSizeF size)
 {
@@ -1000,114 +948,4 @@ void UBPodcastController::setRecordingState(RecordingState pRecordingState)
         emit recordingStateChanged(mRecordingState);
     }
 }
-
-
-QList<QAction*> UBPodcastController::audioRecordingDevicesActions()
-{
-    if (mAudioInputDevicesActions.length() == 0)
-    {
-        QString settingsDevice = UBSettings::settings()->podcastAudioRecordingDevice->get().toString();
-
-        mDefaultAudioInputDeviceAction = new QAction(tr("Default Audio Input"), this);
-        QAction *checkedAction = mDefaultAudioInputDeviceAction;
-
-        mNoAudioInputDeviceAction = new QAction(tr("No Audio Recording"), this);
-
-        if (settingsDevice == "None")
-            checkedAction = mNoAudioInputDeviceAction;
-
-        mAudioInputDevicesActions << mNoAudioInputDeviceAction;
-        mAudioInputDevicesActions << mDefaultAudioInputDeviceAction;
-
-        foreach(QString audioDevice, audioRecordingDevices())
-        {
-            QAction* act = new QAction(audioDevice, this);
-            act->setCheckable(true);
-            mAudioInputDevicesActions << act;
-            if (settingsDevice == audioDevice)
-                checkedAction = act;
-        }
-
-        QActionGroup* audioInputActionGroup = new QActionGroup(this);
-        audioInputActionGroup->setExclusive(true);
-
-        foreach(QAction* action, mAudioInputDevicesActions)
-        {
-            audioInputActionGroup->addAction(action);
-            action->setCheckable(true);
-        }
-        checkedAction->setChecked(true);
-
-        connect(audioInputActionGroup, SIGNAL(triggered(QAction*)), this, SLOT(groupActionTriggered(QAction*)));
-    }
-
-    return mAudioInputDevicesActions;
-
-}
-
-
-QList<QAction*> UBPodcastController::videoSizeActions()
-{
-    if (mVideoSizesActions.length() == 0)
-    {
-        mSmallVideoSizeAction = new QAction(tr("Small"), this);
-        mMediumVideoSizeAction = new QAction(tr("Medium"), this);
-        mFullVideoSizeAction = new QAction(tr("Full"), this);
-
-        mVideoSizesActions << mSmallVideoSizeAction;
-        mVideoSizesActions << mMediumVideoSizeAction;
-        mVideoSizesActions << mFullVideoSizeAction;
-
-        QActionGroup* videoSizeActionGroup = new QActionGroup(this);
-        videoSizeActionGroup->setExclusive(true);
-
-        foreach(QAction* videoSizeAction, mVideoSizesActions)
-        {
-            videoSizeAction->setCheckable(true);
-            videoSizeActionGroup->addAction(videoSizeAction);
-        }
-
-        QString videoSize = UBSettings::settings()->podcastVideoSize->get().toString();
-
-        if (videoSize == "Small")
-            mSmallVideoSizeAction->setChecked(true);
-        else if (videoSize == "Full")
-            mFullVideoSizeAction->setChecked(true);
-        else
-            mMediumVideoSizeAction->setChecked(true);
-
-        connect(videoSizeActionGroup, SIGNAL(triggered(QAction*)), this, SLOT(groupActionTriggered(QAction*)));
-    }
-
-    return mVideoSizesActions;
-}
-
-
-QList<QAction*> UBPodcastController::podcastPublicationActions()
-{
-    if (mPodcastPublicationActions.length() == 0)
-    {
-        mIntranetPublicationAction = new QAction(tr("Publish to Intranet"), this);
-
-        mIntranetPublicationAction->setCheckable(true);
-        mIntranetPublicationAction->setChecked(UBSettings::settings()->podcastPublishToIntranet->get().toBool());
-
-        mPodcastPublicationActions << mIntranetPublicationAction;
-
-        mYoutubePublicationAction = new QAction(tr("Publish to Youtube"), this);
-        mYoutubePublicationAction->setCheckable(true);
-        mYoutubePublicationAction->setChecked(UBSettings::settings()->podcastPublishToYoutube->get().toBool());
-
-        mPodcastPublicationActions << mYoutubePublicationAction;
-
-        foreach(QAction* publicationAction, mPodcastPublicationActions)
-        {
-            connect(publicationAction, SIGNAL(toggled(bool)), this, SLOT(actionToggled(bool)));
-        }
-    }
-
-    return mPodcastPublicationActions;
-}
-
-
 

@@ -1683,18 +1683,6 @@
     <string>Configure Podcast Recording</string>
    </property>
   </action>
-  <action name="actionPodcastConfig">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>
-   </property>
-   <property name="text">
-    <string>Podcast Config</string>
-   </property>
-   <property name="toolTip">
-    <string>Configure Podcast Recording</string>
-   </property>
-  </action>
   <action name="actionCaptureWebContent">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
