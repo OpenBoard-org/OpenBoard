@@ -235,9 +235,9 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
 
             if (bv && !mIsDesktopMode)
             {
-                connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
-                connect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(sceneBackgroundChanged()));
-                connect(UBApplication::boardController, SIGNAL(controlViewportChanged()), this, SLOT(activeSceneChanged()));
+                connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()), Qt::UniqueConnection);
+                connect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(sceneBackgroundChanged()), Qt::UniqueConnection);
+                connect(UBApplication::boardController, SIGNAL(controlViewportChanged()), this, SLOT(activeSceneChanged()), Qt::UniqueConnection);
 
                 activeSceneChanged();
             }
@@ -315,6 +315,8 @@ void UBPodcastController::start()
                 height = ((height / 4) * 4);
 
         mVideoFrameSizeAtStart = QSize(width, height);
+
+        setSourceWidget(nullptr);
 
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
