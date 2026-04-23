@@ -31,20 +31,28 @@
       <h2 id="modes-title" class="h2">The 4 modes of OpenBoard</h2>
       <ul class="modes-grid" role="list">
         <li class="mode-card">
-          <h3 class="mode-title">Board Mode<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">The heart of OpenBoard: write, draw, annotate and manipulate objects on an infinite canvas.</p>
+          <a class="mode-card-link" href="../../index.html?lang=en&hint=2" target="_top" data-hint="2">
+            <h3 class="mode-title">Board Mode<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">The heart of OpenBoard: write, draw, annotate and manipulate objects on an infinite canvas.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Desktop Mode<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Display your computer desktop while keeping annotation tools close at hand.</p>
+          <a class="mode-card-link" href="../../index.html?lang=en&hint=3" target="_top" data-hint="3">
+            <h3 class="mode-title">Desktop Mode<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Display your computer desktop while keeping annotation tools close at hand.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Documents Mode<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Organize your pages, import media and prepare your educational sequences.</p>
+          <a class="mode-card-link" href="../../index.html?lang=en&hint=4" target="_top" data-hint="4">
+            <h3 class="mode-title">Documents Mode<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Organize your pages, import media and prepare your educational sequences.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Web Mode<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Browse the Internet directly in OpenBoard and capture useful content.</p>
+          <a class="mode-card-link" href="../../index.html?lang=en&hint=6" target="_top" data-hint="6">
+            <h3 class="mode-title">Web Mode<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Browse the Internet directly in OpenBoard and capture useful content.</p>
+          </a>
         </li>
       </ul>
     </section>
@@ -66,5 +74,22 @@
   <footer class="page-footer" role="contentinfo">
   
   </footer>
+
+  <script>
+    (function () {
+      document.addEventListener("click", function (event) {
+        var link = event.target.closest(".mode-card-link[data-hint]");
+        if (!link) return;
+
+        var hint = parseInt(link.getAttribute("data-hint"), 10);
+        var parentApi = window.parent && window.parent.startupHints;
+
+        if (parentApi && typeof parentApi.goToHint === "function") {
+          event.preventDefault();
+          parentApi.goToHint(hint);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

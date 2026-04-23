@@ -142,6 +142,23 @@ function detectThemeFromUrl() {
   return normalizeTheme(params.get("theme"));
 }
 
+function detectInitialHintFromUrl() {
+  var params = new URLSearchParams(window.location.search);
+  var raw = params.get("hint");
+  if (!raw) return null;
+
+  var index = parseInt(raw, 10);
+  if (!Number.isFinite(index) || index < 1) return null;
+  return index;
+}
+
+function resolveInitialHintIndex(fileCount) {
+  var requested = detectInitialHintFromUrl();
+  if (!requested) return 1;
+  if (requested > fileCount) return fileCount;
+  return requested;
+}
+
 function detectThemeFromSankore() {
   if (window.sankore && typeof window.sankore.isDarkMode !== "undefined") {
     return window.sankore.isDarkMode ? "dark" : "light";
@@ -251,6 +268,19 @@ function goToPreviousHint() {
   state.currentIndex = state.currentIndex > 1
     ? state.currentIndex - 1
     : state.fileCount;
+  loadCurrentHint();
+}
+
+function goToHint(index) {
+  if (state.fileCount < 1) return;
+
+  var target = parseInt(index, 10);
+  if (!Number.isFinite(target)) return;
+
+  if (target < 1) target = 1;
+  if (target > state.fileCount) target = state.fileCount;
+
+  state.currentIndex = target;
   loadCurrentHint();
 }
 
@@ -376,7 +406,7 @@ async function init() {
   debugLog("hints:detected", { fileCount: state.fileCount });
 
   if (state.fileCount > 0) {
-    state.currentIndex = 1;
+    state.currentIndex = resolveInitialHintIndex(state.fileCount);
     loadCurrentHint();
   } else if (dom.source) {
     dom.source.src = buildErrorUrl();
@@ -384,6 +414,10 @@ async function init() {
   }
 
   bindNavigationHandlers();
+
+  window.startupHints = window.startupHints || {};
+  window.startupHints.goToHint = goToHint;
+
   debugLog("init:done");
 }
 

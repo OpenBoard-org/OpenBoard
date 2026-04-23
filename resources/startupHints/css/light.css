@@ -30,6 +30,10 @@
   --nav-divider: rgba(93, 125, 181, 0.34);
   --nav-icon-filter: none;
   --nav-icon-hover-filter: brightness(0) saturate(100%) invert(42%) sepia(31%) saturate(1014%) hue-rotate(181deg) brightness(90%) contrast(91%);
+
+  /* Scrollbars (aligned with lightTheme.qss) */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #cdd7e3;
 }
 
 body {

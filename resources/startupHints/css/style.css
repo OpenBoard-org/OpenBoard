@@ -31,6 +31,32 @@ img {
   height: auto;
 }
 
+/* Scrollbars follow OpenBoard theme colors (qss to update to harmonize all OpenBoard scrollbars) */
+html,
+body,
+#content,
+#source {
+  scrollbar-width: auto;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
 p {
   margin: 0.5rem 0;
 }
@@ -292,6 +318,33 @@ html[lang="fr"] .title {
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--brand);
+}
+
+.mode-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mode-link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.mode-card-link {
+  display: block;
+  margin: -16px;
+  padding: 16px;
+  border-radius: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mode-card-link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }
 
 .mode-icon {

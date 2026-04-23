@@ -31,20 +31,28 @@
       <h2 id="modes-title" class="h2">4 načina OpenBoard</h2>
       <ul class="modes-grid" role="list">
         <li class="mode-card">
-          <h3 class="mode-title">Nacin Ploca<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Srce OpenBoard: pišite, crtajte, komentirajte i manipulirajte objektima na beskonačnom platnu.</p>
+          <a class="mode-card-link" href="../../index.html?lang=hr&hint=2" target="_top" data-hint="2">
+            <h3 class="mode-title">Nacin Ploca<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Srce OpenBoard: pišite, crtajte, komentirajte i manipulirajte objektima na beskonačnom platnu.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Nacin Radna Povrsina<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Prikažite radnu površinu računala dok alate za bilješke držite pri ruci.</p>
+          <a class="mode-card-link" href="../../index.html?lang=hr&hint=3" target="_top" data-hint="3">
+            <h3 class="mode-title">Nacin Radna Povrsina<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Prikažite radnu površinu računala dok alate za bilješke držite pri ruci.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Nacin Dokumenti<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Organizirajte svoje stranice, uvezite medije i pripremite svoje obrazovne sekvence.</p>
+          <a class="mode-card-link" href="../../index.html?lang=hr&hint=4" target="_top" data-hint="4">
+            <h3 class="mode-title">Nacin Dokumenti<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Organizirajte svoje stranice, uvezite medije i pripremite svoje obrazovne sekvence.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Nacin Web<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Pretražujte internet izravno u OpenBoard i snimite koristan sadržaj.</p>
+          <a class="mode-card-link" href="../../index.html?lang=hr&hint=6" target="_top" data-hint="6">
+            <h3 class="mode-title">Nacin Web<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Pretražujte internet izravno u OpenBoard i snimite koristan sadržaj.</p>
+          </a>
         </li>
       </ul>
     </section>
@@ -66,5 +74,22 @@
   <footer class="page-footer" role="contentinfo">
   
   </footer>
+
+  <script>
+    (function () {
+      document.addEventListener("click", function (event) {
+        var link = event.target.closest(".mode-card-link[data-hint]");
+        if (!link) return;
+
+        var hint = parseInt(link.getAttribute("data-hint"), 10);
+        var parentApi = window.parent && window.parent.startupHints;
+
+        if (parentApi && typeof parentApi.goToHint === "function") {
+          event.preventDefault();
+          parentApi.goToHint(hint);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -31,20 +31,28 @@
       <h2 id="modes-title" class="h2">Die 4 Modi von OpenBoard</h2>
       <ul class="modes-grid" role="list">
         <li class="mode-card">
-          <h3 class="mode-title">Tafelmodus<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Das Herzstück von OpenBoard: Schreiben, Zeichnen, Kommentieren und Bearbeiten von Objekten auf einer unendlichen Leinwand.</p>
+          <a class="mode-card-link" href="../../index.html?lang=de&hint=2" target="_top" data-hint="2">
+            <h3 class="mode-title">Tafelmodus<img class="mode-icon" src="../../assets/common/board.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Das Herzstück von OpenBoard: Schreiben, Zeichnen, Kommentieren und Bearbeiten von Objekten auf einer unendlichen Leinwand.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Desktop-Modus<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Zeigen Sie Ihren Computer-Desktop an, während Sie Anmerkungstools immer griffbereit haben.</p>
+          <a class="mode-card-link" href="../../index.html?lang=de&hint=3" target="_top" data-hint="3">
+            <h3 class="mode-title">Desktop-Modus<img class="mode-icon" src="../../assets/common/display.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Zeigen Sie Ihren Computer-Desktop an, während Sie Anmerkungstools immer griffbereit haben.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Dokumentenmodus<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Organisieren Sie Ihre Seiten, importieren Sie Medien und bereiten Sie Ihre Lernsequenzen vor.</p>
+          <a class="mode-card-link" href="../../index.html?lang=de&hint=4" target="_top" data-hint="4">
+            <h3 class="mode-title">Dokumentenmodus<img class="mode-icon" src="../../assets/common/documents.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Organisieren Sie Ihre Seiten, importieren Sie Medien und bereiten Sie Ihre Lernsequenzen vor.</p>
+          </a>
         </li>
         <li class="mode-card">
-          <h3 class="mode-title">Webmodus<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
-          <p class="mode-text">Durchsuchen Sie das Internet direkt in OpenBoard und erfassen Sie nützliche Inhalte.</p>
+          <a class="mode-card-link" href="../../index.html?lang=de&hint=6" target="_top" data-hint="6">
+            <h3 class="mode-title">Webmodus<img class="mode-icon" src="../../assets/common/web.png" alt="" aria-hidden="true"/></h3>
+            <p class="mode-text">Durchsuchen Sie das Internet direkt in OpenBoard und erfassen Sie nützliche Inhalte.</p>
+          </a>
         </li>
       </ul>
     </section>
@@ -66,5 +74,22 @@
   <footer class="page-footer" role="contentinfo">
   
   </footer>
+
+  <script>
+    (function () {
+      document.addEventListener("click", function (event) {
+        var link = event.target.closest(".mode-card-link[data-hint]");
+        if (!link) return;
+
+        var hint = parseInt(link.getAttribute("data-hint"), 10);
+        var parentApi = window.parent && window.parent.startupHints;
+
+        if (parentApi && typeof parentApi.goToHint === "function") {
+          event.preventDefault();
+          parentApi.goToHint(hint);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
