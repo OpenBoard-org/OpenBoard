@@ -58,8 +58,6 @@ class PDFRenderer : public QObject
 
         virtual QSizeF pointSizeF(int pageNumber) const = 0;
 
-        virtual QString title() const = 0;
-
         void attach();
         void detach();
 
