@@ -95,7 +95,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     }
     else
     {
-        mWebProfile = QWebEngineProfile::defaultProfile();
+        mWebProfile = new QWebEngineProfile("Default");
         mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
     }
 

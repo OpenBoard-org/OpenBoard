@@ -109,8 +109,6 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     , mCancel(false)
     , mMultipleFiles(multipleFiles)
 {
-    this->setStyleSheet("background:white;");
-
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     QVBoxLayout *labelLayout = new QVBoxLayout();
@@ -222,20 +220,16 @@ void UBDocumentReplaceDialog::reject()
 void UBDocumentReplaceDialog::reactOnTextChanged(const QString &pStr)
 {
 //     if !mFileNameList.contains(pStr.trimmed(), Qt::CaseSensitive)
-
     if (!validString(pStr)) {
         acceptButton->setEnabled(false);
-        mLineEdit->setStyleSheet("background:#FFB3C8;");
         acceptButton->setEnabled(false);
 
     } else if (mFileNameList.contains(pStr.trimmed(), Qt::CaseSensitive)) {
         acceptButton->setEnabled(true);
-        mLineEdit->setStyleSheet("background:#FFB3C8;");
         acceptButton->setText(replaceText);
 
     } else {
         acceptButton->setEnabled(true);
-        mLineEdit->setStyleSheet("background:white;");
         acceptButton->setText(acceptText);
     }
 }

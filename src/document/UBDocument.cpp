@@ -196,7 +196,7 @@ bool UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toI
     return copyPage(fromIndex, to.get(), toIndex);
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool cached, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc, bool cached, bool useUndoRedoStack, bool createThumbnail)
 {
     // create a new TOC entry for the page
     assureHeaderLoaderFinished();
@@ -217,7 +217,11 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
     }
 
     thumbnailScene()->insertThumbnail(index, false);
-    mThumbnailScene->ensureThumbnail(index, scene.get());
+
+    if (createThumbnail)
+    {
+        mThumbnailScene->ensureThumbnail(index, scene.get());
+    }
 
     return scene;
 }
