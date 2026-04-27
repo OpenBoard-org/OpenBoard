@@ -64,7 +64,6 @@
 
 #include "ui_mainWindow.h"
 
-#include "frameworks/UBCryptoUtils.h"
 #include "tools/UBToolsManager.h"
 
 #include "UBDisplayManager.h"
@@ -176,8 +175,6 @@ UBApplication::~UBApplication()
     UBDrawingController::destroy();
 
     UBSettings::destroy();
-
-    UBCryptoUtils::destroy();
 
     UBToolsManager::destroy();
 
