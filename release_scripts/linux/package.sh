@@ -442,8 +442,6 @@ echo "Description: $DESCRIPTION" >> "$CONTROL_FILE"
 # ----------------------------------------------------------------------------
 mkdir -p $DESKTOP_FILE_PATH
 echo "[Desktop Entry]" > $APPLICATION_SHORTCUT
-echo "Version=$VERSION" >> $APPLICATION_SHORTCUT
-echo "Encoding=UTF-8" >> $APPLICATION_SHORTCUT
 echo "Name=${APPLICATION_NAME}" >> $APPLICATION_SHORTCUT
 echo "Comment=$DESCRIPTION" >> $APPLICATION_SHORTCUT
 echo "Exec=$APPLICATION_CODE %f" >> $APPLICATION_SHORTCUT
