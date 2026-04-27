@@ -30,6 +30,7 @@
 #ifndef UBNETWORKACCESSMANAGER_H
 #define UBNETWORKACCESSMANAGER_H
 
+#include <atomic>
 #include <QtNetwork>
 
 class UBNetworkAccessManager : public QNetworkAccessManager
@@ -50,7 +51,7 @@ class UBNetworkAccessManager : public QNetworkAccessManager
 
         static UBNetworkAccessManager *sNetworkAccessManager;
 
-        volatile int mProxyAuthenticationCount;
+        std::atomic_int mProxyAuthenticationCount;
 
     private slots:
         void authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);
