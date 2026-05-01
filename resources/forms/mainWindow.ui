@@ -1671,7 +1671,7 @@
     <string>Pause Podcast Recording</string>
    </property>
   </action>
-  <action name="actionPodcastConfig">
+  <action name="actionPodcastPreferences">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>

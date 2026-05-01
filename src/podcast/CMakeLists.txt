@@ -3,6 +3,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBAbstractVideoEncoder.h
     UBPodcastController.cpp
     UBPodcastController.h
+    UBPodcastPreferencesDialog.cpp
+    UBPodcastPreferencesDialog.h
     UBPodcastRecordingPalette.cpp
     UBPodcastRecordingPalette.h
     intranet/UBIntranetPodcastPublisher.cpp
