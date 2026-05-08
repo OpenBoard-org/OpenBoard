@@ -316,6 +316,8 @@ void UBPodcastController::start()
 
         mVideoFrameSizeAtStart = QSize(width, height);
 
+        mSourceWidget = nullptr;
+
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
 #ifdef Q_OS_WIN
