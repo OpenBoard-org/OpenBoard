@@ -65,88 +65,116 @@ const QString UBFeaturesController::favoritePath = rootPath + "/Favorites";
 const QString UBFeaturesController::webSearchPath = rootPath + "/Web search";
 
 
-void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet)
+void UBFeaturesComputingThread::scanFS(const QUrl& currentPath, const QString& currVirtualPath, FeatureProcessor processFeature)
 {
-//    Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
-//    if(QFileInfo(currentPath.toLocalFile()).exists())
-//        return;
+    QSet<QString> scanRoots;
+    scanRoots << currentPath.toLocalFile();
 
+    scanFS(currentPath, currVirtualPath, scanRoots, processFeature);
+}
+
+void UBFeaturesComputingThread::scanFS(const QUrl& currentPath, const QString& currVirtualPath, QSet<QString>& scanRoots, FeatureProcessor processFeature)
+{
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
 
-    QFileInfoList::iterator fileInfo;
-    for ( fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo +=  1) {
-        if (abort) {
+    // new implementation taking care of symlinks
+    for (const auto& fileInfo : fileInfoList)
+    {
+        if (abort)
+        {
             return;
         }
 
-        QString fullFileName = fileInfo->absoluteFilePath();
-        UBFeatureElementType featureType = UBFeaturesController::fileTypeFromUrl(fullFileName);
-        QString fileName = fileInfo->fileName();
+        if (fileInfo.isSymLink())
+        {
+            const auto symLinkTarget = QFileInfo(fileInfo.symLinkTarget());
 
-        QImage icon = UBFeaturesController::getIcon(fullFileName, featureType);
+            if (symLinkTarget.isDir())
+            {
+                bool valid{true};
+                // add trailing slash to make sure to compare full path segments afterwards
+                const auto target = symLinkTarget.canonicalFilePath() + "/";
 
-        if ( fullFileName.contains(".thumbnail."))
-            continue;
+                // check target
+                for (const auto& root : scanRoots)
+                {
+                    if (root.startsWith(target) || target.startsWith(root))
+                    {
+                        qDebug() << "skipping" << fileInfo << "linking to" << target;
+                        valid = false;
+                        break;
+                    }
+                }
 
-        UBFeature testFeature(currVirtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType);
+                if (!valid)
+                {
+                    continue;
+                }
 
-        emit sendFeature(testFeature);
-        emit featureSent();
-        emit scanPath(fullFileName);
-
-        if ( pFavoriteSet.find(QUrl::fromLocalFile(fullFileName)) != pFavoriteSet.end()) {
-            //TODO send favoritePath from the controller or make favoritePath public and static
-            emit sendFeature(UBFeature( UBFeaturesController::favoritePath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType));
+                scanRoots << target;
+            }
         }
 
-        if (featureType == FEATURE_FOLDER) {
-            scanFS(QUrl::fromLocalFile(fullFileName), currVirtualPath + "/" + fileName, pFavoriteSet);
+        const auto fullFileName = fileInfo.canonicalFilePath();
+        const auto featureType = UBFeaturesController::fileTypeFromUrl(fullFileName);
+
+        if (featureType == UBFeatureElementType::FEATURE_INVALID || fullFileName.contains(".thumbnail."))
+        {
+            continue;
+        }
+
+        processFeature(fileInfo, featureType, currVirtualPath);
+
+        if (featureType == UBFeatureElementType::FEATURE_FOLDER)
+        {
+            // scan recursive
+            scanFS(QUrl::fromLocalFile(fullFileName), currVirtualPath + "/" + fileInfo.fileName(), scanRoots, processFeature);
         }
     }
 }
 
 void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet)
 {
-    for (int i = 0; i < pScanningData.count(); i++) {
+    for (const auto curPair : pScanningData)
+    {
         if (abort) {
             return;
         }
-        QPair<QUrl, UBFeature> curPair = pScanningData.at(i);
 
         emit scanCategory(curPair.second.getDisplayName());
-        scanFS(curPair.first, curPair.second.getFullVirtualPath(), pFavoriteSet);
+
+        const auto currVirtualPath = curPair.second.getFullVirtualPath();
+
+        scanFS(curPair.first, currVirtualPath, [this, &pFavoriteSet](const QFileInfo& fileInfo, UBFeatureElementType featureType, QString virtualPath){
+            const auto fileName = fileInfo.fileName();
+            const auto fullFileName = fileInfo.canonicalFilePath();
+            QImage icon = UBFeaturesController::getIcon(fullFileName, featureType);
+
+            UBFeature testFeature{virtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType};
+
+            emit sendFeature(testFeature);
+            emit featureSent();
+            emit scanPath(fullFileName);
+
+            if (pFavoriteSet.contains(QUrl::fromLocalFile(fullFileName)))
+            {
+                emit sendFeature(UBFeature{UBFeaturesController::favoritePath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType});
+            }
+        });
     }
-}
-
-int UBFeaturesComputingThread::featuresCount(const QUrl &pPath)
-{
-    int noItems = 0;
-
-    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(pPath.toLocalFile());
-
-    QFileInfoList::iterator fileInfo;
-    for ( fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo +=  1) {
-        QString fullFileName = fileInfo->absoluteFilePath();
-        UBFeatureElementType featureType = UBFeaturesController::fileTypeFromUrl(fullFileName);
-
-        if (featureType != FEATURE_INVALID && !fullFileName.contains(".thumbnail.")) {
-            noItems++;
-        }
-
-        if (featureType == FEATURE_FOLDER) {
-            noItems += featuresCount(QUrl::fromLocalFile(fullFileName));
-        }
-    }
-
-    return noItems;
 }
 
 int UBFeaturesComputingThread::featuresCountAll(QList<QPair<QUrl, UBFeature> > pScanningData)
 {
     int noItems = 0;
-    for (int i = 0; i < pScanningData.count(); i++) {
-        QPair<QUrl, UBFeature> curPair = pScanningData.at(i);
-        noItems += featuresCount(curPair.first);
+
+    for (const auto curPair : pScanningData)
+    {
+        const auto currVirtualPath = curPair.second.getFullVirtualPath();
+
+        scanFS(curPair.first, currVirtualPath, [this, &noItems](const QFileInfo& fileInfo, UBFeatureElementType featureType, QString virtualPath){
+            ++noItems;
+        });
     }
 
     return noItems;
@@ -450,60 +478,6 @@ void UBFeaturesController::scanFS()
     {
         removeFromFavorite(favoriteDocumentToRemove);
     }
-}
-
-void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
-{
-    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
-
-    QFileInfoList::iterator fileInfo;
-    for ( fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo +=  1) {
-        QString fullFileName = fileInfo->absoluteFilePath();
-        UBFeatureElementType featureType = fileTypeFromUrl(fullFileName);
-        QString fileName = fileInfo->fileName();
-
-        QImage icon = getIcon(fullFileName, featureType);
-
-        if ( fullFileName.contains(".thumbnail."))
-            continue;
- 
-        UBFeature testFeature(currVirtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType);
-
-        featuresList->append(testFeature);
-
-        if ( favoriteSet->find( QUrl::fromLocalFile( fullFileName ) ) != favoriteSet->end() ) {
-            featuresList->append( UBFeature( favoritePath + "/" + fileName, icon, fileName, QUrl::fromLocalFile( fullFileName ), featureType ) );
-        }
-
-        if (featureType == FEATURE_FOLDER) {
-            fileSystemScan(QUrl::fromLocalFile(fullFileName), currVirtualPath + "/" + fileName);
-        }
-    }
-}
-
-int UBFeaturesController::featuresCount(const QUrl &currPath)
-{
-    int noItems = 0;
-
-    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currPath.toLocalFile());
-
-    QFileInfoList::iterator fileInfo;
-    for ( fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo +=  1) {
-        QString fullFileName = fileInfo->absoluteFilePath();
-        UBFeatureElementType featureType = fileTypeFromUrl(fullFileName);
-
-        if (featureType != FEATURE_INVALID && !fullFileName.contains(".thumbnail.")) {
-            noItems++;
-        } else {
-            continue;
-        }
-
-        if (featureType == FEATURE_FOLDER) {
-            noItems += featuresCount(QUrl::fromLocalFile(fullFileName));
-        }
-    }
-
-    return noItems;
 }
 
 bool UBFeaturesController::isInFavoriteList(QUrl url)
