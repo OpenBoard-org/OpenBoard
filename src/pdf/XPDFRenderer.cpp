@@ -176,9 +176,11 @@ QString XPDFRenderer::title() const
             Object title;
             infoDict->lookup((char*)"Title", &title);
 #endif
-            if (title.isString())
-            {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 72
+	if (title.isString())
+        {
+#if POPPLER_VERSION_MAJOR > 26 || (POPPLER_VERSION_MAJOR == 26 && POPPLER_VERSION_MINOR >= 4)
+                return QString(title.getString().c_str());
+#elif POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 72
                 return QString(title.getString()->c_str());
 #else
                 return QString(title.getString()->getCString());
