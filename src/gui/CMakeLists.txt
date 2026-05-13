@@ -95,7 +95,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBZoomPalette.h
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD|Linux")
     target_sources(openboard PRIVATE
         UBKeyboardPalette_linux.cpp
     )
