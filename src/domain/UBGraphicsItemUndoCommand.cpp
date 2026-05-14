@@ -31,15 +31,17 @@
 
 #include <QtGui>
 
-#include "UBGraphicsScene.h"
-
-#include "core/UBApplication.h"
-
 #include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
-#include "domain/UBGraphicsGroupContainerItem.h"
-#include "domain/UBGraphicsPolygonItem.h"
+#include "core/UB.h"
+#include "core/UBApplication.h"
+
+#include "UBGraphicsGroupContainerItem.h"
+#include "UBGraphicsItemDelegate.h"
+#include "UBGraphicsPolygonItem.h"
+#include "UBGraphicsScene.h"
+#include "UBItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
     , mScene(pScene)
