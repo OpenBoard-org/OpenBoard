@@ -36,8 +36,9 @@
 
 #include "core/UBApplicationController.h"
 
+#include "web/simplebrowser/webview.h"
+
 class UBGraphicsScene;
-class WebView;
 class UBPodcastRecordingPalette;
 
 class UBDesktopPortal;
