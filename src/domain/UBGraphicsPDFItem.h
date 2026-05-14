@@ -32,10 +32,14 @@
 
 #include <QtGui>
 
-#include "UBMediaAssetItem.h"
-
 #include "core/UB.h"
+
 #include "pdf/GraphicsPDFItem.h"
+#include "pdf/PDFRenderer.h"
+
+#include "UBGraphicsItem.h"
+#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 
 class UBGraphicsPixmapItem;
 

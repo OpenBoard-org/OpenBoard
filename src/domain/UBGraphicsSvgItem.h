@@ -35,6 +35,7 @@
 
 #include "core/UB.h"
 
+#include "UBGraphicsItem.h"
 #include "UBGraphicsScene.h"
 #include "UBItem.h"
 #include "UBMediaAssetItem.h"

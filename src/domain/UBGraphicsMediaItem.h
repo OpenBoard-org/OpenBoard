@@ -40,7 +40,7 @@
 
 #include "core/UB.h"
 
-#include "domain/UBItem.h"
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBMediaAssetItem.h"
 #include "domain/UBResizableGraphicsItem.h"
 

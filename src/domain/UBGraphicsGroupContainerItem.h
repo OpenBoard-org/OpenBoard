@@ -40,6 +40,7 @@
 
 #include "core/UB.h"
 
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBItem.h"
 
 #include "frameworks/UBCoreGraphicsScene.h"

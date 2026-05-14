@@ -38,10 +38,10 @@
 #include "core/UBApplication.h"
 
 #include "UBGraphicsGroupContainerItem.h"
+#include "UBGraphicsItem.h"
 #include "UBGraphicsItemDelegate.h"
 #include "UBGraphicsPolygonItem.h"
 #include "UBGraphicsScene.h"
-#include "UBItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
     , mScene(pScene)

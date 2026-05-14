@@ -34,6 +34,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 #include "core/UB.h"
+#include "UBGraphicsItem.h"
 #include "UBItem.h"
 
 class UBGraphicsStrokesGroup : public QGraphicsItemGroup, public UBItem, public UBGraphicsItem
