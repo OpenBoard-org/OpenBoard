@@ -5,6 +5,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBGraphicsGroupContainerItem.h
     UBGraphicsGroupContainerItemDelegate.cpp
     UBGraphicsGroupContainerItemDelegate.h
+    UBGraphicsItem.cpp
+    UBGraphicsItem.h
     UBGraphicsItemDelegate.cpp
     UBGraphicsItemDelegate.h
     UBGraphicsItemGroupUndoCommand.cpp

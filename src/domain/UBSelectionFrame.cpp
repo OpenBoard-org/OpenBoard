@@ -25,22 +25,26 @@
  */
 
 
+
+
 #include "UBSelectionFrame.h"
 
 #include <QtGui>
 
-#include "domain/UBItem.h"
-#include "domain/UBGraphicsItemZLevelUndoCommand.h"
-#include "domain/UBGraphicsGroupContainerItem.h"
-#include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
-#include "core/UBSettings.h"
-#include "core/UBApplication.h"
-#include "gui/UBResources.h"
-#include "gui/UBMainWindow.h"
-#include "core/UBApplication.h"
 #include "board/UBBoardView.h"
 #include "board/UBDrawingController.h"
+
+#include "core/UBSettings.h"
+#include "core/UBApplication.h"
+
+#include "gui/UBResources.h"
+#include "gui/UBMainWindow.h"
+
+#include "UBGraphicsItem.h"
+#include "UBGraphicsItemZLevelUndoCommand.h"
+#include "UBGraphicsGroupContainerItem.h"
+#include "UBGraphicsScene.h"
 
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)

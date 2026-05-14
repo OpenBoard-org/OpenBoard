@@ -33,14 +33,15 @@
 #include <QtWidgets>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsView>
-#include <QtSvg>
+#include <QGraphicsSvgItem>
 
 #include "core/UB.h"
-#include "tools/UBAbstractDrawRuler.h"
+
 #include "domain/UBItem.h"
 
 #include "frameworks/UBGeometryUtils.h"
 
+#include "tools/UBAbstractDrawRuler.h"
 
 class UBGraphicsScene;
 

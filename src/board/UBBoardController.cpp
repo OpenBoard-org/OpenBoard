@@ -59,6 +59,7 @@
 #include "document/UBDocumentProxy.h"
 
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"

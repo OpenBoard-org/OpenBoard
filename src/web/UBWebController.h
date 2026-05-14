@@ -32,15 +32,15 @@
 
 #include <QtGui>
 #include <QRegularExpression>
-
 #include <QWebEnginePage>
 #include <QWebEngineUrlRequestInterceptor>
 
-#include "UBEmbedContent.h"
 #include "simplebrowser/downloadmanagerwidget.h"
+#include "simplebrowser/webview.h"
+
+#include "UBEmbedContent.h"
 
 class BrowserWindow;
-class WebView;
 class QMenu;
 class QWebEngineProfile;
 class QWebEngineView;

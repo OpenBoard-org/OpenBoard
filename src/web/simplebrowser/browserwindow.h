@@ -56,6 +56,8 @@
 #include <QTime>
 #include <QWebEnginePage>
 
+#include "webview.h"
+
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QProgressBar;
@@ -63,7 +65,6 @@ class QStatusBar;
 QT_END_NAMESPACE
 
 class TabWidget;
-class WebView;
 class WBHistoryManager;
 
 class BrowserWindow : public QWidget

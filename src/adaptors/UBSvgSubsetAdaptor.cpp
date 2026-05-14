@@ -49,6 +49,7 @@
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsGroupContainerItemDelegate.h"
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBItem.h"
 
 #include "gui/UBBackgroundRuling.h"

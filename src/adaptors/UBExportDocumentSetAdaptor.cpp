@@ -25,21 +25,9 @@
  */
 
 
+
+
 #include "UBExportDocumentSetAdaptor.h"
-#include "UBExportDocument.h"
-
-#include "adaptors/UBPageMapper.h"
-
-#include "frameworks/UBPlatformUtils.h"
-
-#include "core/UBDocumentManager.h"
-#include "core/UBApplication.h"
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
-#include "document/UBDocumentToc.h"
-
-#include "core/UBPersistenceManager.h"
 
 #ifdef Q_OS_OSX
     #include <quazip.h>
@@ -49,7 +37,21 @@
     #include "quazipfile.h"
 #endif
 
+#include "adaptors/UBPageMapper.h"
+
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "core/UBDocumentManager.h"
+#include "core/UBPersistenceManager.h"
+#include "core/UBSettings.h"
+
+#include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentToc.h"
+
+#include "frameworks/UBPlatformUtils.h"
+
+#include "UBExportDocument.h"
 
 UBExportDocumentSetAdaptor::UBExportDocumentSetAdaptor(QObject *parent)
     : UBExportAdaptor(parent)

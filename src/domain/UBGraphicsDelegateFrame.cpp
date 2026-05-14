@@ -38,6 +38,7 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBResizableGraphicsItem.h"

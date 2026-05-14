@@ -29,19 +29,6 @@
 
 #include "UBItem.h"
 
-#include "core/memcheck.h"
-
-#include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsTextItem.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsMediaItem.h"
-#include "domain/UBGraphicsStrokesGroup.h"
-#include "domain/UBGraphicsGroupContainerItem.h"
-#include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsScene.h"
-#include "tools/UBGraphicsCurtainItem.h"
-#include "domain/UBGraphicsItemDelegate.h"
-
 UBItem::UBItem()
     : mUuid(QUuid::createUuid())
     , mRenderingQuality(UBItem::RenderingQualityNormal)
@@ -52,89 +39,4 @@ UBItem::UBItem()
 UBItem::~UBItem()
 {
     // NOOP
-}
-
-UBGraphicsItem::~UBGraphicsItem()
-{
-    if (mDelegate!=NULL)
-        delete mDelegate;
-}
-
-void UBGraphicsItem::setDelegate(UBGraphicsItemDelegate* delegate)
-{
-    Q_ASSERT(mDelegate==NULL);
-    mDelegate = delegate;
-}
-
-UBGraphicsItemDelegate *UBGraphicsItem::Delegate() const
-{
-    return mDelegate;
-}
-
-void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
-{
-    item->setZValue(value);
-    item->setData(UBGraphicsItemData::ItemOwnZValue, value);
-}
-
-bool UBGraphicsItem::isFlippable(QGraphicsItem *item)
-{
-    return item->data(UBGraphicsItemData::ItemFlippable).toBool();
-}
-
-bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
-{
-    return item->data(UBGraphicsItemData::ItemRotatable).toBool();
-}
-
-bool UBGraphicsItem::isLocked(QGraphicsItem *item)
-{
-    return item->data(UBGraphicsItemData::ItemLocked).toBool();
-}
-
-bool UBGraphicsItem::isHiddenOnDisplay(QGraphicsItem *item)
-{
-    return item->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool();
-}
-
-void UBGraphicsItem::remove(bool canUndo)
-{
-    if (Delegate())
-        Delegate()->remove(canUndo);
-}
-
-UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
-{
-    UBGraphicsItemDelegate *result = 0;
-
-    switch (static_cast<int>(pItem->type())) {
-    case UBGraphicsPixmapItem::Type :
-        result = (static_cast<UBGraphicsPixmapItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsTextItem::Type :
-        result = (static_cast<UBGraphicsTextItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsSvgItem::Type :
-        result = (static_cast<UBGraphicsSvgItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsMediaItem::Type:
-    case UBGraphicsVideoItem::Type:
-    case UBGraphicsAudioItem::Type:
-        result = (static_cast<UBGraphicsMediaItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsStrokesGroup::Type :
-        result = (static_cast<UBGraphicsStrokesGroup*>(pItem))->Delegate();
-        break;
-    case UBGraphicsGroupContainerItem::Type :
-        result = (static_cast<UBGraphicsGroupContainerItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsWidgetItem::Type :
-        result = (static_cast<UBGraphicsWidgetItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsCurtainItem::Type :
-        result = (static_cast<UBGraphicsCurtainItem*>(pItem))->Delegate();
-        break;
-    }
-
-    return result;
 }

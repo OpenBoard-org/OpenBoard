@@ -69,7 +69,7 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
-#include "domain/UBItem.h"
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"

@@ -25,28 +25,30 @@
  */
 
 
+
+
 #ifndef UBGRAPHICSSCENE_H_
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
 #include <optional>
 
-#include "frameworks/UBCoreGraphicsScene.h"
-
 #include "core/UB.h"
 
+#include "frameworks/UBCoreGraphicsScene.h"
+
+#include "gui/UBBackgroundRuling.h"
+
+#include "UBGraphicsTextItem.h"
 #include "UBItem.h"
 
-class UBBackgroundRuling;
 class UBGraphicsPixmapItem;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
-class UBToolWidget;
 class UBGraphicsPDFItem;
-class UBGraphicsTextItem;
 class UBGraphicsRuler;
 class UBGraphicsProtractor;
 class UBGraphicsCompass;

@@ -26,16 +26,19 @@
 
 
 
-#include <QtGui>
+
 #include "UBMagnifer.h"
 
-#include "core/UBApplication.h"
+#include <QtGui>
+
 #include "board/UBBoardController.h"
-#include "domain/UBGraphicsScene.h"
 #include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "core/UBSettings.h"
 
+#include "domain/UBGraphicsScene.h"
 
 UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))

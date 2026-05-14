@@ -2,6 +2,8 @@
 
 #include "UBBackgroundPalette.h"
 
+#include "core/UBSettings.h"
+
 #include "gui/UBBackgroundManager.h"
 #include "gui/UBFlowLayout.h"
 #include "gui/UBMainWindow.h"

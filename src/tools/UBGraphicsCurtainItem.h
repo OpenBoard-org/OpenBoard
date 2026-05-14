@@ -34,6 +34,7 @@
 
 #include "core/UB.h"
 
+#include "domain/UBGraphicsItem.h"
 #include "domain/UBItem.h"
 
 class UBGraphicsItemDelegate;

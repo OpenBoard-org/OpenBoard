@@ -39,13 +39,18 @@
 
 #include "core/UB.h"
 #include "core/UBApplicationController.h"
+
 #include "document/UBDocumentContainer.h"
+
+#include "domain/UBGraphicsMediaItem.h"
+
+#include "gui/UBBackgroundRuling.h"
+#include "gui/UBToolWidget.h"
 
 class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
-class UBBackgroundRuling;
 class UBBackgroundManager;
 class UBDocument;
 class UBDocumentController;
@@ -54,11 +59,9 @@ class UBGraphicsScene;
 class UBDocumentProxy;
 class UBEmbedController;
 class UBBlackoutWidget;
-class UBToolWidget;
 class UBVersion;
 class UBSoftwareUpdate;
 class UBSoftwareUpdateDialog;
-class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 class UBItem;
