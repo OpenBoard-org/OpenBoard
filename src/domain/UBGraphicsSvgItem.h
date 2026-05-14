@@ -31,11 +31,13 @@
 #define UBGRAPHICSSVGITEM_H_
 
 #include <QtGui>
-#include <QtSvg>
-
-#include "UBMediaAssetItem.h"
+#include <QGraphicsSvgItem>
 
 #include "core/UB.h"
+
+#include "UBGraphicsScene.h"
+#include "UBItem.h"
+#include "UBMediaAssetItem.h"
 
 class UBGraphicsItemDelegate;
 class UBGraphicsPixmapItem;

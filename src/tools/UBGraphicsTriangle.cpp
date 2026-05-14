@@ -27,16 +27,19 @@
 
 
 
+#include "UBGraphicsTriangle.h"
+
 #include <QPolygonF>
+#include <QGraphicsSvgItem>
 #include <QtWidgets/QGraphicsPolygonItem>
 
-#include "tools/UBGraphicsTriangle.h"
-#include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
-#include "domain/UBGraphicsScene.h"
 
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+
+#include "domain/UBGraphicsScene.h"
 
 const QRect UBGraphicsTriangle::sDefaultRect =  QRect(0, 0, 800, 400);
 const UBGraphicsTriangle::UBGraphicsTriangleOrientation UBGraphicsTriangle::sDefaultOrientation =UBGraphicsTriangle::BottomLeft;

@@ -27,19 +27,23 @@
 
 
 
-#include <QLinearGradient>
+#include "UBGraphicsRuler.h"
+
 #include <QBrush>
+#include <QGraphicsSvgItem>
+#include <QLinearGradient>
 #include <QPainterPath>
 #include <QPixmap>
 
-#include "tools/UBGraphicsRuler.h"
-#include "domain/UBGraphicsScene.h"
-#include "core/UBApplication.h"
-#include "gui/UBResources.h"
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h"
 
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+
+#include "domain/UBGraphicsScene.h"
+
+#include "gui/UBResources.h"
 
 const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 
