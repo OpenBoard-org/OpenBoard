@@ -31,15 +31,17 @@
 
 #include <QtGui>
 
-#include "UBGraphicsMediaItem.h"
-#include "UBGraphicsTextItem.h"
+#include "core/memcheck.h"
+#include "core/UB.h"
 #include "core/UBApplication.h"
+
+#include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
-#include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
 
-#include "core/memcheck.h"
+#include "UBGraphicsMediaItem.h"
+#include "UBGraphicsTextItem.h"
 
 UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)

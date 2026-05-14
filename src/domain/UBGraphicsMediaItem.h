@@ -38,7 +38,9 @@
 // #include <QtMultimediaWidgets/QVideoWidget>
 // #include <QtMultimedia/QVideoFrame>
 
-#include "board/UBBoardController.h"
+#include "core/UB.h"
+
+#include "domain/UBItem.h"
 #include "domain/UBMediaAssetItem.h"
 #include "domain/UBResizableGraphicsItem.h"
 

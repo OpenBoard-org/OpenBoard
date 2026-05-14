@@ -31,8 +31,17 @@
 #define UBGRAPHICSGROUPCONTAINERITEM_H
 
 #include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QRectF>
+#include <QStyleOptionGraphicsItem>
+#include <QWidget>
+#include <QVariant>
+
+#include "core/UB.h"
 
 #include "domain/UBItem.h"
+
 #include "frameworks/UBCoreGraphicsScene.h"
 
 class UBGraphicsGroupContainerItem : public QGraphicsItem, public UBItem, public UBGraphicsItem

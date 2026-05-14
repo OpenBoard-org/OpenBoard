@@ -27,19 +27,25 @@
 
 
 
-#include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsMediaItem.h"
-#include "UBGraphicsMediaItemDelegate.h"
-#include "UBGraphicsScene.h"
-#include "UBGraphicsDelegateFrame.h"
-#include "document/UBDocumentProxy.h"
-#include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
-#include "board/UBBoardController.h"
-#include "core/memcheck.h"
-#include "frameworks/UBFileSystemUtils.h"
 
 #include <QGraphicsVideoItem>
+
+#include "board/UBBoardController.h"
+
+#include "core/UB.h"
+#include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+#include "core/memcheck.h"
+
+#include "document/UBDocumentProxy.h"
+
+#include "frameworks/UBFileSystemUtils.h"
+
+#include "UBGraphicsDelegateFrame.h"
+#include "UBGraphicsGroupContainerItem.h"
+#include "UBGraphicsMediaItemDelegate.h"
+#include "UBGraphicsScene.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
