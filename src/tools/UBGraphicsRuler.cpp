@@ -40,6 +40,7 @@
 
 #include "core/memcheck.h"
 #include "core/UBApplication.h"
+#include "core/UBSettings.h"
 
 #include "domain/UBGraphicsScene.h"
 

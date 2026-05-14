@@ -25,16 +25,20 @@
  */
 
 
-#include "UBWidgetUpgradeAdaptor.h"
 
-#include "core/UBPersistenceManager.h"
-#include "document/UBDocumentProxy.h"
-#include "frameworks/UBPlatformUtils.h"
+
+#include "UBWidgetUpgradeAdaptor.h"
 
 #include <QCryptographicHash>
 #include <QDomDocument>
 
 #include "core/memcheck.h"
+#include "core/UBPersistenceManager.h"
+#include "core/UBSettings.h"
+
+#include "document/UBDocumentProxy.h"
+
+#include "frameworks/UBPlatformUtils.h"
 
 UBWidgetUpgradeAdaptor::UBWidgetUpgradeAdaptor()
 {
