@@ -28,11 +28,12 @@
 
 
 #include "UBGraphicsItemTransformUndoCommand.h"
-#include "UBResizableGraphicsItem.h"
-#include "domain/UBItem.h"
-#include "domain/UBGraphicsScene.h"
 
 #include "core/memcheck.h"
+
+#include "domain/UBGraphicsScene.h"
+
+#include "UBResizableGraphicsItem.h"
 
 UBGraphicsItemTransformUndoCommand::UBGraphicsItemTransformUndoCommand(QGraphicsItem* pItem,
      const QPointF& prevPos, const QTransform& prevTransform, const qreal& prevZValue,

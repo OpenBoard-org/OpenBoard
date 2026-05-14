@@ -39,7 +39,6 @@
 #include "UBItem.h"
 #include "UBMediaAssetItem.h"
 
-class UBGraphicsItemDelegate;
 class UBGraphicsPixmapItem;
 
 class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBMediaAssetItem, public UBGraphicsItem

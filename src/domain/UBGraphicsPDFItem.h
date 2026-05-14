@@ -37,7 +37,6 @@
 #include "core/UB.h"
 #include "pdf/GraphicsPDFItem.h"
 
-class UBGraphicsItemDelegate;
 class UBGraphicsPixmapItem;
 
 class UBGraphicsPDFItem: public GraphicsPDFItem, public UBMediaAssetItem, public UBGraphicsItem

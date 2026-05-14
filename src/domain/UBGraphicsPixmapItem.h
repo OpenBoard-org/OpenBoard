@@ -36,8 +36,6 @@
 
 #include "UBMediaAssetItem.h"
 
-class UBGraphicsItemDelegate;
-
 class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public UBMediaAssetItem, public UBGraphicsItem
 {
     Q_OBJECT
