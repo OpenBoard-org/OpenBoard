@@ -106,7 +106,7 @@
           <property name="minimumSize">
            <size>
             <width>783</width>
-            <height>765</height>
+            <height>790</height>
            </size>
           </property>
           <widget class="QGroupBox" name="PDFGroupBox">
@@ -252,7 +252,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>620</y>
+             <y>645</y>
              <width>1011</width>
              <height>101</height>
             </rect>
@@ -524,7 +524,7 @@
              <x>0</x>
              <y>540</y>
              <width>1011</width>
-             <height>71</height>
+             <height>96</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -577,6 +577,13 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item row="1" column="0" colspan="3">
+               <widget class="QCheckBox" name="runInWindowCheckBox">
+                <property name="text">
+                 <string>Run in windowed mode (shows minimize/maximize/close buttons)</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>

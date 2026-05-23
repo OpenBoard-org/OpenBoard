@@ -99,6 +99,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
   , mPreferencesController(NULL)
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
+  , mSystemTrayIcon(NULL)
 {
     Q_UNUSED(id)
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
@@ -164,6 +165,12 @@ UBApplication::~UBApplication()
     UBPlatformUtils::destroy();
 
     UBFileSystemUtils::deleteAllTempDirCreatedDuringSession();
+
+    if (mSystemTrayIcon)
+    {
+        mSystemTrayIcon->hide();
+        mSystemTrayIcon->setContextMenu(nullptr);
+    }
 
     delete mainWindow;
     mainWindow = 0;
@@ -374,16 +381,13 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
-#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
-#else
-    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
-#endif
 
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
+    setupSystemTrayIcon();
 
 
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
@@ -441,8 +445,54 @@ void UBApplication::showMinimized()
 #elif defined(Q_OS_LINUX)
     mainWindow->showMinimized();
     bIsMinimized = true;
+#else
+    mainWindow->showMinimized();
 #endif
 
+}
+
+void UBApplication::restoreMainWindow()
+{
+    if (!mainWindow)
+        return;
+
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
+    bIsMinimized = false;
+#endif
+
+    if (UBSettings::settings()->appRunInWindow->get().toBool())
+        mainWindow->showNormal();
+    else
+        UBPlatformUtils::showFullScreen(mainWindow);
+
+    mainWindow->raise();
+    mainWindow->activateWindow();
+}
+
+void UBApplication::setupSystemTrayIcon()
+{
+    if (!QSystemTrayIcon::isSystemTrayAvailable())
+        return;
+
+    mSystemTrayIcon = new QSystemTrayIcon(QIcon(":/images/OpenBoard.png"), this);
+    mSystemTrayIcon->setToolTip(tr("OpenBoard"));
+
+    QMenu* trayMenu = new QMenu(mainWindow);
+    QAction* showAction = trayMenu->addAction(tr("Show OpenBoard"));
+    QAction* minimizeAction = trayMenu->addAction(tr("Minimize"));
+    trayMenu->addSeparator();
+    QAction* exitAction = trayMenu->addAction(tr("Exit"));
+
+    connect(showAction, SIGNAL(triggered()), this, SLOT(restoreMainWindow()));
+    connect(minimizeAction, SIGNAL(triggered()), this, SLOT(showMinimized()));
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(closing()));
+    connect(mSystemTrayIcon, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason) {
+        if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
+            restoreMainWindow();
+    });
+
+    mSystemTrayIcon->setContextMenu(trayMenu);
+    mSystemTrayIcon->show();
 }
 
 

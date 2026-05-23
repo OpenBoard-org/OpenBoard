@@ -34,6 +34,7 @@
 #include <QUndoStack>
 #include <QToolBar>
 #include <QMenu>
+#include <QSystemTrayIcon>
 
 #include "singleapplication/singleapplication.h"
 
@@ -135,10 +136,12 @@ class UBApplication : public SingleApplication
 //#ifdef Q_OS_OSX // for some reason this is not compiled if the ifdef is uncommented
         void showMinimized();
 //#endif
+        void restoreMainWindow();
         void onScreenCountChanged(int newCount);
 
     private:
         void updateProtoActionsState();
+        void setupSystemTrayIcon();
         void setupTranslators(QStringList args);
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
@@ -153,6 +156,7 @@ class UBApplication : public SingleApplication
         UBPreferencesController* mPreferencesController;
         QTranslator* mApplicationTranslator;
         QTranslator* mQtGuiTranslator;
+        QSystemTrayIcon* mSystemTrayIcon;
 
 };
 
