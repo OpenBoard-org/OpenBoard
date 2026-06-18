@@ -155,6 +155,7 @@ public slots:
 signals:
     void mouseEntered();
     void pageSelectionChangedRequired();
+    void dockPaletteGeometryChanged();
 
 protected:
     virtual int border();
