@@ -299,6 +299,8 @@ void UBPreferencesController::wire()
     // PDF preferences
     connect(mPreferencesUI->exportBackgroundGrid, SIGNAL(clicked(bool)), settings->exportBackgroundGrid, SLOT(setBool(bool)));
     connect(mPreferencesUI->exportBackgroundColor, SIGNAL(clicked(bool)), settings->exportBackgroundColor, SLOT(setBool(bool)));
+    connect(mPreferencesUI->printBackgroundGrid, SIGNAL(clicked(bool)), settings->printBackgroundGrid, SLOT(setBool(bool)));
+    connect(mPreferencesUI->printBackgroundColor, SIGNAL(clicked(bool)), settings->printBackgroundColor, SLOT(setBool(bool)));
 
     // Documents Mode preferences
     connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), settings->showDateColumnOnAlphabeticalSort, SLOT(setBool(bool)));
@@ -465,6 +467,8 @@ void UBPreferencesController::init()
 
     mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->get().toBool());
     mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->get().toBool());
+    mPreferencesUI->printBackgroundGrid->setChecked(settings->printBackgroundGrid->get().toBool());
+    mPreferencesUI->printBackgroundColor->setChecked(settings->printBackgroundColor->get().toBool());
 
     mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->get().toBool());
     mPreferencesUI->emptyTrashForOlderDocuments->setChecked(settings->emptyTrashForOlderDocuments->get().toBool());
@@ -554,6 +558,8 @@ void UBPreferencesController::defaultSettings()
 
         mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->reset().toBool());
         mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->reset().toBool());
+        mPreferencesUI->printBackgroundGrid->setChecked(settings->printBackgroundGrid->reset().toBool());
+        mPreferencesUI->printBackgroundColor->setChecked(settings->printBackgroundColor->reset().toBool());
 
         mPreferencesUI->emptyTrashForOlderDocuments->setChecked(settings->emptyTrashForOlderDocuments->reset().toBool());
         mPreferencesUI->emptyTrashDaysValue->setValue(settings->emptyTrashDaysValue->reset().toInt());

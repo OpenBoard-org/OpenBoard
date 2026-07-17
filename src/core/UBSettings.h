@@ -383,6 +383,9 @@ class UBSettings : public QObject
         UBSetting* exportBackgroundGrid;
         UBSetting* exportBackgroundColor;
 
+        UBSetting* printBackgroundGrid;
+        UBSetting* printBackgroundColor;
+
         UBSetting* podcastFramesPerSecond;
         UBSetting* podcastVideoSize;
         UBSetting* podcastWindowsMediaBitsPerSecond;
