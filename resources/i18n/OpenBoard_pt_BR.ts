@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR" sourcelanguage="en_GB">
+<TS version="2.1" language="pt_BR" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -169,7 +169,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <location filename="../../src/web/simplebrowser/downloadwidget.ui" line="31"/>
         <location filename="../../src/web/simplebrowser/downloadwidget.ui" line="71"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="87"/>
@@ -242,7 +242,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="17"/>
         <source>Publish to Intranet</source>
-        <translation type="unfinished">Publicar na Intranet</translation>
+        <translation>Publicar na Intranet</translation>
     </message>
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="28"/>
@@ -900,17 +900,17 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="1972"/>
         <source>Snap to grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Alinhar à grade</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1975"/>
         <source>Snap to grid and angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Alinhar à grade e ao ângulo</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1978"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
@@ -1335,7 +1335,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="1436"/>
         <source>Ctrl+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+P</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1703"/>
@@ -1893,28 +1893,28 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <location filename="../../src/document/UBDocumentController.cpp" line="2563"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3415"/>
         <source>Opening document in Board. Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrindo documento no modo Quadro. Aguarde...</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2078"/>
         <source>OpenBoard could not recover this file. Please delete it or contact your administrator for help</source>
-        <translation type="unfinished"></translation>
+        <translation>O OpenBoard não conseguiu recuperar este arquivo. Por favor, exclua-o ou entre em contato com o seu administrador para obter ajuda</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2086"/>
         <source>Broken document</source>
-        <translation type="unfinished"></translation>
+        <translation>Arquivo corrompido</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2089"/>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation>Não mostrar isto novamente</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2569"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3421"/>
         <source>Document opened successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento aberto com sucesso</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
@@ -2056,7 +2056,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../../src/core/UBDocumentManager.cpp" line="219"/>
         <source>Creating %1 pages. Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Criando %1 páginas. Aguarde...</translation>
     </message>
     <message>
         <location filename="../../src/core/UBDocumentManager.cpp" line="297"/>
@@ -2187,7 +2187,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <message>
         <location filename="../../src/document/UBDocumentVersionConverter.cpp" line="69"/>
         <source>This document was created using OpenBoard 1.8</source>
-        <translation type="unfinished"></translation>
+        <translation>Este documento foi criado usando o OpenBoard 1.8</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentVersionConverter.cpp" line="70"/>
@@ -2196,7 +2196,11 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
 If you wish to continue, the document will be converted to be compatible with version 1.7.7. This may take a few minutes. You will still be able to open it in OpenBoard 1.8, but it will then be converted again to the 1.8 format.
 
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Este documento foi criado usando o OpenBoard 1.8 e seu conteúdo foi reorganizado. Recomendamos fortemente atualizar o OpenBoard para a versão 1.8.
+
+Se você deseja continuar, o documento será convertido para ser compatível com a versão 1.7.7. Isso pode levar alguns minutos. Você ainda poderá abri-lo no OpenBoard 1.8, mas ele será convertido novamente para o formato 1.8.
+
+Deseja continuar?</translation>
     </message>
 </context>
 <context>
@@ -2244,7 +2248,7 @@ Do you want to continue?</source>
         <location filename="../../src/web/UBEmbedController.cpp" line="165"/>
         <source>Application name can`t contain any of the following characters:<byte value="xd"/>
 </source>
-        <translation type="unfinished"></translation>
+        <translation>O nome do aplicativo não pode conter nenhum destes caracteres:</translation>
     </message>
     <message>
         <location filename="../../src/web/UBEmbedController.cpp" line="236"/>
@@ -2561,7 +2565,7 @@ Do you want to continue?</source>
         <location filename="../../src/board/UBFeaturesController.cpp" line="741"/>
         <location filename="../../src/board/UBFeaturesController.cpp" line="747"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../src/board/UBFeaturesController.cpp" line="915"/>
@@ -2690,7 +2694,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../src/tools/UBGraphicsProtractor.cpp" line="535"/>
         <source>use arrow keys for precise moves</source>
-        <translation type="unfinished"></translation>
+        <translation>Use as teclas de seta para movimentos precisos</translation>
     </message>
 </context>
 <context>
@@ -2699,7 +2703,7 @@ Do you want to continue?</source>
         <location filename="../../src/tools/UBGraphicsRuler.cpp" line="167"/>
         <location filename="../../src/tools/UBGraphicsRuler.cpp" line="171"/>
         <source>use arrow keys for precise moves</source>
-        <translation type="unfinished"></translation>
+        <translation>Use as teclas de seta para movimentos precisos</translation>
     </message>
 </context>
 <context>
@@ -2729,7 +2733,7 @@ Do you want to continue?</source>
         <location filename="../../src/tools/UBGraphicsTriangle.cpp" line="449"/>
         <location filename="../../src/tools/UBGraphicsTriangle.cpp" line="453"/>
         <source>use arrow keys for precise moves</source>
-        <translation type="unfinished"></translation>
+        <translation>Use as teclas de seta para movimentos precisos</translation>
     </message>
 </context>
 <context>
@@ -2851,7 +2855,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../src/adaptors/UBImportPDF.cpp" line="81"/>
         <source>Importing %1 PDF pages. Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando %1 páginas de PDF. Aguarde...</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
@@ -3006,12 +3010,12 @@ Quer ignorar estes erros deste servidor?</translation>
     <message>
         <location filename="../../src/core/UBPersistenceManager.cpp" line="266"/>
         <source>Retrieved - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Recuperado - %1</translation>
     </message>
     <message>
         <location filename="../../src/core/UBPersistenceManager.cpp" line="280"/>
         <source>Broken - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Corrompido - %1</translation>
     </message>
     <message>
         <location filename="../../src/core/UBPersistenceManager.cpp" line="1172"/>
@@ -3405,7 +3409,7 @@ Quer ignorar estes erros deste servidor?</translation>
     <message>
         <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="128"/>
         <source>Loading thumbnails (%1 pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregando miniaturas (%1 páginas)</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
@@ -3651,7 +3655,7 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     <message>
         <location filename="../../src/domain/UBGraphicsScene.cpp" line="205"/>
         <source>Bottom layer limit reached</source>
-        <translation type="unfinished"></translation>
+        <translation>O limite da camada inferior foi atingido</translation>
     </message>
 </context>
 <context>
