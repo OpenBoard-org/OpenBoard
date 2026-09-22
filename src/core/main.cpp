@@ -31,6 +31,10 @@
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 
+#ifdef KDSINGLEAPPLICATION
+#include <kdsingleapplication-qt6/kdsingleapplication.h>
+#endif
+
 #include "UBApplication.h"
 #include "UBSettings.h"
 #ifdef QT_DEBUG
@@ -161,23 +165,40 @@ int main(int argc, char *argv[])
 
             if (f.exists()) {
                 fileToOpen = args[i];
-
-                if (app.sendMessage(UBSettings::appPingMessage.toUtf8(), 20000)) {
-                    app.sendMessage(fileToOpen.toUtf8(), 1000000);
-                    return 0;
-                }
-
                 break;
             }
         }
     }
 
     int result = 0;
+#ifdef KDSINGLEAPPLICATION
+    KDSingleApplication kdsa;
+    if (kdsa.isPrimaryInstance())
+    {
+        qDebug() << "file name argument" << fileToOpen;
+        QObject::connect(&kdsa, &KDSingleApplication::messageReceived,
+                         &app, &UBApplication::handleOpenMessage);
+        result = app.exec(fileToOpen);
+    }
+    else
+    {
+        return kdsa.sendMessageWithTimeout(fileToOpen.toUtf8(), 1000000);
+    }
+#else
     if (app.isPrimary())
     {
         qDebug() << "file name argument" << fileToOpen;
         result = app.exec(fileToOpen);
     }
+    else
+    {
+        if (app.sendMessage(UBSettings::appPingMessage.toUtf8(), 20000))
+        {
+            app.sendMessage(fileToOpen.toUtf8(), 1000000);
+            return 0;
+        }
+    }
+#endif
 
     app.cleanup();
 

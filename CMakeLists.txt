@@ -46,8 +46,15 @@ add_compile_definitions(UBVERSION="${VERSION}")
 
 set(QT_VERSION "" CACHE STRING "Qt major version number to use - empty, 5 or 6")
 
-# Internal setting
-set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication - do not change")
+set(KDSINGLEAPPLICATION OFF CACHE BOOL "Use KDSingleApplication instead of internal SingleApplication")
+if(KDSINGLEAPPLICATION)
+    message(STATUS "Using KDSingleApplication")
+    add_compile_definitions(KDSINGLEAPPLICATION)
+else()
+    message(STATUS "Using internal SingleApplication")
+    # Internal setting
+    set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication - do not change")
+endif()
 
 
 # ==========================================================================
@@ -116,6 +123,9 @@ include(cmake/DependencyZlib.cmake)
 include(cmake/DependencyQuaZip.cmake)
 include(cmake/DependencyFFmpeg.cmake)
 include(cmake/DependencyPipewire.cmake)
+if(KDSINGLEAPPLICATION)
+include(cmake/DependencyKDSingleApplication.cmake)
+endif()
 
 # add source path to include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -137,15 +147,19 @@ add_subdirectory(src/network)
 add_subdirectory(src/pdf)
 add_subdirectory(src/pdf-merger)
 add_subdirectory(src/podcast)
+if(NOT KDSINGLEAPPLICATION)
 add_subdirectory(src/singleapplication)
+endif()
 add_subdirectory(src/tools)
 add_subdirectory(src/web)
 add_subdirectory(resources/forms)
 
+if(NOT KDSINGLEAPPLICATION)
 # statically link singleapplication
 target_link_libraries(${PROJECT_NAME}
     SingleApplication::SingleApplication
 )
+endif()
 
 
 # ==========================================================================

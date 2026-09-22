@@ -96,7 +96,11 @@ bool bIsMinimized = false;
 QObject* UBApplication::staticMemoryCleaner = 0;
 
 
+#ifdef KDSINGLEAPPLICATION
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QApplication(argc, argv)
+#else
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : SingleApplication(argc, argv, true)
+#endif
   , mPreferencesController(NULL)
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
@@ -138,7 +142,9 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
+#ifndef KDSINGLEAPPLICATION
     connect(this, &SingleApplication::receivedMessage, this, &UBApplication::handleOpenMessage);
+#endif
     updateProtoActionsState();
 
 #ifndef Q_OS_OSX
@@ -747,9 +753,14 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 }
 
 
+#ifdef KDSINGLEAPPLICATION
+void UBApplication::handleOpenMessage(QByteArray message)
+{
+#else
 void UBApplication::handleOpenMessage(quint32 instanceId, QByteArray message)
 {
     Q_UNUSED(instanceId)
+#endif
 
     QString filename = QString::fromUtf8(message);
     qDebug() << "received message" << filename;
