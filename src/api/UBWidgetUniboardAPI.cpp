@@ -631,7 +631,7 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
     }
 
     QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
-    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(desc.dropPoint)).toPoint());
+    QPointF dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(desc.dropPoint)));
 
     QMimeData dropMimeData;
     QString mimeText = createMimeText(true, contentType, destFileName);
@@ -640,7 +640,11 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
     destFile.close();
 
     //To make js interpreter accept drop event we need to generate move event first.
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 12, 0))
     QDragMoveEvent pseudoMove(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
+#else
+    QDragMoveEvent pseudoMove(dropPoint.toPoint(), desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
+#endif
     QApplication::sendEvent(mGraphicsWidget,&pseudoMove);
 
     QDropEvent readyEvent(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
