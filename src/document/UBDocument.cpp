@@ -442,7 +442,7 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
         }
 
         // generate and load thumbnail from scene if not already existing and loaded
-        mThumbnailScene->ensureThumbnail(index, scene);
+        thumbnailScene()->ensureThumbnail(index, scene);
     }
 
     // prepare next scene
