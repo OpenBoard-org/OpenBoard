@@ -98,6 +98,13 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
             this, SLOT(desktopPaletteSettingsChanged(QVariant)));
 }
 
+int UBDesktopPalette::grabMargin() const
+{
+    // Read per press, so a change to the setting applies immediately; the band
+    // affects hit testing only and needs no re-layout.
+    return qBound(0, UBSettings::settings()->desktopPaletteGrabMarginPx->get().toInt(), 40);
+}
+
 
 UBDesktopPalette::~UBDesktopPalette()
 {

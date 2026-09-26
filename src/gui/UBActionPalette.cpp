@@ -106,6 +106,10 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
 
     mMapActionToButton[action] = button;
 
+    // Lets the palette claim presses that land in its edge band, so the
+    // draggable area can extend over the buttons without moving them.
+    button->installEventFilter(this);
+
     connect(button, &UBActionPaletteButton::clicked,
             this, &UBActionPalette::buttonClicked);
     connect(action, &QAction::changed,

@@ -28,6 +28,7 @@
 
 
 #include <QtGui>
+#include <QCoreApplication>
 #include <QPainterPath>
 #include <QToolButton>
 
@@ -327,6 +328,101 @@ void UBFloatingPalette::paintEvent(QPaintEvent *)
         painter.setBrush(palette().brush(QPalette::Window));
         painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
     }
+}
+
+int UBFloatingPalette::grabMargin() const
+{
+    return 0;
+}
+
+bool UBFloatingPalette::inGrabBand(const QPoint& palettePos) const
+{
+    const int margin = grabMargin();
+
+    if (margin <= 0 || !rect().contains(palettePos))
+    {
+        return false;
+    }
+
+    // Anything within margin pixels of an edge counts, so the band follows the
+    // whole outline rather than just the sides.
+    return palettePos.x() < margin
+        || palettePos.y() < margin
+        || palettePos.x() >= width() - margin
+        || palettePos.y() >= height() - margin;
+}
+
+void UBFloatingPalette::forwardToPalette(QWidget* child, QMouseEvent* event)
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const QPointF localPos = child->mapTo(this, event->position().toPoint());
+    QMouseEvent relayed(event->type(), localPos, event->scenePosition(), event->globalPosition(),
+                        event->button(), event->buttons(), event->modifiers(), event->source());
+#else
+    const QPoint localPos = child->mapTo(this, event->pos());
+    QMouseEvent relayed(event->type(), localPos, event->globalPos(),
+                        event->button(), event->buttons(), event->modifiers());
+#endif
+    QCoreApplication::sendEvent(this, &relayed);
+}
+
+bool UBFloatingPalette::eventFilter(QObject* watched, QEvent* event)
+{
+    QWidget* child = qobject_cast<QWidget*>(watched);
+
+    if (!child)
+    {
+        return QWidget::eventFilter(watched, event);
+    }
+
+    switch (event->type())
+    {
+    case QEvent::MouseButtonPress:
+    {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+
+        if (mouseEvent->button() != Qt::LeftButton)
+        {
+            break;
+        }
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        const QPoint palettePos = child->mapTo(this, mouseEvent->position().toPoint());
+#else
+        const QPoint palettePos = child->mapTo(this, mouseEvent->pos());
+#endif
+
+        if (!inGrabBand(palettePos))
+        {
+            break;
+        }
+
+        // The child would otherwise swallow the press and activate its action.
+        mGrabBandChild = child;
+        forwardToPalette(child, mouseEvent);
+        return true;
+    }
+
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonRelease:
+        if (mGrabBandChild == child)
+        {
+            forwardToPalette(child, static_cast<QMouseEvent*>(event));
+
+            if (event->type() == QEvent::MouseButtonRelease)
+            {
+                mGrabBandChild = nullptr;
+            }
+
+            return true;
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 int UBFloatingPalette::gripSize()

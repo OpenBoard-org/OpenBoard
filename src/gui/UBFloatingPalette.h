@@ -32,6 +32,7 @@
 
 #include <QWidget>
 #include <QPoint>
+#include <QPointer>
 #include <QToolButton>
 
 #include "core/UB.h"
@@ -80,9 +81,16 @@ class UBFloatingPalette : public QWidget
     protected:
         virtual void enterEvent(UB::EnterEvent *event) override;
         virtual void paintEvent(QPaintEvent *event) override;
+        virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
         virtual int radius();
         virtual int border();
+        // Width of a band just inside the palette's edge in which a press drags
+        // the palette even when it lands on a button. It changes nothing about
+        // the layout or the painted frame: the palette keeps its size and its
+        // buttons keep their spacing, only the area that is treated as a drag
+        // handle grows inwards over them.
+        virtual int grabMargin() const;
         virtual int gripSize();
         virtual int closeButtonMargin() const;
         virtual void onCloseButtonClicked();
@@ -104,7 +112,13 @@ class UBFloatingPalette : public QWidget
         void removeAllAssociatedPalette();
         void minimizePalette(const QPoint& pos);
 
+        bool inGrabBand(const QPoint& palettePos) const;
+        void forwardToPalette(QWidget* child, QMouseEvent* event);
+
         QList<UBFloatingPalette*> mAssociatedPalette;
+        // The child a grab-band drag started on; it keeps receiving the mouse
+        // until release, so its events have to be relayed for the whole drag.
+        QPointer<QWidget> mGrabBandChild;
         QPoint mDragPosition;
         bool mCanBeMinimized;
         bool mIsClosable;

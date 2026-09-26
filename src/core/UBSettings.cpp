@@ -321,6 +321,7 @@ void UBSettings::init()
     desktopPaletteShowMarker = new UBSetting(this, "Board", "DesktopPaletteShowMarker", true);
     desktopPaletteShowSelector = new UBSetting(this, "Board", "DesktopPaletteShowSelector", true);
     desktopPaletteShowPointer = new UBSetting(this, "Board", "DesktopPaletteShowPointer", true);
+    desktopPaletteGrabMarginPx = new UBSetting(this, "Board", "DesktopPaletteGrabMarginPx", 3);
 
     boardInterpolatePenStrokes = new UBSetting(this, "Board", "InterpolatePenStrokes", true);
     boardSimplifyPenStrokes = new UBSetting(this, "Board", "SimplifyPenStrokes", true);

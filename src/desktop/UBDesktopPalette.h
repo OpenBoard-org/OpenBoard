@@ -76,6 +76,7 @@ protected:
         void hideEvent(QHideEvent *event);
 
         virtual int getParentRightOffset();
+        virtual int grabMargin() const override;
 
 private:
         QAction *mShowHideAction;
