@@ -85,6 +85,7 @@ class UBDrawingController : public QObject
         void refreshColorPalette();
 
     signals:
+        void stylusToolAboutToChange(int tool, int previousTool);
         void stylusToolChanged(int tool, int previousTool = -1);
         void colorPaletteChanged();
 

@@ -219,7 +219,9 @@ void UBBoardController::setupViews()
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     mControlView->grabGesture(Qt::SwipeGesture);
+#endif
 
     mControlView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
@@ -352,6 +354,35 @@ void UBBoardController::setCursorFromAngle(qreal angle, const QPoint offset)
 void UBBoardController::setupToolbar()
 {
     UBSettings *settings = UBSettings::settings();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(mMainWindow->actionMultitouchMode, SIGNAL(triggered()),
+            this, SLOT(cycleMultitouchMode()));
+    connect(settings->boardMultitouchEnabled, SIGNAL(changed(QVariant)),
+            this, SLOT(updateMultitouchAction(QVariant)));
+    connect(settings->boardMultitouchMode, SIGNAL(changed(QVariant)),
+            this, SLOT(updateMultitouchAction(QVariant)));
+
+    // Reserve space for the longest mode label.
+    if (QToolButton* touchButton = qobject_cast<QToolButton*>(
+            mMainWindow->boardToolBar->widgetForAction(mMainWindow->actionMultitouchMode)))
+    {
+        const QFontMetrics metrics(touchButton->font());
+        const QStringList modeTexts = {
+            tr("MTouch: Gest"), tr("MTouch: Draw"), tr("MTouch: Auto")
+        };
+        int textWidth = 0;
+
+        for (const QString& modeText : modeTexts)
+            textWidth = qMax(textWidth, metrics.horizontalAdvance(modeText));
+
+        touchButton->setFixedWidth(qMax(72, textWidth + 16));
+    }
+
+    updateMultitouchAction();
+#else
+    mMainWindow->actionMultitouchMode->setVisible(false);
+#endif
 
     buildColorActions();
 
@@ -654,6 +685,55 @@ void UBBoardController::initToolbarTexts()
 
         mActionTexts.insert(action, texts);
     }
+}
+
+void UBBoardController::cycleMultitouchMode()
+{
+    UBSettings* settings = UBSettings::settings();
+    const int currentMode = settings->multitouchMode();
+    const int nextMode = currentMode >= UBMultitouchMode::GesturesOnly
+        && currentMode < UBMultitouchMode::Automatic
+        ? currentMode + 1
+        : UBMultitouchMode::GesturesOnly;
+    settings->setMultitouchMode(nextMode);
+}
+
+void UBBoardController::updateMultitouchAction(QVariant value)
+{
+    Q_UNUSED(value);
+
+    const int mode = UBSettings::settings()->multitouchMode();
+    mMainWindow->actionMultitouchMode->setVisible(
+        mode != UBMultitouchMode::Disabled);
+
+    QString text;
+    QString description;
+
+    switch (mode)
+    {
+    case UBMultitouchMode::GesturesOnly:
+        text = tr("MTouch: Gest");
+        description = tr("Multitouch gestures only");
+        break;
+    case UBMultitouchMode::DrawingOnly:
+        text = tr("MTouch: Draw");
+        description = tr("Multitouch drawing only");
+        break;
+    case UBMultitouchMode::Automatic:
+        text = tr("MTouch: Auto");
+        description = tr("Multitouch drawing with early two-finger gestures");
+        break;
+    case UBMultitouchMode::Disabled:
+    default:
+        text = tr("MTouch");
+        description = tr("Enable multitouch in Preferences");
+        break;
+    }
+
+    mMainWindow->actionMultitouchMode->setText(text);
+    mMainWindow->actionMultitouchMode->setToolTip(description);
+    mActionTexts.insert(mMainWindow->actionMultitouchMode,
+                        QPair<QString, QString>(text, truncate(text, 48)));
 }
 
 
@@ -1522,6 +1602,9 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int p
 std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    mControlView->forcedTabletRelease();
+#endif
     persistViewPositionOnCurrentScene();
 
     bool documentChange = selectedDocument() != pDocumentProxy;

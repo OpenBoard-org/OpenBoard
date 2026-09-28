@@ -29,6 +29,8 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <map>
+#include <memory>
 #include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
@@ -140,9 +142,12 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
-        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        // pointerId 0 is reserved for the mouse/tablet/tool path; touch fingers use ids >= 1
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier, int pointerId = 0);
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier, int pointerId = 0);
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier, int pointerId = 0);
+
+        bool cancelStrokeForPointer(int pointerId);
 
         void leaveEvent (QEvent* event);
 
@@ -311,10 +316,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
             mTools << item;
         }
 
-        const QPointF& previousPoint()
-        {
-            return mPreviousPoint;
-        }
+        const QPointF& previousPoint();
 
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
@@ -375,19 +377,52 @@ signals:
 
     protected:
 
+        // All in-flight stroke state for one pointer (mouse/tablet = 0, touch fingers >= 1),
+        // so several strokes can be drawn concurrently without sharing scene-level state.
+        struct UBStrokeContext
+        {
+            int pointerId = 0;
+            int toolAtPress = -1;
+            bool pressed = false;
+            UBGraphicsStroke* stroke = nullptr;
+            QPointF previousPoint;
+            qreal previousWidth = -1.0;
+            qreal distanceFromLastStrokePoint = 0;
+            QPointF currentPoint;
+            UBGraphicsPolygonItem* lastPolygon = nullptr;
+            UBGraphicsPolygonItem* tempPolygon = nullptr;
+            QList<UBGraphicsPolygonItem*> previousPolygonItems;
+            QSet<QGraphicsItem*> addedItems;
+            QSet<QGraphicsItem*> removedItems;
+            QGraphicsEllipseItem* eraserIndicator = nullptr;
+        };
+
+        UBStrokeContext& ensureStrokeContext(int pointerId);
+        UBStrokeContext* findStrokeContext(int pointerId) const;
+        void destroyStrokeContext(int pointerId);
+        bool isItemOwnedByOtherPointer(const QGraphicsItem* item, int pointerId) const;
+
+        void moveTo(UBStrokeContext& ctx, const QPointF& pPoint);
+        void drawLineTo(UBStrokeContext& ctx, const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
+        void drawLineTo(UBStrokeContext& ctx, const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& pEndWidth, bool bLineStyle);
+        void eraseLineTo(UBStrokeContext& ctx, const QPointF& pEndPoint, const qreal& pWidth);
+        void drawCurve(UBStrokeContext& ctx, const QList<QPair<QPointF, qreal> >& points);
+        void drawCurve(UBStrokeContext& ctx, const QList<QPointF>& points, qreal startWidth, qreal endWidth);
+
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth);
 
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPair<QPointF, qreal> > &points);
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPointF> &points, qreal startWidth, qreal endWidth);
-        void addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem);
+        void addPolygonItemToCurrentStroke(UBStrokeContext& ctx, UBGraphicsPolygonItem* polygonItem);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 
-        void drawEraser(const QPointF& pEndPoint, bool pressed = true);
-        void redrawEraser(bool pressed);
-        void hideEraser();
+        void drawEraser(UBStrokeContext& ctx, const QPointF& pEndPoint, bool pressed = true);
+        void redrawEraser(UBStrokeContext& ctx, bool pressed);
+        void hideEraser(UBStrokeContext& ctx);
+        QGraphicsEllipseItem* eraserFor(UBStrokeContext& ctx) const;
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
         void drawMarkerCircle(const QPointF& pEndPoint);
         void drawPenCircle(const QPointF& pEndPoint);
@@ -419,15 +454,14 @@ signals:
         void updateMarkerCircleColor();
         void updatePenCircleColor();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
-        void simplifyCurrentStroke();
+        void simplifyCurrentStroke(UBStrokeContext& ctx);
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer; // "laser" pointer
         QGraphicsEllipseItem* mMarkerCircle; // dotted circle around marker
         QGraphicsEllipseItem* mPenCircle; // dotted circle around pen
 
-        QSet<QGraphicsItem*> mAddedItems;
-        QSet<QGraphicsItem*> mRemovedItems;
+        std::map<int, std::unique_ptr<UBStrokeContext>> mStrokeContexts;
 
         std::shared_ptr<UBDocumentProxy> mDocument;
 
@@ -440,16 +474,7 @@ signals:
 
         QGraphicsItem* mBackgroundObject;
 
-        QPointF mPreviousPoint;
-        qreal mPreviousWidth;
-        qreal mDistanceFromLastStrokePoint;
-        QPointF mCurrentPoint;
-
-        QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
-
         SceneViewState mViewState;
-
-        bool mInputDeviceIsPressed;
 
         QSet<QGraphicsItem*> mTools;
 
@@ -458,8 +483,6 @@ signals:
         QSize mNominalSize;
 
         RenderingContext mRenderingContext;
-
-        UBGraphicsStroke* mCurrentStroke;
 
         int mItemCount;
 
@@ -471,11 +494,8 @@ signals:
         UBMagnifier *magniferDisplayViewWidget;
 
         UBZLayerController *mZLayerController;
-        UBGraphicsPolygonItem* mpLastPolygon;
-        UBGraphicsPolygonItem* mTempPolygon;
 
         bool mDrawWithCompass;
-        UBGraphicsPolygonItem *mCurrentPolygon;
         UBSelectionFrame *mSelectionFrame;
 
         UBGraphicsCache* mGraphicsCache;

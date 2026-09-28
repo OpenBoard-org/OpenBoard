@@ -67,6 +67,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStylus"/>
+   <addaction name="actionMultitouchMode"/>
    <addaction name="actionBackgrounds"/>
    <addaction name="separator"/>
    <addaction name="actionUndo"/>
@@ -1362,6 +1363,18 @@
    </property>
    <property name="text">
     <string>Add</string>
+   </property>
+  </action>
+  <action name="actionMultitouchMode">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/stylusPalette/hand.png</normaloff>:/images/stylusPalette/hand.png</iconset>
+   </property>
+   <property name="text">
+    <string>MTouch</string>
+   </property>
+   <property name="toolTip">
+    <string>Change multitouch mode</string>
    </property>
   </action>
   <action name="actionPen">

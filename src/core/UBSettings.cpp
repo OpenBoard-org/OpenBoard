@@ -315,6 +315,17 @@ void UBSettings::init()
 
     boardUseHighResTabletEvent = new UBSetting(this, "Board", "UseHighResTabletEvent", true);
 
+    boardMultitouchEnabled = new UBSetting(this, "Board", "MultitouchEnabled", false);
+    boardMultitouchMode = new UBSetting(this, "Board", "MultitouchMode", UBMultitouchMode::Automatic);
+    boardGestureWindowMs = new UBSetting(this, "Board", "GestureWindowMs", 300);
+    boardGestureClassificationWindowMs = new UBSetting(this, "Board", "GestureClassificationWindowMs", 300);
+    boardGestureQuietTimeMs = new UBSetting(this, "Board", "GestureQuietTimeMs", 500);
+    boardGestureMoveThresholdPx = new UBSetting(this, "Board", "GestureMoveThresholdPx", 125);
+    boardGestureMaxSeparationPx = new UBSetting(this, "Board", "GestureMaxSeparationPx", 275);
+    boardDrawingActivityThresholdPx = new UBSetting(this, "Board", "DrawingActivityThresholdPx", 18);
+    boardPinchActivationThresholdPx = new UBSetting(this, "Board", "PinchActivationThresholdPx", 12);
+    boardMouseLockoutAfterTouchMs = new UBSetting(this, "Board", "MouseLockoutAfterTouchMs", 3000);
+
     boardInterpolatePenStrokes = new UBSetting(this, "Board", "InterpolatePenStrokes", true);
     boardSimplifyPenStrokes = new UBSetting(this, "Board", "SimplifyPenStrokes", true);
     boardSimplifyPenStrokesThresholdAngle = new UBSetting(this, "Board", "SimplifyPenStrokesThresholdAngle", 2);
@@ -906,6 +917,34 @@ qreal UBSettings::currentEraserWidth()
     }
 
     return width;
+}
+
+int UBSettings::multitouchMode() const
+{
+    if (!boardMultitouchEnabled->get().toBool())
+        return UBMultitouchMode::Disabled;
+
+    return qBound(static_cast<int>(UBMultitouchMode::Disabled),
+                  boardMultitouchMode->get().toInt(),
+                  static_cast<int>(UBMultitouchMode::Automatic));
+}
+
+void UBSettings::setMultitouchMode(int mode)
+{
+    const int boundedMode = qBound(static_cast<int>(UBMultitouchMode::Disabled),
+                                   mode,
+                                   static_cast<int>(UBMultitouchMode::Automatic));
+
+    if (boundedMode == UBMultitouchMode::Disabled)
+    {
+        // Keep the last active mode so the explicit Enable multitouch checkbox
+        // can restore it when the user turns touch handling back on.
+        boardMultitouchEnabled->setBool(false);
+        return;
+    }
+
+    boardMultitouchMode->setInt(boundedMode);
+    boardMultitouchEnabled->setBool(true);
 }
 
 bool UBSettings::isDarkBackground()

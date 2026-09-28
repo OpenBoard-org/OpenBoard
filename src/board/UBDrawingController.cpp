@@ -103,6 +103,9 @@ void UBDrawingController::setStylusTool(int tool)
 {
     if (tool != mStylusTool)
     {
+        UBStylusTool::Enum previousTool = mStylusTool;
+        emit stylusToolAboutToChange(tool, previousTool);
+
         UBApplication::boardController->activeScene()->deselectAllItems();
         if (mStylusTool == UBStylusTool::Pen || mStylusTool == UBStylusTool::Marker
                 || mStylusTool == UBStylusTool::Line)
@@ -121,7 +124,6 @@ void UBDrawingController::setStylusTool(int tool)
             emit colorIndexChanged(UBSettings::settings()->markerColorIndex());
         }
 
-        UBStylusTool::Enum previousTool = mStylusTool;
         mStylusTool = (UBStylusTool::Enum)tool;
 
 

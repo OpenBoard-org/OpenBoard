@@ -94,20 +94,20 @@
             <x>0</x>
             <y>0</y>
             <width>1018</width>
-            <height>1200</height>
+            <height>1230</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>783</width>
-            <height>1200</height>
+            <height>1230</height>
            </size>
           </property>
           <widget class="QGroupBox" name="PDFGroupBox">
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>920</y>
+             <y>950</y>
              <width>1011</width>
              <height>111</height>
             </rect>
@@ -234,7 +234,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>1040</y>
+             <y>1070</y>
              <width>1011</width>
              <height>111</height>
             </rect>
@@ -485,7 +485,7 @@
              <x>0</x>
              <y>840</y>
              <width>1011</width>
-             <height>111</height>
+             <height>141</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -550,6 +550,39 @@
                   <string>Dark</string>
                  </property>
                 </item>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QCheckBox" name="enableMultitouchCheckBox">
+                <property name="text">
+                 <string>Enable multitouch</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="multitouchModeLabel">
+                <property name="text">
+                 <string>Multitouch mode:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="multitouchModeComboBox">
+                  <item>
+                   <property name="text">
+                    <string>Gestures only</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Drawing only</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Automatic</string>
+                   </property>
+                  </item>
                </widget>
               </item>
               <item row="0" column="2">
