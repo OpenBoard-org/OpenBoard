@@ -390,8 +390,10 @@ void UBThemeManager::updateWidgets()
     qDebug() << "Widget updates completed";
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
 void UBThemeManager::onColorSchemeChanged(Qt::ColorScheme colorScheme)
 {
     qDebug() << "System color scheme changed to:" << (colorScheme == Qt::ColorScheme::Dark ? "Dark" : "Light");
     applyTheme(colorScheme == Qt::ColorScheme::Dark);
 }
+#endif
