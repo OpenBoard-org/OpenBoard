@@ -693,7 +693,8 @@ void UBDocument::scan(bool tocPresent)
 
 bool UBDocument::copyPage(int fromIndex, UBDocument* to, int toIndex)
 {
-    if (mToc->isValidIndex(fromIndex) && to->mToc->isValidIndex(toIndex))
+    // toIndex == pageCount() appends the page
+    if (mToc->isValidIndex(fromIndex) && toIndex >= 0 && toIndex <= to->pageCount())
     {
         const auto dependencies = pageRelativeDependencies(fromIndex);
 
