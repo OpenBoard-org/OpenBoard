@@ -139,6 +139,7 @@ void UBDocumentToc::setPageId(int index, int pageId)
 
     assureSize(index);
     mToc[index][PAGE_ID] = pageId;
+    mNextAvailablePageId = std::max(mNextAvailablePageId, pageId + 1);
     mModified = true;
 }
 
