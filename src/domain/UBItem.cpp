@@ -105,36 +105,7 @@ void UBGraphicsItem::remove(bool canUndo)
 
 UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
 {
-    UBGraphicsItemDelegate *result = 0;
+    auto graphicsItem = dynamic_cast<UBGraphicsItem*>(pItem);
 
-    switch (static_cast<int>(pItem->type())) {
-    case UBGraphicsPixmapItem::Type :
-        result = (static_cast<UBGraphicsPixmapItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsTextItem::Type :
-        result = (static_cast<UBGraphicsTextItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsSvgItem::Type :
-        result = (static_cast<UBGraphicsSvgItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsMediaItem::Type:
-    case UBGraphicsVideoItem::Type:
-    case UBGraphicsAudioItem::Type:
-        result = (static_cast<UBGraphicsMediaItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsStrokesGroup::Type :
-        result = (static_cast<UBGraphicsStrokesGroup*>(pItem))->Delegate();
-        break;
-    case UBGraphicsGroupContainerItem::Type :
-        result = (static_cast<UBGraphicsGroupContainerItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsWidgetItem::Type :
-        result = (static_cast<UBGraphicsWidgetItem*>(pItem))->Delegate();
-        break;
-    case UBGraphicsCurtainItem::Type :
-        result = (static_cast<UBGraphicsCurtainItem*>(pItem))->Delegate();
-        break;
-    }
-
-    return result;
+    return graphicsItem ? graphicsItem->Delegate() : nullptr;
 }

@@ -85,6 +85,28 @@ class UBSvgSubsetAdaptor
             UBSvgSubsetReader* reader = nullptr;
         };
 
+        class UBSvgReaderExtension
+        {
+        public:
+            virtual ~UBSvgReaderExtension() = default;
+            virtual void readerExtension(std::shared_ptr<UBGraphicsScene> scene) = 0;
+        };
+
+        class UBSvgWriterExtension
+        {
+        public:
+            virtual ~UBSvgWriterExtension() = default;
+            virtual void writerExtension(QGraphicsItem* item) = 0;
+        };
+
+        class UBSvgAdaptorExtension
+        {
+        public:
+            virtual ~UBSvgAdaptorExtension() = default;
+            virtual UBSvgReaderExtension* createSvgReaderExtension(QXmlStreamReader& xmlReader) = 0;
+            virtual UBSvgWriterExtension* createSvgWriterExtension(QXmlStreamWriter& xmlWriter) = 0;
+        };
+
         static QByteArray loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
         static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
         static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, std::optional<QByteArray> xmlContent = {});
@@ -96,6 +118,8 @@ class UBSvgSubsetAdaptor
         static QVersionNumber sceneVersion(const QString& xmlContent);
         static void setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, QUuid pUuid);
         static void replicateScene(const QString& sourcePath, const QString& targetPath, QUuid uuid);
+
+        static void registerAdapterExtension(UBSvgAdaptorExtension* extension);
 
         static const QString nsSvg;
         static const QString nsXLink;
@@ -117,9 +141,12 @@ class UBSvgSubsetAdaptor
 
         static const QString sFormerUniboardDocumentNamespaceUri;
 
+    public:
         static QString toSvgTransform(const QTransform& matrix);
         static QTransform fromSvgTransform(const QString& transform);
 
+    private:
+        static UBSvgAdaptorExtension* sAdaptorExtension;
 
         class UBSvgSubsetReader
         {
@@ -142,8 +169,6 @@ class UBSvgSubsetAdaptor
                 UBGraphicsPolygonItem* polygonItemFromLineSvg(const QColor& pDefaultBrushColor);
 
                 UBGraphicsPolygonItem* polygonItemFromPolygonSvg(const QColor& pDefaultBrushColor);
-
-                QList<UBGraphicsPolygonItem*> polygonItemsFromPolylineSvg(const QColor& pDefaultColor);
 
                 UBGraphicsPixmapItem* pixmapItemFromSvg();
 
@@ -202,6 +227,8 @@ class UBSvgSubsetAdaptor
                 UBGraphicsStroke* currentStroke = nullptr;
                 UBGraphicsWidgetItem *currentWidget = nullptr;
                 bool mMustFinalize = false;
+
+                std::unique_ptr<UBSvgReaderExtension> mReaderExtension{};
         };
 
         class UBSvgSubsetWriter
@@ -217,11 +244,8 @@ class UBSvgSubsetAdaptor
             private:
 
                 void persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *curDomDocument);
-                void persistStrokeToDom(QGraphicsItem *strokeItem, QDomElement *curParent, QDomDocument *curDomDocument);
                 void polygonItemToSvgPolygon(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
                 void polygonItemToSvgLine(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
-                void strokeToSvgPolyline(UBGraphicsStroke* stroke, bool groupHoldsInfo);
-                void strokeToSvgPolygon(UBGraphicsStroke* stroke, bool groupHoldsInfo);
 
                 inline QString pointsToSvgPointsAttribute(QVector<QPointF> points)
                 {
@@ -288,6 +312,7 @@ class UBSvgSubsetAdaptor
                 QString mDocumentPath;
                 int mPageId;
 
+                std::unique_ptr<UBSvgWriterExtension> mWriterExtension{};
         };
 };
 

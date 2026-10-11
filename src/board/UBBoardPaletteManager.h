@@ -55,6 +55,8 @@ class UBApplicationController;
 class UBStartupHintsPalette;
 class UBPageNavigationWidget;
 
+class UBShapesPalette;
+
 class UBBoardPaletteManager : public QObject
 {
     Q_OBJECT
@@ -120,6 +122,8 @@ class UBBoardPaletteManager : public QObject
         UBActionPalette* mAddItemPalette;
         UBActionPalette* mErasePalette;
         UBActionPalette* mPagePalette;
+
+        UBShapesPalette* mShapesPalette{nullptr};
 
         QUrl mItemUrl;
         QPixmap mPixmap;

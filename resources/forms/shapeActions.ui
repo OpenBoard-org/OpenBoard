@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ShapeActions</class>
+ <widget class="QWidget" name="ShapeActions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>100</width>
+    <height>30</height>
+   </rect>
+  </property>
+  <action name="actionEllipse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/ellipse.svg</normaloff>
+     <normalon>:/images/drawingPalette/ellipseOn.svg</normalon>:/images/drawingPalette/ellipse.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Ellipse</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw an Ellipse</string>
+   </property>
+  </action>
+  <action name="actionPolygon">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/polygon.svg</normaloff>
+     <normalon>:/images/drawingPalette/polygonOn.svg</normalon>:/images/drawingPalette/polygon.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Polygon</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw a Polygon</string>
+   </property>
+  </action>
+  <action name="actionCircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/circle.svg</normaloff>
+     <normalon>:/images/drawingPalette/circleOn.svg</normalon>:/images/drawingPalette/circle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Circle</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw a Circle</string>
+   </property>
+  </action>
+  <action name="actionRectangle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/rectangle.svg</normaloff>
+     <normalon>:/images/drawingPalette/rectangleOn.svg</normalon>:/images/drawingPalette/rectangle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rectangle</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw a Rectangle</string>
+   </property>
+  </action>
+  <action name="actionSquare">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/square.svg</normaloff>
+     <normalon>:/images/drawingPalette/squareOn.svg</normalon>:/images/drawingPalette/square.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Square</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw a Square</string>
+   </property>
+  </action>
+  <action name="actionSmartLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/stylusPalette/line.png</normaloff>
+     <normalon>:/images/stylusPalette/lineOn.png</normalon>:/images/stylusPalette/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Lines</string>
+   </property>
+  </action>
+  <action name="actionRegularPolygon">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shapes.qrc">
+     <normaloff>:/images/drawingPalette/pentagon.svg</normaloff>
+     <normalon>:/images/drawingPalette/pentagonOn.svg</normalon>:/images/drawingPalette/pentagon.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Regular Polygon</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw a regular polygon</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../OpenBoard.qrc"/>
+  <include location="../shapes.qrc"/>
+ </resources>
+ <connections/>
+</ui>

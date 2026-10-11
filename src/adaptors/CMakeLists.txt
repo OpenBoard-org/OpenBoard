@@ -25,6 +25,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBMetadataDcSubsetAdaptor.h
     UBPageMapper.cpp
     UBPageMapper.h
+    UBSvgShapeAdaptor.cpp
+    UBSvgShapeAdaptor.h
     UBSvgSubsetAdaptor.cpp
     UBSvgSubsetAdaptor.h
     UBThumbnailAdaptor.cpp

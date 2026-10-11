@@ -8,6 +8,8 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsSvgItem.h \
     src/domain/UBGraphicsPolygonItem.h \
     src/domain/UBItem.h \
+    src/domain/UBItemStyle.h \
+    src/domain/UBItemStyleUndoCommand.h \
     src/domain/UBMediaAssetItem.h \
     src/domain/UBGraphicsWidgetItem.h \
     src/domain/UBGraphicsPDFItem.h \
@@ -25,6 +27,7 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsWidgetItemDelegate.h \
     src/domain/UBGraphicsMediaItemDelegate.h \
     src/domain/UBSelectionFrame.h \
+    src/domain/UBStyledItem.h \
     src/domain/UBUndoCommand.h \
     src/domain/UBGraphicsItemZLevelUndoCommand.h
 
@@ -38,6 +41,8 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsSvgItem.cpp \
     src/domain/UBGraphicsPolygonItem.cpp \
     src/domain/UBItem.cpp \
+    src/domain/UBItemStyle.cpp \
+    src/domain/UBItemStyleUndoCommand.cpp \
     src/domain/UBMediaAssetItem.cpp \
     src/domain/UBGraphicsWidgetItem.cpp \
     src/domain/UBGraphicsPDFItem.cpp \
@@ -55,5 +60,56 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsDelegateFrame.cpp \
     src/domain/UBGraphicsWidgetItemDelegate.cpp \
     src/domain/UBSelectionFrame.cpp \
+    src/domain/UBStyledItem.cpp \
     src/domain/UBUndoCommand.cpp \
     src/domain/UBGraphicsItemZLevelUndoCommand.cpp
+
+HEADERS +=
+    src/domain/shapes/UB1HEditableGraphicsBasicShapeItem.h \
+    src/domain/shapes/UB1HEditableGraphicsCircleItem.h \
+    src/domain/shapes/UB1HEditableGraphicsSquareItem.h \
+    src/domain/shapes/UB3HEditablesGraphicsBasicShapeItem.h \
+    src/domain/shapes/UB3HEditableGraphicsEllipseItem.h \
+    src/domain/shapes/UB3HEditableGraphicsRectItem.h \
+    src/domain/shapes/UBAbstractEditable.h \
+    src/domain/shapes/UBAbstractEditableGraphicsPathItem.h \
+    src/domain/shapes/UBAbstractEditableGraphicsShapeItem.h \
+    src/domain/shapes/UBAbstractGraphicsItem.h \
+    src/domain/shapes/UBAbstractGraphicsPathItem.h \
+    src/domain/shapes/UBAbstractHandle.h \
+    src/domain/shapes/UBAbstractHandlesBuilder.h \
+    src/domain/shapes/UBDiagonalHandle.h \
+    src/domain/shapes/UBEditableGraphicsLineItem.h \
+    src/domain/shapes/UBEditableGraphicsPolygonItem.h \
+    src/domain/shapes/UBEditableGraphicsRegularShapeItem.h \
+    src/domain/shapes/UBEditShapeUndoCommand.h \
+    src/domain/shapes/UBFreeHandle.h \
+    src/domain/shapes/UBHorizontalHandle.h \
+    src/domain/shapes/UBLineHandle.h \
+    src/domain/shapes/UBShapeFactory.h \
+    src/domain/shapes/UBVerticalHandle.h
+
+SOURCES +=
+    src/domain/shapes/UB1HEditableGraphicsBasicShapeItem.cpp \
+    src/domain/shapes/UB1HEditableGraphicsCircleItem.cpp \
+    src/domain/shapes/UB1HEditableGraphicsSquareItem.cpp \
+    src/domain/shapes/UB3HEditablesGraphicsBasicShapeItem.cpp \
+    src/domain/shapes/UB3HEditableGraphicsEllipseItem.cpp \
+    src/domain/shapes/UB3HEditableGraphicsRectItem.cpp \
+    src/domain/shapes/UBAbstractEditable.cpp \
+    src/domain/shapes/UBAbstractEditableGraphicsPathItem.cpp \
+    src/domain/shapes/UBAbstractEditableGraphicsShapeItem.cpp \
+    src/domain/shapes/UBAbstractGraphicsItem.cpp \
+    src/domain/shapes/UBAbstractGraphicsPathItem.cpp \
+    src/domain/shapes/UBAbstractHandle.cpp \
+    src/domain/shapes/UBAbstractHandlesBuilder.cpp \
+    src/domain/shapes/UBDiagonalHandle.cpp \
+    src/domain/shapes/UBEditableGraphicsLineItem.cpp \
+    src/domain/shapes/UBEditableGraphicsPolygonItem.cpp \
+    src/domain/shapes/UBEditableGraphicsRegularShapeItem.cpp \
+    src/domain/shapes/UBEditShapeUndoCommand.cpp \
+    src/domain/shapes/UBFreeHandle.cpp \
+    src/domain/shapes/UBHorizontalHandle.cpp \
+    src/domain/shapes/UBLineHandle.cpp \
+    src/domain/shapes/UBShapeFactory.cpp \
+    src/domain/shapes/UBVerticalHandle.cpp

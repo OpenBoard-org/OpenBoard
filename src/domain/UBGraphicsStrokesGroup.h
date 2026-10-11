@@ -35,37 +35,35 @@
 
 #include "core/UB.h"
 #include "UBItem.h"
+#include "domain/UBStyledItem.h"
 
-class UBGraphicsStrokesGroup : public QGraphicsItemGroup, public UBItem, public UBGraphicsItem
+class UBGraphicsStrokesGroup : public QGraphicsItemGroup, public UBItem, public UBGraphicsItem, public UBStyledItem
 {
 public:
-    enum colorType {
-        currentColor = 0
-        , colorOnLightBackground
-        , colorOnDarkBackground
-    };
-
     UBGraphicsStrokesGroup(QGraphicsItem* parent = 0);
     ~UBGraphicsStrokesGroup();
-    virtual UBItem* deepCopy() const;
-    virtual void copyItemParameters(UBItem *copy) const;
+    virtual UBItem* deepCopy() const override;
+    virtual void copyItemParameters(UBItem *copy) const override;
     enum { Type = UBGraphicsItemType::StrokeItemType };
-    virtual int type() const
+    virtual int type() const override
     {
         return Type;
     }
-    void setColor(const QColor &color, colorType pColorType = currentColor);
-    QColor color(colorType pColorType = currentColor) const;
+
+    virtual UBItemStyle itemStyle() const override;
+    virtual void applyItemStyle(const UBItemStyle& style, bool isDark) override;
+    virtual bool isShape() const override;
+    virtual bool isMarker() const override;
 
 protected:
 
-    virtual QPainterPath shape () const;
+    virtual QPainterPath shape () const override;
 
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     // Graphical display of stroke Z-level
     bool debugTextEnabled;

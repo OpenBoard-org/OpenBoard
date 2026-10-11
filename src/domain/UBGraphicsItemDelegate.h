@@ -310,6 +310,7 @@ class UBGraphicsItemDelegate : public QObject
         void showMenu();
 
         virtual void showHide(bool show);
+        virtual void showFrame(bool show);
         virtual void showOnDisplay(bool hide);
         virtual void hideOnDisplayWhenSelected(bool hide);
         virtual void lock(bool lock);
@@ -381,7 +382,7 @@ private:
         QMimeData* mMimeData;
         QPixmap mDragPixmap;
 
-        bool mMoved;
+        bool mUndoStepStarted{false};
         UBGraphicsFlags mFlags;
 };
 

@@ -149,6 +149,11 @@ void UBToolbarButtonGroup::setSelectableCount(int count)
     }
 }
 
+QList<QAction*> UBToolbarButtonGroup::buttonActions() const
+{
+    return mActions;
+}
+
 void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());
@@ -247,27 +252,32 @@ void UBToolbarButtonGroup::paintEvent(QPaintEvent *)
 }
 
 
-void UBToolbarButtonGroup::colorPaletteChanged()
+void UBToolbarButtonGroup::colorPaletteChanged(UBStylusTool::Enum tool)
 {
     setSelectableCount(qMin(UBSettings::settings()->colorPaletteSize, mActions.size()));
 
     bool isDarkBackground = UBSettings::settings()->isDarkBackground();
 
-    QList<QColor> colors;
+    QList<QColor> colorsOnLight;
+    QList<QColor> colorsOnDark;
 
-    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen 
-        || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line)
+    if (tool == UBStylusTool::Pen || tool == UBStylusTool::Drawing)
     {
-        colors = UBSettings::settings()->penColors(isDarkBackground);
+        colorsOnLight = UBSettings::settings()->penColors(false);
+        colorsOnDark = UBSettings::settings()->penColors(true);
     }
-    else if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
+    else if (tool == UBStylusTool::Marker)
     {
-        colors = UBSettings::settings()->markerColors(isDarkBackground);
+        colorsOnLight = UBSettings::settings()->markerColors(false);
+        colorsOnDark = UBSettings::settings()->markerColors(true);
     }
+
+    const auto colors = isDarkBackground ? colorsOnDark : colorsOnLight;
 
     for (int i = 0; i < mSelectableCount && i < colors.size(); i++)
     {
         setColor(colors.at(i), i);
+        mActions.at(i)->setProperty("color", QVariantList{colorsOnLight.at(i), colorsOnDark.at(i)});
     }
 }
 

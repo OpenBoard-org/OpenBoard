@@ -44,6 +44,7 @@
 #include "gui/UBMagnifer.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
+#include "gui/shapes/UBStylePalette.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsAxes.h"
@@ -72,10 +73,11 @@
 #include "UBGraphicsStrokesGroup.h"
 #include "UBSelectionFrame.h"
 #include "UBGraphicsItemZLevelUndoCommand.h"
+#include "UBGraphicsStroke.h"
 
 #include "domain/UBGraphicsGroupContainerItem.h"
-
-#include "UBGraphicsStroke.h"
+#include "domain/UBItemStyleUndoCommand.h"
+#include "domain/shapes/UBEditableGraphicsLineItem.h"
 
 #include "core/memcheck.h"
 
@@ -398,6 +400,7 @@ void UBGraphicsScene::selectionChangedProcessing()
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
+    mGroupsMap.clear();
 
     if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
@@ -440,6 +443,11 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             else{
                 // Ignore pressure for the line tool
                 width = UBDrawingController::drawingController()->currentToolWidth();
+            }
+
+            if (currentTool == UBStylusTool::Marker)
+            {
+                mCurrentStroke->setRole(UBGraphicsStroke::MARKER);
             }
 
             width /= UBApplication::boardController->systemScaleFactor();
@@ -768,6 +776,37 @@ bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifie
                 delete mCurrentStroke;
                 mCurrentStroke = 0;
             }
+
+            // convert to line shape if it is a nominal line
+            if (mCurrentStroke
+                    && mCurrentStroke->polygons().size() == 1
+                    &&  mCurrentStroke->polygons().at(0)->isNominalLine())
+            {
+                // construct line
+                const auto polygon = mCurrentStroke->polygons().at(0);
+                const auto originalLine = polygon->originalLine();
+                auto pathItem = new UBEditableGraphicsLineItem();
+                pathItem->addPoint(originalLine.p1());
+                pathItem->addPoint(originalLine.p2());
+                pathItem->setZValue(pStrokes->zValue());
+
+                // apply style
+                UBItemStyle style;
+                style.setLineColor(polygon->colorOnLightBackground(), polygon->colorOnDarkBackground());
+                style.setLineStyle(Qt::SolidLine);
+                style.setLineWidth(polygon->originalWidth());
+                pathItem->applyItemStyle(style, isDarkBackground());
+
+                // exchange items
+                addItem(pathItem);
+                removeItem(pStrokes);
+                mAddedItems << pathItem;
+                mAddedItems.remove(pStrokes);
+
+                delete pStrokes;
+                mCurrentStroke = nullptr;
+            }
+
             mCurrentPolygon = 0;
         }
     }
@@ -777,7 +816,7 @@ bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifie
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             if (UBApplication::undoStack)
             {
-                UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(shared_from_this(), mRemovedItems, mAddedItems); //deleted by the undoStack
+                UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(shared_from_this(), mRemovedItems, mAddedItems, mGroupsMap); //deleted by the undoStack
                 UBApplication::undoStack->push(udcmd);
             }
         }
@@ -1050,6 +1089,14 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
     for(int i=0; i<collidItems.size(); i++)
     {
+        UBAbstractGraphicsItem* shapeItem = dynamic_cast<UBAbstractGraphicsItem*>(collidItems[i]);
+
+        if (shapeItem && eraserPath.intersects(shapeItem->sceneTransform().map(shapeItem->shape())))
+        {
+            // replace shape by equivalent strokes group
+            collidItems[i] = shapeToStrokesGroup(shapeItem);
+        }
+
         UBGraphicsPolygonItem *pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems[i]);
         if(pi == NULL)
             continue;
@@ -1202,23 +1249,47 @@ void UBGraphicsScene::recolorAllItems()
     }
 
     bool currentIslight = isLightBackground();
+
     foreach (QGraphicsItem *item, items()) {
         if (item->type() == UBGraphicsStrokesGroup::Type) {
             UBGraphicsStrokesGroup *curGroup = static_cast<UBGraphicsStrokesGroup*>(item);
-            QColor compareColor =  curGroup->color(currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
-                                                                  : UBGraphicsStrokesGroup::colorOnLightBackground);
 
-            if (curGroup->color() == compareColor) {
-                QColor newColor = curGroup->color(!currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
-                                                                  : UBGraphicsStrokesGroup::colorOnLightBackground);
-                curGroup->setColor(newColor);
+            const auto groupItems = curGroup->childItems();
+
+            for (auto item : groupItems)
+            {
+                auto polygonItem = dynamic_cast<UBGraphicsPolygonItem*>(item);
+
+                if (polygonItem)
+                {
+                    const auto compareColor = currentIslight
+                            ? polygonItem->colorOnDarkBackground()
+                            : polygonItem->colorOnLightBackground();
+
+                    if (polygonItem->color() == compareColor)
+                    {
+                        const auto newColor = currentIslight
+                                ? polygonItem->colorOnLightBackground()
+                                : polygonItem->colorOnDarkBackground();
+                        polygonItem->setColor(newColor);
+                    }
+                }
             }
         }
 
-        if (item->type() == UBGraphicsTextItem::Type)
+        else if (item->type() == UBGraphicsTextItem::Type)
         {
             UBGraphicsTextItem *textItem = static_cast<UBGraphicsTextItem*>(item);
             textItem->recolor();
+        }
+        else
+        {
+            auto shape = dynamic_cast<UBAbstractGraphicsItem*>(item);
+
+            if (shape)
+            {
+                shape->applyItemStyle(shape->itemStyle(), isDarkBackground());
+            }
         }
     }
 
@@ -1278,6 +1349,94 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     polygonItem->setColorOnLightBackground(colorOnLightBG);
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
+}
+
+UBGraphicsStrokesGroup* UBGraphicsScene::shapeToStrokesGroup(UBAbstractGraphicsItem* shapeItem)
+{
+    // Convert a shape to a strokes group to allow use of the eraser
+
+    // The painterPath is a QPainterPath describing the line of a shape without pen or brush
+    auto painterPath = shapeItem->painterPath();
+
+    // Now lets put all together in a strokes group
+    UBGraphicsStrokesGroup* strokesGroup = new UBGraphicsStrokesGroup();
+    const auto shapeStyle = shapeItem->itemStyle();
+
+    // If it is not transparent, create one polygon for the fill area
+    if (shapeStyle.fillColor(isDarkBackground()) != QColor{Qt::transparent}
+            && (shapeItem->type() != UBGraphicsItemType::GraphicsPathItemType
+                || dynamic_cast<UBEditableGraphicsPolygonItem*>(shapeItem)->isClosed()))
+    {
+        UBGraphicsStroke* stroke = new UBGraphicsStroke{shared_from_this()};
+        stroke->setRole(UBGraphicsStroke::FILL);
+        painterPath.setFillRule(Qt::WindingFill);
+        UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem{painterPath.toFillPolygon()};
+        polygonItem->setColor(shapeStyle.fillColor(isDarkBackground()));
+        polygonItem->setColorOnLightBackground(shapeStyle.fillColor(false));
+        polygonItem->setColorOnDarkBackground(shapeStyle.fillColor(true));
+        polygonItem->setStrokesGroup(strokesGroup);
+        polygonItem->setStroke(stroke);
+        addItem(polygonItem);
+        strokesGroup->addToGroup(polygonItem);
+    }
+
+    // We now create the outline of the line
+    auto currentPen = shapeItem->pen();
+    currentPen.setCapStyle(Qt::RoundCap);
+    currentPen.setJoinStyle(Qt::RoundJoin);
+    QPainterPathStroker stroker{currentPen};
+    auto outline = stroker.createStroke(painterPath);
+
+    // This outline is then converted to fill polygons, which then behaves like a stroke
+    // There might be one or more polygons, according to the complexity of the line
+    outline.setFillRule(Qt::WindingFill);
+    auto fillPolygons = outline.toFillPolygons();
+
+    // Create one polygon for each fill polygon
+    if (!fillPolygons.isEmpty())
+    {
+        UBGraphicsStroke* stroke = new UBGraphicsStroke{shared_from_this()};
+        stroke->setRole(UBGraphicsStroke::OUTLINE);
+
+        for (const auto fillPolygon : fillPolygons)
+        {
+            UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem{fillPolygon};
+            polygonItem->setColor(shapeStyle.lineColor(isDarkBackground()));
+            polygonItem->setColorOnLightBackground(shapeStyle.lineColor(false));
+            polygonItem->setColorOnDarkBackground(shapeStyle.lineColor(true));
+            polygonItem->setStrokesGroup(strokesGroup);
+            polygonItem->setStroke(stroke);
+            addItem(polygonItem);
+            strokesGroup->addToGroup(polygonItem);
+        }
+    }
+
+    auto group = dynamic_cast<UBGraphicsGroupContainerItem*>(shapeItem->parentItem());
+
+    if (group)
+    {
+        group->removeFromGroup(shapeItem);
+        strokesGroup->setPos(shapeItem->pos());
+        strokesGroup->setTransform(shapeItem->transform());
+        strokesGroup->setZValue(shapeItem->zValue());
+        group->addToGroup(strokesGroup);
+        mGroupsMap.insert(group, shapeItem->uuid());
+    }
+    else
+    {
+        // replace shape by strokes group
+        addItem(strokesGroup);
+        strokesGroup->setPos(shapeItem->pos());
+        strokesGroup->setTransform(shapeItem->transform());
+        strokesGroup->setZValue(shapeItem->zValue());
+    }
+
+    removeItem(shapeItem);
+
+    mRemovedItems << shapeItem;
+    mAddedItems << strokesGroup;
+
+    return strokesGroup;
 }
 
 UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth)
@@ -2040,6 +2199,11 @@ void UBGraphicsScene::deselectAllItems()
         UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(gi);
         if(textItem)
             textItem->activateTextEditor(false);
+
+        if (UBShapeFactory::isShape(gi))
+        {
+            UBShapeFactory::desactivateEditionMode(gi);
+        }
     }
 }
 
@@ -2052,6 +2216,11 @@ void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* item)
             UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(eachItem);
             if(textItem)
                 textItem->activateTextEditor(false);
+
+            if (UBShapeFactory::isShape(eachItem))
+            {
+                UBShapeFactory::desactivateEditionMode(eachItem);
+            }
         }
     }
 }
@@ -2433,6 +2602,31 @@ void UBGraphicsScene::controlViewportChanged()
     }
 }
 
+void UBGraphicsScene::styledItemSelectionChanged(UBStyledItem* item, bool selected)
+{
+    if (selected)
+    {
+        mSelectedStyledItems << item;
+    }
+    else
+    {
+        mSelectedStyledItems.remove(item);
+    }
+
+    UBApplication::boardController->stylePalette()->updateSelection();
+}
+
+QSet<UBStyledItem*> UBGraphicsScene::selectedStyledItems() const
+{
+    return mSelectedStyledItems;
+}
+
+void UBGraphicsScene::applyStyle(const UBItemStyle& style)
+{
+    UBItemStyleUndoCommand *uc = new UBItemStyleUndoCommand(shared_from_this(), mSelectedStyledItems, style);
+    UBApplication::undoStack->push(uc);
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene
@@ -2546,6 +2740,14 @@ QPointF UBGraphicsScene::snap(const QRectF& rect, Qt::Corner* corner) const
 
 QRectF UBGraphicsScene::itemRect(const QGraphicsItem* item)
 {
+    const auto shape = dynamic_cast<const UBAbstractGraphicsItem*>(item);
+
+    if (shape)
+    {
+        // use the provided painter path to calculate the item rectangle
+        return shape->painterPath().boundingRect();
+    }
+
     // compute an item's rectangle in item coordinates
     // taking into account the shape of the item and
     // the nature of nominal lines
