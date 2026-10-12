@@ -24,7 +24,7 @@
 
 
 #include <QObject>
-
+#include <memory>
 
 // forward
 class UBDocumentProxy;
