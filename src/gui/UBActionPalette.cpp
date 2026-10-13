@@ -176,6 +176,12 @@ void UBActionPalette::setButtonIconSize(const QSize& size)
         button->setIconSize(size);
 
     mButtonSize = size;
+
+    // Re-run the layout now that the buttons have changed size. This is also
+    // the first point at which a subclass's buttonSpacing() can be reached:
+    // init() calls updateLayout() from the UBActionPalette constructor, where
+    // the call still resolves to the base implementation.
+    updateLayout();
 }
 
 
@@ -226,6 +232,11 @@ void UBActionPalette::updateLayout()
                 , sLayoutContentMargin  + border(), sLayoutContentMargin + border());
 
     }
+   if (buttonSpacing() >= 0)
+   {
+       layout()->setSpacing(buttonSpacing());
+   }
+
    update();
 }
 

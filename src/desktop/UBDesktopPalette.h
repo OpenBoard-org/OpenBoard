@@ -77,6 +77,7 @@ protected:
 
         virtual int getParentRightOffset();
         virtual int grabMargin() const override;
+        virtual int buttonSpacing() const override;
 
 private:
         QAction *mShowHideAction;

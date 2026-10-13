@@ -92,6 +92,10 @@ class UBFloatingPalette : public QWidget
         // handle grows inwards over them.
         virtual int grabMargin() const;
         virtual int gripSize();
+        // Gap between the palette's buttons. A negative value leaves the
+        // layout's style-provided spacing alone, which is what most palettes
+        // want; only the ones whose buttons scale override it.
+        virtual int buttonSpacing() const;
         virtual int closeButtonMargin() const;
         virtual void onCloseButtonClicked();
 

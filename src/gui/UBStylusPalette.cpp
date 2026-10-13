@@ -35,6 +35,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
+#include "core/UBSetting.h"
 #include "core/UBApplicationController.h"
 #include "core/UBShortcutManager.h"
 
@@ -150,6 +151,13 @@ void UBStylusPalette::applyToolVisibility()
                      settings->desktopPaletteShowSelector->get().toBool());
     setButtonVisible(UBApplication::mainWindow->actionPointer,
                      settings->desktopPaletteShowPointer->get().toBool());
+}
+
+int UBStylusPalette::buttonSpacing() const
+{
+    // Button size follows the palette scale, so the gaps grow with it. Keep
+    // them tight and configurable instead.
+    return qBound(0, UBSettings::settings()->paletteButtonSpacingPx->get().toInt(), 30);
 }
 
 void UBStylusPalette::initPosition()

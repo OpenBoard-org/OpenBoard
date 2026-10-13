@@ -307,6 +307,7 @@ class UBSettings : public QObject
         UBSetting* desktopPaletteShowSelector;
         UBSetting* desktopPaletteShowPointer;
         UBSetting* desktopPaletteGrabMarginPx;
+        UBSetting* paletteButtonSpacingPx;
 
         UBSetting* boardInterpolatePenStrokes;
         UBSetting* boardSimplifyPenStrokes;

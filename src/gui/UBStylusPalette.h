@@ -45,6 +45,9 @@ class UBStylusPalette : public UBActionPalette
 
         void initPosition();
 
+    protected:
+        virtual int buttonSpacing() const override;
+
     private slots:
 
         void stylusToolDoubleClicked();

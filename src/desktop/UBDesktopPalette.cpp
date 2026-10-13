@@ -112,6 +112,13 @@ UBDesktopPalette::~UBDesktopPalette()
 }
 
 
+int UBDesktopPalette::buttonSpacing() const
+{
+    // Button size follows the palette scale, so the gaps grow with it. Keep
+    // them tight and configurable instead.
+    return qBound(0, UBSettings::settings()->paletteButtonSpacingPx->get().toInt(), 30);
+}
+
 void UBDesktopPalette::adjustPosition()
 {
     QPoint pos = this->pos();

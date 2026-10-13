@@ -430,6 +430,11 @@ int UBFloatingPalette::gripSize()
     return 5;
 }
 
+int UBFloatingPalette::buttonSpacing() const
+{
+    return -1;
+}
+
 void UBFloatingPalette::buildCloseButton()
 {
     if (mCloseButton)
