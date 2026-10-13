@@ -451,7 +451,7 @@ UBActionSubPaletteButton::UBActionSubPaletteButton(QAction* action, QWidget* par
 {
     connect(this, &QToolButton::pressed, this, &UBActionSubPaletteButton::buttonPressed);
     connect(this, &QToolButton::released, this, &UBActionSubPaletteButton::buttonReleased);
-    connect(&mPressedTimer, &QTimer::timeout, mSubPalette, &QWidget::show);
+    connect(&mPressedTimer, &QTimer::timeout, mSubPalette, &UBAbstractSubPalette::togglePalette);
 }
 
 bool UBActionSubPaletteButton::hitButton(const QPoint& pos) const
@@ -509,7 +509,7 @@ void UBActionSubPaletteButton::buttonPressed()
     if (mArrowRect.contains(*mPressedPos))
     {
         mSubPalette->raise();
-        mSubPalette->show();
+        mSubPalette->togglePalette();
         return;
     }
 

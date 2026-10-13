@@ -170,7 +170,12 @@ void UBBoardController::init()
     undoRedoStateChange(true);
 
     mShapeFactory.init();
-    connect(mStylePalette, &UBStylePalette::styleChanged, &mShapeFactory, &UBShapeFactory::setCurrentStyle);
+    connect(mStylePalette, &UBStylePalette::styleChanged, &mShapeFactory, [this](const UBItemStyle& style, UBStylusTool::Enum activeTool){
+        if (activeTool == UBStylusTool::Drawing)
+        {
+            mShapeFactory.setCurrentStyle(style);
+        }
+    });
     mShapeFactory.setCurrentStyle(mStylePalette->selectedStyle());
 }
 

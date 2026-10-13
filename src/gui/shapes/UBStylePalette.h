@@ -53,7 +53,7 @@ public slots:
     void updateChoice(const UBItemStyle& style);
 
 signals:
-    void styleChanged(const UBItemStyle& style);
+    void styleChanged(const UBItemStyle& style, UBStylusTool::Enum activeTool);
 
 private:
     void init();

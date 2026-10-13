@@ -64,7 +64,7 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBUndoCommand.cpp \
     src/domain/UBGraphicsItemZLevelUndoCommand.cpp
 
-HEADERS +=
+HEADERS += \
     src/domain/shapes/UB1HEditableGraphicsBasicShapeItem.h \
     src/domain/shapes/UB1HEditableGraphicsCircleItem.h \
     src/domain/shapes/UB1HEditableGraphicsSquareItem.h \
@@ -89,7 +89,7 @@ HEADERS +=
     src/domain/shapes/UBShapeFactory.h \
     src/domain/shapes/UBVerticalHandle.h
 
-SOURCES +=
+SOURCES += \
     src/domain/shapes/UB1HEditableGraphicsBasicShapeItem.cpp \
     src/domain/shapes/UB1HEditableGraphicsCircleItem.cpp \
     src/domain/shapes/UB1HEditableGraphicsSquareItem.cpp \

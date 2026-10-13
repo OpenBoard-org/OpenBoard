@@ -55,9 +55,9 @@ UBStylePalette::UBStylePalette(QToolBar* toolBar, UBToolbarButtonGroup* lineColo
 
     connect(this, &UBStylePalette::styleChanged, this, &UBStylePalette::updatePreview);
     connect(this, &UBStylePalette::styleChanged, this,
-            [](UBItemStyle style)
+            [](UBItemStyle style, UBStylusTool::Enum tool)
             {
-                if (UBApplication::boardController->activeScene())
+                if (tool == UBStylusTool::Selector && UBApplication::boardController->activeScene())
                 {
                     UBApplication::boardController->activeScene()->applyStyle(style);
                 }
@@ -599,7 +599,7 @@ void UBStylePalette::applyStyle(const UBItemStyle& style)
             mStyle = style;
         }
 
-        emit styleChanged(style);
+        emit styleChanged(style, mMode);
     }
 }
 
