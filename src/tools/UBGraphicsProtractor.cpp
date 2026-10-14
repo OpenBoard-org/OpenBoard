@@ -687,12 +687,12 @@ UBItem* UBGraphicsProtractor::deepCopy() const
 {
     UBGraphicsProtractor* copy = new UBGraphicsProtractor();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
-
-    // TODO UB 4.7 ... complete all members ?
 
     return copy;
 }
+
 void UBGraphicsProtractor::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsProtractor *cp = dynamic_cast<UBGraphicsProtractor*>(copy);

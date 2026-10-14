@@ -107,13 +107,12 @@ UBGraphicsCompass::~UBGraphicsCompass()
 
 UBItem* UBGraphicsCompass::deepCopy() const
 {
-   UBGraphicsCompass* copy = new UBGraphicsCompass();
+    UBGraphicsCompass* copy = new UBGraphicsCompass();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
 
-   // TODO UB 4.7 ... complete all members ?
-
-   return copy;
+    return copy;
 }
 
 void UBGraphicsCompass::copyItemParameters(UBItem *copy) const

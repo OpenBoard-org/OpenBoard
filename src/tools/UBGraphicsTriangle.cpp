@@ -115,12 +115,10 @@ UBItem* UBGraphicsTriangle::deepCopy(void) const
 {
     UBGraphicsTriangle* copy = new UBGraphicsTriangle();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
 
-    // TODO UB 4.7 ... complete all members ?
-
     return copy;
-
 }
 
 void UBGraphicsTriangle::copyItemParameters(UBItem *copy) const

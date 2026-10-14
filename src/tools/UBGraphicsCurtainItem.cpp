@@ -141,13 +141,12 @@ void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 UBItem* UBGraphicsCurtainItem::deepCopy() const
 {
-   UBGraphicsCurtainItem* copy = new UBGraphicsCurtainItem();
+    UBGraphicsCurtainItem* copy = new UBGraphicsCurtainItem();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
 
-   // TODO UB 4.7 ... complete all members ?
-
-   return copy;
+    return copy;
 }
 
 void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
