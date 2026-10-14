@@ -147,7 +147,10 @@ QColor UBGraphicsPolygonItem::color() const
 UBItem* UBGraphicsPolygonItem::deepCopy() const
 {
     UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
+
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
+
     return copy;
 }
 
