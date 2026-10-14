@@ -752,8 +752,14 @@ void UBPlatformUtils::showOSK(bool show)
     }
 }
 
-void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, QRect rect)
+void UBPlatformUtils::grabScreen(QScreen* screen, std::function<void (QPixmap)> callback, bool crop)
 {
-    QPixmap pixmap = screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    Q_UNUSED(crop)
+    QPixmap pixmap = screen->grabWindow(0);
     callback(pixmap);
+}
+
+bool UBPlatformUtils::grabCanCrop()
+{
+    return false;
 }

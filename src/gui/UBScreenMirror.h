@@ -34,7 +34,7 @@
 #include <QWidget>
 
 // forward
-class UBDesktopPortal;
+class UBScreenCastDesktopPortalWrapper;
 
 
 class UBScreenMirror : public QWidget
@@ -70,7 +70,7 @@ class UBScreenMirror : public QWidget
         bool mIsStarted{false};
 
 #ifdef Q_OS_LINUX
-        UBDesktopPortal* mPortal{nullptr};
+        UBScreenCastDesktopPortalWrapper* mPortal{nullptr};
 #endif
 };
 
