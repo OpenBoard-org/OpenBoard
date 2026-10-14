@@ -32,6 +32,8 @@
 #include <QTimer>
 #include <QDebug>
 
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "frameworks/linux/UBDesktopPortalTokenGenerator.h"
 
 
@@ -116,7 +118,18 @@ void UBScreenshotDesktopPortalWrapper::handleScreenshotResponse(uint code, const
         }
         else
         {
+            // compute the rectangle covering all screens
+            const auto availableScreens = UBApplication::displayManager->availableScreens();
+            QRect globalScreenRect{};
+
+            for (const auto screen : availableScreens)
+            {
+                globalScreenRect |= screen->geometry();
+            }
+
+            qDebug() << "DesktopPortal: global screen coordinates" << globalScreenRect;
             QRect targetRect = mScreenRect;
+            targetRect.moveTo(mScreenRect.topLeft() - globalScreenRect.topLeft());
             targetRect &= pixmap.rect();
             screenshot = pixmap.copy(targetRect);
             qDebug() << "DesktopPortal: cropping screenshot" << "targetRect" << targetRect;

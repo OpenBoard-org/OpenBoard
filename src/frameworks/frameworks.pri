@@ -36,10 +36,12 @@ macx {
 
 
 linux-g++* {
-    HEADERS  += src/frameworks/linux/UBScreenCastDesktopPortalWrapper.h \
+    HEADERS  += src/frameworks/linux/UBDesktopPortalTokenGenerator.h \
+                src/frameworks/linux/UBScreenCastDesktopPortalWrapper.h \
                 src/frameworks/linux/UBScreenshotDesktopPortalWrapper.h \
                 src/frameworks/linux/UBPipewireSink.h
     SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
+                src/frameworks/linux/UBDesktopPortalTokenGenerator.cpp \
                 src/frameworks/linux/UBScreenCastDesktopPortalWrapper.cpp \
                 src/frameworks/linux/UBScreenshotDesktopPortalWrapper.cpp \
                 src/frameworks/linux/UBPipewireSink.cpp

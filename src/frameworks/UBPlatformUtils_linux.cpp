@@ -62,11 +62,11 @@ static DesktopEnvironment desktopEnvironment()
     {
         const auto xdgCurrentDesktop{QProcessEnvironment::systemEnvironment().value("XDG_CURRENT_DESKTOP", "")};
 
-        if (xdgCurrentDesktop.compare("gnome", Qt::CaseInsensitive) == 0)
+        if (xdgCurrentDesktop.contains("gnome", Qt::CaseInsensitive))
         {
             desktop = GNOME;
         }
-        else if (xdgCurrentDesktop.compare("kde", Qt::CaseInsensitive) == 0)
+        else if (xdgCurrentDesktop.contains("kde", Qt::CaseInsensitive))
         {
             desktop = KDE;
         }
