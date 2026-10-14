@@ -26,7 +26,7 @@
   </description>
   <url type="homepage">https://www.openboard.ch</url>
   <url type="bugtracker">https://github.com/OpenBoard-org/OpenBoard/issues</url>
-  <url type="help">https://openboard.ch/support.en.html</url>
+  <url type="help">https://openboard.ch/en/support</url>
   <url type="translate">https://github.com/OpenBoard-org/openboard/pulls</url>
   <content_rating type="oars-1.0"/>
   <translation type="qt">OpenBoard</translation>
@@ -53,8 +53,9 @@
   </screenshots>
   <releases>
     <release version="${VERSION}" date="20${RELEASE_YEAR}-${RELEASE_MONTH}-${RELEASE_DAY}">
+      <url>https://github.com/OpenBoard-org/OpenBoard/releases/tag/v${VERSION}</url>
       <description>
-        <p>See <a href="https://github.com/OpenBoard-org/OpenBoard/releases/tag/v${VERSION}">Release notes</a> for details about this version.</p>
+        <p>See Release notes for details about this version.</p>
       </description>
     </release>
   </releases>
