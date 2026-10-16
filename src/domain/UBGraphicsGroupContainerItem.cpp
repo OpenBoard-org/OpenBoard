@@ -161,8 +161,8 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
     pRemoveFromGroup(item);
 
-    item->setFlags(ItemIsSelectable | ItemIsFocusable);
-
+    item->setFlag(QGraphicsItem::ItemIsSelectable);
+    item->setFlag(QGraphicsItem::ItemIsFocusable);
 }
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
@@ -254,7 +254,8 @@ void UBGraphicsGroupContainerItem::destroy(bool canUndo)
     for (auto item : childItems())
     {
         pRemoveFromGroup(item);
-        item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+        item->setFlag(QGraphicsItem::ItemIsSelectable);
+        item->setFlag(QGraphicsItem::ItemIsFocusable);
 
         if (canUndo)
         {
