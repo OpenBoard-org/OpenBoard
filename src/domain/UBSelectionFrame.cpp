@@ -180,6 +180,17 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (scene()->itemAt(event->scenePos(), transform()) == mRotateButton) {
         mOperationMode = om_rotating;
+        mRotationCenter = mapToScene(rect().center());
+
+        // normalize all items, i.e. use transform for positioning
+        for (const auto delegate : mEnclosedtems)
+        {
+            auto item = delegate->delegated();
+            auto tr = item->sceneTransform();
+            item->setPos(0, 0);
+            item->setRotation(0);
+            item->setTransform(tr);
+        }
     } else {
         mOperationMode = om_moving;
     }
@@ -191,7 +202,6 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     QPointF dp = event->pos() - mPressedPos;
-    QPointF rotCenter = mapToScene(rect().center());
 
     QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
     QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
@@ -255,19 +265,15 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QGraphicsItem *item = curDelegate->delegated();
             QTransform ownTransform = item->transform();
 
-            QPointF nextRotCenter = item->mapFromScene(rotCenter);
+            qreal cntrX = mRotationCenter.x();
+            qreal cntrY = mRotationCenter.y();
 
-            qreal cntrX = nextRotCenter.x();
-            qreal cntrY = nextRotCenter.y();
+            QTransform tr;
+            tr.translate(cntrX, cntrY);
+            tr.rotate(-dAngle);
+            tr.translate(-cntrX, -cntrY);
 
-            const auto flipped = ownTransform.m11() * ownTransform.m22() < 0;
-            ownTransform.translate(cntrX, cntrY);
-            ownTransform.rotate(flipped ? dAngle : -dAngle);
-            ownTransform.translate(-cntrX, -cntrY);
-
-            item->update();
-            item->setTransform(ownTransform, false);
-
+            item->setTransform(ownTransform * tr);
         } break;
 
         }

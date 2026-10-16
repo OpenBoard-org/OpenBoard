@@ -104,6 +104,7 @@ private:
     QPointF mLastTranslateOffset;
     qreal mCursorRotationAngle;
     qreal mItemRotationAngle;
+    QPointF mRotationCenter;
 
     bool mIsLocked;
 
