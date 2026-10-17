@@ -755,6 +755,11 @@ void UBGraphicsItemDelegate::commitUndoStep()
     }
 }
 
+QTransform UBGraphicsItemDelegate::previousTransform()
+{
+    return mPreviousTransform;
+}
+
 void UBGraphicsItemDelegate::onZoomChanged()
 {
     mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());

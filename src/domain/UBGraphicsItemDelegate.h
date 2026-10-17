@@ -277,6 +277,7 @@ class UBGraphicsItemDelegate : public QObject
 
         void startUndoStep();
         void commitUndoStep();
+        QTransform previousTransform();
 
         UBGraphicsDelegateFrame* frame() {return mFrame;}
 
