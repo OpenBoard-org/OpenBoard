@@ -45,11 +45,16 @@ class UBStylusPalette : public UBActionPalette
 
         void initPosition();
 
+    protected:
+        virtual int buttonSpacing() const override;
+
     private slots:
 
         void stylusToolDoubleClicked();
+        void paletteSettingsChanged(QVariant value = QVariant());
 
     private:
+        void applyToolVisibility();
         int mLastSelectedId;
 
     signals:

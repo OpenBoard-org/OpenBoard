@@ -133,6 +133,7 @@ class UBDesktopAnnotationController : public QObject
         void togglePropertyPalette(UBActionPalette* palette);
         void updateMask(bool bTransparent);
         static QPixmap clipboardScreenshot();
+        bool isSubtoolArrowPressed(QAction* action) const;
 
         UBDesktopPalette *mDesktopPalette;
         //UBKeyboardPalette *mKeyboardPalette;

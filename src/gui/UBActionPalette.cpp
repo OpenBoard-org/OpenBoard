@@ -106,10 +106,15 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
 
     mMapActionToButton[action] = button;
 
+    // Lets the palette claim presses that land in its edge band, so the
+    // draggable area can extend over the buttons without moving them.
+    button->installEventFilter(this);
+
     connect(button, &UBActionPaletteButton::clicked,
             this, &UBActionPalette::buttonClicked);
     connect(action, &QAction::changed,
-            this, &UBActionPalette::actionChanged);
+            this, &UBActionPalette::actionChanged,
+            Qt::UniqueConnection);
 
     return button;
 }
@@ -171,6 +176,12 @@ void UBActionPalette::setButtonIconSize(const QSize& size)
         button->setIconSize(size);
 
     mButtonSize = size;
+
+    // Re-run the layout now that the buttons have changed size. This is also
+    // the first point at which a subclass's buttonSpacing() can be reached:
+    // init() calls updateLayout() from the UBActionPalette constructor, where
+    // the call still resolves to the base implementation.
+    updateLayout();
 }
 
 
@@ -221,6 +232,11 @@ void UBActionPalette::updateLayout()
                 , sLayoutContentMargin  + border(), sLayoutContentMargin + border());
 
     }
+   if (buttonSpacing() >= 0)
+   {
+       layout()->setSpacing(buttonSpacing());
+   }
+
    update();
 }
 

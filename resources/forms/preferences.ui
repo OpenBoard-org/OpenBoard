@@ -94,20 +94,20 @@
             <x>0</x>
             <y>0</y>
             <width>1018</width>
-            <height>1200</height>
+            <height>1300</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>783</width>
-            <height>1200</height>
+            <height>1300</height>
            </size>
           </property>
           <widget class="QGroupBox" name="PDFGroupBox">
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>920</y>
+             <y>1020</y>
              <width>1011</width>
              <height>111</height>
             </rect>
@@ -234,7 +234,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>1040</y>
+             <y>1140</y>
              <width>1011</width>
              <height>111</height>
             </rect>
@@ -485,7 +485,7 @@
              <x>0</x>
              <y>840</y>
              <width>1011</width>
-             <height>111</height>
+             <height>211</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -498,7 +498,7 @@
             <string>Mode</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_15">
-            <item row="0" column="1" rowspan="2">
+            <item row="0" column="1">
              <layout class="QGridLayout" name="gridLayout_16">
               <item row="0" column="0">
                <widget class="QLabel" name="modeLabel">
@@ -562,6 +562,42 @@
                 </property>
                </spacer>
               </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="desktopPaletteScaleLabel">
+              <property name="text">
+               <string>Drawing palette scale:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="desktopPaletteScaleComboBox">
+              <item><property name="text"><string>100%</string></property></item>
+              <item><property name="text"><string>110%</string></property></item>
+              <item><property name="text"><string>120%</string></property></item>
+              <item><property name="text"><string>130%</string></property></item>
+              <item><property name="text"><string>140%</string></property></item>
+              <item><property name="text"><string>150%</string></property></item>
+              <item><property name="text"><string>160%</string></property></item>
+              <item><property name="text"><string>170%</string></property></item>
+              <item><property name="text"><string>180%</string></property></item>
+              <item><property name="text"><string>190%</string></property></item>
+              <item><property name="text"><string>200%</string></property></item>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <layout class="QGridLayout" name="desktopPaletteToolsLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="desktopPaletteToolsLabel">
+                <property name="text"><string>Visible palette tools:</string></property>
+               </widget>
+              </item>
+              <item row="0" column="1"><widget class="QCheckBox" name="desktopShowPenCheckBox"><property name="text"><string>Pen</string></property></widget></item>
+              <item row="0" column="2"><widget class="QCheckBox" name="desktopShowMarkerCheckBox"><property name="text"><string>Marker</string></property></widget></item>
+              <item row="1" column="0"><widget class="QCheckBox" name="desktopShowEraserCheckBox"><property name="text"><string>Eraser</string></property></widget></item>
+              <item row="1" column="1"><widget class="QCheckBox" name="desktopShowSelectorCheckBox"><property name="text"><string>Selector</string></property></widget></item>
+              <item row="1" column="2"><widget class="QCheckBox" name="desktopShowPointerCheckBox"><property name="text"><string>Laser pointer</string></property></widget></item>
              </layout>
             </item>
             <item row="0" column="0">
