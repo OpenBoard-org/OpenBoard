@@ -37,7 +37,6 @@
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 #include "gui/UBResources.h"
-#include "gui/UBMainWindow.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardView.h"
 #include "board/UBDrawingController.h"
@@ -172,28 +171,33 @@ void UBSelectionFrame::updateScale()
 
 void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    mPressedPos = mLastMovedPos = event->pos();
+    mPressedPos = event->pos();
     mStartingBounds = rect();
-    mLastTranslateOffset = QPointF();
     mCursorRotationAngle = 0;
     mItemRotationAngle = 0;
+
+    // normalize all items, i.e. use transform for positioning
+    // record initial transformation for undo
+    for (const auto delegate : mEnclosedtems)
+    {
+        auto item = delegate->delegated();
+        auto tr = item->sceneTransform();
+        item->setPos(0, 0);
+        item->setRotation(0);
+        item->setScale(1.);
+        item->setTransform(tr);
+
+        delegate->startUndoStep();
+    }
 
     if (scene()->itemAt(event->scenePos(), transform()) == mRotateButton) {
         mOperationMode = om_rotating;
         mRotationCenter = mapToScene(rect().center());
-
-        // normalize all items, i.e. use transform for positioning
-        for (const auto delegate : mEnclosedtems)
-        {
-            auto item = delegate->delegated();
-            auto tr = item->sceneTransform();
-            item->setPos(0, 0);
-            item->setRotation(0);
-            item->setTransform(tr);
-        }
     } else {
         mOperationMode = om_moving;
     }
+
+    event->accept();
 }
 
 void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -224,7 +228,6 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
             qreal snappedAngle = qRound(mCursorRotationAngle / step) * step;
-            dAngle = mItemRotationAngle - snappedAngle;
             mItemRotationAngle = std::fmod(snappedAngle + 360., 360.);
         }
     }
@@ -233,70 +236,54 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mItemRotationAngle = mCursorRotationAngle;
     }
 
-    if (mOperationMode == om_rotating)
+    QTransform operation;
+
+    switch (mOperationMode)
     {
+    case om_moving:
+        operation.translate(dp.x(), dp.y());
+        break;
+
+    case om_rotating:
         UBApplication::boardController->setCursorFromAngle(mItemRotationAngle);
+        operation.translate(mRotationCenter.x(), mRotationCenter.y());
+        operation.rotate(mItemRotationAngle);
+        operation.translate(-mRotationCenter.x(), -mRotationCenter.y());
+        break;
+
+    default:
+        break;
     }
 
-    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems)
+    for (const auto delegate : mEnclosedtems)
     {
-        switch (static_cast<int>(mOperationMode)) {
-        case om_moving : {
-            QGraphicsItem *item = curDelegate->delegated();
-            QTransform ownTransform = item->transform();
-            QTransform dTransform(
-                        ownTransform.m11()
-                        , ownTransform.m12()
-                        , ownTransform.m13()
-
-                        , ownTransform.m21()
-                        , ownTransform.m22()
-                        , ownTransform.m23()
-
-                        , ownTransform.m31() + (dp - mLastTranslateOffset).x()
-                        , ownTransform.m32() + (dp - mLastTranslateOffset).y()
-                        , ownTransform.m33()
-                        );
-
-            item->setTransform(dTransform);
-        } break;
-
-        case om_rotating : {
-            QGraphicsItem *item = curDelegate->delegated();
-            QTransform ownTransform = item->transform();
-
-            qreal cntrX = mRotationCenter.x();
-            qreal cntrY = mRotationCenter.y();
-
-            QTransform tr;
-            tr.translate(cntrX, cntrY);
-            tr.rotate(-dAngle);
-            tr.translate(-cntrX, -cntrY);
-
-            item->setTransform(ownTransform * tr);
-        } break;
-
-        }
+        delegate->delegated()->setTransform(delegate->previousTransform() * operation);
     }
 
     updateRect();
-    mLastMovedPos = event->pos();
-    mLastTranslateOffset = dp;
 }
 
 void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 {
-    mPressedPos = mLastMovedPos = mLastTranslateOffset = QPointF();
+    mPressedPos = QPointF();
 
-    if (mOperationMode == om_moving || mOperationMode == om_rotating) {
-        UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
-        foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
-            d->commitUndoStep();
+    if (mOperationMode == om_moving || mOperationMode == om_rotating)
+    {
+        if (!mEnclosedtems.empty() &&
+                mEnclosedtems.first()->previousTransform() != mEnclosedtems.first()->delegated()->transform())
+        {
+            UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
+
+            for (auto delegate : mEnclosedtems)
+            {
+                delegate->commitUndoStep();
+            }
+
+            UBApplication::undoStack->endMacro();
         }
-        UBApplication::undoStack->endMacro();
     }
-    mOperationMode = om_idle;
 
+    mOperationMode = om_idle;
 }
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
