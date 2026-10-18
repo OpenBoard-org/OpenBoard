@@ -128,10 +128,9 @@ void UBShapeFactory::createEllipse(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = true;
         mIsCreating = true;
-        mShapeType = ShapeType::Ellipse;
+        setShapeType(ShapeType::Ellipse);
     }
 }
 
@@ -139,10 +138,9 @@ void UBShapeFactory::createCircle(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = true;
         mIsCreating = true;
-        mShapeType = ShapeType::Circle;
+        setShapeType(ShapeType::Circle);
     }
 }
 
@@ -150,10 +148,9 @@ void UBShapeFactory::createRectangle(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = true;
         mIsCreating = true;
-        mShapeType = ShapeType::Rectangle;
+        setShapeType(ShapeType::Rectangle);
     }
 }
 
@@ -161,10 +158,9 @@ void UBShapeFactory::createSquare(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = true;
         mIsCreating = true;
-        mShapeType = ShapeType::Square;
+        setShapeType(ShapeType::Square);
     }
 }
 
@@ -172,19 +168,17 @@ void UBShapeFactory::createLine(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = true;
         mIsCreating = true;
-        mShapeType = ShapeType::Line;
+        setShapeType(ShapeType::Line);
     }
 }
 
 void UBShapeFactory::createRegularPolygon(int nVertices)
 {
-    mDrawingController->setStylusTool(UBStylusTool::Drawing);
     mIsRegularShape = false;
     mIsCreating = true;
-    mShapeType = ShapeType::RegularPolygon;
+    setShapeType(ShapeType::RegularPolygon);
     mNVertices = nVertices;
 }
 
@@ -192,10 +186,9 @@ void UBShapeFactory::createPolygon(bool create)
 {
     if (create)
     {
-        mDrawingController->setStylusTool(UBStylusTool::Drawing);
         mIsRegularShape = false;
         mIsCreating = true;
-        mShapeType = ShapeType::Polygon;
+        setShapeType(ShapeType::Polygon);
     }
 }
 
@@ -505,7 +498,7 @@ void UBShapeFactory::desactivate()
     mIsPress = false;
     mIsCreating = false;
     mCurrentShape = NULL;
-    mShapeType = ShapeType::None;
+    setShapeType(ShapeType::None);
 }
 
 void UBShapeFactory::discardCurrentShape()
@@ -560,6 +553,18 @@ bool UBShapeFactory::isShape(QGraphicsItem* item)
 void UBShapeFactory::setCurrentStyle(const UBItemStyle& style)
 {
     mShapeStyle = style;
+}
+
+void UBShapeFactory::setShapeType(ShapeType shapeType)
+{
+    mShapeType = shapeType;
+
+    if (shapeType != ShapeType::None)
+    {
+        mDrawingController->setStylusTool(UBStylusTool::Drawing);
+    }
+
+    emit shapeTypeSelected(shapeType);
 }
 
 void UBShapeFactory::desactivateEditionMode(QGraphicsItem* item)

@@ -50,6 +50,7 @@ public:
 
 public slots:
     void switchMode(int tool);
+    void shapeTypeChanged(ShapeType shapeType);
     void updateChoice(const UBItemStyle& style);
 
 signals:
@@ -60,6 +61,7 @@ private:
     void setLineStyleIconAndConnect(UBToolbarButtonGroup* buttonGroup, int index, Qt::PenStyle style);
     void setTransparentIcon(UBToolbarButtonGroup* buttonGroup, int index);
     QPixmap createPreview(const UBItemStyle& style) const;
+    void enableChoice(bool lineStyle, bool fillColor);
 
 private slots:
     void updateColorPalette();
@@ -87,6 +89,12 @@ private:
     UBToolbarButtonGroup* mSolidFillColorChoice{nullptr};
     UBToolbarButtonGroup* mTransparentFillColorChoice{nullptr};
 
+    QLabel* mLineStyleLabel{nullptr};
+    QLabel* mFillColorLabel{nullptr};
+
+    QWidget* mPreview{nullptr};
+
+    QLabel* mPreviewLabel{nullptr};
     QLabel* mCurrentPreviewLabel{nullptr};
     QLabel* mSavedPreviewLabel{nullptr};
 

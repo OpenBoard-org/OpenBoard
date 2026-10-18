@@ -198,9 +198,14 @@ void UBEditableGraphicsPolygonItem::copyItemParameters(UBItem* copy) const
     }
 }
 
-ShapeType UBEditableGraphicsPolygonItem::shapeType()
+ShapeType UBEditableGraphicsPolygonItem::shapeType() const
 {
     return ShapeType::Polygon;
+}
+
+bool UBEditableGraphicsPolygonItem::hasFill() const
+{
+    return isClosed();
 }
 
 QRectF UBEditableGraphicsPolygonItem::boundingRect() const

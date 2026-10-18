@@ -79,6 +79,12 @@ public slots:
 
     void setCurrentStyle(const UBItemStyle& style);
 
+signals:
+    void shapeTypeSelected(ShapeType shapeType);
+
+private:
+    void setShapeType(ShapeType shapeType);
+
 private:
     UBAbstractGraphicsItem* mCurrentShape{nullptr};
     UBBoardView* mBoardView{nullptr};

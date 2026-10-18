@@ -126,8 +126,9 @@ void UBStylePalette::updateSelection()
         {
             // compute common style of selected styled items
             const auto selectedItems = UBApplication::boardController->activeScene()->selectedStyledItems();
-            bool selectionContainsShape{false};
+            bool selectionContainsFill{false};
             bool selectionOnlyContainsMarker{true};
+            bool selectionContainsEditableLine{false};
 
             if (!selectedItems.isEmpty())
             {
@@ -136,7 +137,8 @@ void UBStylePalette::updateSelection()
                 for (const auto item : selectedItems)
                 {
                     mCommonStyle = mCommonStyle.intersected(item->itemStyle());
-                    selectionContainsShape |= item->isShape();
+                    selectionContainsFill |= item->hasFill();
+                    selectionContainsEditableLine |= item->hasEditableLine();
                     selectionOnlyContainsMarker &= item->isMarker();
                 }
 
@@ -156,8 +158,9 @@ void UBStylePalette::updateSelection()
                 mLineColorChoice->update();
             }
 
-            setVisible(selectionContainsShape || mMode == UBStylusTool::Drawing);
-            mLineWidthChoice->setEnabled(selectionContainsShape || mLineWidthChoice->currentIndex() >= 0);
+            enableChoice(selectionContainsEditableLine, selectionContainsFill);
+            setVisible(selectionContainsFill || selectionContainsEditableLine || mMode == UBStylusTool::Drawing);
+            mLineWidthChoice->setEnabled(selectionContainsEditableLine || mLineWidthChoice->currentIndex() >= 0);
             mUpdateTriggered = false;
         });
 }
@@ -196,6 +199,17 @@ void UBStylePalette::switchMode(int tool)
         hide();
         break;
     }
+}
+
+void UBStylePalette::shapeTypeChanged(ShapeType shapeType)
+{
+    if (shapeType == ShapeType::None)
+    {
+        hide();
+        return;
+    }
+
+    enableChoice(true, shapeType != ShapeType::Line);
 }
 
 void UBStylePalette::updateChoice(const UBItemStyle& style)
@@ -319,9 +333,9 @@ void UBStylePalette::init()
     setLineStyleIconAndConnect(mLineStyleChoice, 1, Qt::DashLine);
     setLineStyleIconAndConnect(mLineStyleChoice, 2, Qt::DotLine);
 
-    QLabel* lineStyleLabel = new QLabel{tr("Line style")};
+    mLineStyleLabel = new QLabel{tr("Line style")};
     mGridLayout->addWidget(mLineStyleChoice, 0, 0, Qt::AlignLeft);
-    mGridLayout->addWidget(lineStyleLabel, 1, 0, Qt::AlignHCenter);
+    mGridLayout->addWidget(mLineStyleLabel, 1, 0, Qt::AlignHCenter);
 
     // Setup fill color choice widget
     for (int i = 0; i < UBSettings::maxColorPaletteSize; ++i)
@@ -367,16 +381,16 @@ void UBStylePalette::init()
                 });
     }
 
-    QLabel* fillColorLabel = new QLabel{tr("Fill color")};
+    mFillColorLabel = new QLabel{tr("Fill color")};
     mGridLayout->addWidget(mSolidFillColorChoice, 2, 0, Qt::AlignLeft);
     mGridLayout->addWidget(mTransparentFillColorChoice, 3, 0, Qt::AlignLeft);
-    mGridLayout->addWidget(fillColorLabel, 4, 0, Qt::AlignHCenter);
+    mGridLayout->addWidget(mFillColorLabel, 4, 0, Qt::AlignHCenter);
 
     updateButtonColors();
 
     // setup preview
-    QWidget* preview = new QWidget{this};
-    QHBoxLayout* hbox = new QHBoxLayout{preview};
+    mPreview = new QWidget{this};
+    QHBoxLayout* hbox = new QHBoxLayout{mPreview};
 
     mCurrentPreviewLabel = new QLabel;
     hbox->addWidget(mCurrentPreviewLabel);
@@ -396,12 +410,12 @@ void UBStylePalette::init()
     connect(mSave, &QPushButton::clicked, this, &UBStylePalette::saveStyle);
     connect(mRecall, &QPushButton::clicked, this, &UBStylePalette::recallStyle);
 
-    QLabel* previewLabel = new QLabel{tr("Preview")};
-    mGridLayout->addWidget(preview, 5, 0, Qt::AlignHCenter);
-    mGridLayout->addWidget(previewLabel, 6, 0, Qt::AlignHCenter);
+    mPreviewLabel = new QLabel{tr("Preview")};
+    mGridLayout->addWidget(mPreview, 5, 0, Qt::AlignHCenter);
+    mGridLayout->addWidget(mPreviewLabel, 6, 0, Qt::AlignHCenter);
     mGridLayout->setRowMinimumHeight(5, hbox->sizeHint().height());
 
-    preview->resize(hbox->sizeHint());
+    mPreview->resize(hbox->sizeHint());
 
     resize(mGridLayout->sizeHint());
 }
@@ -539,6 +553,24 @@ QPixmap UBStylePalette::createPreview(const UBItemStyle& style) const
     painter.drawEllipse(25, 25, 40, 40);
 
     return pixmap;
+}
+
+void UBStylePalette::enableChoice(bool lineStyle, bool fillColor)
+{
+    // enable or disable line style palette
+    mLineStyleChoice->setVisible(lineStyle);
+    mLineStyleLabel->setVisible(lineStyle);
+
+    // enable or disable fill color palette and preview
+    mSolidFillColorChoice->setVisible(fillColor);
+    mTransparentFillColorChoice->setVisible(fillColor);
+    mFillColorLabel->setVisible(fillColor);
+    mPreview->setVisible(fillColor);
+    mPreviewLabel->setVisible(fillColor);
+
+    // update layout
+    mGridLayout->setRowMinimumHeight(5, fillColor ? mPreview->layout()->sizeHint().height() : 0);
+    resize(mGridLayout->sizeHint());
 }
 
 void UBStylePalette::updateColorPalette()

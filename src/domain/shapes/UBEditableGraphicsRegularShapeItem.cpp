@@ -223,7 +223,7 @@ void UBEditableGraphicsRegularShapeItem::copyItemParameters(UBItem* copy) const
     cp->setPath(path());
 }
 
-ShapeType UBEditableGraphicsRegularShapeItem::shapeType()
+ShapeType UBEditableGraphicsRegularShapeItem::shapeType() const
 {
     return ShapeType::RegularPolygon;
 }

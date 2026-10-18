@@ -40,7 +40,8 @@ public:
     void setItemStyle(const UBItemStyle& style);
 
     virtual void applyItemStyle(const UBItemStyle& style, bool isDark) = 0;
-    virtual bool isShape() const = 0;
+    virtual bool hasFill() const = 0;
+    virtual bool hasEditableLine() const = 0;
     virtual bool isMarker() const = 0;
 
 protected:

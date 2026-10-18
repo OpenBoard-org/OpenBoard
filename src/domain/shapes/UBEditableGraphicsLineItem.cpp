@@ -62,9 +62,14 @@ UBEditableGraphicsLineItem::~UBEditableGraphicsLineItem()
 {
 }
 
-ShapeType UBEditableGraphicsLineItem::shapeType()
+ShapeType UBEditableGraphicsLineItem::shapeType() const
 {
     return ShapeType::Line;
+}
+
+bool UBEditableGraphicsLineItem::hasFill() const
+{
+    return false;
 }
 
 UBItem* UBEditableGraphicsLineItem::deepCopy() const

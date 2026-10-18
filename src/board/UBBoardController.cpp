@@ -177,6 +177,8 @@ void UBBoardController::init()
         }
     });
     mShapeFactory.setCurrentStyle(mStylePalette->selectedStyle());
+
+    connect(&mShapeFactory, &UBShapeFactory::shapeTypeSelected, mStylePalette, &UBStylePalette::shapeTypeChanged);
 }
 
 

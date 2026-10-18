@@ -212,7 +212,7 @@ void UBGraphicsStrokesGroup::applyItemStyle(const UBItemStyle& style, bool isDar
     }
 }
 
-bool UBGraphicsStrokesGroup::isShape() const
+bool UBGraphicsStrokesGroup::hasFill() const
 {
     for (const auto child : childItems())
     {
@@ -222,13 +222,18 @@ bool UBGraphicsStrokesGroup::isShape() const
         {
             const auto role = polygon->stroke()->role();
 
-            if (role == UBGraphicsStroke::OUTLINE || role == UBGraphicsStroke::FILL)
+            if (role == UBGraphicsStroke::FILL)
             {
                 return true;
             }
         }
     }
 
+    return false;
+}
+
+bool UBGraphicsStrokesGroup::hasEditableLine() const
+{
     return false;
 }
 

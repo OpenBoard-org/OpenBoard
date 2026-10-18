@@ -52,7 +52,8 @@ public:
 
     virtual UBItemStyle itemStyle() const override;
     virtual void applyItemStyle(const UBItemStyle& style, bool isDark) override;
-    virtual bool isShape() const override;
+    virtual bool hasFill() const override;
+    virtual bool hasEditableLine() const override;
     virtual bool isMarker() const override;
 
 protected:

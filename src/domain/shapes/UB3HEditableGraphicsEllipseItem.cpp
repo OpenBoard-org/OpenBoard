@@ -38,7 +38,7 @@ UB3HEditableGraphicsEllipseItem::~UB3HEditableGraphicsEllipseItem()
 {
 }
 
-ShapeType UB3HEditableGraphicsEllipseItem::shapeType()
+ShapeType UB3HEditableGraphicsEllipseItem::shapeType() const
 {
     return ShapeType::Ellipse;
 }

@@ -38,7 +38,7 @@ UB3HEditableGraphicsRectItem::~UB3HEditableGraphicsRectItem()
 {
 }
 
-ShapeType UB3HEditableGraphicsRectItem::shapeType()
+ShapeType UB3HEditableGraphicsRectItem::shapeType() const
 {
     return ShapeType::Rectangle;
 }

@@ -39,7 +39,7 @@ UB1HEditableGraphicsSquareItem::~UB1HEditableGraphicsSquareItem()
 {
 }
 
-ShapeType UB1HEditableGraphicsSquareItem::shapeType()
+ShapeType UB1HEditableGraphicsSquareItem::shapeType() const
 {
     return ShapeType::Square;
 }

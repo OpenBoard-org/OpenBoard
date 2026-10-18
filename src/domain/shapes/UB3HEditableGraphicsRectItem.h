@@ -43,7 +43,7 @@ public:
         return Type;
     }
 
-    virtual ShapeType shapeType() override;
+    virtual ShapeType shapeType() const override;
 
     virtual UBItem* deepCopy() const override;
 

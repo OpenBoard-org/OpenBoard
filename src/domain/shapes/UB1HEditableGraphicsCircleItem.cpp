@@ -38,7 +38,7 @@ UB1HEditableGraphicsCircleItem::~UB1HEditableGraphicsCircleItem()
 {
 }
 
-ShapeType UB1HEditableGraphicsCircleItem::shapeType()
+ShapeType UB1HEditableGraphicsCircleItem::shapeType() const
 {
     return ShapeType::Circle;
 }

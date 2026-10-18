@@ -78,7 +78,12 @@ void UBAbstractGraphicsItem::applyItemStyle(const UBItemStyle& style, bool isDar
     }
 }
 
-bool UBAbstractGraphicsItem::isShape() const
+bool UBAbstractGraphicsItem::hasFill() const
+{
+    return true;
+}
+
+bool UBAbstractGraphicsItem::hasEditableLine() const
 {
     return true;
 }

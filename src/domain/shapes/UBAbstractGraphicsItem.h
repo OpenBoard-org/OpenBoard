@@ -41,10 +41,11 @@ public:
     UBAbstractGraphicsItem(QGraphicsItem* parent = nullptr);
     virtual ~UBAbstractGraphicsItem();
 
-    virtual ShapeType shapeType() = 0;
+    virtual ShapeType shapeType() const = 0;
 
     virtual void applyItemStyle(const UBItemStyle& style, bool isDark) override;
-    virtual bool isShape() const override;
+    virtual bool hasFill() const override;
+    virtual bool hasEditableLine() const override;
     virtual bool isMarker() const override;
 
     virtual bool hasFillingProperty() const;
