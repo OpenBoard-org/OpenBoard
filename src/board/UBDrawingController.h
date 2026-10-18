@@ -86,7 +86,7 @@ class UBDrawingController : public QObject
 
     signals:
         void stylusToolChanged(int tool, int previousTool = -1);
-        void colorPaletteChanged();
+        void colorPaletteChanged(UBStylusTool::Enum tool);
 
         void lineWidthIndexChanged(int index);
         void colorIndexChanged(int index);

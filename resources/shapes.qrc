@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/drawingPalette/circle.svg</file>
+        <file>images/drawingPalette/circleOn.svg</file>
+        <file>images/drawingPalette/ellipse.svg</file>
+        <file>images/drawingPalette/ellipseOn.svg</file>
+        <file>images/drawingPalette/pentagon.svg</file>
+        <file>images/drawingPalette/pentagonOn.svg</file>
+        <file>images/drawingPalette/polygon.svg</file>
+        <file>images/drawingPalette/polygonOn.svg</file>
+        <file>images/drawingPalette/rectangle.svg</file>
+        <file>images/drawingPalette/rectangleOn.svg</file>
+        <file>images/drawingPalette/square.svg</file>
+        <file>images/drawingPalette/squareOn.svg</file>
+    </qresource>
+</RCC>

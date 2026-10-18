@@ -38,8 +38,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBShortcutManager.h"
 
-
-#include "board/UBDrawingController.h"
+#include "board/UBBoardController.h"
 
 #include "frameworks/UBPlatformUtils.h"
 

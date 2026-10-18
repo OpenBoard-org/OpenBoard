@@ -174,6 +174,7 @@ bool UBGraphicsStroke::hasPressure()
 UBGraphicsStroke* UBGraphicsStroke::deepCopy()
 {
     UBGraphicsStroke* clone = new UBGraphicsStroke();
+    clone->setRole(role());
 
     return clone;
 }
@@ -208,6 +209,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
 
     UBGraphicsStroke* newStroke = new UBGraphicsStroke();
     newStroke->mDrawnPoints = QList<strokePoint>(mDrawnPoints);
+    newStroke->setRole(role());
 
     QList<strokePoint>& points = newStroke->mDrawnPoints;
     //qDebug() << "Simplifying. Before: " << points.size() << " points and " << polygons().size() << " polygons";
@@ -324,4 +326,14 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
     //qDebug() << "After: " << points.size() << " points and " << newStroke->polygons().size() << " polygons";
 
     return newStroke;
+}
+
+void UBGraphicsStroke::setRole(Role role)
+{
+    mRole = role;
+}
+
+UBGraphicsStroke::Role UBGraphicsStroke::role() const
+{
+    return mRole;
 }

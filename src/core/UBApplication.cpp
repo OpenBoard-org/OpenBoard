@@ -422,7 +422,7 @@ int UBApplication::exec(const QString& pFileToImport)
         UBApplication::boardController->paletteManager()->tipsPalette()->show();
     }
 
-    emit UBDrawingController::drawingController()->colorPaletteChanged();
+    emit UBDrawingController::drawingController()->colorPaletteChanged(UBStylusTool::Pen);
 
     onScreenCountChanged(displayManager->numScreens());
     connect(displayManager, SIGNAL(availableScreenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));

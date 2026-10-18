@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="3 3 42 42"
+   style="enable-background:new 0 0 48 48;"
+   xml:space="preserve"
+   sodipodi:docname="square.svg"
+   inkscape:version="1.4.1 (unknown)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1.0"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="19.357143"
+   inkscape:cx="20.97417"
+   inkscape:cy="21"
+   inkscape:window-width="1920"
+   inkscape:window-height="1008"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" /><defs
+   id="defs33"><radialGradient
+     id="sphere_00000032634667868878058700000018205383444123115446_"
+     cx="-572.22382"
+     cy="-116.9939"
+     r="7.276"
+     gradientTransform="matrix(2.8862,0,0,-2.8862,1675.5521,-313.6678)"
+     gradientUnits="userSpaceOnUse">
+	<stop
+   offset="0"
+   style="stop-color:#FFFFFF;stop-opacity:0"
+   id="stop1" />
+	<stop
+   offset="1"
+   style="stop-color:#FFFFFF"
+   id="stop2" />
+</radialGradient></defs>
+<style
+   type="text/css"
+   id="style1">
+	.st0{opacity:0.2;}
+	.st1{fill:url(#XMLID_00000115514554791065067760000012489703680898575503_);}
+	.st2{fill:url(#SVGID_1_);}
+	.st3{fill:url(#SVGID_00000106119755979916897400000004708801485089067693_);}
+	.st4{display:none;fill:#FFF100;}
+	.st5{fill:none;stroke:#231F20;stroke-width:1.5;stroke-linecap:round;stroke-miterlimit:10;}
+	.st6{display:none;fill:none;stroke:#231F20;stroke-width:1.25;stroke-linecap:round;stroke-miterlimit:10;}
+	.st7{opacity:0.19;fill:none;stroke:#FFFFFF;stroke-linecap:round;stroke-miterlimit:10;enable-background:new    ;}
+</style>
+
+
+<rect
+   style="fill:#6efa4d;fill-opacity:0.563048;stroke:#231f20;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+   id="rect33"
+   width="24"
+   height="24"
+   x="7.4678297"
+   y="15.802942"
+   rx="0.30000001"
+   ry="0.30000001"
+   transform="rotate(-10)" /></svg>

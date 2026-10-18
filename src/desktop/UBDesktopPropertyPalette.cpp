@@ -78,8 +78,8 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     //connect(colorChoice, SIGNAL(activated(int)), this, SLOT(UBApplication::boardController->setColorIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), this, SLOT(close()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(close()));
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, colorChoice, &UBToolbarButtonGroup::colorPaletteChanged);
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, this, &UBDesktopPenPalette::close);
 
     layout()->addWidget(colorChoice);
 
@@ -179,8 +179,8 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
     //connect(colorChoice, SIGNAL(activated(int)), this, SLOT(UBApplication::boardController->setColorIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), this, SLOT(close()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(close()));
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, colorChoice, &UBToolbarButtonGroup::colorPaletteChanged);
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, this, &UBDesktopMarkerPalette::close);
 
     layout()->addWidget(colorChoice);
 

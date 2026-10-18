@@ -44,11 +44,13 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
     //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
+    const auto allItems = items();
+
     foreach(QGraphicsItem* item, mItemsToDelete)
     {
         if (item)
         {
-            if (item->scene() == NULL || item->scene() == this)
+            if (item->scene() == NULL || allItems.contains(item))
             {
                 delete item;
                 item = NULL;

@@ -44,6 +44,8 @@ class UBGraphicsStroke
     friend class UBGraphicsPolygonItem;
 
     public:
+        enum Role {NONE, OUTLINE, FILL, MARKER};
+
         UBGraphicsStroke(std::shared_ptr<UBGraphicsScene> scene = NULL);
         virtual ~UBGraphicsStroke();
 
@@ -65,6 +67,9 @@ class UBGraphicsStroke
 
         UBGraphicsStroke* simplify();
 
+        void setRole(Role role);
+        Role role() const;
+
     protected:
         void addPolygon(UBGraphicsPolygonItem* pol);
 
@@ -81,6 +86,8 @@ class UBGraphicsStroke
         QList<QPair<QPointF, qreal> > mDrawnPoints;
 
         qreal mAntiScaleRatio;
+
+        Role mRole{NONE};
 };
 
 #endif /* UBGRAPHICSSTROKE_H_ */
