@@ -382,6 +382,7 @@ UBGraphicsScene::~UBGraphicsScene()
 
     if (mGraphicsCache)
     {
+        removeItemFromDeletion(mGraphicsCache);
         delete mGraphicsCache;
     }
 }
