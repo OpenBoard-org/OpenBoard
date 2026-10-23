@@ -214,7 +214,7 @@ void UBGraphicsItemUndoCommand::redo()
             if (groupedItem) {
                 if (nextGroup->childItems().count() == 1) {
                     nextGroup->destroy(false);
-                    break;
+                    continue;
                 }
                 nextGroup->removeFromGroup(groupedItem);
             }
