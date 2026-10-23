@@ -1402,7 +1402,8 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), QTransform())))
+        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), QTransform()))
+                && getMovingItem()->type() != DelegateButton::Type)
         {
             setMovingItem(nullptr);
             bReleaseIsNeed = false;
