@@ -157,39 +157,6 @@ int XPDFRenderer::pageCount() const
         return 0;
 }
 
-QString XPDFRenderer::title() const
-{
-    if (isValid())
-    {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
-        Object pdfInfo = mDocument->getDocInfo();
-#else
-        Object pdfInfo;
-        mDocument->getDocInfo(&pdfInfo);
-#endif
-        if (pdfInfo.isDict())
-        {
-            Dict *infoDict = pdfInfo.getDict();
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
-            Object title = infoDict->lookup((char*)"Title");
-#else
-            Object title;
-            infoDict->lookup((char*)"Title", &title);
-#endif
-            if (title.isString())
-            {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 72
-                return QString(title.getString()->c_str());
-#else
-                return QString(title.getString()->getCString());
-#endif
-            }
-        }
-    }
-
-    return QString();
-}
-
 
 QSizeF XPDFRenderer::pageSizeF(int pageNumber) const
 {
