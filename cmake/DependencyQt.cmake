@@ -14,8 +14,13 @@ set(QT_COMPONENTS
 )
 
 if(QT_VERSION STREQUAL "")
-    find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
-    set(QT_VERSION ${QT_VERSION_MAJOR})
+    find_package(Qt6 QUIET COMPONENTS Core)
+    if(Qt6_FOUND)
+        set(QT_VERSION 6)
+    else()
+        find_package(Qt5 REQUIRED COMPONENTS Core)
+        set(QT_VERSION 5)
+    endif()
 endif()
 
 message(STATUS "Using Qt" ${QT_VERSION})
