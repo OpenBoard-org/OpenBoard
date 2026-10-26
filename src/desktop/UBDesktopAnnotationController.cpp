@@ -359,13 +359,7 @@ void UBDesktopAnnotationController::showWindow()
 
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
-#ifndef Q_OS_LINUX
     UBPlatformUtils::showFullScreen(mTransparentDrawingView);
-#else
-    // this is necessary to avoid hiding the panels on Unity and Cinnamon
-    // if finer control is necessary, use qgetenv("XDG_CURRENT_DESKTOP")
-    mTransparentDrawingView->show();
-#endif
     UBPlatformUtils::hideMenuBarAndDock();
 
     mDesktopPalette->appear();
@@ -470,7 +464,9 @@ void UBDesktopAnnotationController::customCapture()
 
         mDesktopPalette->disappearForCapture();
 
-        getScreenPixmap([this](QPixmap pixmap){
+        const auto grabCanCrop = UBPlatformUtils::grabCanCrop();
+
+        getScreenPixmap([this, grabCanCrop](QPixmap pixmap){
             auto finishCapture = [this](){
                 mDesktopPalette->appear();
                 mCustomCaptureClicked = false;
@@ -481,7 +477,7 @@ void UBDesktopAnnotationController::customCapture()
             QPixmap screenshot = pixmap.isNull() ? clipboardScreenshot() : pixmap;
 
             // On Wayland with xdg-desktop-portal, the user already chose the area.
-            if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND && !screenshot.isNull())
+            if (grabCanCrop && !screenshot.isNull())
             {
                 emit imageCaptured(screenshot, false);
                 finishCapture();
@@ -497,7 +493,7 @@ void UBDesktopAnnotationController::customCapture()
             }
 
             finishCapture();
-        });
+        }, grabCanCrop);
     }
 }
 
@@ -519,22 +515,15 @@ void UBDesktopAnnotationController::screenCapture()
 
         QPixmap screenshot = pixmap.isNull() ? clipboardScreenshot() : pixmap;
 
-        if (UBPlatformUtils::sessionType() == UBPlatformUtils::WAYLAND && !screenshot.isNull())
-        {
-            emit imageCaptured(screenshot, false);
-            finishCapture();
-            return;
-        }
-
         emit imageCaptured(screenshot, false);
         finishCapture();
-    });
+    }, false);
 }
 
 
-void UBDesktopAnnotationController::getScreenPixmap(std::function<void(QPixmap)> callback)
+void UBDesktopAnnotationController::getScreenPixmap(std::function<void(QPixmap)> callback, bool crop)
 {
-    UBApplication::displayManager->grab(ScreenRole::Control, callback);
+    UBApplication::displayManager->grab(ScreenRole::Control, callback, crop);
 }
 
 

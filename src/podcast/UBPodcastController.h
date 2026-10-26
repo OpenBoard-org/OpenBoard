@@ -40,7 +40,7 @@ class UBGraphicsScene;
 class WebView;
 class UBPodcastRecordingPalette;
 
-class UBDesktopPortal;
+class UBScreenCastDesktopPortalWrapper;
 class UBPipewireSink;
 
 
@@ -192,7 +192,7 @@ class UBPodcastController : public QObject
         QString mPodcastRecordingPath;
 
 #ifdef Q_OS_LINUX
-        UBDesktopPortal* mPortal{nullptr};
+        UBScreenCastDesktopPortalWrapper* mPortal{nullptr};
         UBPipewireSink* mPipewireSink{nullptr};
 #endif
 };
