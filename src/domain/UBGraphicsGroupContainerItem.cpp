@@ -33,7 +33,9 @@
 
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsTextItem.h"
+#include "core/UBApplication.h"
 #include "domain/UBGraphicsItemDelegate.h"
+#include "domain/UBGraphicsItemUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
 
@@ -159,8 +161,8 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
     pRemoveFromGroup(item);
 
-    item->setFlags(ItemIsSelectable | ItemIsFocusable);
-
+    item->setFlag(QGraphicsItem::ItemIsSelectable);
+    item->setFlag(QGraphicsItem::ItemIsFocusable);
 }
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
@@ -245,15 +247,36 @@ void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
     }
 }
 
-void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
+void UBGraphicsGroupContainerItem::destroy(bool canUndo)
+{
+    UBGraphicsItemUndoCommand::GroupDataTable groupDataTable;
 
-    foreach (QGraphicsItem *item, childItems()) {
+    for (auto item : childItems())
+    {
         pRemoveFromGroup(item);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        item->setFlag(QGraphicsItem::ItemIsFocusable, true);
+        item->setFlag(QGraphicsItem::ItemIsSelectable);
+        item->setFlag(QGraphicsItem::ItemIsFocusable);
+
+        if (canUndo)
+        {
+            const auto ubItem = dynamic_cast<UBItem*>(item);
+
+            if (ubItem)
+            {
+                groupDataTable.insert(this, ubItem->uuid());
+            }
+        }
     }
 
-    remove(canUndo);
+    auto scene = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+
+    remove(false);
+
+    if (canUndo && scene)
+    {
+        auto undoCommand = new UBGraphicsItemUndoCommand(scene->shared_from_this(), {this}, {}, groupDataTable);
+        UBApplication::undoStack->push(undoCommand);
+    }
 }
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
