@@ -141,6 +141,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
     QPointF groupPos = pos();
 
     UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
     copy->resetTransform();
     copy->setPos(0,0);

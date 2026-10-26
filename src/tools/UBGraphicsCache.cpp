@@ -59,9 +59,8 @@ UBItem* UBGraphicsCache::deepCopy() const
 {
     UBGraphicsCache* copy = new UBGraphicsCache();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
-
-    // TODO UB 4.7 ... complete all members ?
 
     return copy;
 }

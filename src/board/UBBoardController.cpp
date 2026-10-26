@@ -821,7 +821,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     else
     {
         QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
-        QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
+        UBItem* copy = item->deepCopy();
+        copy->setUuid(QUuid::createUuid());
+        QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(copy);
 
         if (gitem)
         {

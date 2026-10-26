@@ -351,11 +351,10 @@ UBItem* UBGraphicsTextItem::deepCopy() const
 {
     UBGraphicsTextItem* copy = new UBGraphicsTextItem();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
 
-   // TODO UB 4.7 ... complete all members ?
-
-   return copy;
+    return copy;
 }
 
 void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const

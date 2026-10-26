@@ -94,9 +94,8 @@ UBItem* UBGraphicsRuler::deepCopy() const
 {
     UBGraphicsRuler* copy = new UBGraphicsRuler();
 
+    copy->setUuid(this->uuid());
     copyItemParameters(copy);
-
-    // TODO UB 4.7 ... complete all members ?
 
     return copy;
 }
