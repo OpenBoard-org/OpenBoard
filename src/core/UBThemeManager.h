@@ -85,7 +85,9 @@ public slots:
      * @brief Handle system color scheme changes (Qt 6.5+)
      * @param colorScheme The new color scheme from the OS
      */
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+#endif
 
 signals:
     /**
