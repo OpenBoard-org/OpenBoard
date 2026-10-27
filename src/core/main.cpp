@@ -49,6 +49,10 @@
 */
 
 void ub_message_output(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+    if (msg.contains("QObject::connect"))
+    {
+        int i = 1;
+    }
     // We must temporarily remove the handler to avoid the infinite recursion of
     // ub_message_output -> qt_message_output -> ub_message_output -> qt_message_output ...
     QtMessageHandler previousHandler = qInstallMessageHandler(0);

@@ -9,4 +9,5 @@ target_sources(${PROJECT_NAME} PRIVATE
     preferences.ui
     trapFlash.ui
     youTubePublishingDialog.ui
+    shapeActions.ui
 )

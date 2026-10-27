@@ -32,6 +32,8 @@
 UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     : QLabel(parent)
 {
+    setAttribute(Qt::WA_TranslucentBackground);
+
     mAnimation = new QPropertyAnimation(this, "alpha", this);
     mAnimation->setStartValue(0xff);
     mAnimation->setEndValue(0);
@@ -63,6 +65,7 @@ void UBSnapIndicator::appear(Qt::Corner corner, QPointF snapPoint, double angle)
         break;
 
     default:
+        mAngle += 315;
         break;
     }
 

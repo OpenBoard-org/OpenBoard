@@ -38,6 +38,8 @@
 #include "UBFloatingPalette.h"
 
 class UBActionPaletteButton;
+class UBActionSubPaletteButton;
+class UBAbstractSubPalette;
 
 class UBActionPalette : public UBFloatingPalette
 {
@@ -59,6 +61,8 @@ class UBActionPalette : public UBFloatingPalette
         void groupActions();
         virtual void addAction(QAction* action);
 
+        void attachSubPalette(QAction* action, UBAbstractSubPalette* subPalette, bool sameActionGroup = false);
+
         void setClosable(bool closable);
         void setAutoClose(bool autoClose)
         {
@@ -74,6 +78,7 @@ class UBActionPalette : public UBFloatingPalette
         virtual int border();
         virtual void clearLayout();
         QSize buttonSize();
+        Qt::Orientation orientation() const;
 
         virtual UBActionPaletteButton* getButtonFromAction(QAction* action);
 
@@ -85,11 +90,13 @@ class UBActionPalette : public UBFloatingPalette
         void closed();
         void buttonGroupClicked(QAction* action);
         void customMouseReleased();
+        void paletteVisible();
 
     protected:
         void onCloseButtonClicked() override;
         virtual void paintEvent(QPaintEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent * event);
+        virtual void showEvent(QShowEvent *event) override;
         virtual void init(Qt::Orientation orientation);
 
         virtual void updateLayout();
@@ -97,18 +104,23 @@ class UBActionPalette : public UBFloatingPalette
         QList<UBActionPaletteButton*> mButtons;
         QActionGroup* mActionGroup;
         QList<QAction*> mActions;
+        Qt::Orientation mOrientation;
         QMap<QAction*, UBActionPaletteButton*> mMapActionToButton;
 
         Qt::ToolButtonStyle mToolButtonStyle;
         bool mAutoClose;
         QSize mButtonSize;
         QPoint mMousePos;
-        UBActionPaletteButton *createPaletteButton(QAction* action, QWidget *parent);
+        UBActionPaletteButton *createPaletteButton(QAction* action, QWidget *parent, UBAbstractSubPalette* subPalette = nullptr);
         QAction* removePaletteButton(UBActionPaletteButton* button);
 
     protected slots:
         void buttonClicked();
         void actionChanged();
+
+    private:
+        QPointer<UBAbstractSubPalette> mSubPalette{};
+        UBActionSubPaletteButton* mSubPaletteButton{nullptr};
 };
 
 
@@ -126,7 +138,28 @@ class UBActionPaletteButton : public QToolButton
     protected:
         virtual void mouseDoubleClickEvent(QMouseEvent *event);
         virtual bool hitButton(const QPoint &pos) const;
+};
 
+class UBActionSubPaletteButton : public UBActionPaletteButton
+{
+    Q_OBJECT
+
+public:
+    UBActionSubPaletteButton(QAction* action, QWidget* parent, UBAbstractSubPalette* subPalette);
+
+protected:
+    virtual bool hitButton(const QPoint &pos) const override;
+    virtual void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void buttonPressed();
+    void buttonReleased();
+
+private:
+    UBAbstractSubPalette* mSubPalette{};
+    QTimer mPressedTimer{};
+    QRectF mArrowRect{};
+    std::unique_ptr<QPoint> mPressedPos;    // use a pointer to be able to modify the value in const function hitButton
 };
 
 #endif /* UBACTIONPALETTE_H_ */

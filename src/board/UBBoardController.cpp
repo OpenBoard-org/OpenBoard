@@ -78,6 +78,7 @@
 #include "gui/UBThumbnailScene.h"
 #include "gui/UBToolWidget.h"
 #include "gui/UBToolbarButtonGroup.h"
+#include "gui/shapes/UBStylePalette.h"
 
 #include "podcast/UBPodcastController.h"
 
@@ -87,6 +88,7 @@
 #include "web/UBEmbedParser.h"
 
 #include "core/memcheck.h"
+
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
@@ -166,6 +168,17 @@ void UBBoardController::init()
     });
 
     undoRedoStateChange(true);
+
+    mShapeFactory.init();
+    connect(mStylePalette, &UBStylePalette::styleChanged, &mShapeFactory, [this](const UBItemStyle& style, UBStylusTool::Enum activeTool){
+        if (activeTool == UBStylusTool::Drawing)
+        {
+            mShapeFactory.setCurrentStyle(style);
+        }
+    });
+    mShapeFactory.setCurrentStyle(mStylePalette->selectedStyle());
+
+    connect(&mShapeFactory, &UBShapeFactory::shapeTypeSelected, mStylePalette, &UBStylePalette::shapeTypeChanged);
 }
 
 
@@ -363,9 +376,10 @@ void UBBoardController::setupToolbar()
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), mColorChoice, SLOT(displayText(QVariant)));
     connect(mColorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), mColorChoice, SLOT(setCurrentIndex(int)));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), mColorChoice, SLOT(colorPaletteChanged()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(colorPaletteChanged()));
+    // NOTE I cannot see why this would be necessary for every change of the index
+//    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()));
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, mColorChoice, &UBToolbarButtonGroup::colorPaletteChanged);
+    connect(UBDrawingController::drawingController(), &UBDrawingController::colorPaletteChanged, this, &UBBoardController::colorPaletteChanged);
     connect(mMainWindow->actionColorPreferences, SIGNAL(triggered()), this, SLOT(openColorPreferencesDialog()));
 
     mColorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
@@ -393,6 +407,10 @@ void UBBoardController::setupToolbar()
     lineWidthActions.at(settings->penWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
+
+    // Setup style palette as toolbar extension
+    mStylePalette = new UBStylePalette(mMainWindow->boardToolBar, mColorChoice, lineWidthChoice, mMainWindow);
+    mStylePalette->setSpan(mColorChoice, mColorChoice);
 
     //-----------------------------------------------------------//
     // Setup eraser width choice widget
@@ -493,7 +511,7 @@ void UBBoardController::updateColorButtonsForPaletteSize()
     if (mColorChoice)
     {
         mColorChoice->setSelectableCount(paletteSize);
-        mColorChoice->colorPaletteChanged();
+        mColorChoice->colorPaletteChanged(static_cast<UBStylusTool::Enum>(UBDrawingController::drawingController()->stylusTool()));
 
         int index = qBound(0, currentToolColorIndex(), paletteSize - 1);
         mColorChoice->setCurrentIndex(index);
@@ -858,6 +876,11 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     }
 
     return retItem;
+}
+
+UBStylePalette* UBBoardController::stylePalette() const
+{
+    return mStylePalette;
 }
 
 
@@ -1942,7 +1965,7 @@ void UBBoardController::setColorIndex(int pColorIndex)
     const int appliedIndex = isMarkerTool ? UBSettings::settings()->markerColorIndex() : UBSettings::settings()->penColorIndex();
 
     if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker &&
-            UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Line &&
+            UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Drawing &&
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Text &&
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Selector)
     {
@@ -1958,16 +1981,6 @@ void UBBoardController::setColorIndex(int pColorIndex)
         QList<QColor> lightColors = UBSettings::settings()->penColors(false);
         mPenColorOnDarkBackground = darkColors.value(appliedIndex, darkColors.value(0, Qt::white));
         mPenColorOnLightBackground = lightColors.value(appliedIndex, lightColors.value(0, Qt::black));
-
-        if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
-        {
-            // If we are in mode board, then do that
-            if(UBApplication::applicationController->displayMode() == UBApplicationController::Board)
-            {
-                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
-                mMainWindow->actionPen->setChecked(true);
-            }
-        }
 
         emit penColorChanged();
     }
@@ -2191,6 +2204,11 @@ void UBBoardController::setPageSize(QSize newSize)
 
         UBSettings::settings()->pageSize->set(newSize);
     }
+}
+
+UBShapeFactory& UBBoardController::shapeFactory()
+{
+    return mShapeFactory;
 }
 
 void UBBoardController::notifyCache(bool visible)

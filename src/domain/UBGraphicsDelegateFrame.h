@@ -70,6 +70,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QList<UBGraphicsDelegateFrame *> getLinkedFrames();
 
     private:
+        friend class UBAbstractEditableGraphicsShapeItem;
         QRectF bottomRightResizeGripRect() const;
         QRectF bottomResizeGripRect() const;
         QRectF leftResizeGripRect() const;

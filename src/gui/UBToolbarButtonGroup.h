@@ -37,6 +37,8 @@
 #include <QToolButton>
 #include <QActionGroup>
 
+#include "core/UB.h"
+
 class UBToolbarButtonGroup : public QWidget
 {
     Q_OBJECT;
@@ -51,6 +53,7 @@ class UBToolbarButtonGroup : public QWidget
         void setLabel(const QString& label);
         void setSelectableCount(int count);
         int selectableCount() const { return mSelectableCount; }
+        QList<QAction*> buttonActions() const;
 
     protected:
         void paintEvent(QPaintEvent *);
@@ -67,7 +70,7 @@ class UBToolbarButtonGroup : public QWidget
 
     public slots:
         void setCurrentIndex(int index);
-        void colorPaletteChanged();
+        void colorPaletteChanged(UBStylusTool::Enum tool);
         void displayText(QVariant display);
 
     private slots:

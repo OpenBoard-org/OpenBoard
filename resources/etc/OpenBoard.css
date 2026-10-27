@@ -15,7 +15,7 @@ QComboBox QAbstractItemView
     background: palette(button);
 }
 
-QPushButton:focus,
+/* QPushButton:focus, */
 QPushButton:pressed,
 QPushButton:checked,
 QPushButton:default,
@@ -78,7 +78,8 @@ QMenu::separator
    border: 1px dotted palette(dark);
 }
 
-QToolBar
+QToolBar,
+UBToolbarExtensionPalette
 {
     spacing: 0px;
     background-color: palette(midlight);
