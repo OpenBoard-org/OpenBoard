@@ -109,6 +109,8 @@ class UBPreferencesController : public QObject
         void recordingClicked(bool checked);
         void abortClicked();
         void resetClicked();
+        void multitouchModeChanged(int mode);
+        void multitouchEnabledChanged(bool enabled);
 
     private slots:
         void adjustScreensPreferences();

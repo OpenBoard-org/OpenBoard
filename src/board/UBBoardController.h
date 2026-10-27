@@ -348,6 +348,8 @@ class UBBoardController : public UBDocumentContainer
         void libraryDialogClosed(int ret);
         void lastWindowClosed();
         void onDownloadModalFinished();
+        void cycleMultitouchMode();
+        void updateMultitouchAction(QVariant value = QVariant());
 
 };
 

@@ -37,6 +37,17 @@
 #include "UB.h"
 #include "UBSetting.h"
 
+namespace UBMultitouchMode
+{
+    enum Enum
+    {
+        Disabled = 0,
+        GesturesOnly,
+        DrawingOnly,
+        Automatic
+    };
+}
+
 class UBSettings : public QObject
 {
 
@@ -95,6 +106,9 @@ class UBSettings : public QObject
         qreal eraserMediumWidth();
         qreal eraserStrongWidth();
         qreal currentEraserWidth();
+
+        int multitouchMode() const;
+        void setMultitouchMode(int mode);
 
         // Background related
         bool isDarkBackground();
@@ -299,6 +313,17 @@ class UBSettings : public QObject
         UBSetting* boardMarkerPressureSensitive;
 
         UBSetting* boardUseHighResTabletEvent;
+
+        UBSetting* boardMultitouchEnabled;
+        UBSetting* boardMultitouchMode;
+        UBSetting* boardGestureWindowMs;
+        UBSetting* boardGestureClassificationWindowMs;
+        UBSetting* boardGestureQuietTimeMs;
+        UBSetting* boardGestureMoveThresholdPx;
+        UBSetting* boardGestureMaxSeparationPx;
+        UBSetting* boardDrawingActivityThresholdPx;
+        UBSetting* boardPinchActivationThresholdPx;
+        UBSetting* boardMouseLockoutAfterTouchMs;
 
         UBSetting* boardInterpolatePenStrokes;
         UBSetting* boardSimplifyPenStrokes;

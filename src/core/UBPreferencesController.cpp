@@ -311,6 +311,16 @@ void UBPreferencesController::wire()
         settings->boardKeyboardPaletteKeyBtnSize->setString(mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(index));
     });
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(mPreferencesUI->enableMultitouchCheckBox, SIGNAL(clicked(bool)),
+            this, SLOT(multitouchEnabledChanged(bool)));
+    connect(mPreferencesUI->multitouchModeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(multitouchModeChanged(int)));
+#else
+    mPreferencesUI->enableMultitouchCheckBox->hide();
+    mPreferencesUI->multitouchModeLabel->hide();
+    mPreferencesUI->multitouchModeComboBox->hide();
+#endif
 
     connect(mPreferencesUI->themeComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
         settings->appThemeMode->setInt(index);
@@ -472,6 +482,17 @@ void UBPreferencesController::init()
 
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
     mPreferencesUI->themeComboBox->setCurrentIndex(settings->appThemeMode->get().toInt());
+    const bool multitouchEnabled = settings->boardMultitouchEnabled->get().toBool();
+    int storedMultitouchMode = settings->boardMultitouchMode->get().toInt();
+    if (storedMultitouchMode < UBMultitouchMode::GesturesOnly
+        || storedMultitouchMode > UBMultitouchMode::Automatic)
+    {
+        storedMultitouchMode = UBMultitouchMode::Automatic;
+    }
+    mPreferencesUI->enableMultitouchCheckBox->setChecked(multitouchEnabled);
+    mPreferencesUI->multitouchModeComboBox->setCurrentIndex(storedMultitouchMode - 1);
+    mPreferencesUI->multitouchModeComboBox->setEnabled(multitouchEnabled);
+    mPreferencesUI->multitouchModeLabel->setEnabled(multitouchEnabled);
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
@@ -546,6 +567,19 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->startModeComboBox->setCurrentIndex(0);
+        settings->boardMultitouchMode->reset();
+        settings->boardMultitouchEnabled->reset();
+        const bool multitouchEnabled = settings->boardMultitouchEnabled->get().toBool();
+        int storedMultitouchMode = settings->boardMultitouchMode->get().toInt();
+        if (storedMultitouchMode < UBMultitouchMode::GesturesOnly
+            || storedMultitouchMode > UBMultitouchMode::Automatic)
+        {
+            storedMultitouchMode = UBMultitouchMode::Automatic;
+        }
+        mPreferencesUI->enableMultitouchCheckBox->setChecked(multitouchEnabled);
+        mPreferencesUI->multitouchModeComboBox->setCurrentIndex(storedMultitouchMode - 1);
+        mPreferencesUI->multitouchModeComboBox->setEnabled(multitouchEnabled);
+        mPreferencesUI->multitouchModeLabel->setEnabled(multitouchEnabled);
 
         mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
 
@@ -869,6 +903,29 @@ void UBPreferencesController::resetClicked()
 
     mPreferencesUI->report->setText("");
     mPreferencesUI->noCtrl->setEnabled(!UBShortcutManager::shortcutManager()->hasCtrlConflicts());
+}
+
+void UBPreferencesController::multitouchModeChanged(int mode)
+{
+    const int settingMode = mode + UBMultitouchMode::GesturesOnly;
+
+    if (mPreferencesUI->enableMultitouchCheckBox->isChecked())
+        UBSettings::settings()->setMultitouchMode(settingMode);
+    else
+        UBSettings::settings()->boardMultitouchMode->setInt(settingMode);
+}
+
+void UBPreferencesController::multitouchEnabledChanged(bool enabled)
+{
+    mPreferencesUI->multitouchModeComboBox->setEnabled(enabled);
+    mPreferencesUI->multitouchModeLabel->setEnabled(enabled);
+
+    if (enabled)
+        UBSettings::settings()->setMultitouchMode(
+            mPreferencesUI->multitouchModeComboBox->currentIndex()
+            + UBMultitouchMode::GesturesOnly);
+    else
+        UBSettings::settings()->boardMultitouchEnabled->setBool(false);
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner)
