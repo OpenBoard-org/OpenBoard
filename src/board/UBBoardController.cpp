@@ -30,6 +30,8 @@
 #include "UBBoardController.h"
 
 #include <QtWidgets>
+#include <QPrintDialog>
+#include <QPrinter>
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
@@ -87,6 +89,76 @@
 #include "web/UBEmbedParser.h"
 
 #include "core/memcheck.h"
+
+namespace
+{
+void printCurrentBoardView(UBBoardController* controller, UBMainWindow* mainWindow)
+{
+    const std::shared_ptr<UBGraphicsScene> scene = controller->activeScene();
+    UBBoardView* view = controller->controlView();
+
+    if (!scene || !view || !view->viewport())
+        return;
+
+    view->forcedTabletRelease();
+
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setDocName(QObject::tr("OpenBoard current view"));
+    printer.setFullPage(true);
+
+    const QRect viewportRect = view->viewport()->rect();
+    printer.setPageOrientation(viewportRect.width() >= viewportRect.height()
+        ? QPageLayout::Landscape
+        : QPageLayout::Portrait);
+
+    QPrintDialog dialog(&printer, mainWindow);
+    dialog.setWindowTitle(QObject::tr("Print Current View"));
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
+    QPainter painter;
+
+    if (!painter.begin(&printer))
+    {
+        QMessageBox::warning(mainWindow, QObject::tr("Print"),
+                             QObject::tr("OpenBoard could not start the selected printer."));
+        return;
+    }
+
+    const QRectF printableRect = printer.pageLayout().paintRectPixels(printer.resolution());
+    const QRectF visibleSceneRect = view->mapToScene(viewportRect).boundingRect();
+    QSizeF fittedSize = visibleSceneRect.size();
+    fittedSize.scale(printableRect.size(), Qt::KeepAspectRatio);
+    const QRectF targetRect(
+        printableRect.left() + (printableRect.width() - fittedSize.width()) / 2.0,
+        printableRect.top() + (printableRect.height() - fittedSize.height()) / 2.0,
+        fittedSize.width(), fittedSize.height());
+
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    const bool originalDarkBackground = scene->isDarkBackground();
+    const UBBackgroundRuling* originalBackground = scene->background();
+    const bool printDarkBackground = originalDarkBackground
+        && UBSettings::settings()->printBackgroundColor->get().toBool();
+    const UBBackgroundRuling* printBackground =
+        UBSettings::settings()->printBackgroundGrid->get().toBool()
+        ? originalBackground
+        : nullptr;
+
+    scene->setSceneBackground(printDarkBackground, printBackground);
+    scene->setRenderingContext(UBGraphicsScene::NonScreen);
+    scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
+    scene->render(&painter, targetRect, visibleSceneRect, Qt::KeepAspectRatio);
+    scene->setRenderingContext(UBGraphicsScene::Screen);
+    scene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
+    scene->setSceneBackground(originalDarkBackground, originalBackground);
+
+    painter.end();
+}
+}
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
@@ -352,6 +424,19 @@ void UBBoardController::setCursorFromAngle(qreal angle, const QPoint offset)
 void UBBoardController::setupToolbar()
 {
     UBSettings *settings = UBSettings::settings();
+
+    QAction* printAction = new QAction(QIcon(":/images/toolbar/print.png"), tr("Print"),
+                                       mMainWindow->boardToolBar);
+    printAction->setToolTip(tr("Print the current board view, fitted to the selected page"));
+
+    const QList<QAction*> toolbarActions = mMainWindow->boardToolBar->actions();
+    const int backgroundsIndex = toolbarActions.indexOf(mMainWindow->actionBackgrounds);
+    QAction* insertBefore = backgroundsIndex >= 0 && backgroundsIndex + 1 < toolbarActions.size()
+        ? toolbarActions.at(backgroundsIndex + 1)
+        : nullptr;
+    mMainWindow->boardToolBar->insertAction(insertBefore, printAction);
+    connect(printAction, &QAction::triggered, this,
+            [this]() { printCurrentBoardView(this, mMainWindow); });
 
     buildColorActions();
 
