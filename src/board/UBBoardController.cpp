@@ -426,7 +426,16 @@ void UBBoardController::setupToolbar()
 
     mMainWindow->webToolBar->hide();
     mMainWindow->documentToolBar->hide();
-
+    //keep the radiobutton explicitly ticked
+    mMainWindow->actionDocumentLevelZoom->setCheckable(true);
+    //do the connection
+    connect(mMainWindow->actionDocumentLevelZoom, &QAction::toggled, this, [this](bool checked)
+{ 
+    if(checked)
+    {
+       mSharedZoomFactor = currentZoom();
+    }
+});//using a lambda here and immediately calling  
     connectToolbar();
     initToolbarTexts();
 
@@ -971,7 +980,11 @@ void UBBoardController::zoomRestore()
     centerRestore();
 
     emit zoomChanged(1.0);
-
+    //update the zoom factor 
+    if(mMainWindow->actionDocumentLevelZoom->isChecked())
+    {
+	    mSharedZoomFactor = 1.0;
+    }
     emit controlViewportChanged();
     mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
 }
@@ -1039,7 +1052,11 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
     const auto shiftFactor = (1 - usedRatio) / usedRatio;
     mControlView->scale(usedRatio, usedRatio);
     mControlView->translate(scenePoint.x() * shiftFactor, scenePoint.y() * shiftFactor);
-
+    //most important part: keep in sync with zoom operations
+    if(mMainWindow->actionDocumentLevelZoom->isChecked())
+    {
+	    mSharedZoomFactor = currentZoom;
+    }
     emit zoomChanged(currentZoom);
     UBApplication::applicationController->adjustDisplayView();
 
@@ -1084,7 +1101,9 @@ void UBBoardController::restoreViewPositionOnCurrentScene() const
         mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
         mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
         QTransform transform;
-        double scale = viewState.zoomFactor * mSystemScaleFactor;
+        //double scale = viewState.zoomFactor * mSystemScaleFactor; //updating this as below for document level zoom
+	const qreal zoomFactor = mMainWindow->actionDocumentLevelZoom->isChecked()?mSharedZoomFactor:viewState.zoomFactor;
+	double scale = zoomFactor*mSystemScaleFactor;
         transform.scale(scale, scale);
         mControlView->setTransform(transform);
         centerOn(viewState.mLastSceneCenter);
@@ -1524,6 +1543,11 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int p
 std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    //added check for document level zoom(dlz from now on) 
+    if(mMainWindow->actionDocumentLevelZoom->isChecked())
+    {
+	    mSharedZoomFactor = currentZoom();
+    } 
     persistViewPositionOnCurrentScene();
 
     bool documentChange = selectedDocument() != pDocumentProxy;

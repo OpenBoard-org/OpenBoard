@@ -316,7 +316,8 @@ class UBBoardController : public UBDocumentContainer
         UBBoardView *mDisplayView;
         QWidget *mControlContainer;
         QHBoxLayout *mControlLayout;
-        qreal mZoomFactor;
+        qreal mSharedZoomFactor = {1.0}; //non-static member function for document level zoom
+	qreal mZoomFactor;
         bool mIsClosing;
         QColor mPenColorOnDarkBackground;
         QColor mPenColorOnLightBackground;
