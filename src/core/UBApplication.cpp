@@ -585,7 +585,7 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addAction(mainWindow->actionPaste);
             menu->addAction(mainWindow->actionHideApplication);
             menu->addAction(mainWindow->actionSleep);
-
+            menu->addAction(mainWindow->actionDocumentLevelZoom);
             menu->addSeparator();
             menu->addAction(mainWindow->actionOpenTutorial);
             menu->addAction(mainWindow->actionHintsAndTips);

@@ -1132,6 +1132,17 @@
     <string>Multi Screen</string>
    </property>
   </action>
+  <action name ="actionDocumentLevelZoom">
+  <property name="checkable">
+   <bool> true</bool>
+   </property>
+   <property name="text">
+   <string>Keep Document Level Zoom</string>
+   </property>
+   <property name="toolTip">
+    <string> Use the same level zoom when switching between pages</string>
+    </property>
+    </action>
   <action name="actionWidePageSize">
    <property name="checkable">
     <bool>true</bool>
