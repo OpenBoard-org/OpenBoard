@@ -169,7 +169,6 @@ class UBBoardController : public UBDocumentContainer
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 
-        void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager() const
         {
             return mPaletteManager;

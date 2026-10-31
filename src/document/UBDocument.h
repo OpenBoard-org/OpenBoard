@@ -24,6 +24,7 @@
 
 #include <QHash>
 #include <QList>
+#include <QSize>
 #include <QUuid>
 
 #include <memory>
@@ -70,6 +71,8 @@ public:
     std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
+    QSize pageSize(int index) const;
+    void setPageSize(int index, const QSize& pageSize);
     UBThumbnailScene* thumbnailScene(bool startLoader = true);
     UBDocumentToc* toc();
 

@@ -889,21 +889,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                 if (pdfItem)
                 {
-                    qreal pdfScale = 1.;
-
-                    // If the PDF is in the background, it occupies the whole page; so we can simply
-                    // use that information to calculate its scale.
-                    if (isBackground) {
-                        qreal pageWidth = mScene->nominalSize().width();
-                        qreal pageHeight = mScene->nominalSize().height();
-
-                        qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
-                        qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
-
-                        pdfScale = (scaleX+scaleY)/2.;
-                    }
-
-                    pdfItem->setScale(pdfScale);
                     pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 

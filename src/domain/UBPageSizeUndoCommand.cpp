@@ -31,16 +31,16 @@
 
 #include <QtGui>
 
-#include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "UBGraphicsScene.h"
+#include "document/UBDocument.h"
 
 #include "core/memcheck.h"
 
-UBPageSizeUndoCommand::UBPageSizeUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSize& previousSize, const QSize& newSize)
-    : mScene(pScene)
-        , mPreviousSize(previousSize)
-        , mNewSize(newSize)
+UBPageSizeUndoCommand::UBPageSizeUndoCommand(std::shared_ptr<UBDocument> pDocument, int pIndex, const QSize& previousSize, const QSize& newSize)
+    : mDocument{pDocument}
+    , mPageIndex{pIndex}
+    , mPreviousSize(previousSize)
+    , mNewSize(newSize)
 {
     mFirstRedo = true;
 }
@@ -52,14 +52,11 @@ UBPageSizeUndoCommand::~UBPageSizeUndoCommand()
 
 void UBPageSizeUndoCommand::undo()
 {
-    if (!mScene){
+    if (!mDocument){
         return;
     }
 
-    UBApplication::boardController->setPageSize(mPreviousSize);
-    // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
-    mScene->update(mScene->sceneRect());
-
+    mDocument->setPageSize(mPageIndex, mPreviousSize);
 }
 
 void UBPageSizeUndoCommand::redo()
@@ -68,13 +65,11 @@ void UBPageSizeUndoCommand::redo()
     // as we have already plotted the elements, we do not want to do it twice
     if (!mFirstRedo)
     {
-        if (!mScene){
+        if (!mDocument){
             return;
         }
 
-        UBApplication::boardController->setPageSize(mNewSize);
-        // force refresh, QT is a bit lazy and take a lot of time (nb item ^2) to trigger repaint
-        mScene->update(mScene->sceneRect());
+        mDocument->setPageSize(mPageIndex, mNewSize);
     }
     else
     {
