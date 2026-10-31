@@ -33,13 +33,16 @@
 #include <QtGui>
 #include "UBUndoCommand.h"
 
+// forward
+class UBDocument;
+
 class UBGraphicsScene;
 
 
 class UBPageSizeUndoCommand : public UBUndoCommand
 {
     public:
-        UBPageSizeUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSize& previousSize, const QSize& newSize);
+        UBPageSizeUndoCommand(std::shared_ptr<UBDocument> pDocument, int pIndex, const QSize& previousSize, const QSize& newSize);
         virtual ~UBPageSizeUndoCommand();
 
         virtual int getType() { return UBUndoType::undotype_PAGESIZE; };
@@ -49,7 +52,9 @@ class UBPageSizeUndoCommand : public UBUndoCommand
         virtual void redo();
 
     private:
-        std::shared_ptr<UBGraphicsScene> mScene;
+        std::shared_ptr<UBDocument> mDocument;
+        int mPageIndex;
+//        std::shared_ptr<UBGraphicsScene> mScene;
         QSize mPreviousSize;
         QSize mNewSize;
 

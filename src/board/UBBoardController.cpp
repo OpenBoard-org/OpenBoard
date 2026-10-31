@@ -2117,10 +2117,10 @@ void UBBoardController::setWidePageSize(bool checked)
 
     if (mActiveScene->nominalSize() != newSize)
     {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
+        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(activeDocument(), mActiveSceneIndex, mActiveScene->nominalSize(), newSize);
         UBApplication::undoStack->push(uc);
 
-        setPageSize(newSize);
+        activeDocument()->setPageSize(mActiveSceneIndex, newSize);
     }
 }
 
@@ -2132,29 +2132,10 @@ void UBBoardController::setRegularPageSize(bool checked)
 
     if (mActiveScene->nominalSize() != newSize)
     {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
+        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(activeDocument(), mActiveSceneIndex, mActiveScene->nominalSize(), newSize);
         UBApplication::undoStack->push(uc);
 
-        setPageSize(newSize);
-    }
-}
-
-
-void UBBoardController::setPageSize(QSize newSize)
-{
-    if (mActiveScene->nominalSize() != newSize)
-    {
-        mActiveScene->setNominalSize(newSize);
-
-        persistViewPositionOnCurrentScene();
-
-        updateDisplayScaleFactor();
-        updatePageSizeState();
-        adjustDisplayViews();
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-
-        UBSettings::settings()->pageSize->set(newSize);
+        activeDocument()->setPageSize(mActiveSceneIndex, newSize);
     }
 }
 
