@@ -391,6 +391,8 @@ class UBSettings : public QObject
         UBSetting* documentSortOrder;
         UBSetting* documentSplitterLeftSize;
         UBSetting* documentSplitterRightSize;
+        UBSetting* showBrokenDocumentWarning;
+        UBSetting* supportEmail;
         UBSetting* imageThumbnailWidth;
         UBSetting* videoThumbnailWidth;
         UBSetting* shapeThumbnailWidth;

@@ -39,6 +39,7 @@ class UBGraphicsScene;
 class UBDocumentProxy
 {
     friend class UBPersistenceManager;
+    friend class UBDocumentVersionConverter;
 
     public:
 
@@ -100,6 +101,8 @@ class UBDocumentProxy
 
         int pageDpi();
         void setPageDpi(int dpi);
+
+        bool isBroken() const;
 
         bool isWidgetCompatible(const QUuid& uuid) const;
         void setWidgetCompatible(const QUuid& uuid, bool compatible);

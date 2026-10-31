@@ -42,6 +42,7 @@
 #include <poppler/GlobalParams.h>
 #include <poppler/SplashOutputDev.h>
 #include <poppler/PDFDoc.h>
+#include <poppler/cpp/poppler-version.h>
 
 class PDFDoc;
 
@@ -105,7 +106,11 @@ class XPDFRenderer : public PDFRenderer
                     cachedImage = QImage();
                     delete splash;
                 }
+#if POPPLER_VERSION_MAJOR > 26 || (POPPLER_VERSION_MAJOR == 26 && POPPLER_VERSION_MINOR >= 2)
+                splash = new SplashOutputDev(splashModeRGB8, 1, paperColor);
+#else
                 splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
+#endif
                 cachedPageNumber = pageNumber;
             }
 

@@ -39,7 +39,7 @@
 using namespace merge_lib;
 using namespace std;
 
-int OverlayDocumentParser::DOC_PART_WITH_START_OF_XREF = 30;
+int OverlayDocumentParser::DOC_PART_WITH_START_OF_XREF = 1024;
 unsigned int partSize = 10485760; // = 10 Mb
 
 Document * OverlayDocumentParser::parseDocument(const char * fileName)

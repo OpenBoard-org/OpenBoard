@@ -1381,19 +1381,19 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="573"/>
+        <location filename="../../src/core/UBApplication.cpp" line="578"/>
         <source>Page Size</source>
         <translation>Haben&apos;ny pejy</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="594"/>
+        <location filename="../../src/core/UBApplication.cpp" line="599"/>
         <source>Podcast</source>
         <translation>Podcast</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="358"/>
-        <location filename="../../src/core/UBApplication.cpp" line="404"/>
-        <location filename="../../src/core/UBApplication.cpp" line="649"/>
+        <location filename="../../src/core/UBApplication.cpp" line="363"/>
+        <location filename="../../src/core/UBApplication.cpp" line="409"/>
+        <location filename="../../src/core/UBApplication.cpp" line="654"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1401,27 +1401,27 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBApplicationController</name>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="341"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="339"/>
         <source>Web</source>
         <translation>Tranon-kala</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="585"/>
         <source>New update available, would you go to the web page ?</source>
         <translation>Misy fanavaozana azo alaina, te hande amin&apos;ny pejin&apos;ilay tranonkala ve ianao ?</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="591"/>
         <source>No update available</source>
         <translation>Tsisy fanavaozana azo alaina</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="587"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="585"/>
         <source>Update available</source>
         <translation>Fanavaozana azo alaina</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplicationController.cpp" line="593"/>
+        <location filename="../../src/core/UBApplicationController.cpp" line="591"/>
         <source>Update</source>
         <translation>Avaozy</translation>
     </message>
@@ -1442,32 +1442,32 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1294"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1293"/>
         <source>Downloading content %1 failed</source>
         <translation>Fakana mpiatiny %1 tsy nety</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1303"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1302"/>
         <source>Download finished</source>
         <translation>Fakana mpiatiny vita</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1630"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1629"/>
         <source>Unknown tool type %1</source>
         <translation>Fitaovana tsy fantatra karazana %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2791"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2811"/>
         <source>Add Item</source>
         <translation>Ampiana zavatra</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2793"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2813"/>
         <source>All Supported (%1)</source>
         <translation>Zaka daholo (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1675"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1674"/>
         <source>Unknown content type %1</source>
         <translation>Mpiatiny tsy fantatra karazana %1</translation>
     </message>
@@ -1477,10 +1477,10 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Pejy %1 voafafa</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1434"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1479"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2396"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2432"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1433"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1478"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2403"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2439"/>
         <source>Add file operation failed: file copying error</source>
         <translation>Fanampiana rakitra tsy nety: nisy tsy fetezana tamin&apos;ny fandikana ny rakitra</translation>
     </message>
@@ -1515,12 +1515,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished">Loko</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1643"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1642"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1670"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1669"/>
         <source>Could not find document.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1615,7 +1615,7 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1997"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2028"/>
         <source>New Folder</source>
         <translation>Fiteoran-drakitra vaovao</translation>
     </message>
@@ -1624,124 +1624,138 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished">Pejy %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2169"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2255"/>
         <source>Add Folder of Images</source>
         <translation>Manampy fitoeran-drakitra misy sary</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2170"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2256"/>
         <source>Add Images</source>
         <translation>Manampy sary </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2171"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2257"/>
         <source>Add Pages from File</source>
         <translation>Manampy pejy an&apos;ilay rakitra</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2465"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2477"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3329"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2551"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2563"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3415"/>
         <source>Opening document in Board. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2483"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3335"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2569"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3421"/>
         <source>Document opened successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2537"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2623"/>
         <source>Duplicating Document %1</source>
         <translation>Dikamitovy-na rakitra %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2541"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2627"/>
         <source>Document %1 copied</source>
         <translation>Rakitra %1 nadika</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3228"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3314"/>
         <source>Open Supported File</source>
         <translation>Manokatra rakitra zaka</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3156"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3243"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3242"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3329"/>
         <source>Importing file %1...</source>
         <translation>Manafatra rakitra %1 ...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3165"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3260"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2078"/>
+        <source>OpenBoard could not recover this file. Please delete it or contact your administrator for help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2086"/>
+        <source>Broken document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2089"/>
+        <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3251"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3346"/>
         <source>Failed to import file ... </source>
         <translation>Nisy tsy fetezana ny fanafarana rakitra ...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3185"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3271"/>
         <source>Import all Images from Folder</source>
         <translation>Alaina daholo ny sary amin&apos;ilay fitoeran-drakitra</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3729"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3730"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3750"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3751"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3815"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3816"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3836"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3837"/>
         <source>Delete</source>
         <translation>Fafao</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3744"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3745"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3756"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3757"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3830"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3831"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3842"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3843"/>
         <source>Empty</source>
         <translation>Foana</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1909"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3704"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3705"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3725"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3726"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3761"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3762"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1940"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3790"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3791"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3811"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3812"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3847"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3848"/>
         <source>Trash</source>
         <translation>Daba</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3439"/>
         <source>Open Document</source>
-        <translation>Manokatra rakitra</translation>
+        <translation type="vanished">Manokatra rakitra</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3495"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3581"/>
         <source>Add all Images to Document</source>
         <translation>Ampiana amin&apos;ilay rakitra ny sary rehetra</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3496"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3582"/>
         <source>All Images (%1)</source>
         <translation>Ny sary rehetra(%1)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3517"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3603"/>
         <source>Selection does not contain any image files!</source>
         <translation>Tsy misy sary ilay fantina!</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3206"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3292"/>
         <source>Folder does not contain any image files</source>
         <translation>Tsy misy sary ilay fitoeran-drakitra</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1910"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1941"/>
         <source>Untitled Documents</source>
         <translation>Rakitra tsy misy lohateny</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2527"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2613"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation type="unfinished">
@@ -1750,92 +1764,87 @@ Do you wish to override the security check and continue ?   </source>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3440"/>
-        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2584"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2585"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2671"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2669"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2755"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2670"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2756"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2675"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2761"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2676"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2762"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2693"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2779"/>
         <source>Emptying My Documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2694"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2780"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2730"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2816"/>
         <source>Emptying Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2731"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2817"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2747"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2833"/>
         <source>Moving %1 elements to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2748"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2834"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2756"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2842"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2757"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2843"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2763"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2849"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2764"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2850"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3116"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3202"/>
         <source>Open Supported File(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1932,39 +1941,39 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="obsolete">Ekena</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="106"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="109"/>
         <source>Cancel</source>
         <translation type="unfinished">Ajanony</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="105"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="108"/>
         <source>Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="185"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="188"/>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="104"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="107"/>
         <source>Rename</source>
         <translation type="unfinished">Soloina ny anarana</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="133"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="136"/>
         <source>Replace all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="134"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="137"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="135"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="138"/>
         <source>Skip all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1972,12 +1981,12 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="394"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="397"/>
         <source>Trash</source>
         <translation type="unfinished">Daba</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="749"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="780"/>
         <source>%1 pages copied</source>
         <translation type="unfinished">
             <numerusform>%1 pejy voadika</numerusform>
@@ -1985,7 +1994,7 @@ Providing a new name will create a new document.</source>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="390"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="393"/>
         <source>My documents</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1993,7 +2002,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1690"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1721"/>
         <source>%1 pages copied</source>
         <translation type="unfinished">
             <numerusform>%1 pejy voadika</numerusform>
@@ -2001,9 +2010,26 @@ Providing a new name will create a new document.</source>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1650"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1681"/>
         <source>Copying page %1/%2</source>
         <translation type="unfinished">Mandika pejy %1/%2</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentVersionConverter</name>
+    <message>
+        <location filename="../../src/document/UBDocumentVersionConverter.cpp" line="69"/>
+        <source>This document was created using OpenBoard 1.8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/document/UBDocumentVersionConverter.cpp" line="70"/>
+        <source>This document was created using OpenBoard 1.8, and its content has been reorganized. We strongly recommend updating OpenBoard to version 1.8.
+
+If you wish to continue, the document will be converted to be compatible with version 1.7.7. This may take a few minutes. You will still be able to open it in OpenBoard 1.8, but it will then be converted again to the 1.8 format.
+
+Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2530,7 +2556,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1248"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1247"/>
         <source>Web</source>
         <translation>Tranon-kala</translation>
     </message>
@@ -2538,7 +2564,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="837"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="836"/>
         <source>Loading ...</source>
         <translation>Maka ...</translation>
     </message>
@@ -2926,7 +2952,7 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
 <context>
     <name>UBSettings</name>
     <message>
-        <location filename="../../src/core/UBSettings.cpp" line="1022"/>
+        <location filename="../../src/core/UBSettings.cpp" line="1024"/>
         <source>My Movies</source>
         <translation>Ny sarimietsiko</translation>
     </message>
@@ -3537,12 +3563,12 @@ Do you want to reload the page ?</source>
 <context>
     <name>XPDFRenderer</name>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="334"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="346"/>
         <source>Processing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="79"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="81"/>
         <source>an error occured while trying to open the PDF file</source>
         <translation type="unfinished"></translation>
     </message>
