@@ -192,6 +192,8 @@ void UBDockPalette::resizeEvent(QResizeEvent *event)
     }
     move(origin.x(), origin.y());
     moveTabs();
+    
+    emit dockPaletteGeometryChanged();
 }
 
 /**

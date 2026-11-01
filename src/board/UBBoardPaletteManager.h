@@ -102,6 +102,7 @@ class UBBoardPaletteManager : public QObject
         void connectPalettes();
         void positionFreeDisplayPalette();
         void setupDockPaletteWidgets();
+        int verticalStylusPaletteLeftOffset() const;
 
         QWidget* mContainer;
         UBBoardController *mBoardControler;
@@ -184,6 +185,7 @@ class UBBoardPaletteManager : public QObject
         void handButtonReleased();
 
         void changeStylusPaletteOrientation(QVariant var);
+        void updateStylusPalettePosition();
 };
 
 #endif /* UBBOARDPALETTEMANAGER_H_ */

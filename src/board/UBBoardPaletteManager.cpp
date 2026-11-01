@@ -119,7 +119,7 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
 
 void UBBoardPaletteManager::initPalettesPosAtStartup()
 {
-    mStylusPalette->initPosition();
+    updateStylusPalettePosition();
 }
 
 void UBBoardPaletteManager::setupLayout()
@@ -483,6 +483,12 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
+    if(mLeftPalette)
+    {
+        connect(mLeftPalette, SIGNAL(dockPaletteGeometryChanged()),
+                this, SLOT(updateStylusPalettePosition()));
+    }
+
 }
 
 
@@ -499,8 +505,7 @@ void UBBoardPaletteManager::containerResized()
     if(mStylusPalette)
     {
         mStylusPalette->move(userLeft, userTop);
-        mStylusPalette->adjustSizeAndPosition();
-        mStylusPalette->initPosition();
+        updateStylusPalettePosition();
     }
 
     if(mZoomPalette)
@@ -569,6 +574,7 @@ void UBBoardPaletteManager::backgroundPaletteClosed()
 void UBBoardPaletteManager::toggleStylusPalette(bool checked)
 {
     mStylusPalette->setVisible(checked);
+    updateStylusPalettePosition();
 }
 
 
@@ -666,6 +672,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
+                updateStylusPalettePosition();
 #ifdef Q_OS_WIN
                 if (rightPaletteVisible)
                     mRightPalette->setAdditionalVOffset(0);
@@ -963,8 +970,39 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
 
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
+    updateStylusPalettePosition();
 }
 
+int UBBoardPaletteManager::verticalStylusPaletteLeftOffset() const
+{
+    if (!mStylusPalette || !mLeftPalette)
+        return 0;
+
+    if(!mStylusPalette->isVisible())
+        return 0;
+
+    if(!mLeftPalette->isVisible())
+        return 0;
+
+    if(!UBSettings::settings()->appToolBarOrientationVertical->get().toBool())
+        return 0;
+
+    if(mLeftPalette->width() <=0)
+        return 0;
+
+    int offset = mLeftPalette->x() + mLeftPalette->width();
+
+    return offset;
+}
+
+void UBBoardPaletteManager::updateStylusPalettePosition()
+{
+    if (!mStylusPalette)
+        return;
+
+    mStylusPalette->adjustSizeAndPosition();
+    mStylusPalette->initPosition(verticalStylusPaletteLeftOffset());
+}
 
 void UBBoardPaletteManager::refreshPalettes()
 {

@@ -92,7 +92,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
 }
 
-void UBStylusPalette::initPosition()
+void UBStylusPalette::initPosition(int verticalLeftOffset)
 {
     QWidget* pParentW = parentWidget();
     if(!pParentW) return ;
@@ -104,7 +104,7 @@ void UBStylusPalette::initPosition()
     int parentHeight = pParentW->height();
 
     if(UBSettings::settings()->appToolBarOrientationVertical->get().toBool()){
-        int posX = border();
+        int posX = border() + verticalLeftOffset;
         int posY = (parentHeight / 2) - (height() / 2);
         pos.setX(posX);
         pos.setY(posY);
