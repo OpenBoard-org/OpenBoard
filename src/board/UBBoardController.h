@@ -61,6 +61,7 @@ class UBSoftwareUpdateDialog;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
+class UBPageSizePalette;
 class UBItem;
 class UBGraphicsItem;
 class UBToolbarButtonGroup;
@@ -81,6 +82,8 @@ class UBBoardController : public UBDocumentContainer
     public:
         UBBoardController(UBMainWindow *mainWindow);
         virtual ~UBBoardController();
+
+        virtual QUndoStack* undoStack() const;
 
         void init();
         void setupLayout();
@@ -234,8 +237,6 @@ class UBBoardController : public UBDocumentContainer
         void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
-        void setWidePageSize(bool checked);
-        void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
         UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
@@ -292,7 +293,6 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
-        void updatePageSizeState();
         int autosaveTimeoutFromSettings() const;
         void buildColorActions();
         void updateColorButtonsForPaletteSize();
@@ -303,6 +303,7 @@ class UBBoardController : public UBDocumentContainer
         int mActiveSceneIndex;
         int mSwitchToSceneIndex{-1};
         UBBoardPaletteManager *mPaletteManager;
+        UBPageSizePalette* mPageSizePalette{nullptr};
         UBBackgroundManager* mBgManager{nullptr};
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;

@@ -265,8 +265,15 @@ void UBSettings::init()
 
     tutorialUrl = new UBSetting(this,"App","TutorialUrl","http://www.openboard.ch");
 
-    documentSizes.insert(DocumentSizeRatio::Ratio4_3, QSize(1280, 960)); // 1.33
-    documentSizes.insert(DocumentSizeRatio::Ratio16_9, QSize((960 / 9 * 16), 960)); // 1.77
+    constexpr auto height = 960;
+    documentSizes.insert(DocumentSize::Ratio4_3, {true, QSize{qCeil(height * 4. / 3.), height}, QSizeF{4., 3.}}); // 1.33
+    documentSizes.insert(DocumentSize::Ratio16_9, {true, QSize{qCeil(height * 16. / 9.), height}, QSizeF{16., 9.}}); // 1.77
+    documentSizes.insert(DocumentSize::Ratio16_10, {true, QSize{qCeil(height * 16. / 10.), height}, QSizeF{16., 10.}}); // 1.6
+    documentSizes.insert(DocumentSize::CustomRatio, {true, QSize{}, QSizeF{}});
+    documentSizes.insert(DocumentSize::SizeA4, {false, QSize{qCeil(297. * UB_DOTS_PER_MM), qCeil(210. * UB_DOTS_PER_MM)}, QSizeF{29.7, 21.0}});
+    documentSizes.insert(DocumentSize::SizeA5, {false, QSize{qCeil(210. * UB_DOTS_PER_MM), qCeil(148.5 * UB_DOTS_PER_MM)}, QSizeF{21.0, 14.85}});
+    documentSizes.insert(DocumentSize::CustomSize, {false, QSize{}, QSizeF{}});
+    documentSizes.insert(DocumentSize::ImportedSize, {false, QSize{0, 0}, QSizeF{0., 0.}});
 
     appToolBarPositionedAtTop = new UBSetting(this, "App", "ToolBarPositionedAtTop", true);
     appToolBarDisplayText = new UBSetting(this, "App", "ToolBarDisplayText", true);
@@ -326,7 +333,7 @@ void UBSettings::init()
     boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "16x16");
     ValidateKeyboardPaletteKeyBtnSize();
 
-    pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+    pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSize::Ratio4_3).size);
 
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C8C0C0C0");
     boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");

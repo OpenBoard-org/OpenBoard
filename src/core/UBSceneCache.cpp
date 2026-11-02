@@ -125,6 +125,12 @@ std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<UBDocumentP
     }
 }
 
+std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<void> handle)
+{
+    auto entry = static_cast<SceneCacheEntry*>(handle.get());
+    return entry->scene();
+}
+
 
 void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {

@@ -53,6 +53,7 @@ class UBDocumentGroupTreeItem;
 class UBDocumentProxyTreeItem;
 class UBMainWindow;
 class UBDocumentToolsPalette;
+class UBPageSizePalette;
 
 
 class UBDocumentReplaceDialog : public QDialog
@@ -414,6 +415,8 @@ class UBDocumentController : public UBDocumentContainer
         UBDocumentController(UBMainWindow* mainWindow);
         virtual ~UBDocumentController();
 
+        virtual QUndoStack* undoStack() const;
+
         void closing();
         QWidget* controlView();
         UBDocumentProxyTreeItem* findDocument(std::shared_ptr<UBDocumentProxy> proxy);
@@ -534,8 +537,10 @@ class UBDocumentController : public UBDocumentContainer
         QAction* mAddImagesAction;
         bool mIsClosing;
         UBDocumentToolsPalette *mToolsPalette;
+        UBPageSizePalette* mPageSizePalette{nullptr};
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
+        QUndoStack* mUndoStack{nullptr};
 
         void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);

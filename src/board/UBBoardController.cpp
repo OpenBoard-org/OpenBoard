@@ -67,7 +67,6 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBItem.h"
-#include "domain/UBPageSizeUndoCommand.h"
 
 #include "gui/UBBackgroundManager.h"
 #include "gui/UBFeaturesWidget.h"
@@ -75,6 +74,7 @@
 #include "gui/UBMagnifer.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBMessageWindow.h"
+#include "gui/UBPageSizePalette.h"
 #include "gui/UBThumbnailScene.h"
 #include "gui/UBToolWidget.h"
 #include "gui/UBToolbarButtonGroup.h"
@@ -167,6 +167,11 @@ void UBBoardController::init()
 UBBoardController::~UBBoardController()
 {
     delete mDisplayView;
+}
+
+QUndoStack* UBBoardController::undoStack() const
+{
+    return UBApplication::undoStack.get();
 }
 
 int UBBoardController::currentPage() const
@@ -384,12 +389,19 @@ void UBBoardController::setupToolbar()
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
 
     //-----------------------------------------------------------//
+    // Setup page size palette as toolbar extension
+
+    mPageSizePalette = new UBPageSizePalette(mMainWindow->boardToolBar, this, mMainWindow);
+    auto fromWidget = mMainWindow->boardToolBar->widgetForAction(mMainWindow->actionBoard);
+    auto toWidget = mMainWindow->boardToolBar->widgetForAction(mMainWindow->actionMenu);
+    mPageSizePalette->setSpan(fromWidget, toWidget);
+    mPageSizePalette->hide();
+
+    //-----------------------------------------------------------//
 
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
 
     UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
-
-    mMainWindow->actionBoard->setVisible(false);
 
     mMainWindow->webToolBar->hide();
     mMainWindow->documentToolBar->hide();
@@ -1021,7 +1033,6 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint, bool relativ
         QTransform tr;
         tr.scale(scale, scale);
         mControlView->setTransform(tr);
-        qDebug() << "setTransform" << tr.m11();
     }
 
     emit zoomChanged(newZoom);
@@ -1553,7 +1564,6 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         mDisplayView->setScene(mActiveScene.get());
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
         pDocumentProxy->setDefaultDocumentSize(mActiveScene->nominalSize());
-        updatePageSizeState();
 
         adjustDisplayViews();
 
@@ -2065,6 +2075,11 @@ void UBBoardController::removeTool(UBToolWidget* toolWidget)
 void UBBoardController::hide()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
+
+    if (mPageSizePalette)
+    {
+        mPageSizePalette->hide();
+    }
 }
 
 void UBBoardController::show()
@@ -2109,36 +2124,6 @@ void UBBoardController::updateDisplayScaleFactor()
     mDisplayScaleFactor = UBApplication::displayManager->physicalDpi(ScreenRole::Control) / UB_DOTS_PER_INCH;
 }
 
-
-void UBBoardController::setWidePageSize(bool checked)
-{
-    Q_UNUSED(checked);
-    QSize newSize = UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio16_9);
-
-    if (mActiveScene->nominalSize() != newSize)
-    {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(activeDocument(), mActiveSceneIndex, mActiveScene->nominalSize(), newSize);
-        UBApplication::undoStack->push(uc);
-
-        activeDocument()->setPageSize(mActiveSceneIndex, newSize);
-    }
-}
-
-
-void UBBoardController::setRegularPageSize(bool checked)
-{
-    Q_UNUSED(checked);
-    QSize newSize = UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio4_3);
-
-    if (mActiveScene->nominalSize() != newSize)
-    {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(activeDocument(), mActiveSceneIndex, mActiveScene->nominalSize(), newSize);
-        UBApplication::undoStack->push(uc);
-
-        activeDocument()->setPageSize(mActiveSceneIndex, newSize);
-    }
-}
-
 void UBBoardController::notifyCache(bool visible)
 {
     if(visible)
@@ -2146,23 +2131,6 @@ void UBBoardController::notifyCache(bool visible)
 
     mCacheWidgetIsEnabled = visible;
 }
-
-void UBBoardController::updatePageSizeState()
-{
-    if (mActiveScene->nominalSize() == UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio16_9))
-    {
-        mMainWindow->actionWidePageSize->setChecked(true);
-    }
-    else if(mActiveScene->nominalSize() == UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio4_3))
-    {
-        mMainWindow->actionRegularPageSize->setChecked(true);
-    }
-    else
-    {
-        mMainWindow->actionCustomPageSize->setChecked(true);
-    }
-}
-
 
 void UBBoardController::stylusToolChanged(int tool)
 {
