@@ -258,7 +258,7 @@ void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, 
     }
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes)
+std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes, bool cached)
 {
     if (cacheNeighboringScenes)
     {
@@ -280,7 +280,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeig
         }
     }
 
-    return UBPersistenceManager::persistenceManager()->loadDocumentScene(mProxy, mToc->pageId(index));
+    return UBPersistenceManager::persistenceManager()->loadDocumentScene(mProxy, mToc->pageId(index), cached);
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::getScene(int index)
@@ -312,13 +312,17 @@ QSize UBDocument::pageSize(int index) const
     return mToc->pageSize(index);
 }
 
-void UBDocument::setPageSize(int index, const QSize& pageSize)
+void UBDocument::setPageSize(int index, const QSize& pageSize, std::shared_ptr<UBGraphicsScene> scene)
 {
     // inform scene
-    auto scene = loadScene(index, false);
+    if (!scene)
+    {
+        scene = loadScene(index, false, false);
+    }
+
     scene->setNominalSize(pageSize);
     scene->setModified(true);
-    persistPage(scene, index, false, false, false);
+    persistPage(scene, index, false, true, false, false);
 
     // update TOC
     mToc->setPageSize(index, pageSize);
@@ -333,6 +337,11 @@ void UBDocument::setPageSize(int index, const QSize& pageSize)
     mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
     UBSettings::settings()->pageSize->set(pageSize);
+}
+
+void UBDocument::setPageSize(int index, const QSizeF& pageSize)
+{
+    setPageSize(index, QSize{qCeil(pageSize.width()), qCeil(pageSize.height())});
 }
 
 UBThumbnailScene* UBDocument::thumbnailScene(bool startLoader)

@@ -385,5 +385,6 @@
         <file>images/backgroundPalette/bgButtonTemplateDarkOn.svg</file>
         <file>images/backgroundPalette/bgButtonTemplateLightOff.svg</file>
         <file>images/backgroundPalette/bgButtonTemplateLightOn.svg</file>
+        <file>images/undecidedMode.svg</file>
     </qresource>
 </RCC>

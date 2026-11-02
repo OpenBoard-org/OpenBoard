@@ -205,11 +205,18 @@ enum UBGraphicsFlag {
 Q_DECLARE_FLAGS(UBGraphicsFlags, UBGraphicsFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(UBGraphicsFlags )
 
-struct DocumentSizeRatio
+struct DocumentSize
 {
     enum Enum
     {
-        Ratio4_3 = 0, Ratio16_9, Custom
+        Ratio4_3 = 0, Ratio16_9, Ratio16_10, CustomRatio, SizeA4, SizeA5, CustomSize, ImportedSize
+    };
+
+    struct Value
+    {
+        bool isRatio;
+        QSize size;
+        QSizeF displayedSize;
     };
 };
 

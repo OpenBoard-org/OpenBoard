@@ -339,9 +339,13 @@ int UBDocumentManager::importPages(const QFile& file, std::shared_ptr<UBDocument
     for (UBGraphicsItem* page : pages)
     {
         std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex, false, true, true, false);
+
+        const auto itemSize = dynamic_cast<QGraphicsItem*>(page)->boundingRect().size();
+        doc->setPageSize(pageIndex, itemSize);
+
         importAdaptor->placeImportedItemToScene(scene, page);
-        doc->setPageSize(pageIndex, dynamic_cast<QGraphicsItem*>(page)->boundingRect().size().toSize());
-        doc->persistPage(scene, pageIndex, false, false, false, false);
+
+        doc->persistPage(scene, pageIndex, false, false, true, false);
         pageIndex++;
     }
 

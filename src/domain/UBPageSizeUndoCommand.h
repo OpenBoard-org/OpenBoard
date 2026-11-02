@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2026 Département de l'Instruction Publique (DIP-SEM)
+ * and contributors
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -25,40 +26,33 @@
  */
 
 
+#pragma once
 
-
-#ifndef UBPageSizeUndoCommand_H_
-#define UBPageSizeUndoCommand_H_
-
-#include <QtGui>
 #include "UBUndoCommand.h"
+
+#include <QUuid>
 
 // forward
 class UBDocument;
 
-class UBGraphicsScene;
-
 
 class UBPageSizeUndoCommand : public UBUndoCommand
 {
-    public:
-        UBPageSizeUndoCommand(std::shared_ptr<UBDocument> pDocument, int pIndex, const QSize& previousSize, const QSize& newSize);
-        virtual ~UBPageSizeUndoCommand();
+public:
+    UBPageSizeUndoCommand(std::shared_ptr<UBDocument> document, QList<QUuid> pages, QSize newSize);
+    virtual ~UBPageSizeUndoCommand();
 
-        virtual int getType() { return UBUndoType::undotype_PAGESIZE; };
+    virtual int getType() { return UBUndoType::undotype_PAGESIZE; };
 
-    protected:
-        virtual void undo();
-        virtual void redo();
+    std::shared_ptr<UBDocument> document() const;
 
-    private:
-        std::shared_ptr<UBDocument> mDocument;
-        int mPageIndex;
-//        std::shared_ptr<UBGraphicsScene> mScene;
-        QSize mPreviousSize;
-        QSize mNewSize;
+protected:
+    virtual void undo();
+    virtual void redo();
 
-        bool mFirstRedo;
+private:
+    std::shared_ptr<UBDocument> mDocument;
+    QList<QUuid> mPages;
+    QSize mNewSize;
+    QList<QSize> mPreviousSizes;
 };
-
-#endif /* UBPageSizeUndoCommand_H_ */

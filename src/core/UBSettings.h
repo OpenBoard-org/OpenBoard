@@ -372,7 +372,7 @@ class UBSettings : public QObject
 
         UBSetting* boardShowToolsPalette;
 
-        QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
+        QMap<DocumentSize::Enum, DocumentSize::Value> documentSizes;
 
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;

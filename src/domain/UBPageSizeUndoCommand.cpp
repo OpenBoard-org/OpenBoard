@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2026 Département de l'Instruction Publique (DIP-SEM)
+ * and contributors
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -25,24 +26,23 @@
  */
 
 
-
-
 #include "UBPageSizeUndoCommand.h"
 
-#include <QtGui>
+#include <QProgressDialog>
 
-#include "board/UBBoardController.h"
 #include "document/UBDocument.h"
+#include "document/UBDocumentToc.h"
+#include "domain/UBGraphicsScene.h"
+#include "gui/UBThumbnailScene.h"
 
 #include "core/memcheck.h"
 
-UBPageSizeUndoCommand::UBPageSizeUndoCommand(std::shared_ptr<UBDocument> pDocument, int pIndex, const QSize& previousSize, const QSize& newSize)
-    : mDocument{pDocument}
-    , mPageIndex{pIndex}
-    , mPreviousSize(previousSize)
+
+UBPageSizeUndoCommand::UBPageSizeUndoCommand(std::shared_ptr<UBDocument> document, QList<QUuid> pages, QSize newSize)
+    : mDocument{document}
+    , mPages{pages}
     , mNewSize(newSize)
 {
-    mFirstRedo = true;
 }
 
 UBPageSizeUndoCommand::~UBPageSizeUndoCommand()
@@ -50,29 +50,91 @@ UBPageSizeUndoCommand::~UBPageSizeUndoCommand()
    //NOOP
 }
 
+std::shared_ptr<UBDocument> UBPageSizeUndoCommand::document() const
+{
+    return mDocument;
+}
+
 void UBPageSizeUndoCommand::undo()
 {
-    if (!mDocument){
+    if (!mDocument)
+    {
         return;
     }
 
-    mDocument->setPageSize(mPageIndex, mPreviousSize);
+    QProgressDialog progress(QObject::tr("Changing page format..."), "", 0, mPages.size());
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setWindowFlag(Qt::FramelessWindowHint);
+    progress.setCancelButton(nullptr);
+    progress.setMinimumDuration(1000);
+
+    for (int i = 0; i < mPages.size(); ++i)
+    {
+        const auto pageId = mDocument->toc()->findUuid(mPages[i]);
+
+        if (pageId >= 0)
+        {
+            mDocument->setPageSize(pageId, mPreviousSizes[i]);
+        }
+
+        progress.setValue(i);
+    }
+
+    progress.close();
+
+    mDocument->thumbnailScene()->update();
 }
 
 void UBPageSizeUndoCommand::redo()
 {
-    // the Undo framework calls a redo while appending the undo command.
-    // as we have already plotted the elements, we do not want to do it twice
-    if (!mFirstRedo)
+    if (!mDocument)
     {
-        if (!mDocument){
-            return;
+        return;
+    }
+
+    QProgressDialog progress(QObject::tr("Changing page format..."), QObject::tr("Cancel"), 0, mPages.size());
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setWindowFlag(Qt::FramelessWindowHint);
+    progress.setMinimumDuration(1000);
+
+    for (int i = 0; i < mPages.size(); ++i)
+    {
+        const auto pageId = mDocument->toc()->findUuid(mPages[i]);
+
+        if (pageId >= 0)
+        {
+            mPreviousSizes << mDocument->pageSize(pageId);
+
+            if (mNewSize.isNull())
+            {
+                const auto scene = mDocument->loadScene(pageId, false, false);
+                const auto backgroundItem = scene->backgroundObject();
+
+                if (backgroundItem)
+                {
+                    const auto itemSize = backgroundItem->sceneBoundingRect().size();
+                    const QSize desiredPageSize{qCeil(itemSize.width()), qCeil(itemSize.height())};
+                    mDocument->setPageSize(pageId, desiredPageSize, scene);
+                }
+            }
+            else
+            {
+                mDocument->setPageSize(pageId, mNewSize);
+            }
         }
 
-        mDocument->setPageSize(mPageIndex, mNewSize);
+        progress.setValue(i);
+
+        if (progress.wasCanceled())
+        {
+            // truncate the lists to those which were converted
+            mPages.resize(i + 1);
+            mPreviousSizes.resize(i + 1);
+        }
     }
-    else
-    {
-        mFirstRedo = false;
-    }
+
+    progress.close();
+
+    mDocument->thumbnailScene()->update();
 }
+
