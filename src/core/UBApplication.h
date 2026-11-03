@@ -31,11 +31,16 @@
 #define UBAPPLICATION_H_
 
 #include <QtGui>
+#ifdef KDSINGLEAPPLICATION
+#include <QApplication>
+#endif
 #include <QUndoStack>
 #include <QToolBar>
 #include <QMenu>
 
+#ifndef KDSINGLEAPPLICATION
 #include "singleapplication/singleapplication.h"
+#endif
 
 namespace Ui
 {
@@ -55,7 +60,11 @@ class UBDisplayManager;
 class UBDocumentController;
 class UBMainWindow;
 
+#ifdef KDSINGLEAPPLICATION
+class UBApplication : public QApplication
+#else
 class UBApplication : public SingleApplication
+#endif
 {
     Q_OBJECT
 
@@ -127,7 +136,11 @@ class UBApplication : public SingleApplication
          * Used on Windows platform to open file in running application. On MacOS X opening file is done through the
          * FileOpen event that is handle in eventFilter method.
          */
+#ifdef KDSINGLEAPPLICATION
+        void handleOpenMessage(QByteArray message);
+#else
         void handleOpenMessage(quint32 instanceId, QByteArray message);
+#endif
 
     private slots:
 
