@@ -28,16 +28,19 @@
 
 
 #include "UBAbstractDrawRuler.h"
-#include <QtSvg>
-#include "core/UB.h"
-#include "gui/UBResources.h"
-#include "domain/UBGraphicsScene.h"
-#include "board/UBDrawingController.h"
-#include "core/UBApplication.h"
+
+#include <QGraphicsSvgItem>
+
 #include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
 #include "core/memcheck.h"
+#include "core/UB.h"
+#include "core/UBApplication.h"
 
+#include "domain/UBGraphicsScene.h"
+
+#include "gui/UBResources.h"
 
 const QColor UBAbstractDrawRuler::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
 const QColor UBAbstractDrawRuler::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);

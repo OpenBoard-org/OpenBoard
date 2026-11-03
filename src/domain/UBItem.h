@@ -32,10 +32,7 @@
 
 #include <QtGui>
 
-#include "domain/UBGraphicsItemDelegate.h"
-
 class UBGraphicsScene;
-class UBGraphicsItem;
 
 class UBItem
 {
@@ -99,35 +96,6 @@ class UBItem
         RenderingQuality mRenderingQuality;
 
         CacheBehavior mCacheBehavior;
-};
-
-class UBGraphicsItem
-{
-protected:
-    UBGraphicsItem() : mDelegate(NULL)
-    {
-        // NOOP
-    }
-    virtual ~UBGraphicsItem();
-    void setDelegate(UBGraphicsItemDelegate* mDelegate);
-
-public:
-    virtual int type() const = 0;
-
-    UBGraphicsItemDelegate *Delegate() const;
-
-    static void assignZValue(QGraphicsItem*, qreal value);
-    static bool isRotatable(QGraphicsItem *item);
-    static bool isFlippable(QGraphicsItem *item);
-    static bool isLocked(QGraphicsItem *item);
-    static bool isHiddenOnDisplay(QGraphicsItem *item);
-
-    static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);
-
-    void remove(bool canUndo = true);
-
-private:
-    UBGraphicsItemDelegate* mDelegate;
 };
 
 #endif // UBITEM_H

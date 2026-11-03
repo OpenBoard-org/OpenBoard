@@ -28,17 +28,21 @@
 
 
 #include "UBGraphicsProtractor.h"
-#include "core/UBApplication.h"
-#include "gui/UBResources.h"
-#include "domain/UBGraphicsScene.h"
-#include "board/UBBoardController.h"
-#include "board/UBDrawingController.h"
-#include "UBAbstractDrawRuler.h"
-
-#include "core/memcheck.h"
 
 #include <QtWidgets/QGraphicsView>
 
+#include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
+
+#include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "core/UBSettings.h"
+
+#include "domain/UBGraphicsScene.h"
+
+#include "gui/UBResources.h"
+
+#include "UBAbstractDrawRuler.h"
 
 const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-250, -250, 500, 500);
 const qreal UBGraphicsProtractor::minRadius = 70;

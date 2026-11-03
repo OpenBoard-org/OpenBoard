@@ -32,7 +32,7 @@
 
 
 #include <QtGui>
-#include <QtSvg>
+#include <QGraphicsSvgItem>
 
 #include "core/UB.h"
 #include "domain/UBItem.h"

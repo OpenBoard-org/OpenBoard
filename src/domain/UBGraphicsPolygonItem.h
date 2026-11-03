@@ -35,7 +35,6 @@
 #include "UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 
-class UBItem;
 class UBGraphicsScene;
 class UBGraphicsStroke;
 

@@ -31,8 +31,11 @@
 #define UBGRAPHICSTEXTITEM_H_
 
 #include <QtGui>
-#include "UBItem.h"
+
 #include "core/UB.h"
+
+#include "UBGraphicsItem.h"
+#include "UBItem.h"
 #include "UBResizableGraphicsItem.h"
 
 class UBGraphicsItemDelegate;

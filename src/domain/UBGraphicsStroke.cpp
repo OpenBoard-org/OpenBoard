@@ -29,15 +29,17 @@
 
 #include "UBGraphicsStroke.h"
 
-#include "UBGraphicsPolygonItem.h"
-
 #include "board/UBBoardController.h"
-#include "core/UBApplication.h"
+
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "core/UBSettings.h"
+
 #include "domain/UBGraphicsScene.h"
 
 #include "frameworks/UBGeometryUtils.h"
 
+#include "UBGraphicsPolygonItem.h"
 
 typedef QPair<QPointF, qreal> strokePoint;
 

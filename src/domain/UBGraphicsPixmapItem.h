@@ -34,9 +34,10 @@
 
 #include "core/UB.h"
 
+#include "UBItem.h"
+#include "UBGraphicsItem.h"
+#include "UBGraphicsScene.h"
 #include "UBMediaAssetItem.h"
-
-class UBGraphicsItemDelegate;
 
 class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public UBMediaAssetItem, public UBGraphicsItem
 {
