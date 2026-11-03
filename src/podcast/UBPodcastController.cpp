@@ -82,7 +82,7 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     , mVideoEncoder(0)
     , mInitialized(false)
     , mEmptyChapter(true)
-    , mVideoFramesPerSecondAtStart(10)
+    , mVideoFramesPerSecondAtStart(100)
     , mVideoFrameSizeAtStart(1024, 768)
     , mVideoBitsPerSecondAtStart(1700000)
     , mSourceWidget(0)
@@ -94,13 +94,6 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     , mRecordingState(Stopped)
     , mApplicationIsClosing(false)
     , mRecordingTimestampOffset(0)
-    , mDefaultAudioInputDeviceAction(0)
-    , mNoAudioInputDeviceAction(0)
-    , mSmallVideoSizeAction(0)
-    , mMediumVideoSizeAction(0)
-    , mFullVideoSizeAction(0)
-    , mYoutubePublicationAction(0)
-    , mIntranetPublicationAction(0)
 {
     connect(UBApplication::applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
             this, SLOT(applicationMainModeChanged(UBApplicationController::MainMode)));
@@ -110,6 +103,8 @@ UBPodcastController::UBPodcastController(QObject* pParent)
 
     connect(UBApplication::webController, SIGNAL(activeWebPageChanged(WebView*)),
             this, SLOT(webActiveWebPageChanged(WebView*)));
+
+    connect(UBApplication::mainWindow->actionPodcastPreferences, SIGNAL(triggered()), this, SLOT(openPodcastPreferencesDialog()));
 
     connect(UBApplication::mainWindow, &UBMainWindow::closeEvent_Signal, this, &UBPodcastController::applicationAboutToQuit);
 }
@@ -137,52 +132,84 @@ void UBPodcastController::applicationAboutToQuit()
     }
 }
 
-
-void UBPodcastController::groupActionTriggered(QAction* action)
+void UBPodcastController::openPodcastPreferencesDialog()
 {
-    Q_UNUSED(action);
-    updateActionState();
-}
-
-
-void UBPodcastController::actionToggled(bool checked)
-{
-    Q_UNUSED(checked);
-    updateActionState();
-}
-
-
-void UBPodcastController::updateActionState()
-{
-    if (mSmallVideoSizeAction && mSmallVideoSizeAction->isChecked())
-        UBSettings::settings()->podcastVideoSize->set("Small");
-    else if (mFullVideoSizeAction && mFullVideoSizeAction->isChecked())
-        UBSettings::settings()->podcastVideoSize->set("Full");
-    else
-        UBSettings::settings()->podcastVideoSize->reset();
-
-    UBSettings::settings()->podcastAudioRecordingDevice->reset();
-
-    if (mDefaultAudioInputDeviceAction && mDefaultAudioInputDeviceAction->isChecked())
-         UBSettings::settings()->podcastAudioRecordingDevice->set("Default");
-    else if (mNoAudioInputDeviceAction && mNoAudioInputDeviceAction->isChecked())
-         UBSettings::settings()->podcastAudioRecordingDevice->set("None");
-    else
+    if (mPodcastPreferencesDialog)
     {
-        foreach(QAction* action, mAudioInputDevicesActions)
-        {
-            if (action->isChecked())
-            {
-                UBSettings::settings()->podcastAudioRecordingDevice->set(action->text());
-                break;
-            }
-        }
+        mPodcastPreferencesDialog->raise();
+        mPodcastPreferencesDialog->activateWindow();
+        return;
     }
 
-    UBSettings::settings()->podcastPublishToYoutube->set(mYoutubePublicationAction && mYoutubePublicationAction->isChecked());
-    UBSettings::settings()->podcastPublishToIntranet->set(mIntranetPublicationAction && mIntranetPublicationAction->isChecked());
+    UBSettings* settings = UBSettings::settings();
 
+    QString podcastAudioRecordingDeviceSetting = settings->podcastAudioRecordingDevice->get().toString();
+    if (podcastAudioRecordingDeviceSetting != "Default" &&
+        podcastAudioRecordingDeviceSetting != "None" &&
+        !audioRecordingDevices().contains(podcastAudioRecordingDeviceSetting))
+    {
+        podcastAudioRecordingDeviceSetting = settings->podcastAudioRecordingDevice->reset().toString();
+    }
+    const QString podcastAudioRecordingDevice = podcastAudioRecordingDeviceSetting;
+    const QStringList podcastProfileNames = QStringList({"Full", "Medium", "Small"});
+    if (!podcastProfileNames.contains(settings->podcastVideoSize->get().toString()))
+    {
+       settings->podcastVideoSize->reset().toString();
+    }
+    const QString podcastProfile = settings->podcastVideoSize->get().toString();
+    const int frameRate = settings->podcastFramesPerSecond->get().toInt();
+    const int fullBitRate = settings->podcastWindowsMediaBitsPerSecond->get().toInt();
+    const QSize viewportSize = UBApplication::boardController->controlView()->size();
+
+    const QList<int> podcastBitRateDivisors = QList({1, 2, 4});
+    const QList<int> podcastVerticalResolution = QList({viewportSize.height(), 768, 480});
+    const QList<int> podcastHorizontalResolution = QList({viewportSize.width(), 1024, 640});
+
+    const bool podcastPublishToIntranet = settings->podcastPublishToIntranet->get().toBool();
+    const bool podcastPublishToYoutube = settings->podcastPublishToYoutube->get().toBool();
+
+    mPodcastPreferencesDialog = new UBPodcastPreferencesDialog(UBApplication::mainWindow,
+                                                           audioRecordingDevices(),
+                                                           podcastAudioRecordingDevice,
+                                                           podcastProfileNames,
+                                                           podcastProfile,
+                                                           frameRate,
+                                                           fullBitRate,
+                                                           podcastBitRateDivisors,
+                                                           podcastVerticalResolution,
+                                                           podcastHorizontalResolution,
+                                                           podcastPublishToIntranet,
+                                                           podcastPublishToYoutube);
+    mPodcastPreferencesDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(mPodcastPreferencesDialog, SIGNAL(accepted()), this, SLOT(podcastPreferencesDialogAccepted()));
+    mPodcastPreferencesDialog->open();
 }
+
+void UBPodcastController::podcastPreferencesDialogAccepted()
+{
+    UBPodcastPreferencesDialog* dialog = qobject_cast<UBPodcastPreferencesDialog*>(sender());
+    if (!dialog)
+        return;
+
+    UBSettings* settings = UBSettings::settings();
+    const QString podcastAudioRecordingDevice = dialog->podcastAudioRecordingOption();
+    settings->podcastAudioRecordingDevice->set(podcastAudioRecordingDevice);
+
+    const QString podcastProfile = dialog->podcastProfile();
+    settings->podcastVideoSize->set(podcastProfile);
+
+    const int fullBitRate = dialog->podcastBitRate();
+    settings->podcastWindowsMediaBitsPerSecond->set(QVariant::fromValue(fullBitRate));
+
+    const int frameRate = dialog->podcastFrameRate();
+    settings->podcastFramesPerSecond->set(frameRate);
+
+    const bool podcastPublishToIntranet = dialog->podcastPublishToIntranet();
+    UBSettings::settings()->podcastPublishToIntranet->set(podcastPublishToIntranet);
+    const bool podcastPublishToYoutube = dialog->podcastPublishToYoutube();
+    UBSettings::settings()->podcastPublishToYoutube->set(podcastPublishToYoutube);
+}
+
 
 void UBPodcastController::widgetSizeChanged(const QSizeF size)
 {
@@ -282,19 +309,22 @@ void UBPodcastController::start()
 
         QSize recommendedSize(1024, 768);
 
-        int fullBitRate = UBSettings::settings()->podcastWindowsMediaBitsPerSecond->get().toInt();
+        UBSettings* settings = UBSettings::settings();
+        mVideoFramesPerSecondAtStart = settings->podcastFramesPerSecond->get().toInt();
+        int fullBitRate = settings->podcastWindowsMediaBitsPerSecond->get().toInt();
+        QString podcastProfile = settings->podcastVideoSize->get().toString();
 
-        if (mSmallVideoSizeAction && mSmallVideoSizeAction->isChecked())
+        if (podcastProfile == "Small")
         {
             recommendedSize = QSize(640, 480);
             mVideoBitsPerSecondAtStart = fullBitRate / 4;
         }
-        else if (mMediumVideoSizeAction && mMediumVideoSizeAction->isChecked())
+        else if (podcastProfile == "Medium")
         {
             recommendedSize = QSize(1024, 768);
             mVideoBitsPerSecondAtStart = fullBitRate / 2;
         }
-        else if (mFullVideoSizeAction && mFullVideoSizeAction->isChecked())
+        else if (podcastProfile == "Full")
         {
             recommendedSize = UBApplication::boardController->controlView()->size();
             mVideoBitsPerSecondAtStart = fullBitRate;
@@ -337,20 +367,14 @@ void UBPodcastController::start()
                         , mRecordingPalette, SLOT(audioLevelChanged(quint8)));
             }
 
-            mVideoEncoder->setRecordAudio(!mNoAudioInputDeviceAction->isChecked());
+            QString podcastAudioRecordingOption = settings->podcastAudioRecordingDevice->get().toString();
+            mVideoEncoder->setRecordAudio(podcastAudioRecordingOption != "None");
 
             QString recordingDevice = "";
 
-            if (!mNoAudioInputDeviceAction->isChecked() && !mDefaultAudioInputDeviceAction->isChecked())
+            if (podcastAudioRecordingOption != "None" && podcastAudioRecordingOption != "Default")
             {
-                foreach(QAction* audioDevice, mAudioInputDevicesActions)
-                {
-                    if (audioDevice->isChecked())
-                    {
-                        recordingDevice = audioDevice->text();
-                        break;
-                    }
-                }
+                recordingDevice = podcastAudioRecordingOption;
             }
 
             mVideoEncoder->setAudioRecordingDevice(recordingDevice);
@@ -367,7 +391,7 @@ void UBPodcastController::start()
 
             QString videoFileName;
 
-            if (mIntranetPublicationAction && mIntranetPublicationAction->isChecked())
+            if (settings->podcastPublishToIntranet->get().toBool())
             {
                 videoFileName = mPodcastRecordingPath + "/" + "Podcast-"
                         + QDateTime::currentDateTime().toString("yyyyMMddhhmmss")
@@ -757,13 +781,13 @@ void UBPodcastController::encodingFinished(bool ok)
 
                 UBApplication::showMessage(tr("Podcast created %1").arg(location), false);
 
-                if (mIntranetPublicationAction && mIntranetPublicationAction->isChecked())
+                if (UBSettings::settings()->podcastPublishToIntranet->get().toBool())
                 {
                     UBIntranetPodcastPublisher* intranet = new UBIntranetPodcastPublisher(this); // Self destroyed
                     intranet->publishVideo(mVideoEncoder->videoFileName(), elapsedRecordingMs());
                 }
 
-                if (mYoutubePublicationAction && mYoutubePublicationAction->isChecked())
+                if (UBSettings::settings()->podcastPublishToYoutube->get().toBool())
                 {
                     UBYouTubePublisher* youTube = new UBYouTubePublisher(this); // Self destroyed
                     youTube->uploadVideo(mVideoEncoder->videoFileName());
@@ -925,114 +949,4 @@ void UBPodcastController::setRecordingState(RecordingState pRecordingState)
         emit recordingStateChanged(mRecordingState);
     }
 }
-
-
-QList<QAction*> UBPodcastController::audioRecordingDevicesActions()
-{
-    if (mAudioInputDevicesActions.length() == 0)
-    {
-        QString settingsDevice = UBSettings::settings()->podcastAudioRecordingDevice->get().toString();
-
-        mDefaultAudioInputDeviceAction = new QAction(tr("Default Audio Input"), this);
-        QAction *checkedAction = mDefaultAudioInputDeviceAction;
-
-        mNoAudioInputDeviceAction = new QAction(tr("No Audio Recording"), this);
-
-        if (settingsDevice == "None")
-            checkedAction = mNoAudioInputDeviceAction;
-
-        mAudioInputDevicesActions << mNoAudioInputDeviceAction;
-        mAudioInputDevicesActions << mDefaultAudioInputDeviceAction;
-
-        foreach(QString audioDevice, audioRecordingDevices())
-        {
-            QAction* act = new QAction(audioDevice, this);
-            act->setCheckable(true);
-            mAudioInputDevicesActions << act;
-            if (settingsDevice == audioDevice)
-                checkedAction = act;
-        }
-
-        QActionGroup* audioInputActionGroup = new QActionGroup(this);
-        audioInputActionGroup->setExclusive(true);
-
-        foreach(QAction* action, mAudioInputDevicesActions)
-        {
-            audioInputActionGroup->addAction(action);
-            action->setCheckable(true);
-        }
-        checkedAction->setChecked(true);
-
-        connect(audioInputActionGroup, SIGNAL(triggered(QAction*)), this, SLOT(groupActionTriggered(QAction*)));
-    }
-
-    return mAudioInputDevicesActions;
-
-}
-
-
-QList<QAction*> UBPodcastController::videoSizeActions()
-{
-    if (mVideoSizesActions.length() == 0)
-    {
-        mSmallVideoSizeAction = new QAction(tr("Small"), this);
-        mMediumVideoSizeAction = new QAction(tr("Medium"), this);
-        mFullVideoSizeAction = new QAction(tr("Full"), this);
-
-        mVideoSizesActions << mSmallVideoSizeAction;
-        mVideoSizesActions << mMediumVideoSizeAction;
-        mVideoSizesActions << mFullVideoSizeAction;
-
-        QActionGroup* videoSizeActionGroup = new QActionGroup(this);
-        videoSizeActionGroup->setExclusive(true);
-
-        foreach(QAction* videoSizeAction, mVideoSizesActions)
-        {
-            videoSizeAction->setCheckable(true);
-            videoSizeActionGroup->addAction(videoSizeAction);
-        }
-
-        QString videoSize = UBSettings::settings()->podcastVideoSize->get().toString();
-
-        if (videoSize == "Small")
-            mSmallVideoSizeAction->setChecked(true);
-        else if (videoSize == "Full")
-            mFullVideoSizeAction->setChecked(true);
-        else
-            mMediumVideoSizeAction->setChecked(true);
-
-        connect(videoSizeActionGroup, SIGNAL(triggered(QAction*)), this, SLOT(groupActionTriggered(QAction*)));
-    }
-
-    return mVideoSizesActions;
-}
-
-
-QList<QAction*> UBPodcastController::podcastPublicationActions()
-{
-    if (mPodcastPublicationActions.length() == 0)
-    {
-        mIntranetPublicationAction = new QAction(tr("Publish to Intranet"), this);
-
-        mIntranetPublicationAction->setCheckable(true);
-        mIntranetPublicationAction->setChecked(UBSettings::settings()->podcastPublishToIntranet->get().toBool());
-
-        mPodcastPublicationActions << mIntranetPublicationAction;
-
-        mYoutubePublicationAction = new QAction(tr("Publish to Youtube"), this);
-        mYoutubePublicationAction->setCheckable(true);
-        mYoutubePublicationAction->setChecked(UBSettings::settings()->podcastPublishToYoutube->get().toBool());
-
-        mPodcastPublicationActions << mYoutubePublicationAction;
-
-        foreach(QAction* publicationAction, mPodcastPublicationActions)
-        {
-            connect(publicationAction, SIGNAL(toggled(bool)), this, SLOT(actionToggled(bool)));
-        }
-    }
-
-    return mPodcastPublicationActions;
-}
-
-
 

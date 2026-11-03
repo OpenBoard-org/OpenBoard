@@ -1020,6 +1020,106 @@ QDialog#colorPreferencesDialog QDialogButtonBox#colorPreferencesButtonBox QPushB
     font-weight: 600;
 }
 
+QDialog#podcastPreferencesDialog {
+    background-color: #353535;
+}
+
+QDialog#podcastPreferencesDialog QWidget#podcastPreferencesHeader {
+    background-color: #2b2b2b;
+    border: 1px solid #555555;
+    border-radius: 8px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHeaderLabel {
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+}
+
+QDialog#podcastPreferencesDialog QSlider#podcastPreferencesSpinBox {
+    min-width: 190px;
+    background: transparent;
+}
+
+QDialog#podcastPreferencesDialog QTabWidget#podcastPreferencesTabWidget::pane {
+    border: none;
+    background: transparent;
+    top: -1px;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab,
+QDialog#podcastPreferencesDialog QTabBar::tab:top {
+    background: #2b2b2b;
+    color: #b7c3d4;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    padding: 8px 18px;
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2a82da, stop: 1 #1e5fa0);
+    color: #ffffff;
+    border: 1px solid #2a82da;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab:hover:!selected {
+    background: #404040;
+    color: #ffffff;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesProfileTabValue {
+    min-width: 32px;
+    padding: 4px 8px;
+    background: #2a2a2a;
+    color: #f8fafc;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QWidget#podcastPreferencesHint {
+    background: #4b4324;
+    border: 1px solid #7b6b33;
+    border-radius: 6px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHintIcon {
+    background: transparent;
+    min-width: 20px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHintText {
+    background: transparent;
+    color: #f1e3a8;
+    font-size: 12px;
+    line-height: 1.3em;
+}
+
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton {
+    padding: 7px 14px;
+    background: #454545;
+    color: #f8fafc;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:hover {
+    background: #505050;
+    border: 1px solid #6a6a6a;
+}
+
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton {
+    min-width: 92px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
 QWidget#UBFeaturesActionBar QToolButton
 {
     padding: 0px;

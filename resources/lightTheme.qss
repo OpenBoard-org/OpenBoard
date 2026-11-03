@@ -563,6 +563,124 @@ QDialog#colorPreferencesDialog QDialogButtonBox#colorPreferencesButtonBox QPushB
     border: 1px solid #2a82da;
 }
 
+QDialog#podcastPreferencesDialog {
+    background-color: #f2f6fa;
+}
+
+QDialog#podcastPreferencesDialog QWidget#podcastPreferencesHeader {
+    background-color: #edf2f7;
+    border: 1px solid #d9e0e8;
+    border-radius: 10px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHeaderLabel {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+}
+
+QDialog#podcastPreferencesDialog QSlider#podcastPreferencesSpinBox {
+    min-width: 190px;
+    background: transparent;
+}
+
+QDialog#podcastPreferencesDialog QTabWidget#podcastPreferencesTabWidget::pane {
+    border: none;
+    background: transparent;
+    top: -1px;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab,
+QDialog#podcastPreferencesDialog QTabBar::tab:top {
+    background: #e2eaf3;
+    color: #475569;
+    border: 1px solid #d9e0e8;
+    border-radius: 6px;
+    padding: 8px 18px;
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #5aa5e0, stop: 1 #3d8fd1);
+    color: #ffffff;
+    border: 1px solid #2a82da;
+}
+
+QDialog#podcastPreferencesDialog QTabBar::tab:hover:!selected {
+    background: #e8eff7;
+    color: #1e293b;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesProfileTabValue {
+    min-width: 32px;
+    padding: 4px 8px;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #d9e0e8;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QWidget#podcastPreferencesHint {
+    background: #fff8db;
+    border: 1px solid #ead9a2;
+    border-radius: 8px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHintIcon {
+    background: transparent;
+    min-width: 20px;
+}
+
+QDialog#podcastPreferencesDialog QLabel#podcastPreferencesHintText {
+    background: transparent;
+    color: #5b4b1f;
+    font-size: 12px;
+    line-height: 1.3em;
+}
+
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton {
+    padding: 7px 14px;
+    background: #f7f9fc;
+    color: #334155;
+    border: 1px solid #d9e0e8;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:hover {
+    background: #eef6ff;
+    border: 1px solid #d3e4f6;
+}
+
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:focus,
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:pressed,
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:checked,
+QDialog#podcastPreferencesDialog QPushButton#podcastPreferencesResetButton:default {
+    background: #3d8fd1;
+    color: #ffffff;
+    border: 1px solid #2a82da;
+}
+
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton {
+    min-width: 92px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton:focus,
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton:pressed,
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton:checked,
+QDialog#podcastPreferencesDialog QDialogButtonBox#podcastPreferencesButtonBox QPushButton:default {
+    background-color: #3d8fd1;
+    color: #ffffff;
+    border: 1px solid #2a82da;
+}
+
 QCheckBox,
 QRadioButton {
     color: #1f2937;
