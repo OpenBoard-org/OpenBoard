@@ -8,7 +8,9 @@ HEADERS      += src/frameworks/UBGeometryUtils.h \
                 src/frameworks/UBCryptoUtils.h \
                 src/frameworks/UBBackgroundLoader.h \
                 src/frameworks/UBBlockingBuffer.h \
-                src/frameworks/UBBase32.h
+                src/frameworks/UBBase32.h \
+                src/frameworks/UBShapeRecognizer.h \
+                src/frameworks/UBStrokeHoldDetector.h
 
 SOURCES      += src/frameworks/UBGeometryUtils.cpp \
                 src/frameworks/UBPlatformUtils.cpp \
@@ -19,7 +21,9 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
                 src/frameworks/UBCryptoUtils.cpp \
                 src/frameworks/UBBackgroundLoader.cpp \
                 src/frameworks/UBBlockingBuffer.cpp \
-                src/frameworks/UBBase32.cpp
+                src/frameworks/UBBase32.cpp \
+                src/frameworks/UBShapeRecognizer.cpp \
+                src/frameworks/UBStrokeHoldDetector.cpp
 
 
 win32 {

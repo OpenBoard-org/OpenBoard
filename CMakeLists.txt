@@ -228,6 +228,20 @@ install(FILES     ${OPENBOARD_MIMEICON_FILE}    DESTINATION ${CMAKE_INSTALL_DATA
 
 
 # ==========================================================================
+# Unit tests
+#
+# Enable with -DOPENBOARD_BUILD_TESTS=ON, run with ctest
+# ==========================================================================
+
+option(OPENBOARD_BUILD_TESTS "Build the unit tests" OFF)
+
+if(OPENBOARD_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+
+# ==========================================================================
 # Packaging
 # ==========================================================================
 
