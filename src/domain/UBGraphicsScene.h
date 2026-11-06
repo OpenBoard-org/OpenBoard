@@ -58,6 +58,7 @@ class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
 class UBMediaAssetItem;
+class UBStrokeHoldDetector;
 class UBSelectionFrame;
 class UBBoardView;
 
@@ -420,6 +421,8 @@ signals:
         void updatePenCircleColor();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
         void simplifyCurrentStroke();
+        bool isShapeRecognitionEnabled() const;
+        void recognizeShapeOnHold();
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer; // "laser" pointer
@@ -479,6 +482,9 @@ signals:
         UBSelectionFrame *mSelectionFrame;
 
         UBGraphicsCache* mGraphicsCache;
+
+        UBStrokeHoldDetector* mShapeHoldDetector;
+        bool mCurrentStrokeIsShape;
 };
 
 

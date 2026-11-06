@@ -33,6 +33,8 @@
 #include <QGraphicsVideoItem>
 
 #include "frameworks/UBGeometryUtils.h"
+#include "frameworks/UBShapeRecognizer.h"
+#include "frameworks/UBStrokeHoldDetector.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -313,6 +315,15 @@ bool UBZLayerController::zLevelAvailable(QGraphicsItem* item)
     return true;
 }
 
+namespace
+{
+    /// the pen is held still if it moves by less than this distance in view pixels
+    constexpr qreal shapeHoldTolerance = 6.;
+
+    /// smaller strokes are never replaced by shapes, to keep handwriting untouched (in view pixels)
+    constexpr qreal shapeMinimumSize = 30.;
+}
+
 UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool enableUndoRedoStack)
     : mEraser(0)
     , mPointer(0)
@@ -340,6 +351,8 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
     , mCurrentPolygon(0)
     , mSelectionFrame(0)
     , mGraphicsCache(nullptr)
+    , mShapeHoldDetector(new UBStrokeHoldDetector(this))
+    , mCurrentStrokeIsShape(false)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
     setItemIndexMethod(BspTreeIndex);
@@ -365,6 +378,7 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
     connect(UBApplication::boardController, &UBBoardController::zoomChanged, this, &UBGraphicsScene::zoomChanged);
+    connect(mShapeHoldDetector, &UBStrokeHoldDetector::held, this, &UBGraphicsScene::recognizeShapeOnHold);
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -464,6 +478,14 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 drawLineTo(pos, width, isLine);
 
                 mCurrentStroke->addPoint(pos, width);
+
+                mCurrentStrokeIsShape = false;
+
+                if (isShapeRecognitionEnabled())
+                {
+                    const qreal scale = UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom();
+                    mShapeHoldDetector->start(pos, shapeHoldTolerance / scale, UBSettings::settings()->boardShapeRecognitionHoldDelay->get().toInt());
+                }
             }
             accepted = true;
         }
@@ -617,7 +639,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 drawLineTo(position, width, true);
             }
 
+            else if (mCurrentStrokeIsShape) {
+                // the stroke was replaced by a recognized shape, ignore further movement until release
+            }
+
             else {
+                mShapeHoldDetector->move(scenePos);
+
                 bool interpolate = false;
 
                 if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardInterpolatePenStrokes->get().toBool())
@@ -688,6 +716,8 @@ bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifie
 {
     bool accepted = false;
 
+    mShapeHoldDetector->stop();
+
     if (mPointer)
     {
         mPointer->hide();
@@ -740,9 +770,10 @@ bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifie
                 addPolygonItemToCurrentStroke(poly);
             }
 
-            // replace the stroke by a simplified version of it
-            if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
-                || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool()))
+            // replace the stroke by a simplified version of it, unless it was replaced by a shape
+            if (!mCurrentStrokeIsShape
+                && ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
+                    || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool())))
             {
                 simplifyCurrentStroke();
             }
@@ -797,6 +828,7 @@ bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifie
     }
 
     mCurrentStroke = NULL;
+    mCurrentStrokeIsShape = false;
     return accepted;
 }
 
@@ -2927,6 +2959,106 @@ void UBGraphicsScene::simplifyCurrentStroke()
         mPreviousPolygonItems.append(poly);
     }
 
+}
+
+bool UBGraphicsScene::isShapeRecognitionEnabled() const
+{
+    UBDrawingController* dc = UBDrawingController::drawingController();
+
+    if (dc->activeRuler())
+    {
+        return false;
+    }
+
+    switch (dc->stylusTool())
+    {
+    case UBStylusTool::Pen:
+        return UBSettings::settings()->boardPenShapeRecognition->get().toBool();
+
+    case UBStylusTool::Marker:
+        return UBSettings::settings()->boardMarkerShapeRecognition->get().toBool();
+
+    default:
+        return false;
+    }
+}
+
+/**
+ * @brief Replace the stroke being drawn by a geometric shape, if one is recognized.
+ *
+ * Called when the pen is held still while drawing. The shape is drawn with straight
+ * segments into the current stroke, so that it is saved, erased and undone like any
+ * other stroke.
+ */
+void UBGraphicsScene::recognizeShapeOnHold()
+{
+    if (!mInputDeviceIsPressed || !mCurrentStroke || mCurrentStrokeIsShape || !isShapeRecognitionEnabled())
+    {
+        return;
+    }
+
+    const QList<QPointF>& points = mShapeHoldDetector->points();
+    const qreal scale = UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom();
+    QPolygonF stroke;
+
+    for (const QPointF& point : points)
+    {
+        stroke << point;
+    }
+
+    const QRectF bounds = stroke.boundingRect();
+
+    if (std::max(bounds.width(), bounds.height()) * scale < shapeMinimumSize)
+    {
+        return;
+    }
+
+    const UBShapeRecognizer::Result shape = UBShapeRecognizer::recognize(points);
+
+    if (!shape.isValid())
+    {
+        return;
+    }
+
+    // use the mean width of the freehand stroke, so that the shape looks like what was drawn
+    const QList<QPair<QPointF, qreal>>& strokePoints = mCurrentStroke->points();
+    qreal width = 0;
+
+    for (const auto& point : strokePoints)
+    {
+        width += point.second;
+    }
+
+    width = strokePoints.isEmpty() ? UBDrawingController::drawingController()->currentToolWidth() / scale
+                                   : width / strokePoints.size();
+
+    if (mTempPolygon)
+    {
+        removeItem(mTempPolygon);
+        mTempPolygon = nullptr;
+    }
+
+    // Draw the shape into the current stroke before removing the freehand polygons:
+    // the stroke would be deleted together with its last polygon.
+    const QList<UBGraphicsPolygonItem*> freehandPolygons = mCurrentStroke->polygons();
+    const QList<QPointF> outline = shape.outline();
+
+    moveTo(outline.first());
+
+    for (int i = 1; i < outline.size(); ++i)
+    {
+        drawLineTo(outline.at(i), width, false);
+    }
+
+    for (UBGraphicsPolygonItem* freehandPolygon : freehandPolygons)
+    {
+        mAddedItems.remove(freehandPolygon);
+        removeItem(freehandPolygon);
+        deleteItem(freehandPolygon);
+    }
+
+    mShapeHoldDetector->stop();
+    mCurrentStrokeIsShape = true;
 }
 
 void UBGraphicsScene::setDocumentUpdated()
