@@ -15,8 +15,12 @@ target_sources(openboard PRIVATE
     UBGeometryUtils.h
     UBPlatformUtils.cpp
     UBPlatformUtils.h
+    UBShapeRecognizer.cpp
+    UBShapeRecognizer.h
     UBStringUtils.cpp
     UBStringUtils.h
+    UBStrokeHoldDetector.cpp
+    UBStrokeHoldDetector.h
     UBVersion.cpp
     UBVersion.h
 )

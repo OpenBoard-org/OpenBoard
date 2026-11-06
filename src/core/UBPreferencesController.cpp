@@ -387,11 +387,13 @@ void UBPreferencesController::wire()
     connect(mPenProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPressureSensitive(bool)));
     connect(mPenProperties->circleCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPreviewCircle(bool)));
     connect(mPenProperties->circleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(penPreviewFromSizeChanged(int)));
+    connect(mPenProperties->shapeRecognitionCheckBox, &QCheckBox::clicked, settings->boardPenShapeRecognition, &UBSetting::setBool);
 
     // marker
     mMarkerProperties = new UBBrushPropertiesFrame(mPreferencesUI->markerFrame);
 
     mMarkerProperties->pressureSensitiveCheckBox->setText(tr("Marker is pressure sensitive"));
+    mMarkerProperties->shapeRecognitionCheckBox->setText(tr("Straighten lines and shapes when holding the marker still"));
 
     mMarkerProperties->circleFrame->hide();
 
@@ -399,6 +401,7 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
+    connect(mMarkerProperties->shapeRecognitionCheckBox, &QCheckBox::clicked, settings->boardMarkerShapeRecognition, &UBSetting::setBool);
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
@@ -494,12 +497,14 @@ void UBPreferencesController::init()
     mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->get().toBool());
     mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->get().toBool());
     mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->get().toInt());
+    mPenProperties->shapeRecognitionCheckBox->setChecked(settings->boardPenShapeRecognition->get().toBool());
 
     // marker tab
     mMarkerProperties->fineSlider->setValue(settings->boardMarkerFineWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->mediumSlider->setValue(settings->boardMarkerMediumWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->strongSlider->setValue(settings->boardMarkerStrongWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->pressureSensitiveCheckBox->setChecked(settings->boardMarkerPressureSensitive->get().toBool());
+    mMarkerProperties->shapeRecognitionCheckBox->setChecked(settings->boardMarkerShapeRecognition->get().toBool());
 
     // shortcut tab
     mPreferencesUI->shortcutTableView->setModel(UBShortcutManager::shortcutManager());
@@ -568,6 +573,7 @@ void UBPreferencesController::defaultSettings()
         mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->reset().toBool());
         mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->reset().toBool());
         mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->reset().toInt());
+        mPenProperties->shapeRecognitionCheckBox->setChecked(settings->boardPenShapeRecognition->reset().toBool());
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->markerTab)
     {
@@ -575,6 +581,7 @@ void UBPreferencesController::defaultSettings()
         mMarkerProperties->mediumSlider->setValue(settings->boardMarkerMediumWidth->reset().toDouble() * sSliderRatio);
         mMarkerProperties->strongSlider->setValue(settings->boardMarkerStrongWidth->reset().toDouble() * sSliderRatio);
         mMarkerProperties->pressureSensitiveCheckBox->setChecked(settings->boardMarkerPressureSensitive->reset().toBool());
+        mMarkerProperties->shapeRecognitionCheckBox->setChecked(settings->boardMarkerShapeRecognition->reset().toBool());
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->aboutTab)
     {

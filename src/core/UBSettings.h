@@ -307,6 +307,10 @@ class UBSettings : public QObject
         UBSetting* boardInterpolateMarkerStrokes;
         UBSetting* boardSimplifyMarkerStrokes;
 
+        UBSetting* boardPenShapeRecognition;
+        UBSetting* boardMarkerShapeRecognition;
+        UBSetting* boardShapeRecognitionHoldDelay;
+
         UBSetting* boardKeyboardPaletteKeyBtnSize;
 
         UBSetting* appStartMode;
