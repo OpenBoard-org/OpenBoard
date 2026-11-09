@@ -365,7 +365,7 @@ bool UBFFmpegVideoEncoder::init()
     c->width = videoSize().width();
     c->height = videoSize().height();
     c->time_base = {1, mVideoTimebase};
-    c->gop_size = 10;
+    c->gop_size = 2 * framesPerSecond();
     c->max_b_frames = 0;
     c->pix_fmt = AV_PIX_FMT_YUV420P;
 
@@ -382,8 +382,8 @@ bool UBFFmpegVideoEncoder::init()
      *   AV_PIX_FMT_YUVJ420P
     */
 
-    av_dict_set(&options, "preset", "slow", 0);
-    av_dict_set(&options, "crf", "20", 0);
+    av_dict_set(&options, "preset", "veryfast", 0);
+    av_dict_set(&options, "crf", "23", 0);
 
     ret = avcodec_open2(c, videoCodec, &options);
 
@@ -454,7 +454,7 @@ bool UBFFmpegVideoEncoder::init()
             return false;
         }
 
-        c->bit_rate = 96000;
+        c->bit_rate = 128000;
 
         const AVSampleFormat* sample_fmts;
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 19, 100)
