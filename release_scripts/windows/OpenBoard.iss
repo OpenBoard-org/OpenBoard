@@ -105,7 +105,6 @@ Source: "{#QtLibs}\icuin74.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\pcre2-16.dll"; DestDir: "{app}" 
 Source: "{#QtLibs}\harfbuzz.dll"; DestDir: "{app}" 
 Source: "{#QtLibs}\icuuc74.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\libcrypto-3-x64.dll"; DestDir: "{app}" 
 Source: "{#QtLibs}\zstd.dll"; DestDir: "{app}" 
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
