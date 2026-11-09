@@ -678,17 +678,23 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
 
     // Convert to destination format
 
-    ret = swr_convert(mSwrContext,
+    int convertedSamplesCount = swr_convert(mSwrContext,
                       outSamples, outSamplesCount,
                       (const uint8_t **)&inSamples, inSamplesCount);
 
-    if (ret < 0) {
-        qWarning() << "Error converting audio samples: " << avErrorToQString(ret);
+    if (convertedSamplesCount < 0) {
+        qWarning() << "Error converting audio samples: " << avErrorToQString(convertedSamplesCount);
+        av_freep(&outSamples[0]);
+        av_freep(&outSamples);
         return;
     }
 
-    // Append the converted samples to the out buffer.
-    ret = av_audio_fifo_write(mAudioOutBuffer, (void**)outSamples, outSamplesCount);
+    // Append only the samples swr_convert actually produced. outSamplesCount is
+    // just an upper bound; writing it queued unfilled samples after every chunk,
+    // which were heard as short dropouts / crackle while speaking.
+    ret = av_audio_fifo_write(mAudioOutBuffer, (void**)outSamples, convertedSamplesCount);
+    av_freep(&outSamples[0]);
+    av_freep(&outSamples);
     if (ret < 0) {
         qWarning() << "Could not write to FIFO queue: " << avErrorToQString(ret);
         return;
