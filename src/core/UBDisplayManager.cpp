@@ -26,6 +26,12 @@
 
 #include "UBDisplayManager.h"
 
+#include <QCursor>
+#include <QEventLoop>
+#include <QTimer>
+#include <QWidget>
+#include <QWindow>
+
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
@@ -162,17 +168,94 @@ void UBDisplayManager::createScreenLabels()
     }
 }
 
+// Find the screen the main window should open on: the one where the user
+// is currently working.
+//
+// On X11, Windows and macOS, the platform reports the true global cursor
+// position, so QCursor::pos() gives the screen under the mouse directly.
+//
+// On Wayland, a client cannot query the global cursor position before it
+// has received a pointer event on one of its own surfaces (QCursor::pos()
+// just returns a stale/default value at startup). Instead, a throwaway
+// transparent 1x1 window is shown and the compositor's placement of it is
+// read back, since compositors place new windows on the active output.
+QScreen* UBDisplayManager::cursorOrStartupScreen() const
+{
+    if (UBPlatformUtils::sessionType() != UBPlatformUtils::WAYLAND)
+    {
+        return QGuiApplication::screenAt(QCursor::pos());
+    }
+
+    // The probe must be a QWidget, not a bare QWindow: a Wayland surface is
+    // only mapped by the compositor once a buffer is committed to it, and a
+    // plain QWindow has no backing store, so it would never be placed at
+    // all. A widget commits a real (transparent, 1x1) buffer.
+    QWidget probeWindow(nullptr, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    probeWindow.setAttribute(Qt::WA_TranslucentBackground);
+    probeWindow.setAttribute(Qt::WA_ShowWithoutActivating);
+    probeWindow.resize(1, 1);
+    probeWindow.show();
+
+    QWindow* probeHandle = probeWindow.windowHandle();
+    QScreen* probeScreen = nullptr;
+
+    if (probeHandle)
+    {
+        // QWindow::screen() right after show() only reflects Qt's default
+        // assignment derived from the window's initial geometry, not the
+        // compositor's actual placement, which arrives asynchronously via
+        // wl_surface.enter (screenChanged) once the surface is mapped. So
+        // wait until the surface is actually exposed (plus a small grace
+        // period for the enter event), or a timeout.
+        QEventLoop waitForPlacementLoop;
+        QObject::connect(probeHandle, &QWindow::screenChanged, &waitForPlacementLoop, &QEventLoop::quit);
+
+        QTimer pollExposedTimer;
+        QObject::connect(&pollExposedTimer, &QTimer::timeout, &waitForPlacementLoop,
+                         [&waitForPlacementLoop, &pollExposedTimer, probeHandle]() {
+            if (probeHandle->isExposed())
+            {
+                pollExposedTimer.stop();
+                QTimer::singleShot(50, &waitForPlacementLoop, &QEventLoop::quit);
+            }
+        });
+        pollExposedTimer.start(10);
+
+        QTimer::singleShot(1000, &waitForPlacementLoop, &QEventLoop::quit);
+        waitForPlacementLoop.exec();
+
+        probeScreen = probeHandle->screen();
+    }
+
+    probeWindow.hide();
+
+    return probeScreen;
+}
+
 void UBDisplayManager::initScreensByRole()
 {
     mScreensByRole.clear();
     bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
 
-    mScreensByRole[ScreenRole::Control] = mAvailableScreens[0];
+    // Open the main window on the screen currently under the mouse cursor
+    // rather than always on the primary screen. Only reorder the screens
+    // used for role assignment here; mAvailableScreens itself keeps the
+    // system order, so the screen numbers shown in the preferences stay
+    // stable regardless of where the cursor happens to be.
+    QList<QScreen*> orderedScreens = mAvailableScreens;
+    int cursorScreenIndex = orderedScreens.indexOf(cursorOrStartupScreen());
 
-    if (mAvailableScreens.count() > 1)
+    if (cursorScreenIndex > 0)
     {
-        QScreen* controlScreen = mAvailableScreens[0];
-        QScreen* displayScreen = mAvailableScreens[1];
+        orderedScreens.move(cursorScreenIndex, 0);
+    }
+
+    mScreensByRole[ScreenRole::Control] = orderedScreens[0];
+
+    if (orderedScreens.count() > 1)
+    {
+        QScreen* controlScreen = orderedScreens[0];
+        QScreen* displayScreen = orderedScreens[1];
 
         if (swapScreens)
         {
@@ -185,9 +268,9 @@ void UBDisplayManager::initScreensByRole()
 
         ScreenRole role(ScreenRole::Previous1);
 
-        for (int i = 2; i < mAvailableScreens.count(); ++i)
+        for (int i = 2; i < orderedScreens.count(); ++i)
         {
-            mScreensByRole[role++] = mAvailableScreens[i];
+            mScreensByRole[role++] = orderedScreens[i];
         }
     }
 
