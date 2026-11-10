@@ -323,6 +323,21 @@ void UBGraphicsTextItem::keyReleaseEvent(QKeyEvent *event)
     QGraphicsTextItem::keyReleaseEvent(event);
 }
 
+void UBGraphicsTextItem::focusInEvent(QFocusEvent* event)
+{
+    // disable global editing shortcuts while text item is focussed
+    // so that they are passed to the item
+    UBApplication::app()->enableEditingShortcuts(false);
+    QGraphicsTextItem::focusInEvent(event);
+}
+
+void UBGraphicsTextItem::focusOutEvent(QFocusEvent* event)
+{
+    // re-enable global editing shortcuts when loosing focus
+    UBApplication::app()->enableEditingShortcuts(true);
+    QGraphicsTextItem::focusOutEvent(event);
+}
+
 void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     // Never draw the rubber band, we draw our custom selection with the DelegateFrame
