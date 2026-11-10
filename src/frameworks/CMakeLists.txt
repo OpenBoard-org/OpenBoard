@@ -7,8 +7,6 @@ target_sources(openboard PRIVATE
     UBBlockingBuffer.h
     UBCoreGraphicsScene.cpp
     UBCoreGraphicsScene.h
-    UBCryptoUtils.cpp
-    UBCryptoUtils.h
     UBFileSystemUtils.cpp
     UBFileSystemUtils.h
     UBGeometryUtils.cpp
