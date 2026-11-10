@@ -1,0 +1,5 @@
+remove UBActionPalette::actions() ?
+
+UBActionPalette::createPaletteButton fügt in ButtonGroup ein. Das ist nicht immer gewünscht.
+
+Die Methode groupButtons brauncht man nicht. Man kann die Buttons gleich beim Erzeugen gruppieren. Im Moment Bug: virtual Keyboard wird irrtümlich mit gruppiert
