@@ -57,6 +57,25 @@ class UBFeaturesListView;
 class UBFeature;
 
 
+enum UBFeatureElementType
+{
+    FEATURE_CATEGORY,
+    FEATURE_VIRTUALFOLDER,
+    FEATURE_FOLDER,
+    FEATURE_INTERACTIVE,
+    FEATURE_INTERNAL,
+    FEATURE_ITEM,
+    FEATURE_AUDIO,
+    FEATURE_VIDEO,
+    FEATURE_IMAGE,
+    FEATURE_FLASH,
+    FEATURE_TRASH,
+    FEATURE_FAVORITE,
+    FEATURE_SEARCH,
+    FEATURE_DOCUMENT,
+    FEATURE_INVALID
+};
+
 class UBFeaturesComputingThread : public QThread
 {
     Q_OBJECT
@@ -80,9 +99,10 @@ signals:
 public slots:
 
 private:
-    void scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet);
+    typedef std::function<void (const QFileInfo&, UBFeatureElementType, QString virtualPath)> FeatureProcessor;
+    void scanFS(const QUrl& currentPath, const QString & currVirtualPath, FeatureProcessor processFeature);
+    void scanFS(const QUrl& currentPath, const QString & currVirtualPath, QSet<QString>& scanRoots, FeatureProcessor processFeature);
     void scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet);
-    int featuresCount(const QUrl &pPath);
     int featuresCountAll(QList<QPair<QUrl, UBFeature> > pScanningData);
 
 private:
@@ -96,24 +116,6 @@ private:
     bool abort;
 };
 
-
-enum UBFeatureElementType
-{
-    FEATURE_CATEGORY,
-    FEATURE_VIRTUALFOLDER,
-    FEATURE_FOLDER,
-    FEATURE_INTERACTIVE,
-    FEATURE_INTERNAL,
-    FEATURE_ITEM,
-    FEATURE_AUDIO,
-    FEATURE_VIDEO,
-    FEATURE_IMAGE,
-    FEATURE_TRASH,
-    FEATURE_FAVORITE,
-    FEATURE_SEARCH,
-    FEATURE_DOCUMENT,
-    FEATURE_INVALID
-};
 
 class UBFeature
 {
@@ -204,8 +206,6 @@ public:
     void importImage(const QByteArray& imageData, const UBFeature &destination, const QString &fileName = QString() );
     QStringList getFileNamesInFolders();
 
-    void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
-    int featuresCount(const QUrl &currPath);
     static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
     static QString fileNameFromUrl( const QUrl &url );
