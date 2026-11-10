@@ -300,6 +300,15 @@ class UBSettings : public QObject
 
         UBSetting* boardUseHighResTabletEvent;
 
+        UBSetting* desktopPaletteScalePercent;
+        UBSetting* desktopPaletteShowPen;
+        UBSetting* desktopPaletteShowEraser;
+        UBSetting* desktopPaletteShowMarker;
+        UBSetting* desktopPaletteShowSelector;
+        UBSetting* desktopPaletteShowPointer;
+        UBSetting* desktopPaletteGrabMarginPx;
+        UBSetting* paletteButtonSpacingPx;
+
         UBSetting* boardInterpolatePenStrokes;
         UBSetting* boardSimplifyPenStrokes;
         UBSetting* boardSimplifyPenStrokesThresholdAngle;

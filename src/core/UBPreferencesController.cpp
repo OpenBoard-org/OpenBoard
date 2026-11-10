@@ -316,6 +316,21 @@ void UBPreferencesController::wire()
         settings->appThemeMode->setInt(index);
         UBThemeManager::instance()->applyUserThemePreference();
     });
+    connect(mPreferencesUI->desktopPaletteScaleComboBox,
+            qOverload<int>(&QComboBox::currentIndexChanged), this,
+            [settings](int index) {
+                settings->desktopPaletteScalePercent->setInt(100 + index * 10);
+            });
+    connect(mPreferencesUI->desktopShowPenCheckBox, SIGNAL(clicked(bool)),
+            settings->desktopPaletteShowPen, SLOT(setBool(bool)));
+    connect(mPreferencesUI->desktopShowMarkerCheckBox, SIGNAL(clicked(bool)),
+            settings->desktopPaletteShowMarker, SLOT(setBool(bool)));
+    connect(mPreferencesUI->desktopShowEraserCheckBox, SIGNAL(clicked(bool)),
+            settings->desktopPaletteShowEraser, SLOT(setBool(bool)));
+    connect(mPreferencesUI->desktopShowSelectorCheckBox, SIGNAL(clicked(bool)),
+            settings->desktopPaletteShowSelector, SLOT(setBool(bool)));
+    connect(mPreferencesUI->desktopShowPointerCheckBox, SIGNAL(clicked(bool)),
+            settings->desktopPaletteShowPointer, SLOT(setBool(bool)));
 
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
     connect(mPreferencesUI->displayBrowserPageCheckBox, SIGNAL(clicked(bool)), settings->webShowPageImmediatelyOnMirroredScreen, SLOT(setBool(bool)));
@@ -472,6 +487,13 @@ void UBPreferencesController::init()
 
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
     mPreferencesUI->themeComboBox->setCurrentIndex(settings->appThemeMode->get().toInt());
+    const int desktopScale = qBound(100, settings->desktopPaletteScalePercent->get().toInt(), 200);
+    mPreferencesUI->desktopPaletteScaleComboBox->setCurrentIndex((desktopScale - 100) / 10);
+    mPreferencesUI->desktopShowPenCheckBox->setChecked(settings->desktopPaletteShowPen->get().toBool());
+    mPreferencesUI->desktopShowMarkerCheckBox->setChecked(settings->desktopPaletteShowMarker->get().toBool());
+    mPreferencesUI->desktopShowEraserCheckBox->setChecked(settings->desktopPaletteShowEraser->get().toBool());
+    mPreferencesUI->desktopShowSelectorCheckBox->setChecked(settings->desktopPaletteShowSelector->get().toBool());
+    mPreferencesUI->desktopShowPointerCheckBox->setChecked(settings->desktopPaletteShowPointer->get().toBool());
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
@@ -546,6 +568,13 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->startModeComboBox->setCurrentIndex(0);
+        mPreferencesUI->desktopPaletteScaleComboBox->setCurrentIndex(
+            (settings->desktopPaletteScalePercent->reset().toInt() - 100) / 10);
+        mPreferencesUI->desktopShowPenCheckBox->setChecked(settings->desktopPaletteShowPen->reset().toBool());
+        mPreferencesUI->desktopShowMarkerCheckBox->setChecked(settings->desktopPaletteShowMarker->reset().toBool());
+        mPreferencesUI->desktopShowEraserCheckBox->setChecked(settings->desktopPaletteShowEraser->reset().toBool());
+        mPreferencesUI->desktopShowSelectorCheckBox->setChecked(settings->desktopPaletteShowSelector->reset().toBool());
+        mPreferencesUI->desktopShowPointerCheckBox->setChecked(settings->desktopPaletteShowPointer->reset().toBool());
 
         mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
 

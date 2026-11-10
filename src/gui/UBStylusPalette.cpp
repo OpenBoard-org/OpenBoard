@@ -35,6 +35,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
+#include "core/UBSetting.h"
 #include "core/UBApplicationController.h"
 #include "core/UBShortcutManager.h"
 
@@ -76,13 +77,39 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
 
     setActions(actions);
-    setButtonIconSize(QSize(42, 42));
     groupActions();
 
     UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);
 
-    adjustSizeAndPosition();
+    UBSettings* settings = UBSettings::settings();
+    connect(settings->desktopPaletteScalePercent, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
+    connect(settings->desktopPaletteShowPen, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
+    connect(settings->desktopPaletteShowEraser, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
+    connect(settings->desktopPaletteShowMarker, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
+    connect(settings->desktopPaletteShowSelector, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
+    connect(settings->desktopPaletteShowPointer, SIGNAL(changed(QVariant)),
+            this, SLOT(paletteSettingsChanged(QVariant)));
 
+    const QList<QAction*> configurableActions = {
+        UBApplication::mainWindow->actionPen,
+        UBApplication::mainWindow->actionEraser,
+        UBApplication::mainWindow->actionMarker,
+        UBApplication::mainWindow->actionSelector,
+        UBApplication::mainWindow->actionPointer
+    };
+
+    for (QAction* action : configurableActions)
+    {
+        // Reapply palette visibility after QAction state changes.
+        connect(action, &QAction::changed, this, [this]() { applyToolVisibility(); });
+    }
+
+    paletteSettingsChanged();
     initPosition();
 
     foreach(const UBActionPaletteButton* button, mButtons)
@@ -90,6 +117,47 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
         connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
     }
 
+}
+
+void UBStylusPalette::paletteSettingsChanged(QVariant value)
+{
+    Q_UNUSED(value);
+
+    UBSettings* settings = UBSettings::settings();
+    const int percent = qBound(100, settings->desktopPaletteScalePercent->get().toInt(), 200);
+    const int iconExtent = qRound(42.0 * percent / 100.0);
+    setButtonIconSize(QSize(iconExtent, iconExtent));
+
+    applyToolVisibility();
+    adjustSizeAndPosition();
+}
+
+void UBStylusPalette::applyToolVisibility()
+{
+    UBSettings* settings = UBSettings::settings();
+
+    const auto setButtonVisible = [this](QAction* action, bool visible) {
+        if (UBActionPaletteButton* button = getButtonFromAction(action))
+            button->setVisible(visible);
+    };
+
+    setButtonVisible(UBApplication::mainWindow->actionPen,
+                     settings->desktopPaletteShowPen->get().toBool());
+    setButtonVisible(UBApplication::mainWindow->actionEraser,
+                     settings->desktopPaletteShowEraser->get().toBool());
+    setButtonVisible(UBApplication::mainWindow->actionMarker,
+                     settings->desktopPaletteShowMarker->get().toBool());
+    setButtonVisible(UBApplication::mainWindow->actionSelector,
+                     settings->desktopPaletteShowSelector->get().toBool());
+    setButtonVisible(UBApplication::mainWindow->actionPointer,
+                     settings->desktopPaletteShowPointer->get().toBool());
+}
+
+int UBStylusPalette::buttonSpacing() const
+{
+    // Button size follows the palette scale, so the gaps grow with it. Keep
+    // them tight and configurable instead.
+    return qBound(0, UBSettings::settings()->paletteButtonSpacingPx->get().toInt(), 30);
 }
 
 void UBStylusPalette::initPosition()
@@ -130,5 +198,3 @@ void UBStylusPalette::stylusToolDoubleClicked()
 {
     emit stylusToolDoubleClicked(mActionGroup->checkedAction()->property("id").toInt());
 }
-
-

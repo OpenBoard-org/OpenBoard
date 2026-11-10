@@ -570,15 +570,7 @@ void UBDesktopAnnotationController::penActionPressed()
     mPenHoldTimer = QTime::currentTime();
     mPendingPenButtonPressed = true;
 
-    // Check if the mouse cursor is on the little arrow
-    QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));  // global coordinates of palette
-    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionPen);
-
-    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
-    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
-
-    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
+    if (isSubtoolArrowPressed(UBApplication::mainWindow->actionPen))
     {
         mbArrowClicked = true;
         penActionReleased();
@@ -624,15 +616,7 @@ void UBDesktopAnnotationController::eraserActionPressed()
     mEraserHoldTimer = QTime::currentTime();
     mPendingEraserButtonPressed = true;
 
-    // Check if the mouse cursor is on the little arrow
-    QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
-    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionEraser);
-
-    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
-    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
-
-    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
+    if (isSubtoolArrowPressed(UBApplication::mainWindow->actionEraser))
     {
         mbArrowClicked = true;
         eraserActionReleased();
@@ -679,15 +663,7 @@ void UBDesktopAnnotationController::markerActionPressed()
     mMarkerHoldTimer = QTime::currentTime();
     mPendingMarkerButtonPressed = true;
 
-    // Check if the mouse cursor is on the little arrow
-    QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
-    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionMarker);
-
-    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
-    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
-
-    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
+    if (isSubtoolArrowPressed(UBApplication::mainWindow->actionMarker))
     {
         mbArrowClicked = true;
         markerActionReleased();
@@ -775,6 +751,21 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 {
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
+}
+
+bool UBDesktopAnnotationController::isSubtoolArrowPressed(QAction* action) const
+{
+    UBActionPaletteButton* button = mDesktopPalette->getButtonFromAction(action);
+
+    if (!button)
+        return false;
+
+    const QPoint localPosition = button->mapFromGlobal(QCursor::pos());
+    const int arrowExtent = qMax(14, qRound(qMin(button->width(), button->height()) * 0.36));
+    const QRect arrowRegion(button->width() - arrowExtent,
+                            button->height() - arrowExtent,
+                            arrowExtent, arrowExtent);
+    return arrowRegion.contains(localPosition);
 }
 
 /**

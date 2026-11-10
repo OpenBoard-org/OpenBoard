@@ -69,12 +69,15 @@ class UBDesktopPalette : public UBActionPalette
         void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
         void parentResized();
+        void desktopPaletteSettingsChanged(QVariant value = QVariant());
 
 protected:
         void showEvent(QShowEvent *event);
         void hideEvent(QHideEvent *event);
 
         virtual int getParentRightOffset();
+        virtual int grabMargin() const override;
+        virtual int buttonSpacing() const override;
 
 private:
         QAction *mShowHideAction;
@@ -83,10 +86,13 @@ private:
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
         QAction* mActionTest;
+        bool mIsMinimized{false};
 
 
         UBRightPalette* rightPalette;
         void adjustPosition();
+        QList<QAction*> maximizedActions() const;
+        void applyScale();
 
 
 signals:
