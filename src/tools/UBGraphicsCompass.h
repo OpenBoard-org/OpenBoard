@@ -75,6 +75,16 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         void lineWidthChanged();
 
     private:
+        enum ShapeElement {
+            OUTER_ARM,
+            CLOSE_BUTTON,
+            HINGE_BUTTON,
+            INNER_ARM,
+            RESIZE_BUTTON,
+            PENCIL,
+            NONE,
+        };
+
         // Helpers
         void            paintAngleDisplay(QPainter *painter);
         void           paintRadiusDisplay(QPainter *painter);
@@ -83,6 +93,9 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         void           updateResizeCursor();
         void             updateDrawCursor();
         void             paintCenterCross();
+
+        ShapeElement getPointedElement(QPointF const &pos) const;
+        void updateCursor(ShapeElement const &element);
 
         QCursor                moveCursor() const;
         QCursor              resizeCursor() const;
@@ -129,40 +142,41 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         qreal mItemRotationAngle;
 
         // Constants
-        static const int                      sNeedleLength = 12;
-        static const int                       sNeedleWidth = 3;
+        static constexpr int                      sNeedleLength = 12;
+        static constexpr int                       sNeedleWidth = 3;
 
-        static const int                  sNeedleBaseLength = 9;
-        static const int                   sNeedleBaseWidth = 9;
+        static constexpr int                  sNeedleBaseLength = 9;
+        static constexpr int                   sNeedleBaseWidth = 9;
 
-        static const int                sNeedleArmLeftWidth = 12;
-        static const int               sNeedleArmRigthWidth = 16;
+        static constexpr int                sNeedleArmLeftWidth = 12;
+        static constexpr int               sNeedleArmRigthWidth = 16;
 
-        static const int                      sPencilLength = 12;
-        static const int                       sPencilWidth = 2;
+        static constexpr int                      sPencilLength = 12;
+        static constexpr int                       sPencilWidth = 2;
 
-        static const int                  sPencilBaseLength = 9;
-        static const int                   sPencilBaseWidth = 9;
+        static constexpr int                  sPencilBaseLength = 9;
+        static constexpr int                   sPencilBaseWidth = 9;
 
-        static const int                sPencilArmLeftWidth = 16;
-        static const int               sPencilArmRightWidth = 12;
+        static constexpr int                sPencilArmLeftWidth = 16;
+        static constexpr int               sPencilArmRightWidth = 12;
 
-        static const int                      sCornerRadius = 2;
+        static constexpr int                      sCornerRadius = 2;
 
-        static const QRect                     sDefaultRect;
-        static const int                         sMinRadius;
-        static const int               sDegreeToQtAngleUnit = 16;
-        static const int                  sFillTransparency = 127;
-        static const int                  sDrawTransparency = 192;
-        static const QColor   sLightBackgroundEdgeFillColor;
-        static const QColor sLightBackgroundMiddleFillColor;
-        static const QColor       sLightBackgroundDrawColor;
-        static const QColor    sDarkBackgroundEdgeFillColor;
-        static const QColor  sDarkBackgroundMiddleFillColor;
-        static const QColor        sDarkBackgroundDrawColor;
-
-        static const int sDisplayRadiusOnPencilArmMinLength = 300;
-        static const int        sDisplayRadiusUnitMinLength = 250;
+        static constexpr QRect                     sDefaultRect = QRect(0, -20, 300, 36);
+        static constexpr int                         sMinRadius = UBGraphicsCompass::sNeedleLength + UBGraphicsCompass::sNeedleBaseLength
+                                                                    + 24 + UBGraphicsCompass::sDefaultRect.height() + 24 + UBGraphicsCompass::sPencilBaseLength
+                                                                    + UBGraphicsCompass::sPencilLength;
+        static constexpr int               sDegreeToQtAngleUnit = 16;
+        static constexpr int                  sFillTransparency = 127;
+        static constexpr int                  sDrawTransparency = 192;
+        static constexpr QColor   sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
+        static constexpr QColor sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
+        static constexpr QColor       sLightBackgroundDrawColor = QColor(0x33, 0x33, 0x33, sDrawTransparency);
+        static constexpr QColor    sDarkBackgroundEdgeFillColor = QColor(0xdd, 0xdd, 0xdd, sFillTransparency);
+        static constexpr QColor  sDarkBackgroundMiddleFillColor = QColor(0xb5, 0xb5, 0xb5, sFillTransparency);
+        static constexpr QColor        sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
+        static constexpr int sDisplayRadiusOnPencilArmMinLength = 300;
+        static constexpr int        sDisplayRadiusUnitMinLength = 250;
 };
 
 #endif /* UBGRAPHICSCOMPASS_H_ */
