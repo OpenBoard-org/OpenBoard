@@ -220,6 +220,13 @@ struct DocumentSize
     };
 };
 
+struct ViewState
+{
+    enum Enum
+    {
+        OriginalSize, FitSize, FitContent, FitWidth, FitWidthScrollToTop
+    };
+};
 
 struct UBUndoType
 {

@@ -396,6 +396,8 @@ void UBSettings::init()
     showPenPreviewCircle = new UBSetting(this, "Board", "ShowPenPreviewCircle", true);
     penPreviewFromSize = new UBSetting(this, "Board", "PenPreviewFromSize", 5);
 
+    boardInitialViewState = new UBSetting(this, "Board", "InitialViewState", ViewState::FitSize);
+
     webUseExternalBrowser = new UBSetting(this, "Web", "UseExternalBrowser", false);
 
     bool defaultShowPageImmediatelyOnMirroredScreen = true;

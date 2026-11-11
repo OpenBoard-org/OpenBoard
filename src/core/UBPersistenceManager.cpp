@@ -613,6 +613,8 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
         const auto pageId = toc.insert(0);
         const auto scene = createDocumentSceneAt(doc, pageId);
         toc.setUuid(0, scene->uuid());
+        toc.setAssets(0, {});
+        toc.setPageSize(0, scene->nominalSize());
     }
 
     bool documentAdded = false;

@@ -267,7 +267,7 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             }
             case Qt::Key_0:
             {
-                mController->zoomRestore ();
+                mController->zoomToFit ();
                 event->accept ();
                 break;
             }
@@ -1843,6 +1843,7 @@ void UBBoardView::resizeEvent (QResizeEvent * event)
     const qreal maxHeight = height () * 10;
 
     setSceneRect (-(maxWidth / 2), -(maxHeight / 2), maxWidth, maxHeight);
+    mController->centerOn();
     centerOn (0, 0);
 
     emit resized (event);

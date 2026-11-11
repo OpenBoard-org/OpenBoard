@@ -369,6 +369,7 @@ public slots:
         void stylusToolChanged(int tool, int previousTool);
 
         void controlViewportChanged();
+        void initViewState(bool force = false);
 
 signals:
         void zoomChanged(qreal zoomFactor);
@@ -448,6 +449,7 @@ signals:
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 
         SceneViewState mViewState;
+        bool mViewStateInitialized{false};
 
         bool mInputDeviceIsPressed;
 

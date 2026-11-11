@@ -339,6 +339,8 @@ class UBSettings : public QObject
         UBSetting* showPenPreviewCircle;
         UBSetting* penPreviewFromSize;
 
+        UBSetting* boardInitialViewState;
+
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 

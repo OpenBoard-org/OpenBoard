@@ -216,6 +216,8 @@ class UBBoardController : public UBDocumentContainer
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();
         void zoomToFit();
+        void zoomTo(ViewState::Enum viewState);
+        double zoomFactorFor(ViewState::Enum viewState, QSizeF sceneSize) const;
         void centerRestore();
         void centerOn(QPointF scenePoint = QPointF(0,0)) const;
         void zoom(const qreal ratio, QPointF scenePoint, bool relative = true);
