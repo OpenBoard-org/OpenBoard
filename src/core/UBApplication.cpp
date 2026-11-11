@@ -36,6 +36,7 @@
 #include <QFutureWatcher>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QSessionManager>
 #include <QTimer>
 #include <QtConcurrent>
 #include <QEventLoop>
@@ -67,6 +68,9 @@
 #include "gui/UBResources.h"
 #include "gui/UBThumbnail.h"
 #include "gui/UBStartupHintsPalette.h"
+#include "gui/UBMessageWindow.h"
+#include "gui/UBStorageIndicator.h"
+#include "gui/UBStylusPalette.h"
 
 #include "ui_mainWindow.h"
 
@@ -444,7 +448,95 @@ int UBApplication::exec(const QString& pFileToImport)
         QTimer::singleShot(0, this, &UBApplication::showLocalDataDirectoryWarning);
     }
 
+    setupStorageIndicator();
+
+    if (!UBPersistenceManager::persistenceManager()->recoveryReport().isEmpty())
+    {
+        QTimer::singleShot(0, this, &UBApplication::showRecoveryReport);
+    }
+
+    // Logging off or shutting down does not always quit OpenBoard normally before the
+    // process is ended. Save everything now, without waiting for a storage which does not
+    // answer: what is not written is kept on this computer.
+    connect(this, &QGuiApplication::commitDataRequest, this, [](QSessionManager&){
+        qInfo() << "Session ending, saving";
+
+        if (boardController && boardController->selectedDocument())
+        {
+            boardController->persistCurrentScene();
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(boardController->selectedDocument());
+        }
+
+        UBSettings::settings()->save();
+        UBPersistenceManager::persistenceManager()->flush(3000);
+    }, Qt::DirectConnection);
+
     return QApplication::exec();
+}
+
+void UBApplication::setupStorageIndicator()
+{
+    // A discreet badge in the bottom left corner while the document location is not available,
+    // instead of message boxes: the teacher can continue working, nothing has to be decided.
+    UBBoardPaletteManager* paletteManager = boardController->paletteManager();
+    QWidget* leftPalette = paletteManager->leftPalette();
+    QWidget* boardContainer = boardController->controlContainer();
+    UBStorageIndicator* boardIndicator = new UBStorageIndicator(boardContainer, nullptr, leftPalette);
+    boardIndicator->setObstacles([paletteManager, boardContainer]() {
+        // messages are shown in the same corner; the stylus palette is created again when its orientation changes
+        QList<QWidget*> obstacles;
+
+        for (UBMessageWindow* message : boardContainer->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
+        {
+            obstacles << message;
+        }
+
+        obstacles << paletteManager->stylusPalette();
+        return obstacles;
+    });
+
+    QWidget* thumbnailView = documentController->thumbnailView();
+    UBStorageIndicator* documentIndicator = new UBStorageIndicator(documentController->controlView(), thumbnailView, leftPalette);
+    documentIndicator->setObstacles([thumbnailView]() {
+        QList<QWidget*> obstacles;
+
+        for (UBMessageWindow* message : thumbnailView->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
+        {
+            obstacles << message;
+        }
+
+        return obstacles;
+    });
+
+    QList<UBStorageIndicator*> indicators;
+    indicators << boardIndicator << documentIndicator;
+
+    const bool available = !UBPersistenceManager::persistenceManager()->isStorageUnavailable();
+
+    for (UBStorageIndicator* indicator : indicators)
+    {
+        indicator->setStorageAvailable(available);
+    }
+
+    connect(UBPersistenceManager::persistenceManager(), &UBPersistenceManager::storageAvailabilityChanged, this, [indicators](bool available){
+        for (UBStorageIndicator* indicator : indicators)
+        {
+            indicator->setStorageAvailable(available);
+        }
+    });
+}
+
+void UBApplication::showRecoveryReport()
+{
+    // informative only, does not block
+    QMessageBox* message = new QMessageBox(QMessageBox::Information,
+                                           tr("Changes recovered"),
+                                           UBPersistenceManager::persistenceManager()->recoveryReport(),
+                                           QMessageBox::Ok,
+                                           mainWindow);
+    message->setAttribute(Qt::WA_DeleteOnClose);
+    message->setWindowModality(Qt::NonModal);
+    message->show();
 }
 
 namespace

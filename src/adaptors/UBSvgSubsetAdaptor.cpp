@@ -32,6 +32,7 @@
 #include <QObject>
 #include <QtCore>
 #include <QtXml>
+#include <QSaveFile>
 #include <QGraphicsTextItem>
 #include <QDomElement>
 #include <QGraphicsVideoItem>
@@ -73,6 +74,7 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBPersistenceJournal.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBTextTools.h"
@@ -224,11 +226,18 @@ void UBSvgSubsetAdaptor::setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, co
     newXmlContent.append(UBStringUtils::toCanonicalUuid(pUuid));
     newXmlContent.append(xmlContent.right(xmlContent.length() - quoteEndIndex));
 
-    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    QSaveFile saveFile(fileName);
+
+    if (saveFile.open(QIODevice::WriteOnly))
     {
-        QTextStream textWriteStream(&file);
+        QTextStream textWriteStream(&saveFile);
         textWriteStream << newXmlContent;
-        file.close();
+        textWriteStream.flush();
+
+        if (!saveFile.commit())
+        {
+            qWarning() << "Cannot write UUID to file" << fileName << saveFile.errorString();
+        }
     }
     else
     {
@@ -245,49 +254,45 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     UBApplication::showMessage(QObject::tr("Loading scene (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
-    qInfo() << "loading scene. Filename is : " << fileName;
-    QFile file(fileName);
+    qInfo() << "loading scene. Filename is : " << pageFileName(proxy, pageIndex);
 
-    if (file.exists())
+    // the latest version of the page, which may still wait in the journal
+    const QByteArray content = loadSceneAsText(proxy, pageIndex);
+
+    if (content.isEmpty())
     {
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
-        }
-
-        std::shared_ptr<UBGraphicsScene> scene = loadScene(proxy, file.readAll());
-
-        file.close();
-
-        return scene;
+        return nullptr;
     }
 
-    return 0;
+    return loadScene(proxy, content);
 }
 
 
 QByteArray UBSvgSubsetAdaptor::loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+    QString fileName = pageFileName(proxy, pageIndex);
     qDebug() << fileName;
-    QFile file(fileName);
 
-    if (file.exists())
+    // a newer version of the page may still wait in the journal (document storage not available)
+    const auto journal = UBPersistenceJournal::journal();
+    const QByteArray pending = journal->data(fileName);
+
+    if (!pending.isEmpty())
     {
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return "";
-        }
-
-        return file.readAll();
-
-        file.close();
-
+        return pending;
     }
-    return "";
+
+    // Not read directly: the GUI thread must not block if the document location does not answer.
+    // The state of the file is remembered to detect changes made elsewhere before the journal is replayed.
+    QByteArray content;
+
+    if (!UBPersistenceManager::persistenceManager()->readStorageFile(fileName, content, true))
+    {
+        qWarning() << "Cannot read file" << fileName;
+        return "";
+    }
+
+    return content;
 }
 
 
@@ -1179,10 +1184,75 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
     return result;
 }
 
-void UBSvgSubsetAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex)
+bool UBSvgSubsetAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex)
+{
+    const QString fileName = pageFileName(proxy, pageIndex);
+    const QByteArray data = serializeScene(proxy, pScene, pageIndex);
+
+    // the journal must not replace this page later by an older copy
+    if (!UBPersistenceJournal::writeFile(fileName, data))
+    {
+        return false;
+    }
+
+    UBPersistenceJournal::journal()->written(fileName);
+    return true;
+}
+
+QByteArray UBSvgSubsetAdaptor::serializeScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex, bool storageAccess)
 {
     UBSvgSubsetWriter writer(proxy, pScene, pageIndex);
-    writer.persistScene(proxy, pageIndex);
+    writer.setStorageAccess(storageAccess);
+    const QByteArray data = writer.serializeScene(proxy);
+
+    // without storage access, an incomplete page must not replace the stored one
+    return writer.isIncomplete() ? QByteArray() : data;
+}
+
+QString UBSvgSubsetAdaptor::pageFileName(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
+{
+    return proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+}
+
+namespace
+{
+    // Image file names (relative to the document folder) by document folder and item uuid.
+    // The writer needs the file name of each image. It is usually found by listing the images
+    // folder, which is not possible while the document storage is not available.
+    QMutex sImageFileMutex;
+    QHash<QString, QHash<QUuid, QString>> sImageFiles;
+
+    // embedded PDF files known to exist, no need to check the storage at each save
+    QSet<QString> sKnownPdfFiles;
+
+    void rememberPdfFile(const QString& path)
+    {
+        QMutexLocker locker(&sImageFileMutex);
+        sKnownPdfFiles.insert(path);
+    }
+
+    bool isKnownPdfFile(const QString& path)
+    {
+        QMutexLocker locker(&sImageFileMutex);
+        return sKnownPdfFiles.contains(path);
+    }
+}
+
+void UBSvgSubsetAdaptor::rememberImageFile(const QString& documentPath, const QUuid& uuid, const QString& relativeFileName)
+{
+    if (uuid.isNull() || relativeFileName.isEmpty())
+    {
+        return;
+    }
+
+    QMutexLocker locker(&sImageFileMutex);
+    sImageFiles[documentPath].insert(uuid, relativeFileName);
+}
+
+QString UBSvgSubsetAdaptor::rememberedImageFile(const QString& documentPath, const QUuid& uuid)
+{
+    QMutexLocker locker(&sImageFileMutex);
+    return sImageFiles.value(documentPath).value(uuid);
 }
 
 
@@ -1250,10 +1320,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(std::shared_ptr<UBDo
     mXmlWriter.writeEndElement();
 }
 
-bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+QByteArray UBSvgSubsetAdaptor::UBSvgSubsetWriter::serializeScene(std::shared_ptr<UBDocumentProxy> proxy)
 {
-    Q_UNUSED(pageIndex);
-
     //Creating dom structure to store information
     QDomDocument groupDomDocument;
     QDomElement groupRoot = groupDomDocument.createElement(tGroups);
@@ -1552,19 +1620,8 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
     }
 
     mXmlWriter.writeEndDocument();
-    QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", mPageIndex);
-    QFile file(fileName);
 
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-    {
-        qCritical() << "cannot open " << fileName << " for writing. Error : " << file.errorString();
-        return false;
-    }
-    file.write(buffer.data());
-    file.flush();
-    file.close();
-
-    return true;
+    return buffer.data();
 }
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
@@ -2149,15 +2206,30 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPixmapItem* pixmapItem)
 {
-    // find image file
-    QDir imageDir = mDocumentPath + "/" + UBPersistenceManager::imageDirectory;
-    QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
+    // find image file. Use the known file name first: listing the images folder is not
+    // possible while the document storage is not available, and the image would be lost.
+    QString fileName = rememberedImageFile(mDocumentPath, pixmapItem->uuid());
 
-    if (imageFiles.size() >= 1)
+    if (fileName.isEmpty() && !mStorageAccess)
+    {
+        // unknown image: this serialization would lose it
+        mIncomplete = true;
+    }
+    else if (fileName.isEmpty())
+    {
+        QDir imageDir = mDocumentPath + "/" + UBPersistenceManager::imageDirectory;
+        QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
+
+        if (imageFiles.size() >= 1)
+        {
+            fileName = UBPersistenceManager::imageDirectory + "/" + imageFiles.last();
+            rememberImageFile(mDocumentPath, pixmapItem->uuid(), fileName);
+        }
+    }
+
+    if (!fileName.isEmpty())
     {
         mXmlWriter.writeStartElement("image");
-
-        QString fileName = UBPersistenceManager::imageDirectory + "/" + imageFiles.last();
 
         mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
@@ -2184,6 +2256,7 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
         QPixmap pix = QPixmap::fromImage(img);
         pixmapItem->setPixmap(pix);
         graphicsItemFromSvg(pixmapItem);
+        rememberImageFile(mDocumentPath, pixmapItem->uuid(), UBFileSystemUtils::normalizeFilePath(href));
     }
     else
     {
@@ -2244,20 +2317,33 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pdfItemToLinkedPDF(UBGraphicsPDFItem
 
     QString path = mDocumentPath + "/" + fileName;
 
-    if (!QFile::exists(path))
+    if (isKnownPdfFile(path) || !mStorageAccess)
+    {
+        // nothing to check, or the storage must not be accessed (the file usually exists)
+    }
+    else if (QFile::exists(path))
+    {
+        rememberPdfFile(path);
+    }
+    else
     {
         QDir dir;
         dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::objectDirectory);
 
         QFile file(path);
-        if (!file.open(QIODevice::WriteOnly))
+        if (file.open(QIODevice::WriteOnly))
         {
-            qWarning() << "cannot open file for writing embeded pdf content " << path;
-            return;
+            file.write(pdfItem->fileData());
+            file.close();
+            rememberPdfFile(path);
         }
-
-        file.write(pdfItem->fileData());
-        file.close();
+        else
+        {
+            // Keep the reference anyway: the file usually exists, but cannot be checked while
+            // the document storage is not available. Returning here would also leave the
+            // foreignObject element open and the page unreadable.
+            qWarning() << "cannot open file for writing embeded pdf content " << path;
+        }
     }
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName + "#page=" + QString::number(pdfItem->pageNumber()));
@@ -2285,6 +2371,7 @@ UBGraphicsPDFItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pdfItemFromPDF()
     int pageNumber = parts[1].toInt();
 
     pdfItem = new UBGraphicsPDFItem(PDFRenderer::rendererForUuid(uuid, mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(pdfPath)), pageNumber);
+    rememberPdfFile(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(pdfPath));
 
     graphicsItemFromSvg(pdfItem);
 
@@ -2639,9 +2726,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         QString widgetTargetDir = widgetDirectoryPath + "/" + item->uuid().toString() + "." + extension;
 
         QString path = mDocumentPath + "/" + widgetTargetDir;
-        QDir dir(path);
 
-        if (!dir.exists(path))
+        // Copy the application into the document. Only when the document folder exists: its
+        // parents must not be created on the mount point of a storage which is not mounted.
+        if (mStorageAccess && !QFileInfo::exists(path) && QFileInfo::exists(mDocumentPath))
         {
             QDir dir;
             dir.mkpath(path);
@@ -2649,7 +2737,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         }
 
         // save snapshot of widget
-        item->saveSnapshot();
+        if (mStorageAccess)
+        {
+            item->saveSnapshot();
+        }
 
         widgetRootUrl = widgetTargetDir;
     }

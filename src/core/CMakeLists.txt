@@ -23,6 +23,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBPersistenceManager.h
     UBPersistenceWorker.cpp
     UBPersistenceWorker.h
+    UBPersistenceJournal.cpp
+    UBPersistenceJournal.h
     UBPreferencesController.cpp
     UBPreferencesController.h
     UBSceneCache.cpp

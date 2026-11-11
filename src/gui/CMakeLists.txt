@@ -67,6 +67,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBSpinningWheel.h
     UBStartupHintsPalette.cpp
     UBStartupHintsPalette.h
+    UBStorageIndicator.cpp
+    UBStorageIndicator.h
     UBStylusPalette.cpp
     UBStylusPalette.h
     UBThumbnail.cpp

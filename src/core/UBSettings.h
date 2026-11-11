@@ -157,6 +157,8 @@ class UBSettings : public QObject
         static QString userInteractiveFavoritesDirectory();
         // library content provided by the administrator (read-only for the user)
         static QString adminLibraryDirectory();
+        // local copies of files not yet written to the document storage
+        static QString recoveryDirectory();
         static QString userPodcastRecordingDirectory();
 
         QString userGipLibraryDirectory();

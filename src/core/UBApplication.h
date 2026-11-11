@@ -142,6 +142,8 @@ class UBApplication : public SingleApplication
         void setupTranslators(QStringList args);
         void checkDataDirectory();
         void showLocalDataDirectoryWarning();
+        void setupStorageIndicator();
+        void showRecoveryReport();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
         QString checkLanguageAvailabilityForSankore(QString& language);

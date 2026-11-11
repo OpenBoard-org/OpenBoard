@@ -1490,6 +1490,25 @@ QString UBSettings::userInteractiveDirectory()
 }
 
 
+QString UBSettings::recoveryDirectory()
+{
+    // Local copies of the files not yet written to the document storage. It must be on a local
+    // disk which stays available when the data directory is not, and must not be cleared when
+    // the user logs out. Can be changed with App/RecoveryDirectory in the admin or policy file,
+    // e.g. for computers whose local profile is deleted at logout.
+    static QString dirPath;
+
+    if (dirPath.isEmpty())
+    {
+        dirPath = systemValue("App/RecoveryDirectory", localDataDirectory() + "/recovery").toString();
+        dirPath = replaceWildcard(dirPath);
+        dirPath = UBFileSystemUtils::normalizeFilePath(QDir::cleanPath(dirPath));
+        qInfo() << "Recovery directory:" << dirPath;
+    }
+
+    return dirPath;
+}
+
 QString UBSettings::adminLibraryDirectory()
 {
     // Library content added by the administrator for all users, kept on updates. It has the same

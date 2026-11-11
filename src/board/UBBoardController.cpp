@@ -646,13 +646,24 @@ void UBBoardController::addScene()
     persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
+    int newPageIndex = mActiveSceneIndex + 1;
+
+    if (newPageIndex < selectedDocument()->pageCount()
+            && !UBPersistenceManager::persistenceManager()->mayChangePages(selectedDocument(), true))
+    {
+        // Inserting renames the following page files, which is not possible while the
+        // storage is not available. Do not block the teacher: add the page at the end.
+        newPageIndex = selectedDocument()->pageCount();
+        UBApplication::showMessage(tr("The document location is not available: the new page is added at the end of the document."));
+    }
+
     auto document = UBDocument::getDocument(selectedDocument());
-    document->createPage(mActiveSceneIndex + 1);
+    document->createPage(newPageIndex);
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
-    setActiveDocumentScene(mActiveSceneIndex + 1);
+    setActiveDocumentScene(newPageIndex);
     QApplication::restoreOverrideCursor();
 
     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
@@ -660,7 +671,8 @@ void UBBoardController::addScene()
 
 void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
 {
-    if (scene)
+    // inserting renames the following page files, not possible while the storage is not available
+    if (scene && UBPersistenceManager::persistenceManager()->mayChangePages(selectedDocument()))
     {
         std::shared_ptr<UBGraphicsScene> clone = scene->sceneDeepCopy();
 
@@ -711,7 +723,12 @@ void UBBoardController::duplicateScene(int nIndex)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistCurrentScene(false,true);
 
-    duplicatePage(nIndex);
+    if (!duplicatePage(nIndex))
+    {
+        // storage not available, a message was shown
+        QApplication::restoreOverrideCursor();
+        return;
+    }
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -915,11 +932,18 @@ void UBBoardController::deleteScene(int nIndex)
         UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
         auto document = UBDocument::getDocument(selectedDocument());
-        document->deletePages({nIndex});
+
+        if (!document->deletePages({nIndex}))
+        {
+            // cancelled, or storage not available (a message was shown)
+            QApplication::restoreOverrideCursor();
+            mDeletingSceneIndex = -1;
+            return;
+        }
 
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
 
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
@@ -1778,6 +1802,12 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
     else
     {
         qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
+
+        if (UBPersistenceManager::persistenceManager()->isStorageUnavailable())
+        {
+            // the current page stays displayed
+            UBApplication::showMessage(tr("This page cannot be opened while the document location is unavailable."));
+        }
     }
     UBApplication::restoreOverrideCursor();
 
@@ -2045,11 +2075,34 @@ void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
         connect(mAutosaveTimer, SIGNAL(timeout()), this, SLOT(autosaveTimeout()));
     }
 
+    if (!mQuickSaveTimer) {
+        mQuickSaveTimer = new QTimer(this);
+        mQuickSaveTimer->setInterval(30 * 1000);
+        connect(mQuickSaveTimer, &QTimer::timeout, this, &UBBoardController::quickSaveTimeout);
+    }
+
     if (md == UBApplicationController::Board) {
         mAutosaveTimer->start(autoSaveInterval);
-    } else if (mAutosaveTimer->isActive()) {
+        mQuickSaveTimer->start();
+    } else {
         mAutosaveTimer->stop();
+        mQuickSaveTimer->stop();
     }
+}
+
+void UBBoardController::quickSaveTimeout()
+{
+    // Save the current page shortly after it was changed, not only at the autosave interval:
+    // at most about 30 seconds of work can be lost when OpenBoard crashes or is killed.
+    // Not while drawing, the page is saved at the next tick.
+    if (UBApplication::applicationController->displayMode() != UBApplicationController::Board
+            || !mActiveScene || !mActiveScene->isModified() || mActiveScene->isInputDevicePressed()
+            || QApplication::mouseButtons() != Qt::NoButton)
+    {
+        return;
+    }
+
+    persistCurrentScene(true);
 }
 
 void UBBoardController::closing()
@@ -2191,7 +2244,11 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex)
     {
-        mActiveScene->saveWidgetSnapshots();
+        // the snapshots are written to the document folder: not while the storage does not answer
+        if (!UBPersistenceManager::persistenceManager()->isStorageUnavailable())
+        {
+            mActiveScene->saveWidgetSnapshots();
+        }
 
         if (mActiveScene->isModified())
         {
