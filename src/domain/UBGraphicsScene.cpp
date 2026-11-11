@@ -2417,6 +2417,39 @@ void UBGraphicsScene::controlViewportChanged()
     }
 }
 
+void UBGraphicsScene::initViewState()
+{
+    qDebug() << "initViewState" << UBApplication::boardController->controlView()->size();
+    auto viewState = UBSettings::settings()->boardInitialViewState->get().value<ViewState::Enum>();
+
+    mViewState.zoomFactor = UBApplication::boardController->zoomFactorFor(viewState, sceneSizeF());
+
+    switch (viewState)
+    {
+    case ViewState::OriginalSize:
+    case ViewState::FitSize:
+    case ViewState::FitWidth:
+        break;
+
+    case ViewState::FitContent:
+    {
+        const auto contentRect = normalizedSceneRect();
+        mViewState.zoomFactor = UBApplication::boardController->zoomFactorFor(viewState, contentRect.size());
+        mViewState.mLastSceneCenter = normalizedSceneRect().center();
+        break;
+    }
+
+    case ViewState::FitWidthScrollToTop:
+    {
+        const auto viewportSize = UBApplication::boardController->controlView()->size();
+        const auto viewportSizeInSceneCoordinates = viewportSize / mViewState.zoomFactor;
+        const auto diff = sceneSizeF() - viewportSizeInSceneCoordinates;
+        mViewState.mLastSceneCenter = QPointF(0., -diff.height() / 2);
+        break;
+    }
+    }
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene

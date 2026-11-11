@@ -199,7 +199,8 @@ void UBBoardController::setupViews()
     mControlContainer->setObjectName("ubBoardControlContainer");
     mMainWindow->addBoardWidget(mControlContainer);
 
-    connect(mControlView, SIGNAL(resized(QResizeEvent*)), this, SLOT(boardViewResized(QResizeEvent*)));
+    // use queued connection to defer delivery of event until resizing is finished
+    connect(mControlView, SIGNAL(resized(QResizeEvent*)), this, SLOT(boardViewResized(QResizeEvent*)), Qt::QueuedConnection);
 
     // TODO UB 4.x Optimization do we have to create the display view even if their is
     // only 1 screen
@@ -949,15 +950,87 @@ void UBBoardController::zoomRestore()
 
 void UBBoardController::zoomToFit()
 {
-    // zoom to fit
-    const auto sceneSize = mActiveScene->sceneSizeF();
-    const auto viewportSize = mControlView->size();
-    const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatio);
-    const auto factor = scaledSceneSize.width() / sceneSize.width();
+    zoomTo(ViewState::FitSize);
+}
 
-    zoom(factor / mDisplayScaleFactor, {}, false);
+void UBBoardController::zoomTo(ViewState::Enum viewState)
+{
+    double zoomFactor{1.};
+    QSizeF sceneSize{};
+    QPointF center{};
+
+    switch (viewState)
+    {
+    case ViewState::OriginalSize:
+    case ViewState::FitSize:
+    case ViewState::FitWidth:
+    case ViewState::FitWidthScrollToTop:
+        sceneSize = mActiveScene->sceneSizeF();
+        break;
+
+    case ViewState::FitContent:
+        sceneSize = mActiveScene->normalizedSceneRect().size();
+        break;
+    }
+
+    zoomFactor = zoomFactorFor(viewState, sceneSize);
+
+    switch (viewState)
+    {
+    case ViewState::OriginalSize:
+    case ViewState::FitSize:
+    case ViewState::FitWidth:
+        break;
+
+    case ViewState::FitContent:
+        center = mActiveScene->normalizedSceneRect().center();
+        break;
+
+    case ViewState::FitWidthScrollToTop:
+        const auto viewportSize = UBApplication::boardController->controlView()->size();
+        const auto viewportSizeInSceneCoordinates = viewportSize / zoomFactor;
+        const auto diff = sceneSize - viewportSizeInSceneCoordinates;
+        center = QPointF(0., -diff.height() / 2);
+        break;
+    }
+
+    zoom(zoomFactor, {}, false);
     centerRestore();
+    centerOn(center);
     mActiveScene->setBackgroundZoomFactor(mCurrentZoom);
+}
+
+double UBBoardController::zoomFactorFor(ViewState::Enum viewState, QSizeF sceneSize) const
+{
+    switch (viewState)
+    {
+    case ViewState::OriginalSize:
+        return 1.;
+
+    case ViewState::FitSize:
+    {
+        const auto viewportSize = controlView()->size();
+        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatio);
+        return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
+    }
+
+    case ViewState::FitContent:
+    {
+        const auto viewportSize = controlView()->size();
+        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatio);
+        return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
+    }
+
+    case ViewState::FitWidth:
+    case ViewState::FitWidthScrollToTop:
+    {
+        const auto viewportSize = controlView()->size();
+        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatioByExpanding);
+        return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
+    }
+    }
+
+    return 1.;
 }
 
 void UBBoardController::centerRestore()
@@ -1778,6 +1851,11 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     UBApplication::boardController->controlView()->scene()->moveMagnifier();
 
+    if (mActiveScene &&  mInitialDocumentScene == mActiveScene)
+    {
+        mInitialDocumentScene->initViewState();
+        restoreViewPositionOnCurrentScene();
+    }
 }
 
 

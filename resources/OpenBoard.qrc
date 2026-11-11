@@ -385,5 +385,10 @@
         <file>images/backgroundPalette/bgButtonTemplateDarkOn.svg</file>
         <file>images/backgroundPalette/bgButtonTemplateLightOff.svg</file>
         <file>images/backgroundPalette/bgButtonTemplateLightOn.svg</file>
+        <file>images/zoomPalette/zoom100.svg</file>
+        <file>images/zoomPalette/zoomFit.svg</file>
+        <file>images/zoomPalette/zoomFitContent.svg</file>
+        <file>images/zoomPalette/zoomWidth.svg</file>
+        <file>images/zoomPalette/zoomWidthTop.svg</file>
     </qresource>
 </RCC>

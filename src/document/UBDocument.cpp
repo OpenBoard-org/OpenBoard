@@ -210,6 +210,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
     auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, cached, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
     mToc->setAssets(index, {});
+    mToc->setPageSize(index, scene->nominalSize());
 
     if (saveToc)
     {
@@ -423,6 +424,8 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
 
     if (scene)
     {
+        scene->initViewState();
+
         const auto persistenceManager = UBPersistenceManager::persistenceManager();
         auto index = mToc->findUuid(scene->uuid());
 

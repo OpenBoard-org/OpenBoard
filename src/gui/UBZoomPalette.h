@@ -37,28 +37,38 @@ class UBBoardController;
 
 class UBZoomPalette : public UBFloatingPalette
 {
-    Q_OBJECT;
+Q_OBJECT;
 
-    public:
-        UBZoomPalette(QWidget *parent);
-        virtual ~UBZoomPalette();
+public:
+    UBZoomPalette(QWidget *parent);
+    virtual ~UBZoomPalette();
 
-    public slots:
-        void hide();
-        void refreshPalette();
+public slots:
+    void hide();
+    void refreshPalette();
 
-    private:
-        UBBoardController* mBoardController;
-        QPushButton *mCurrentZoomButton;
-        QPushButton *mHundredButton;
-        QPushButton *mShowAllButton;
+protected:
+    virtual int border() override;
 
-        bool mIsExpanded;
+private slots:
+    void showHideExtraButton();
+    void goHundred();
+    void goFit();
+    void goFitContent();
+    void goWidth();
+    void goWidthTop();
 
-    private slots:
-        void showHideExtraButton();
-        void goHundred();
+private:
+    UBBoardController* mBoardController{nullptr};
+    QPushButton* mCurrentZoomButton{nullptr};
 
+    QToolButton* mZoom100;
+    QToolButton* mZoomFit;
+    QToolButton* mZoomFitContent;
+    QToolButton* mZoomWidth;
+    QToolButton* mZoomWidthTop;
+
+    bool mIsExpanded{true};
 };
 
 #endif /* UBZOOMPALETTE_H_ */
