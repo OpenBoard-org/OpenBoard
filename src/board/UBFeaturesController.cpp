@@ -87,6 +87,23 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString &
         if ( fullFileName.contains(".thumbnail."))
             continue;
 
+        if (featureType != FEATURE_FOLDER
+                && (currVirtualPath.startsWith(UBFeaturesController::appPath)
+                    || currVirtualPath.startsWith(UBFeaturesController::interactPath)))
+        {
+            // The same application or interactivity may exist in the user, administrator and
+            // OpenBoard directories, which are scanned in this order. Keep only the first one
+            // (User > Admin > OpenBoard). Media files are not deduplicated (as in 1.7.7).
+            const QString virtualPath = currVirtualPath + "/" + fileName;
+
+            if (mSentApplications.contains(virtualPath))
+            {
+                continue;
+            }
+
+            mSentApplications.insert(virtualPath);
+        }
+
         UBFeature testFeature(currVirtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType);
 
         emit sendFeature(testFeature);
@@ -106,6 +123,8 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString &
 
 void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet)
 {
+    mSentApplications.clear();
+
     for (int i = 0; i < pScanningData.count(); i++) {
         if (abort) {
             return;
@@ -295,6 +314,21 @@ bool UBFeature::allowedCopy() const
 
 bool UBFeature::isDeletable() const
 {
+    // library content provided by the administrator cannot be removed by the user
+    const QString adminLibrary = UBSettings::adminLibraryDirectory();
+
+#ifdef Q_OS_WIN
+    const Qt::CaseSensitivity cs = Qt::CaseInsensitive;
+#else
+    const Qt::CaseSensitivity cs = Qt::CaseSensitive;
+#endif
+
+    if (!adminLibrary.isEmpty() && getFullPath().isLocalFile()
+            && getFullPath().toLocalFile().startsWith(adminLibrary + "/", cs))
+    {
+        return false;
+    }
+
     return elementType == FEATURE_ITEM
             || elementType == FEATURE_AUDIO
             || elementType == FEATURE_VIDEO
@@ -329,6 +363,13 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     mLibAnimationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAnimationsLibraryDirectory());
     mLibInteractiveDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationInteractivesDirectory());
     mLibApplicationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationApplicationsLibraryDirectory());
+    const QString adminLibrary = UBSettings::adminLibraryDirectory();
+    mAdminApplicationsDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/applications");
+    mAdminInteractiveDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/interactivities");
+    mAdminPicturesDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/pictures");
+    mAdminAudiosDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/audios");
+    mAdminVideosDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/videos");
+    mAdminShapesDirectoryPath = QUrl::fromLocalFile(adminLibrary + "/shape");
     mLibShapesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationShapeLibraryDirectory());
     mLibSearchDirectoryPath =QUrl::fromLocalFile(UBSettings::settings()->userSearchDirectory());
     trashDirectoryPath = QUrl::fromLocalFile(UBSettings::userTrashDirPath());
@@ -389,13 +430,19 @@ void UBFeaturesController::startThread()
             <<  QPair<QUrl, UBFeature>(mLibPicturesDirectoryPath, picturesElement)
 
             <<  QPair<QUrl, UBFeature>(mUserInteractiveDirectoryPath, applicationsElement)
+            <<  QPair<QUrl, UBFeature>(mAdminApplicationsDirectoryPath, applicationsElement)
             <<  QPair<QUrl, UBFeature>(mUserAudioDirectoryPath, audiosElement)
             <<  QPair<QUrl, UBFeature>(mUserPicturesDirectoryPath, picturesElement)
             <<  QPair<QUrl, UBFeature>(mUserVideoDirectoryPath, moviesElement)
             <<  QPair<QUrl, UBFeature>(mUserAnimationDirectoryPath, flashElement)
+            <<  QPair<QUrl, UBFeature>(mAdminAudiosDirectoryPath, audiosElement)
+            <<  QPair<QUrl, UBFeature>(mAdminPicturesDirectoryPath, picturesElement)
+            <<  QPair<QUrl, UBFeature>(mAdminVideosDirectoryPath, moviesElement)
 
             <<  QPair<QUrl, UBFeature>(mLibApplicationsDirectoryPath, applicationsElement)
             <<  QPair<QUrl, UBFeature>(mLibShapesDirectoryPath, shapesElement)
+            <<  QPair<QUrl, UBFeature>(mAdminShapesDirectoryPath, shapesElement)
+            <<  QPair<QUrl, UBFeature>(mAdminInteractiveDirectoryPath, interactElement)
             <<  QPair<QUrl, UBFeature>(mLibInteractiveDirectoryPath, interactElement)
             <<  QPair<QUrl, UBFeature>(trashDirectoryPath, trashElement)
             <<  QPair<QUrl, UBFeature>(mLibSearchDirectoryPath, webSearchElement);

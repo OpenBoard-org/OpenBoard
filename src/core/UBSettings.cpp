@@ -1490,6 +1490,25 @@ QString UBSettings::userInteractiveDirectory()
 }
 
 
+QString UBSettings::adminLibraryDirectory()
+{
+    // Library content added by the administrator for all users, kept on updates. It has the same
+    // structure as the library shipped with OpenBoard (applications, interactivities, pictures,
+    // audios, videos, shape). Default: "library" in the system configuration directory, can be
+    // changed with Library/AdminLibraryDirectory in the admin or policy file.
+    static QString dirPath;
+
+    if (dirPath.isEmpty())
+    {
+        dirPath = systemValue("Library/AdminLibraryDirectory", systemConfigDirectory() + "/library").toString();
+        dirPath = replaceWildcard(dirPath);
+        dirPath = UBFileSystemUtils::normalizeFilePath(QDir::cleanPath(dirPath));
+        qInfo() << "Administrator library directory:" << dirPath;
+    }
+
+    return dirPath;
+}
+
 QString UBSettings::applicationInteractivesDirectory()
 {
     QString defaultRelativePath = QString("./library/interactivities");

@@ -155,6 +155,8 @@ class UBSettings : public QObject
         static QString userAnimationDirectory();
         static QString userInteractiveDirectory();
         static QString userInteractiveFavoritesDirectory();
+        // library content provided by the administrator (read-only for the user)
+        static QString adminLibraryDirectory();
         static QString userPodcastRecordingDirectory();
 
         QString userGipLibraryDirectory();
