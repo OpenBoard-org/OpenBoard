@@ -335,6 +335,11 @@ bool UBBoardView::event (QEvent * e)
 
 void UBBoardView::tabletEvent (QTabletEvent * event)
 {
+    if (!bIsControl && !bIsDesktop) {
+        event->ignore();
+        return;
+    }
+
     if (!mUseHighResTabletEvent) {
         event->setAccepted (false);
         return;

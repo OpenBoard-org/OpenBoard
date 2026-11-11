@@ -87,6 +87,15 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesUI->setupUi(mPreferencesWindow);
 
     connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreensPreferences);
+
+    // apply screen settings when the dialog is closed, also by Esc or the window close button
+    connect(mPreferencesWindow, &QDialog::finished, this, [this](){
+        if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
+        {
+            UBSettings::settings()->appScreenList->set(mScreenList);
+        }
+    });
+
     wire();
     adjustScreensPreferences();
 }
@@ -136,6 +145,8 @@ void UBPreferencesController::adjustScreensPreferences()
         QVariant value = UBSettings::settings()->value(path);
         UBSettings::settings()->appScreenList->set(value);
         mPreferencesUI->screenList->loadScreenList(value.toStringList());
+        // keep in sync even if the loaded text is not accepted by the validator
+        mScreenList = value.toStringList();
     }
 }
 
@@ -361,12 +372,6 @@ void UBPreferencesController::close()
     UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
-
-    // screen settings
-    if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
-    {
-        UBSettings::settings()->appScreenList->set(mScreenList);
-    }
 
     mPreferencesWindow->accept();
 }

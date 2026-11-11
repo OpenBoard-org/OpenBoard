@@ -97,9 +97,24 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
-    connect(displayManager, &UBDisplayManager::availableScreenCountChanged,this,  [this](){
+    // Create or delete previous views once the roles are assigned: availableScreenCountChanged is
+    // emitted while the roles are cleared, so no view was created for a screen added meanwhile
+    // and existing views were deleted.
+    connect(displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
+        if (mPreviousViews.count() == UBApplication::displayManager->numPreviousViews())
+        {
+            return;
+        }
+
         initPreviousViews();
         UBApplication::displayManager->setPreviousDisplaysWidgets(mPreviousViews);
+
+        UBBoardController* boardController = UBApplication::boardController;
+
+        if (boardController && boardController->selectedDocument())
+        {
+            adjustPreviousViews(boardController->activeSceneIndex(), boardController->selectedDocument());
+        }
     });
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));

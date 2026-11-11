@@ -45,7 +45,37 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 {
     mUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
+    mScreenConfigurationChangeTimer.setSingleShot(true);
+    mScreenConfigurationChangeTimer.setInterval(3000);
+    connect(&mScreenConfigurationChangeTimer, &QTimer::timeout, this, [this](){
+        const bool screenListChanged = initScreenIndexes();
+
+        if (screenListChanged || mScreenAddedOrRemoved)
+        {
+            adjustScreens();
+        }
+        else
+        {
+            // Only a geometry change (e.g. resolution) without a change of the screen list:
+            // restore the roles cleared by initScreenIndexes() but do not reposition the
+            // windows, as in 1.7.7 (e.g. would show the board while in desktop mode).
+            assignRoles();
+        }
+
+        mScreenAddedOrRemoved = false;
+    });
+
+    mScreenPositionTimer.setSingleShot(true);
+    mScreenPositionTimer.setInterval(100);
+    connect(&mScreenPositionTimer, &QTimer::timeout,
+            this, &UBDisplayManager::positionScreens);
+
     initScreenIndexes();
+
+    for (QScreen* screen : QGuiApplication::screens())
+    {
+        monitorScreenGeometry(screen);
+    }
 
     connect(qApp, &QGuiApplication::screenAdded, this, &UBDisplayManager::addOrRemoveScreen);
     connect(qApp, &QGuiApplication::screenRemoved, this, &UBDisplayManager::addOrRemoveScreen);
@@ -59,7 +89,7 @@ UBDisplayManager::~UBDisplayManager()
     // NOOP
 }
 
-void UBDisplayManager::initScreenIndexes()
+bool UBDisplayManager::initScreenIndexes()
 {
     mScreensByRole.clear();
     QScreen* primaryScreen = QGuiApplication::primaryScreen();
@@ -92,11 +122,13 @@ void UBDisplayManager::initScreenIndexes()
         }
     }
 
-    if (screens != mAvailableScreens)
+    if (screens != mAvailableScreens || mAvailableScreensOutdated)
     {
         qDebug() << "availableScreens" << screens;
         mAvailableScreens = screens;
+        mAvailableScreensOutdated = false;
         emit availableScreenCountChanged(screens.count());
+        return true;
     }
 
     /*
@@ -104,6 +136,8 @@ void UBDisplayManager::initScreenIndexes()
      * in the UBPreferencesManager, so we now get the screen list valid for
      * the new monitor configuration.
      */
+
+    return false;
 }
 
 void UBDisplayManager::initScreensByRole()
@@ -142,6 +176,12 @@ void UBDisplayManager::initScreensByRole()
 
 void UBDisplayManager::assignRoles()
 {
+    if (mAvailableScreens.isEmpty())
+    {
+        // all screens were destroyed, wait for the delayed reconfiguration
+        return;
+    }
+
     QVariant appScreenList = UBSettings::settings()->appScreenList->get();
     QStringList screenList = appScreenList.toStringList();
     qDebug() << "assignRoles using screen list" << screenList;
@@ -322,6 +362,21 @@ namespace
         return false;
 #endif
     }
+
+    // A window shown again after a screen change is not always put on top, and not always painted
+    // (on Windows after extended mode is restored, no WM_PAINT is sent): the projector would show
+    // other windows or the desktop. Ask for a paint again while the system settles.
+    void bringToFront(QWidget* widget)
+    {
+        widget->raise();
+
+        for (int delay : {1000, 3000})
+        {
+            QTimer::singleShot(delay, widget, [widget]() {
+                UBPlatformUtils::invalidateWindow(widget);
+            });
+        }
+    }
 }
 
 void UBDisplayManager::adjustScreens()
@@ -333,20 +388,23 @@ void UBDisplayManager::adjustScreens()
         auto controlWidget = widget(ScreenRole::Control);
 
         // hide windows for repositioning
-        if (controlWidget && hasControl() && controlWidget->isVisible())
+        if (controlWidget && hasControl())
         {
-            for (auto widget : mWidgetsByRole)
+            if (controlWidget->isVisible())
             {
-                if (widget)
+                for (auto widget : mWidgetsByRole)
                 {
-                    widget->hide();
+                    if (widget)
+                    {
+                        widget->hide();
+                    }
                 }
             }
 
-            QTimer::singleShot(100, this, [this](){
-                positionScreens();
-            });
-
+            // Several role/settings updates can occur during one GNOME display
+            // transition. Restart one timer instead of mixing immediate and
+            // delayed fullscreen requests while Mutter is still updating them.
+            mScreenPositionTimer.start();
             return;
         }
     }
@@ -430,6 +488,7 @@ void UBDisplayManager::positionScreens()
         widget(ScreenRole::Display)->showNormal();
         widget(ScreenRole::Display)->setGeometry(screenGeometry(ScreenRole::Display));
         UBPlatformUtils::showFullScreen(widget(ScreenRole::Display));
+        bringToFront(widget(ScreenRole::Display));
     }
     else if (widget(ScreenRole::Display))
     {
@@ -447,6 +506,7 @@ void UBDisplayManager::positionScreens()
                 previous->showNormal();
                 previous->setGeometry(screenGeometry(role));
                 UBPlatformUtils::showFullScreen(previous);
+                bringToFront(previous);
             }
             else
             {
@@ -468,6 +528,12 @@ void UBDisplayManager::blackout()
 {
     for (auto& screen : mScreensByRole)
     {
+        if (!screen)
+        {
+            // screen was removed, roles are not yet reassigned
+            continue;
+        }
+
         UBBlackoutWidget* blackoutWidget = new UBBlackoutWidget(); //deleted in UBDisplayManager::unBlackout
         Ui::BlackoutWidget* blackoutUi = new Ui::BlackoutWidget();
         blackoutUi->setupUi(blackoutWidget);
@@ -512,15 +578,50 @@ void UBDisplayManager::unBlackout()
 
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
-    Q_UNUSED(screen);
+    mScreenAddedOrRemoved = true;
 
-    initScreenIndexes();
-    assignRoles();
+    if (QGuiApplication::screens().contains(screen))
+    {
+        monitorScreenGeometry(screen);
+    }
 
-    // positioning must be delayed, because OS also tries to position the widgets
-    QTimer::singleShot(3000, this, [this](){
-        positionScreens();
-    });
+    // Rebuild roles only after the compositor has finished the whole transition.
+    // Doing it here could emit a settings change and position windows immediately,
+    // before the delayed stable configuration is available.
+    mScreenConfigurationChangeTimer.start();
+}
+
+void UBDisplayManager::screenGeometryChanged()
+{
+    // A clone/extended mode switch may only change screen geometries, without
+    // adding or removing a QScreen. Wait until the compositor has settled before
+    // rebuilding the available screen list and assigning the display roles.
+    mScreenConfigurationChangeTimer.start();
+}
+
+void UBDisplayManager::monitorScreenGeometry(QScreen* screen)
+{
+    if (screen)
+    {
+        connect(screen, &QScreen::geometryChanged,
+                this, &UBDisplayManager::screenGeometryChanged,
+                Qt::UniqueConnection);
+        connect(screen, &QObject::destroyed,
+                this, &UBDisplayManager::screenDestroyed,
+                Qt::UniqueConnection);
+    }
+}
+
+void UBDisplayManager::screenDestroyed(QObject* screen)
+{
+    // The role update is delayed, so make sure that no dangling pointer to
+    // a removed screen stays in the list of available screens meanwhile.
+    // Only the pointer value is compared, the object is not accessed.
+    if (mAvailableScreens.removeAll(static_cast<QScreen*>(screen)) > 0)
+    {
+        // force notification at next initScreenIndexes()
+        mAvailableScreensOutdated = true;
+    }
 }
 
 void UBDisplayManager::setUseMultiScreen(bool pUse)

@@ -499,6 +499,12 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     }
 }
 
+void UBPlatformUtils::invalidateWindow(QWidget *pWidget)
+{
+    // not needed on Linux
+    Q_UNUSED(pWidget);
+}
+
 void UBPlatformUtils::showOSK(bool show)
 {
     if (show)
