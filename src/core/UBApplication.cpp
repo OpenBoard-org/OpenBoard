@@ -33,6 +33,13 @@
 #include <QtXml>
 #include <QFontDatabase>
 #include <QStyleFactory>
+#include <QFutureWatcher>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QTimer>
+#include <QtConcurrent>
+#include <QEventLoop>
+#include <functional>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -127,6 +134,12 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
 
     setupTranslators(args);
+
+    // must be done before anything is read from or written to the data directory
+    if (isPrimary())
+    {
+        checkDataDirectory();
+    }
 
     UBResources::resources();
 
@@ -425,7 +438,153 @@ int UBApplication::exec(const QString& pFileToImport)
 
     onScreenCountChanged(displayManager->numScreens());
     connect(displayManager, SIGNAL(availableScreenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+
+    if (UBSettings::isUsingLocalDataDirectory())
+    {
+        QTimer::singleShot(0, this, &UBApplication::showLocalDataDirectoryWarning);
+    }
+
     return QApplication::exec();
+}
+
+namespace
+{
+    // Run a file system check in a background thread and wait at most timeoutMs.
+    // Accessing a disconnected network path may block for a long time (SMB timeout,
+    // stale mounts), so the GUI thread never accesses the configured path directly.
+    // A check which did not finish in time is considered as failed. It is not waited for.
+    bool runFileSystemCheck(std::function<bool()> check, int timeoutMs)
+    {
+        QFuture<bool> future = QtConcurrent::run(check);
+
+        if (!future.isFinished())
+        {
+            QEventLoop loop;
+            QFutureWatcher<bool> watcher;
+            QTimer timeout;
+            timeout.setSingleShot(true);
+            QObject::connect(&watcher, &QFutureWatcher<bool>::finished, &loop, &QEventLoop::quit);
+            QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
+            watcher.setFuture(future);
+            timeout.start(timeoutMs);
+
+            if (!future.isFinished())
+            {
+                loop.exec();
+            }
+        }
+
+        return future.isFinished() && future.result();
+    }
+}
+
+void UBApplication::checkDataDirectory()
+{
+    const QString path = UBSettings::configuredDataDirectory();
+
+    if (path.isEmpty())
+    {
+        return;
+    }
+
+    qInfo() << "Checking configured data directory" << path;
+
+    const auto isAvailable = [path](){ return UBSettings::isDataDirectoryAvailable(path); };
+    const int checkTimeout = 3000;
+
+    if (runFileSystemCheck(isAvailable, checkTimeout))
+    {
+        return;
+    }
+
+    qWarning() << "Configured data directory" << path << "is not available, asking user";
+
+    // avoid repeated checks while the user decides (e.g. by the verbose message handler)
+    UBSettings::setDataDirectoryDecisionPending(true);
+
+    QMessageBox box(QMessageBox::Warning,
+                    tr("Data directory not available"),
+                    tr("The OpenBoard data directory is not available:\n%1\n\n"
+                       "OpenBoard will start automatically as soon as this location becomes available.")
+                        .arg(QDir::toNativeSeparators(path)));
+    box.setInformativeText(tr("You can also start OpenBoard locally for this session only, without access "
+                              "to your documents stored in this directory. Documents created in this session "
+                              "are stored on this computer only. The data directory is used again at the next start."));
+
+    QPushButton* retryButton = box.addButton(tr("Retry"), QMessageBox::AcceptRole);
+    QPushButton* localButton = box.addButton(tr("Start locally"), QMessageBox::ActionRole);
+    box.setDefaultButton(retryButton);
+    box.setEscapeButton(retryButton);
+
+    // check periodically in background
+    bool becameAvailable = false;
+    QFutureWatcher<bool> watcher;
+    QTimer timer;
+    timer.setInterval(2000);
+
+    connect(&timer, &QTimer::timeout, &box, [&](){
+        if (!watcher.isRunning())
+        {
+            watcher.setFuture(QtConcurrent::run(isAvailable));
+        }
+    });
+
+    connect(&watcher, &QFutureWatcher<bool>::finished, &box, [&](){
+        if (watcher.result() && box.isVisible())
+        {
+            becameAvailable = true;
+            box.done(QDialog::Accepted);
+        }
+    });
+
+    timer.start();
+
+    while (true)
+    {
+        box.exec();
+
+        if (becameAvailable)
+        {
+            qInfo() << "Configured data directory" << path << "became available";
+            break;
+        }
+
+        if (box.clickedButton() == localButton)
+        {
+            qWarning() << "User chose to start locally instead of using" << path;
+            UBSettings::useLocalDataDirectory();
+            break;
+        }
+
+        // retry (or dialog closed)
+        if (runFileSystemCheck(isAvailable, checkTimeout))
+        {
+            qInfo() << "Configured data directory" << path << "is available after retry";
+            break;
+        }
+    }
+
+    timer.stop();
+
+    // do not wait for a background check which may block on a disconnected network path
+    disconnect(&watcher, nullptr, &box, nullptr);
+    UBSettings::setDataDirectoryDecisionPending(false);
+}
+
+void UBApplication::showLocalDataDirectoryWarning()
+{
+    QMessageBox* message = new QMessageBox(QMessageBox::Information,
+                                           tr("Local session"),
+                                           tr("OpenBoard is running locally for this session, without access to the configured data directory:\n%1\n\n"
+                                              "Documents created in this session are stored on this computer in:\n%2\n\n"
+                                              "The configured data directory is used again at the next start.")
+                                               .arg(QDir::toNativeSeparators(UBSettings::configuredDataDirectory()),
+                                                    QDir::toNativeSeparators(UBSettings::userDataDirectory())),
+                                           QMessageBox::Ok,
+                                           mainWindow);
+    message->setAttribute(Qt::WA_DeleteOnClose);
+    message->setWindowModality(Qt::NonModal);
+    message->show();
 }
 
 void UBApplication::onScreenCountChanged(int newCount)

@@ -140,6 +140,8 @@ class UBApplication : public SingleApplication
     private:
         void updateProtoActionsState();
         void setupTranslators(QStringList args);
+        void checkDataDirectory();
+        void showLocalDataDirectoryWarning();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
         QString checkLanguageAvailabilityForSankore(QString& language);

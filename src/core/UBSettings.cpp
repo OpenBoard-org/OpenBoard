@@ -30,6 +30,7 @@
 #include "UBSettings.h"
 
 #include <QtGui>
+#include <QStorageInfo>
 
 
 #include "frameworks/UBPlatformUtils.h"
@@ -1107,25 +1108,173 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
-QString UBSettings::userDataDirectory()
+namespace
 {
-    static QString dataDirPath = "";
-    if(dataDirPath.isEmpty()){
-        if (systemContains("App/DataDirectory")) {
-            dataDirPath = systemValue("App/DataDirectory").toString();
-            dataDirPath = replaceWildcard(dataDirPath);
+    QString sDataDirPath;
+    bool sUseLocalDataDirectory = false;
+    bool sDataDirectoryDecisionPending = false;
 
-            if(checkDirectory(dataDirPath))
-                return dataDirPath;
-            else
-                qCritical() << "Impossible to create datadirpath " << dataDirPath;
+    QString localDataDirectory()
+    {
+        QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 
-        }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         if (qApp->organizationName().size() > 0)
             dataDirPath.replace(qApp->organizationName() + "/", "");
+
+        return dataDirPath;
     }
-    return dataDirPath;
+
+    bool isEmptyDirectory(const QDir& dir)
+    {
+        return dir.isEmpty(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
+    }
+}
+
+QString UBSettings::configuredDataDirectory()
+{
+    if (systemContains("App/DataDirectory"))
+    {
+        QString dataDirPath = systemValue("App/DataDirectory").toString();
+        dataDirPath = replaceWildcard(dataDirPath);
+        // remove trailing separators etc., so that the parent directory is determined correctly
+        return dataDirPath.isEmpty() ? dataDirPath : QDir::cleanPath(dataDirPath);
+    }
+
+    return QString();
+}
+
+bool UBSettings::isDataDirectoryAvailable(const QString& path)
+{
+    if (path.isEmpty())
+    {
+        return false;
+    }
+
+    // Find the nearest existing directory: the data directory itself or a parent.
+    // Drive letters or UNC paths which are not connected have no existing directory.
+    QString existingPath = path;
+
+    while (!QDir(existingPath).exists())
+    {
+        const QString next = QFileInfo(existingPath).absolutePath();
+
+        if (next.isEmpty() || next == existingPath || QDir(existingPath).isRoot())
+        {
+            return false;
+        }
+
+        existingPath = next;
+    }
+
+#if defined(Q_OS_WIN)
+    // An existing drive or network share is the real storage, even if it is empty
+    // (e.g. a new personal drive). The data directory is created if needed.
+    return true;
+#else
+    // On Linux and macOS, a network share which is not mounted leaves an empty local
+    // mount point. Writing there would hide the documents once the share is mounted.
+    // An empty directory is only considered as such a mount point if it is outside of
+    // the home directory and on the same device as the system root.
+    QDir existingDir(existingPath);
+
+    if (!isEmptyDirectory(existingDir))
+    {
+        return true;
+    }
+
+    const QString home = QDir::cleanPath(QDir::homePath());
+    const QString canonical = QDir::cleanPath(QFileInfo(existingPath).absoluteFilePath());
+
+    if (canonical == home || canonical.startsWith(home + "/"))
+    {
+        return true;
+    }
+
+    const QStorageInfo storage(existingPath);
+    return storage.isValid() && storage.device() != QStorageInfo::root().device();
+#endif
+}
+
+void UBSettings::useLocalDataDirectory()
+{
+    sUseLocalDataDirectory = true;
+    sDataDirPath.clear();
+}
+
+bool UBSettings::isUsingLocalDataDirectory()
+{
+    return sUseLocalDataDirectory;
+}
+
+void UBSettings::setDataDirectoryDecisionPending(bool pending)
+{
+    sDataDirectoryDecisionPending = pending;
+}
+
+QString UBSettings::userDataDirectory()
+{
+    if (!sDataDirPath.isEmpty())
+    {
+        return sDataDirPath;
+    }
+
+    QString configured = configuredDataDirectory();
+
+    if (!configured.isEmpty() && !sUseLocalDataDirectory)
+    {
+        if (sDataDirectoryDecisionPending)
+        {
+            // the user is asked right now, do not access the (possibly blocking) path again
+            return localDataDirectory();
+        }
+
+        if (isDataDirectoryAvailable(configured))
+        {
+            if (checkDirectory(configured))
+            {
+                QDir dataDir(configured);
+
+                if (isEmptyDirectory(dataDir))
+                {
+                    // Mark a newly created or accepted data directory, so that it is not taken
+                    // for the empty mount point of a disconnected share at next start, even if
+                    // OpenBoard is terminated before anything else was written into it.
+                    QFile marker(dataDir.filePath(".openboard-data"));
+
+                    if (marker.open(QIODevice::WriteOnly))
+                    {
+                        marker.write("OpenBoard data directory\n");
+                        marker.close();
+                    }
+                }
+
+                sDataDirPath = configured;
+                qInfo() << "Configured data directory:" << configured << "- used data directory:" << sDataDirPath;
+                return sDataDirPath;
+            }
+
+            // Cannot create the directory: switch explicitly to a local session, so that the
+            // user is warned (see UBApplication::exec) instead of silently using another location.
+            sUseLocalDataDirectory = true;
+            sDataDirPath = localDataDirectory();
+            qCritical() << "Impossible to create datadirpath" << configured << "- starting a local session in" << sDataDirPath;
+            return sDataDirPath;
+        }
+
+        // Do not silently fall back to another location: as long as no decision was taken
+        // (see UBApplication::checkDataDirectory), the local path is returned without caching.
+        // No logging here: the verbose message handler itself calls userDataDirectory().
+        return localDataDirectory();
+    }
+
+    sDataDirPath = localDataDirectory();
+
+    if (!configured.isEmpty())
+    {
+        qWarning() << "Configured data directory:" << configured << "- used data directory (local session):" << sDataDirPath;
+    }
+
+    return sDataDirPath;
 }
 
 

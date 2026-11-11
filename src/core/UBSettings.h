@@ -133,6 +133,18 @@ class UBSettings : public QObject
 
         //user directories
         static QString userDataDirectory();
+
+        // DataDirectory configured in OpenBoard.config (wildcards replaced), empty if not configured
+        static QString configuredDataDirectory();
+        // true if the configured DataDirectory exists and seems to be the real storage
+        // (e.g. not the empty mount point of a disconnected network share)
+        static bool isDataDirectoryAvailable(const QString& path);
+        // use the local data directory for this session only instead of the configured one
+        static void useLocalDataDirectory();
+        static bool isUsingLocalDataDirectory();
+        // while the user is asked, userDataDirectory() must not access the configured path
+        static void setDataDirectoryDecisionPending(bool pending);
+
         static QString userDocumentDirectory();
         static QString userFavoriteListFilePath();
         static QString userTrashDirPath();
