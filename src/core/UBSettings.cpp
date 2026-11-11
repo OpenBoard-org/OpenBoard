@@ -103,6 +103,8 @@ QColor UBSettings::opaquePaletteColor = QColor(66, 66, 66, 200);
 QColor UBSettings::documentViewLightColor = QColor(241, 241, 241);
 
 QPointer<QSettings> UBSettings::sAppSettings = 0;
+QPointer<QSettings> UBSettings::sAdminSettings = 0;
+QPointer<QSettings> UBSettings::sPolicySettings = 0;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
@@ -175,6 +177,124 @@ QSettings* UBSettings::getAppSettings()
     }
 
     return UBSettings::sAppSettings;
+}
+
+namespace
+{
+    /*
+     * System wide directory for the administrator configuration files. It is located
+     * outside of the installation directory, so that the files are kept on updates.
+     */
+    QString systemConfigDirectory()
+    {
+#if defined(Q_OS_WIN)
+        QString programData = qEnvironmentVariable("ProgramData");
+
+        if (programData.isEmpty())
+        {
+            programData = "C:/ProgramData";
+        }
+
+        return QDir::fromNativeSeparators(programData) + "/" + qApp->applicationName();
+#elif defined(Q_OS_MACOS)
+        return "/Library/Application Support/" + qApp->applicationName();
+#else
+        return "/etc/" + qApp->applicationName().toLower();
+#endif
+    }
+
+    /*
+     * Open an optional, read-only configuration file. It is searched in the system
+     * configuration directory first, then next to OpenBoard.config.
+     */
+    QSettings* openOptionalSettings(const QString& fileName)
+    {
+        const QStringList directories{systemConfigDirectory(), UBPlatformUtils::applicationEtcDirectory()};
+
+        for (const QString& directory : directories)
+        {
+            const QString path = directory + "/" + fileName;
+
+            if (QFile::exists(path))
+            {
+                QSettings* settings = new QSettings(path, QSettings::IniFormat, nullptr);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+                settings->setIniCodec("utf-8");
+#endif
+                return settings;
+            }
+        }
+
+        return nullptr;
+    }
+}
+
+QSettings* UBSettings::getAdminSettings()
+{
+    static bool loaded = false;
+
+    if (!loaded && !qApp->applicationName().isEmpty())
+    {
+        loaded = true;
+        sAdminSettings = openOptionalSettings(qApp->applicationName() + "Admin.config");
+
+        if (sAdminSettings)
+        {
+            qInfo() << "Administrator settings:" << sAdminSettings->fileName();
+        }
+    }
+
+    return sAdminSettings;
+}
+
+QSettings* UBSettings::getPolicySettings()
+{
+    static bool loaded = false;
+
+    if (!loaded && !qApp->applicationName().isEmpty())
+    {
+        loaded = true;
+        sPolicySettings = openOptionalSettings(qApp->applicationName() + "Policy.config");
+
+        if (sPolicySettings)
+        {
+            qInfo() << "Policy settings:" << sPolicySettings->fileName();
+        }
+    }
+
+    return sPolicySettings;
+}
+
+bool UBSettings::isPolicyManaged(const QString& key)
+{
+    QSettings* policy = getPolicySettings();
+    return policy && policy->contains(key);
+}
+
+bool UBSettings::systemContains(const QString& key)
+{
+    QSettings* admin = getAdminSettings();
+    return isPolicyManaged(key) || (admin && admin->contains(key)) || getAppSettings()->contains(key);
+}
+
+QVariant UBSettings::systemValue(const QString& key, const QVariant& defaultValue)
+{
+    // Policy > Admin > Default (OpenBoard.config), for settings which cannot be set by the user
+    QSettings* policy = getPolicySettings();
+
+    if (policy && policy->contains(key))
+    {
+        return policy->value(key);
+    }
+
+    QSettings* admin = getAdminSettings();
+
+    if (admin && admin->contains(key))
+    {
+        return admin->value(key);
+    }
+
+    return getAppSettings()->value(key, defaultValue);
 }
 
 
@@ -504,8 +624,15 @@ void UBSettings::init()
  */
 QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
 {
-    // Check first the settings queue, then the app settings, then the user settings.
+    // Priority: Policy > User > Admin > Default (OpenBoard.config).
+    // Check first the policy settings, then the settings queue, then the user settings,
+    // then the admin settings, then the app settings.
     // If the key exists in neither of these, then defaultValue is returned.
+
+    QSettings* policy = getPolicySettings();
+
+    if (policy && policy->contains(key))
+        return policy->value(key);
 
     if (mSettingsQueue.contains(key))
         return mSettingsQueue.value(key);
@@ -514,8 +641,8 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     if (!sAppSettings->contains(key) && !(defaultValue == QVariant()))
         sAppSettings->setValue(key, defaultValue);
 
-    // Get the value from the user settings (or if it doesn't exist there, from the app settings)
-    QVariant val = mUserSettings->value(key, sAppSettings->value(key, defaultValue));
+    // Get the value from the user settings (or if it doesn't exist there, from the admin or app settings)
+    QVariant val = mUserSettings->value(key, baseValue(key, defaultValue));
 
     // Add the value to the settings queue for faster access next time it is requested
     mSettingsQueue[key] = val;
@@ -523,6 +650,19 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     return val;
 }
 
+
+QVariant UBSettings::baseValue(const QString& key, const QVariant& defaultValue)
+{
+    // value used when the user did not change the setting: Admin > Default
+    QSettings* admin = getAdminSettings();
+
+    if (admin && admin->contains(key))
+    {
+        return admin->value(key);
+    }
+
+    return getAppSettings()->value(key, defaultValue);
+}
 
 void UBSettings::setValue (const QString & key, const QVariant & value)
 {
@@ -538,6 +678,13 @@ void UBSettings::save()
     QHash<QString, QVariant>::const_iterator it = mSettingsQueue.constBegin();
 
     while (it != mSettingsQueue.constEnd()) {
+        // values imposed by the policy are never stored in the user settings
+        if (isPolicyManaged(it.key()))
+        {
+            ++it;
+            continue;
+        }
+
         /*
          * We save the setting to the user settings if
          * a) it is different from the (non-null) value stored in the user settings, or
@@ -558,7 +705,7 @@ void UBSettings::save()
         }
 
         else if (!mUserSettings->contains(it.key())
-                 && it.value() != mAppSettings->value(it.key()))
+                 && it.value() != baseValue(it.key()))
         {
             if (it.value().isValid())
             {
@@ -964,9 +1111,8 @@ QString UBSettings::userDataDirectory()
 {
     static QString dataDirPath = "";
     if(dataDirPath.isEmpty()){
-        if (getAppSettings() && getAppSettings()->contains("App/DataDirectory")) {
-            qDebug() << "getAppSettings()->contains(App/DataDirectory):" << getAppSettings()->contains("App/DataDirectory");
-            dataDirPath = getAppSettings()->value("App/DataDirectory").toString();
+        if (systemContains("App/DataDirectory")) {
+            dataDirPath = systemValue("App/DataDirectory").toString();
             dataDirPath = replaceWildcard(dataDirPath);
 
             if(checkDirectory(dataDirPath))
@@ -987,8 +1133,8 @@ QString UBSettings::userImageDirectory()
 {
     static QString imageDirectory = "";
     if(imageDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserImageDirectory")) {
-            imageDirectory = getAppSettings()->value("App/UserImageDirectory").toString();
+        if (systemContains("App/UserImageDirectory")) {
+            imageDirectory = systemValue("App/UserImageDirectory").toString();
 
             imageDirectory = replaceWildcard(imageDirectory);
             if(checkDirectory(imageDirectory))
@@ -1008,8 +1154,8 @@ QString UBSettings::userVideoDirectory()
 {
     static QString videoDirectory = "";
     if(videoDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory")) {
-            videoDirectory = getAppSettings()->value("App/UserVideoDirectory").toString();
+        if (systemContains("App/UserVideoDirectory")) {
+            videoDirectory = systemValue("App/UserVideoDirectory").toString();
             videoDirectory = replaceWildcard(videoDirectory);
             if(checkDirectory(videoDirectory))
                 return videoDirectory;
@@ -1034,8 +1180,8 @@ QString UBSettings::userAudioDirectory()
 {
     static QString audioDirectory = "";
     if(audioDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserAudioDirectory")) {
-            audioDirectory = getAppSettings()->value("App/UserAudioDirectory").toString();
+        if (systemContains("App/UserAudioDirectory")) {
+            audioDirectory = systemValue("App/UserAudioDirectory").toString();
 
             audioDirectory = replaceWildcard(audioDirectory);
             if(checkDirectory(audioDirectory))
@@ -1055,9 +1201,9 @@ QString UBSettings::userPodcastRecordingDirectory()
 {
     static QString dirPath = "";
     if(dirPath.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
+        if (systemContains("Podcast/RecordingDirectory"))
         {
-            dirPath = getAppSettings()->value("Podcast/RecordingDirectory").toString();
+            dirPath = systemValue("Podcast/RecordingDirectory").toString();
             dirPath = replaceWildcard(dirPath);
             if(checkDirectory(dirPath))
                 return dirPath;
@@ -1180,8 +1326,8 @@ QString UBSettings::userInteractiveDirectory()
 {
     static QString interactiveDirectory = "";
     if(interactiveDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory")) {
-            interactiveDirectory = getAppSettings()->value("App/UserInteractiveContentDirectory").toString();
+        if (systemContains("App/UserInteractiveContentDirectory")) {
+            interactiveDirectory = systemValue("App/UserInteractiveContentDirectory").toString();
             interactiveDirectory = replaceWildcard(interactiveDirectory);
             if(checkDirectory(interactiveDirectory))
                 return interactiveDirectory;
@@ -1283,8 +1429,8 @@ QString UBSettings::userInteractiveFavoritesDirectory()
 {
     static QString dirPath = "";
     if(dirPath.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory")) {
-            dirPath = getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString();
+        if (systemContains("App/UserInteractiveFavoritesDirectory")) {
+            dirPath = systemValue("App/UserInteractiveFavoritesDirectory").toString();
             dirPath = replaceWildcard(dirPath);
             if(checkDirectory(dirPath))
                 return dirPath;
@@ -1303,19 +1449,19 @@ QNetworkProxy* UBSettings::httpProxy()
 {
     QNetworkProxy* proxy = 0;
 
-    if (mAppSettings->value("Proxy/Enabled", false).toBool()) {
+    if (systemValue("Proxy/Enabled", false).toBool()) {
 
         proxy = new QNetworkProxy();
 
-        if (mAppSettings->value("Proxy/Type", "HTTP").toString() == "Socks5")
+        if (systemValue("Proxy/Type", "HTTP").toString() == "Socks5")
             proxy->setType(QNetworkProxy::Socks5Proxy);
         else
             proxy->setType(QNetworkProxy::HttpProxy);
 
-        proxy->setHostName(mAppSettings->value("Proxy/HostName").toString());
-        proxy->setPort(mAppSettings->value("Proxy/Port", 1080).toInt());
-        proxy->setUser(mAppSettings->value("Proxy/UserName").toString());
-        proxy->setPassword(mAppSettings->value("Proxy/Password").toString());
+        proxy->setHostName(systemValue("Proxy/HostName").toString());
+        proxy->setPort(systemValue("Proxy/Port", 1080).toInt());
+        proxy->setUser(systemValue("Proxy/UserName").toString());
+        proxy->setPassword(systemValue("Proxy/Password").toString());
     }
 
     return proxy;

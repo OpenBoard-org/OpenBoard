@@ -457,6 +457,12 @@ class UBSettings : public QObject
         QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );
         void setValue (const QString & key,const QVariant & value);
 
+        // true if the value is imposed by OpenBoardPolicy.config and cannot be changed
+        static bool isPolicyManaged(const QString& key);
+        // value of a setting which cannot be set by the user: Policy > Admin > Default
+        static bool systemContains(const QString& key);
+        static QVariant systemValue(const QString& key, const QVariant& defaultValue = QVariant());
+
         void colorChanged() { emit colorContextChanged(); }
 
     signals:
@@ -474,8 +480,13 @@ class UBSettings : public QObject
         static const char *sDefaultFontStyleName;
 
         static QSettings* getAppSettings();
+        static QSettings* getAdminSettings();
+        static QSettings* getPolicySettings();
+        QVariant baseValue(const QString& key, const QVariant& defaultValue = QVariant());
 
         static QPointer<QSettings> sAppSettings;
+        static QPointer<QSettings> sAdminSettings;
+        static QPointer<QSettings> sPolicySettings;
         static QPointer<UBSettings> sSingleton;
 
         static bool checkDirectory(QString& dirPath);
