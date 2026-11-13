@@ -42,23 +42,23 @@ UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget
     , mLeftNeighbour(leftNeighbour)
 {
     setObjectName("UBStorageIndicator");
-    setStyleSheet("#UBStorageIndicator { background-color: #fff4ce; border: 1px solid #f5a623; border-radius: 6px; }"
-                  "#UBStorageIndicator QLabel { color: black; background: transparent; }");
     setCursor(Qt::PointingHandCursor);
 
     mIcon = new QLabel(this);
-    mIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(20, 20));
     mIcon->setAlignment(Qt::AlignTop);
 
-    mTitle = new QLabel(tr("Document location unavailable"), this);
+    mTitle = new QLabel(this);
     QFont font = mTitle->font();
     font.setBold(true);
     mTitle->setFont(font);
 
-    mExplanation = new QLabel(tr("Your work is saved on this computer and copied automatically to the document "
-                                 "location as soon as it is available again. You can continue working normally.\n\n"
-                                 "Click to close this message."), this);
+    mExplanation = new QLabel(this);
     mExplanation->setWordWrap(true);
+
+    // the information that the location is available again is shown for a few seconds
+    mInformationTimer.setSingleShot(true);
+    mInformationTimer.setInterval(10000);
+    connect(&mInformationTimer, &QTimer::timeout, this, &QWidget::hide);
 
     QVBoxLayout* text = new QVBoxLayout();
     text->setSpacing(6);
@@ -69,7 +69,7 @@ UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget
     layout->setContentsMargins(8, 6, 10, 6);
     layout->setSpacing(8);
     layout->addWidget(mIcon, 0, Qt::AlignTop);
-    layout->addLayout(text);
+    layout->addLayout(text, 1);
 
     // follow the size of the views and of the left palette
     for (QWidget* widget = mAnchor; widget && widget != parent; widget = widget->parentWidget())
@@ -90,15 +90,51 @@ UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget
 
 void UBStorageIndicator::setStorageAvailable(bool available)
 {
-    if (available)
+    if (!available)
+    {
+        mUnavailable = true;
+        showUnavailable();
+    }
+    else if (mUnavailable)
+    {
+        mUnavailable = false;
+        showAvailableAgain();
+    }
+    else
     {
         hide();
-        return;
     }
+}
 
-    setExpanded(false);
+void UBStorageIndicator::showUnavailable()
+{
+    mInformationTimer.stop();
+
+    setStyleSheet("#UBStorageIndicator { background-color: #fff4ce; border: 1px solid #f5a623; border-radius: 6px; }"
+                  "#UBStorageIndicator QLabel { color: black; background: transparent; }");
+    mIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(20, 20));
+    mTitle->setText(tr("Document location unavailable"));
+    mExplanation->setText(tr("Your work is saved on this computer and copied automatically to the document "
+                             "location as soon as it is available again. You can continue working normally.\n\n"
+                             "Click to close this message."));
+
     show();
     raise();
+    setExpanded(false);
+}
+
+void UBStorageIndicator::showAvailableAgain()
+{
+    setStyleSheet("#UBStorageIndicator { background-color: #e5f1fb; border: 1px solid #2b88d8; border-radius: 6px; }"
+                  "#UBStorageIndicator QLabel { color: black; background: transparent; }");
+    mIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(20, 20));
+    mTitle->setText(tr("Document location available again"));
+    mExplanation->setText(tr("All your changes are saved."));
+
+    show();
+    raise();
+    setExpanded(true);
+    mInformationTimer.start();
 }
 
 void UBStorageIndicator::setObstacles(std::function<QList<QWidget*>()> obstacles)
@@ -139,6 +175,15 @@ void UBStorageIndicator::mousePressEvent(QMouseEvent* event)
 {
     // not passed to the board: clicking the badge does not draw
     event->accept();
+
+    if (mInformationTimer.isActive())
+    {
+        // the information that the location is available again is closed
+        mInformationTimer.stop();
+        hide();
+        return;
+    }
+
     setExpanded(mExplanation->isHidden());
 }
 
@@ -172,7 +217,8 @@ void UBStorageIndicator::updatePosition()
         return height > 0 ? height : sizeHint().height();
     };
 
-    int width = expanded ? expandedWidth : sizeHint().width();
+    // a short text keeps the badge narrow
+    int width = expanded ? qMin(expandedWidth, sizeHint().width()) : sizeHint().width();
     QRect geometry(left, 0, width, heightFor(width));
     geometry.moveBottom(area.bottom() - margin);
 
@@ -216,6 +262,6 @@ void UBStorageIndicator::updatePosition()
         }
     }
 
-    setFixedSize(geometry.size());
-    move(geometry.topLeft());
+    // not setFixedSize(): it would also bound the size hint of the next texts to this size
+    setGeometry(geometry);
 }

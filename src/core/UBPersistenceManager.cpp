@@ -758,27 +758,17 @@ void UBPersistenceManager::onStorageAvailabilityChanged(bool available)
         mWorker->setStorageUnavailable(unavailable);
     }
 
+    // the storage badge tells the teacher (see UBStorageIndicator)
     if (unavailable)
     {
         qWarning() << "Document location not available:" << mDocumentRepositoryPath;
         mRetryTimer.start();
-
-        if (!mIsApplicationClosing)
-        {
-            UBApplication::showMessage(tr("The document location is not available. You can continue working: "
-                                          "your changes are kept on this computer and saved automatically later."));
-        }
     }
     else
     {
         qInfo() << "Document location available again:" << mDocumentRepositoryPath;
         mRetryTimer.stop();
         UBThumbnailAdaptor::writePendingThumbnails();
-
-        if (!mIsApplicationClosing)
-        {
-            UBApplication::showMessage(tr("The document location is available again. All your changes are saved."));
-        }
     }
 
     emit storageAvailabilityChanged(!unavailable);

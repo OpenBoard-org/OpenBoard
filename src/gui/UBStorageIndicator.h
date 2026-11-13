@@ -25,6 +25,7 @@
 
 #include <QFrame>
 #include <QPointer>
+#include <QTimer>
 
 #include <functional>
 
@@ -35,7 +36,8 @@ class QLabel;
  * is not available. It does not block: the teacher can continue working.
  *
  * Clicking the badge shows or hides the explanation, which stays until the badge is clicked
- * again. The badge is placed right of the left palette when that palette is visible.
+ * again. When the location is available again, the badge tells it for a few seconds, as an
+ * information. The badge is placed right of the left palette when that palette is visible.
  */
 class UBStorageIndicator : public QFrame
 {
@@ -56,6 +58,8 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
+    void showUnavailable();
+    void showAvailableAgain();
     void setExpanded(bool expanded);
     void updatePosition();
 
@@ -65,6 +69,8 @@ private:
     QLabel* mIcon;
     QLabel* mTitle;
     QLabel* mExplanation;
+    QTimer mInformationTimer;
+    bool mUnavailable{false};
 };
 
 #endif /* UBSTORAGEINDICATOR_H_ */
