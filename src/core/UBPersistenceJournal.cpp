@@ -303,6 +303,11 @@ QString UBPersistenceJournal::parentDirectory(const QString& file)
     return index < 0 ? QString() : file.left(index);
 }
 
+bool UBPersistenceJournal::isWrittenByNewerVersion(const QString& documentDirectory)
+{
+    return QFileInfo::exists(documentDirectory + "/toc.json");
+}
+
 QString UBPersistenceJournal::stateOf(const QString& file)
 {
     const QFileInfo info(file);

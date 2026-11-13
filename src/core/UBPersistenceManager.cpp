@@ -795,10 +795,26 @@ void UBPersistenceManager::onSaveSucceeded()
 
 void UBPersistenceManager::onJournalReplayed(bool complete)
 {
-    if (complete && !mDocumentStorage->isAvailable() && !UBPersistenceJournal::journal()->hasPendingFiles(mDocumentRepositoryPath))
+    if (!complete || mDocumentStorage->isAvailable())
     {
-        setStorageUnavailable(false);
+        return;
     }
+
+    // Files of documents written by a newer version stay in the journal: they are restored in a
+    // recovered copy at the next start, and do not keep the storage unavailable meanwhile.
+    const auto journal = UBPersistenceJournal::journal();
+
+    for (const QString& file : journal->pendingFiles(mDocumentRepositoryPath))
+    {
+        const QString directory = UBPersistenceJournal::parentDirectory(file);
+
+        if (directory == mDocumentRepositoryPath || !UBPersistenceJournal::isWrittenByNewerVersion(directory))
+        {
+            return;
+        }
+    }
+
+    setStorageUnavailable(false);
 }
 
 void UBPersistenceManager::retryJournal()
@@ -1888,17 +1904,20 @@ void UBPersistenceManager::recoverJournal()
         const bool isDocument = directory != mDocumentRepositoryPath;
         const bool exists = QFileInfo::exists(directory);
 
-        if (isDocument && !exists && pages.isEmpty())
+        const bool newerVersion = isDocument && exists && UBPersistenceJournal::isWrittenByNewerVersion(directory);
+
+        if (isDocument && (!exists || newerVersion) && pages.isEmpty())
         {
-            // metadata of a document deleted meanwhile
+            // metadata of a document deleted meanwhile, or written by a newer version: an empty
+            // recovered copy would not help
             journal->discard(directory);
             continue;
         }
 
         // Was the document changed or deleted elsewhere (e.g. on another computer) since the pages
-        // were kept here? Then do not overwrite it: restore the pages kept here in a copy.
-        // A document created while the storage was not available is simply written.
-        bool changedElsewhere = false;
+        // were kept here, or written by a newer version? Then do not overwrite it: restore the pages
+        // kept here in a copy. A document created while the storage was not available is simply written.
+        bool changedElsewhere = newerVersion;
 
         for (const QString& page : pages)
         {
@@ -1973,7 +1992,10 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
         copyPath = generateUniqueDocumentPath() + QString(" %1").arg(i);
     }
 
-    if (QFileInfo::exists(directory))
+    const bool exists = QFileInfo::exists(directory);
+    const bool newerVersion = exists && UBPersistenceJournal::isWrittenByNewerVersion(directory);
+
+    if (exists)
     {
         // the document with its images, PDF files etc., then the files kept here
         if (!UBFileSystemUtils::copyDir(directory, copyPath))
@@ -1982,6 +2004,21 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
             return QString();
         }
 
+        if (newerVersion)
+        {
+            // Its page files do not follow the page order of the pages kept here: keep its images,
+            // PDF files and metadata, but not its pages and table of contents.
+            QDir copy(copyPath);
+
+            for (const QString& name : copy.entryList({"page*.svg", "page*.thumbnail.jpg", "toc.json"}, QDir::Files))
+            {
+                copy.remove(name);
+            }
+        }
+    }
+
+    if (exists && !newerVersion)
+    {
         for (const QString& file : files)
         {
             const QString target = copyPath + "/" + QFileInfo(file).fileName();
@@ -1999,8 +2036,9 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
     }
     else
     {
-        // the document was deleted elsewhere: only the pages kept here are available
-        if (!QDir().mkpath(copyPath))
+        // The document was deleted elsewhere, or written by a newer version: only the pages kept
+        // here are available, numbered from the first page.
+        if (!exists && !QDir().mkpath(copyPath))
         {
             return QString();
         }

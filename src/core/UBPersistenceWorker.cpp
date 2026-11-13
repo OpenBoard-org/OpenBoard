@@ -219,10 +219,18 @@ bool UBPersistenceWorker::replay(const QString& rootDirectory)
         return isPageFile(a) && !isPageFile(b);
     });
 
+    bool written = false;
+
     for (const QString& fileName : files)
     {
         const QString directory = UBPersistenceJournal::parentDirectory(fileName);
         const bool isPage = isPageFile(fileName);
+
+        if (directory != rootDirectory && UBPersistenceJournal::isWrittenByNewerVersion(directory))
+        {
+            // never written into such a document: a recovered copy is created at the next start
+            continue;
+        }
 
         if (!isPage && directory != rootDirectory && !QFileInfo::exists(directory))
         {
@@ -254,9 +262,11 @@ bool UBPersistenceWorker::replay(const QString& rootDirectory)
         qInfo() << "Written from the local copy:" << fileName;
         journal->written(fileName, sequence);
         journal->noteFileState(fileName);
+        written = true;
     }
 
-    return true;
+    // nothing written (e.g. only files kept for a recovered copy): check that the location answers
+    return written || QFileInfo::exists(rootDirectory);
 }
 
 void UBPersistenceWorker::applicationWillClose()

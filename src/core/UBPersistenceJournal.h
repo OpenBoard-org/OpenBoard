@@ -91,6 +91,11 @@ public:
 
     static QString parentDirectory(const QString& file);
 
+    // True if the document was written by a newer OpenBoard version with a table of contents
+    // (toc.json): its page files do not follow the page order, so local copies of pages must
+    // never be written into it.
+    static bool isWrittenByNewerVersion(const QString& documentDirectory);
+
 private:
     UBPersistenceJournal();
 
