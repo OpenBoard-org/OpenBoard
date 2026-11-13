@@ -778,12 +778,12 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../forms/mainWindow.ui" line="1972"/>
         <source>Snap to grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Fäst mot rutnät</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1975"/>
         <source>Snap to grid and angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Fäst mot rutnät och vinklar</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1978"/>
@@ -1101,70 +1101,70 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../forms/mainWindow.ui" line="1237"/>
         <location filename="../forms/mainWindow.ui" line="1243"/>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljust linjerat underlag</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1313"/>
         <location filename="../forms/mainWindow.ui" line="1319"/>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Mörkt linjerat underlag</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1895"/>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna handledning</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1898"/>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna handledningens webbsida</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1907"/>
         <location filename="../forms/mainWindow.ui" line="1910"/>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställ rutnätsstorlek</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="432"/>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Litet sudd</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="477"/>
         <location filename="../forms/mainWindow.ui" line="480"/>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Färg 1</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="495"/>
         <location filename="../forms/mainWindow.ui" line="498"/>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Färg 2</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="513"/>
         <location filename="../forms/mainWindow.ui" line="516"/>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Färg 3</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="531"/>
         <location filename="../forms/mainWindow.ui" line="534"/>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Färg 4</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="549"/>
         <location filename="../forms/mainWindow.ui" line="552"/>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>Färg 5</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1923"/>
         <location filename="../forms/mainWindow.ui" line="1926"/>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa mellanliggande rutnätslinjer</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1742"/>
@@ -1172,17 +1172,17 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../forms/mainWindow.ui" line="1758"/>
         <location filename="../forms/mainWindow.ui" line="1761"/>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Fånga webbinnehåll</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="323"/>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentläge</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="343"/>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Webbläge</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="483"/>
@@ -1212,34 +1212,34 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../forms/mainWindow.ui" line="660"/>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tavelläge</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="753"/>
         <source>Desktop</source>
-        <translation type="unfinished">Skrivbord</translation>
+        <translation>Skrivbord</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="756"/>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrivbordsläge</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="938"/>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till i dokument</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1256"/>
         <location filename="../forms/mainWindow.ui" line="1262"/>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljust Seyès-linjerat underlag</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1332"/>
         <location filename="../forms/mainWindow.ui" line="1338"/>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Mörkt Seyès-linjerat underlag</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1436"/>
@@ -1249,7 +1249,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../forms/mainWindow.ui" line="1703"/>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Importera en eller flera sidor (format som stöds: jpg, png, svg, ubz, pdf)</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -1258,22 +1258,22 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../forms/mainWindow.ui" line="1942"/>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till dokument i favoriter</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1956"/>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Tips och råd</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1959"/>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna tips och råd</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1939"/>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
 </context>
 <context>
