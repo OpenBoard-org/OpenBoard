@@ -22,73 +22,12 @@
 
 #include "UBStorageIndicator.h"
 
-#include <QEvent>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QStyle>
-#include <QVBoxLayout>
-
 #include "core/UBDocumentStorage.h"
 #include "core/UBPersistenceManager.h"
-#include "gui/UBMessageWindow.h"
-#include "gui/UBStylusPalette.h"
-
-static const int margin = 12;
-static const int expandedWidth = 380;
-static const int minimumExpandedWidth = 240;
 
 UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget* leftNeighbour)
-    : QFrame(parent)
-    , mAnchor(anchor ? anchor : parent)
-    , mLeftNeighbour(leftNeighbour)
+    : UBNotification(parent, anchor, leftNeighbour)
 {
-    setObjectName("UBStorageIndicator");
-    setCursor(Qt::PointingHandCursor);
-
-    mIcon = new QLabel(this);
-    mIcon->setAlignment(Qt::AlignTop);
-
-    mTitle = new QLabel(this);
-    QFont font = mTitle->font();
-    font.setBold(true);
-    mTitle->setFont(font);
-
-    mExplanation = new QLabel(this);
-    mExplanation->setWordWrap(true);
-
-    // the information that the location is available again is shown for a few seconds
-    mInformationTimer.setSingleShot(true);
-    mInformationTimer.setInterval(10000);
-    connect(&mInformationTimer, &QTimer::timeout, this, &QWidget::hide);
-
-    QVBoxLayout* text = new QVBoxLayout();
-    text->setSpacing(6);
-    text->addWidget(mTitle);
-    text->addWidget(mExplanation);
-
-    QHBoxLayout* layout = new QHBoxLayout(this);
-    layout->setContentsMargins(8, 6, 10, 6);
-    layout->setSpacing(8);
-    layout->addWidget(mIcon, 0, Qt::AlignTop);
-    layout->addLayout(text, 1);
-
-    // follow the size of the views and of the left palette
-    for (QWidget* widget = mAnchor; widget && widget != parent; widget = widget->parentWidget())
-    {
-        widget->installEventFilter(this);
-    }
-
-    parent->installEventFilter(this);
-
-    if (mLeftNeighbour)
-    {
-        mLeftNeighbour->installEventFilter(this);
-    }
-
-    setExpanded(false);
-    hide();
-
     UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
     connect(storage, &UBDocumentStorage::availabilityChanged, this, &UBStorageIndicator::setStorageAvailable);
     setStorageAvailable(storage->isAvailable());
@@ -99,186 +38,19 @@ void UBStorageIndicator::setStorageAvailable(bool available)
     if (!available)
     {
         mUnavailable = true;
-        showUnavailable();
+        showWarning(tr("Document location unavailable"),
+                    QString(),
+                    tr("Your work is saved on this computer and copied automatically to the document "
+                       "location as soon as it is available again. You can continue working normally.\n\n"
+                       "Click to close this message."));
     }
     else if (mUnavailable)
     {
         mUnavailable = false;
-        showAvailableAgain();
+        showInformation(tr("Document location available again"), tr("All your changes are saved."));
     }
     else
     {
         hide();
     }
-}
-
-void UBStorageIndicator::showUnavailable()
-{
-    mInformationTimer.stop();
-
-    setStyleSheet("#UBStorageIndicator { background-color: #fff4ce; border: 1px solid #f5a623; border-radius: 6px; }"
-                  "#UBStorageIndicator QLabel { color: black; background: transparent; }");
-    mIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(20, 20));
-    mTitle->setText(tr("Document location unavailable"));
-    mExplanation->setText(tr("Your work is saved on this computer and copied automatically to the document "
-                             "location as soon as it is available again. You can continue working normally.\n\n"
-                             "Click to close this message."));
-
-    show();
-    raise();
-    setExpanded(false);
-}
-
-void UBStorageIndicator::showAvailableAgain()
-{
-    setStyleSheet("#UBStorageIndicator { background-color: #e5f1fb; border: 1px solid #2b88d8; border-radius: 6px; }"
-                  "#UBStorageIndicator QLabel { color: black; background: transparent; }");
-    mIcon->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(20, 20));
-    mTitle->setText(tr("Document location available again"));
-    mExplanation->setText(tr("All your changes are saved."));
-
-    show();
-    raise();
-    setExpanded(true);
-    mInformationTimer.start();
-}
-
-bool UBStorageIndicator::eventFilter(QObject* watched, QEvent* event)
-{
-    switch (event->type())
-    {
-    case QEvent::Resize:
-    case QEvent::Move:
-    case QEvent::Show:
-    case QEvent::Hide:
-    case QEvent::ParentChange:
-        if (isVisible() && watched != this)
-        {
-            updatePosition();
-
-            // palettes may be raised above the badge
-            if (watched != parentWidget())
-            {
-                raise();
-            }
-        }
-        break;
-
-    default:
-        break;
-    }
-
-    return QFrame::eventFilter(watched, event);
-}
-
-void UBStorageIndicator::mousePressEvent(QMouseEvent* event)
-{
-    // not passed to the board: clicking the badge does not draw
-    event->accept();
-
-    if (mInformationTimer.isActive())
-    {
-        // the information that the location is available again is closed
-        mInformationTimer.stop();
-        hide();
-        return;
-    }
-
-    setExpanded(mExplanation->isHidden());
-}
-
-void UBStorageIndicator::setExpanded(bool expanded)
-{
-    mExplanation->setVisible(expanded);
-    setToolTip(expanded ? QString() : mExplanation->text().section("\n\n", 0, 0));
-    updatePosition();
-}
-
-void UBStorageIndicator::updatePosition()
-{
-    QWidget* parent = parentWidget();
-
-    if (!parent || !mAnchor)
-    {
-        return;
-    }
-
-    QRect area = mAnchor == parent ? parent->rect() : QRect(mAnchor->mapTo(parent, QPoint(0, 0)), mAnchor->size());
-    int left = area.left() + margin;
-
-    if (mLeftNeighbour && mLeftNeighbour->parentWidget() == parent && mLeftNeighbour->isVisible())
-    {
-        left = qMax(left, mLeftNeighbour->geometry().right() + margin);
-    }
-
-    const bool expanded = mExplanation->isVisibleTo(this);
-    const auto heightFor = [this](int width) {
-        const int height = heightForWidth(width);
-        return height > 0 ? height : sizeHint().height();
-    };
-
-    // a short text keeps the badge narrow
-    int width = expanded ? qMin(expandedWidth, sizeHint().width()) : sizeHint().width();
-    QRect geometry(left, 0, width, heightFor(width));
-    geometry.moveBottom(area.bottom() - margin);
-
-    // do not cover the palettes: narrower if there is enough room left of them, else above them
-    for (QWidget* obstacle : obstacles())
-    {
-        if (!obstacle || !parent->isAncestorOf(obstacle))
-        {
-            continue;
-        }
-
-        // e.g. a message is shown or hidden
-        obstacle->installEventFilter(this);
-
-        if (!obstacle->isVisible())
-        {
-            continue;
-        }
-
-        const QRect obstacleGeometry(obstacle->mapTo(parent, QPoint(0, 0)), obstacle->size());
-        const QRect avoided = obstacleGeometry.adjusted(-margin, -margin, margin, margin);
-
-        if (!geometry.intersects(avoided))
-        {
-            continue;
-        }
-
-        const int available = avoided.left() - left;
-
-        if (expanded && available >= minimumExpandedWidth)
-        {
-            geometry.setWidth(available);
-            geometry.setTop(geometry.bottom() - heightFor(available) + 1);
-        }
-
-        if (geometry.intersects(avoided))
-        {
-            geometry.moveBottom(avoided.top() - 1);
-        }
-    }
-
-    // not setFixedSize(): it would also bound the size hint of the next texts to this size
-    setGeometry(geometry);
-}
-
-QList<QWidget*> UBStorageIndicator::obstacles() const
-{
-    QList<QWidget*> obstacles;
-
-    // messages are shown in the same corner as the badge
-    for (UBMessageWindow* message : mAnchor->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
-    {
-        obstacles << message;
-    }
-
-    // the stylus palette of the board, created again when its orientation changes
-    for (UBStylusPalette* stylusPalette : parentWidget()->findChildren<UBStylusPalette*>(Qt::FindDirectChildrenOnly))
-    {
-        obstacles << stylusPalette;
-    }
-
-    return obstacles;
 }

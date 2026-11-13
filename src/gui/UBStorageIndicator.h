@@ -22,48 +22,22 @@
 
 #pragma once
 
-#include <QFrame>
-#include <QPointer>
-#include <QTimer>
-
-class QLabel;
+#include "gui/UBNotification.h"
 
 /**
- * A discreet badge in the bottom left corner of a view, shown while the document location
- * is not available. It does not block: the user can continue working.
- *
- * Clicking the badge shows or hides the explanation, which stays until the badge is clicked
- * again. When the location is available again, the badge tells it for a few seconds, as an
- * information. The badge is placed right of the left palette when that palette is visible.
+ * @brief Tells the user that the document location is not available, while it is not, and when it
+ * is available again.
  */
-class UBStorageIndicator : public QFrame
+class UBStorageIndicator : public UBNotification
 {
     Q_OBJECT
 
 public:
-    // The badge is a child of parent, placed at the bottom left of anchor (parent or one of
-    // its descendants) and right of leftNeighbour when it is a visible child of parent.
     UBStorageIndicator(QWidget* parent, QWidget* anchor = nullptr, QWidget* leftNeighbour = nullptr);
-
-protected:
-    bool eventFilter(QObject* watched, QEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
 
 private slots:
     void setStorageAvailable(bool available);
 
 private:
-    void showUnavailable();
-    void showAvailableAgain();
-    void setExpanded(bool expanded);
-    void updatePosition();
-    QList<QWidget*> obstacles() const;
-
-    QPointer<QWidget> mAnchor;
-    QPointer<QWidget> mLeftNeighbour;
-    QLabel* mIcon;
-    QLabel* mTitle;
-    QLabel* mExplanation;
-    QTimer mInformationTimer;
     bool mUnavailable{false};
 };
