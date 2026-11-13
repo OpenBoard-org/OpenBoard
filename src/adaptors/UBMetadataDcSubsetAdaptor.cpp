@@ -33,6 +33,7 @@
 #include <QtXml>
 
 #include "core/UBPersistenceJournal.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
@@ -92,15 +93,12 @@ bool UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
     const QString metadataFile = fileName(proxy);
     qInfo() << "Persisting document metadata; path is" << metadataFile;
 
-    // written to a temporary file first, the previous metadata stay readable if writing fails
-    if (!UBPersistenceJournal::writeFile(metadataFile, serialize(proxy)))
+    if (!UBFileSystemUtils::writeFile(metadataFile, serialize(proxy)))
     {
         return false;
     }
 
-    // writeFile() does not use the journal, but an earlier asynchronous save may have stored a
-    // local copy of these metadata (e.g. while the storage was not available). Remove it, as it
-    // would otherwise be written back over these newer metadata later.
+    // a local copy stored by an earlier save would otherwise be written back over these metadata
     UBPersistenceJournal::journal()->written(metadataFile);
     return true;
 }

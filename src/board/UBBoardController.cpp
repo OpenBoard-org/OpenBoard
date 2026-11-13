@@ -46,6 +46,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBDocumentManager.h"
+#include "core/UBDocumentStorage.h"
 #include "core/UBDownloadManager.h"
 #include "core/UBMimeData.h"
 #include "core/UBPersistenceManager.h"
@@ -649,7 +650,7 @@ void UBBoardController::addScene()
     int newPageIndex = mActiveSceneIndex + 1;
 
     if (newPageIndex < selectedDocument()->pageCount()
-            && !UBPersistenceManager::persistenceManager()->mayChangePages(selectedDocument(), true))
+            && !UBPersistenceManager::persistenceManager()->prepareToChangePages(selectedDocument(), true))
     {
         // Inserting renames the following page files, which is not possible while the
         // storage is not available. Do not block the teacher: add the page at the end.
@@ -672,7 +673,7 @@ void UBBoardController::addScene()
 void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
 {
     // inserting renames the following page files, not possible while the storage is not available
-    if (scene && UBPersistenceManager::persistenceManager()->mayChangePages(selectedDocument()))
+    if (scene && UBPersistenceManager::persistenceManager()->prepareToChangePages(selectedDocument()))
     {
         std::shared_ptr<UBGraphicsScene> clone = scene->sceneDeepCopy();
 
@@ -1803,7 +1804,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
     {
         qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
 
-        if (UBPersistenceManager::persistenceManager()->isStorageUnavailable())
+        if (!UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable())
         {
             // the current page stays displayed
             UBApplication::showMessage(tr("This page cannot be opened while the document location is unavailable."));
@@ -2245,7 +2246,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex)
     {
         // the snapshots are written to the document folder: not while the storage does not answer
-        if (!UBPersistenceManager::persistenceManager()->isStorageUnavailable())
+        if (UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable())
         {
             mActiveScene->saveWidgetSnapshots();
         }

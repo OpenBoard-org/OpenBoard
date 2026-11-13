@@ -53,7 +53,7 @@ std::shared_ptr<UBDocumentProxy> UBDocument::proxy() const
 bool UBDocument::deletePages(QList<int> indexes)
 {
     // not possible while the storage is not available (the page files are renamed)
-    if (indexes.isEmpty() || !UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (indexes.isEmpty() || !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return false;
     }
@@ -80,7 +80,7 @@ bool UBDocument::deletePages(QList<int> indexes)
     }
 
     // check again: the storage may have become unavailable while the question was shown
-    if (!accepted || !UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (!accepted || !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return false;
     }
@@ -104,7 +104,7 @@ bool UBDocument::deletePages(QList<int> indexes)
 
 bool UBDocument::duplicatePage(int index)
 {
-    if (!UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return false;
     }
@@ -122,7 +122,7 @@ bool UBDocument::duplicatePage(int index)
 
 bool UBDocument::movePage(int fromIndex, int toIndex)
 {
-    if (!UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return false;
     }
@@ -135,7 +135,7 @@ bool UBDocument::movePage(int fromIndex, int toIndex)
 
 bool UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
 {
-    if (!UBPersistenceManager::persistenceManager()->mayChangePages(mProxy) || !UBPersistenceManager::persistenceManager()->mayChangePages(to, true))
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy) || !UBPersistenceManager::persistenceManager()->prepareToChangePages(to, true))
     {
         return false;
     }
@@ -155,7 +155,7 @@ bool UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, in
 bool UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
 {
     // adding a page at the end does not rename page files
-    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return false;
     }
@@ -169,7 +169,7 @@ bool UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, b
 std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool useUndoRedoStack)
 {
     // adding a page at the end does not rename page files
-    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->mayChangePages(mProxy))
+    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
         return nullptr;
     }

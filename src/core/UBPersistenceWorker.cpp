@@ -36,15 +36,8 @@
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 #include "core/UBPersistenceJournal.h"
-
-namespace
-{
-    bool isPageFile(const QString& fileName)
-    {
-        const QString name = fileName.mid(fileName.lastIndexOf('/') + 1);
-        return name.startsWith("page") && name.endsWith(".svg");
-    }
-}
+#include "core/UBPersistenceManager.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
     QObject(parent)
@@ -143,9 +136,9 @@ void UBPersistenceWorker::requeue(const QList<PersistenceInformation>& pending)
     mSemaphore.release(pending.size());
 }
 
-void UBPersistenceWorker::setStorageUnavailable(bool unavailable)
+void UBPersistenceWorker::setStorageAvailable(bool available)
 {
-    mStorageUnavailable = unavailable;
+    mStorageAvailable = available;
 }
 
 bool UBPersistenceWorker::write(const QString& fileName, const QByteArray& data, bool createDirectory)
@@ -153,7 +146,7 @@ bool UBPersistenceWorker::write(const QString& fileName, const QByteArray& data,
     // Replacing the file may fail temporarily, e.g. on Windows when an antivirus or
     // a synchronization client holds the file open. Retry a few times before failing,
     // but not while the storage is known to be unavailable.
-    const int attempts = mStorageUnavailable ? 1 : 3;
+    const int attempts = mStorageAvailable ? 3 : 1;
 
     for (int attempt = 0; attempt < attempts; ++attempt)
     {
@@ -166,7 +159,7 @@ bool UBPersistenceWorker::write(const QString& fileName, const QByteArray& data,
         {
             // Create the document folder only, never its parents: the parents are missing when
             // the storage is not mounted, and the file must not be written to the mount point.
-            const QString directory = UBPersistenceJournal::parentDirectory(fileName);
+            const QString directory = QFileInfo(fileName).path();
 
             if (!QFileInfo::exists(directory))
             {
@@ -174,7 +167,7 @@ bool UBPersistenceWorker::write(const QString& fileName, const QByteArray& data,
             }
         }
 
-        if (UBPersistenceJournal::writeFile(fileName, data))
+        if (UBFileSystemUtils::writeFile(fileName, data))
         {
             return true;
         }
@@ -216,17 +209,17 @@ bool UBPersistenceWorker::replay(const QString& rootDirectory)
 
     // write the pages first, they create the document folder
     std::stable_sort(files.begin(), files.end(), [](const QString& a, const QString& b){
-        return isPageFile(a) && !isPageFile(b);
+        return UBPersistenceManager::isPageFile(a) && !UBPersistenceManager::isPageFile(b);
     });
 
     bool written = false;
 
     for (const QString& fileName : files)
     {
-        const QString directory = UBPersistenceJournal::parentDirectory(fileName);
-        const bool isPage = isPageFile(fileName);
+        const QString directory = QFileInfo(fileName).path();
+        const bool isPage = UBPersistenceManager::isPageFile(fileName);
 
-        if (directory != rootDirectory && UBPersistenceJournal::isWrittenByNewerVersion(directory))
+        if (directory != rootDirectory && UBPersistenceManager::isWrittenByNewerVersion(directory))
         {
             // never written into such a document: a recovered copy is created at the next start
             continue;
@@ -234,7 +227,7 @@ bool UBPersistenceWorker::replay(const QString& rootDirectory)
 
         if (!isPage && directory != rootDirectory && !QFileInfo::exists(directory))
         {
-            if (QFileInfo::exists(UBPersistenceJournal::parentDirectory(directory)))
+            if (QFileInfo::exists(QFileInfo(directory).path()))
             {
                 // the document does not exist anymore
                 qWarning() << "Dropping the local copy of" << fileName << ": the document does not exist";
@@ -332,7 +325,7 @@ void UBPersistenceWorker::process()
             // A document without pages has no folder and its metadata are not saved, like before.
             // But keep them if pages are waiting in the journal: the folder could not be created.
             const bool isEmptyDocument = !QFileInfo::exists(directory)
-                    && QFileInfo::exists(UBPersistenceJournal::parentDirectory(directory))
+                    && QFileInfo::exists(QFileInfo(directory).path())
                     && !UBPersistenceJournal::journal()->hasPendingFiles(directory);
 
             if (!isEmptyDocument)
@@ -349,26 +342,26 @@ void UBPersistenceWorker::process()
         }
         else if (info.action == WriteFile)
         {
-            saved = persist(info.fileName, info.data, false, info.sequence);
+            saved = persist(info.path, info.data, false, info.sequence);
 
             if (!saved)
             {
-                emit saveFailed(nullptr, UBPersistenceJournal::parentDirectory(info.fileName));
+                emit saveFailed(nullptr, QFileInfo(info.path).path());
             }
         }
         else if (info.action == WriteThumbnail)
         {
             // not journaled: thumbnails are created again from the pages when missing
-            if (write(info.fileName, info.data, false))
+            if (write(info.path, info.data, false))
             {
-                emit thumbnailWritten(info.fileName);
+                emit thumbnailWritten(info.path);
             }
 
             saved = false; // not a document change
         }
         else if (info.action == ReplayJournal)
         {
-            emit journalReplayed(replay(info.fileName));
+            emit journalReplayed(replay(info.path));
             saved = false; // not a new save
         }
 

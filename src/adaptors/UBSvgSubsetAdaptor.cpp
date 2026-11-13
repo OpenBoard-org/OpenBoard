@@ -1245,14 +1245,12 @@ bool UBSvgSubsetAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
     const QString fileName = pageFileName(proxy, pageIndex);
     const QByteArray data = serializeScene(proxy, pScene, pageIndex);
 
-    if (!UBPersistenceJournal::writeFile(fileName, data))
+    if (!UBFileSystemUtils::writeFile(fileName, data))
     {
         return false;
     }
 
-    // writeFile() does not use the journal, but an earlier asynchronous save may have stored a
-    // local copy of this page. Remove it, as it would otherwise be written back over this newer
-    // page later.
+    // a local copy stored by an earlier save would otherwise be written back over this page
     UBPersistenceJournal::journal()->written(fileName);
     return true;
 }

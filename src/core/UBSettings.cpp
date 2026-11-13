@@ -107,6 +107,10 @@ QPointer<QSettings> UBSettings::sAppSettings = 0;
 QPointer<QSettings> UBSettings::sAdminSettings = 0;
 QPointer<QSettings> UBSettings::sPolicySettings = 0;
 
+QString UBSettings::sDataDirPath;
+bool UBSettings::sUseLocalDataDirectory = false;
+bool UBSettings::sDataDirectoryDecisionPending = false;
+
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
 const int UBSettings::defaultSortKind = 0;
@@ -180,90 +184,70 @@ QSettings* UBSettings::getAppSettings()
     return UBSettings::sAppSettings;
 }
 
-namespace
+/*
+ * System wide directory for the administrator configuration files. It is located
+ * outside of the installation directory, so that the files are kept on updates.
+ */
+static QString systemConfigDirectory()
 {
-    /*
-     * System wide directory for the administrator configuration files. It is located
-     * outside of the installation directory, so that the files are kept on updates.
-     */
-    QString systemConfigDirectory()
-    {
 #if defined(Q_OS_WIN)
-        QString programData = qEnvironmentVariable("ProgramData");
+    QString programData = qEnvironmentVariable("ProgramData");
 
-        if (programData.isEmpty())
-        {
-            programData = "C:/ProgramData";
-        }
-
-        return QDir::fromNativeSeparators(programData) + "/" + qApp->applicationName();
-#elif defined(Q_OS_MACOS)
-        return "/Library/Application Support/" + qApp->applicationName();
-#else
-        return "/etc/" + qApp->applicationName().toLower();
-#endif
-    }
-
-    /*
-     * Open an optional, read-only configuration file. It is searched in the system
-     * configuration directory first, then next to OpenBoard.config.
-     */
-    QSettings* openOptionalSettings(const QString& fileName)
+    if (programData.isEmpty())
     {
-        const QStringList directories{systemConfigDirectory(), UBPlatformUtils::applicationEtcDirectory()};
-
-        for (const QString& directory : directories)
-        {
-            const QString path = directory + "/" + fileName;
-
-            if (QFile::exists(path))
-            {
-                QSettings* settings = new QSettings(path, QSettings::IniFormat, nullptr);
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-                settings->setIniCodec("utf-8");
-#endif
-                return settings;
-            }
-        }
-
-        return nullptr;
+        programData = "C:/ProgramData";
     }
+
+    return QDir::fromNativeSeparators(programData) + "/" + qApp->applicationName();
+#elif defined(Q_OS_MACOS)
+    return "/Library/Application Support/" + qApp->applicationName();
+#else
+    return "/etc/" + qApp->applicationName().toLower();
+#endif
+}
+
+/*
+ * Open an optional, read-only configuration file once the application name is known. It is
+ * searched in the system configuration directory first, then next to OpenBoard.config.
+ */
+static QSettings* openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
+{
+    if (loaded || qApp->applicationName().isEmpty())
+    {
+        return settings;
+    }
+
+    loaded = true;
+    const QStringList directories{systemConfigDirectory(), UBPlatformUtils::applicationEtcDirectory()};
+
+    for (const QString& directory : directories)
+    {
+        const QString path = directory + "/" + qApp->applicationName() + fileSuffix;
+
+        if (QFile::exists(path))
+        {
+            settings = new QSettings(path, QSettings::IniFormat, nullptr);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            settings->setIniCodec("utf-8");
+#endif
+            qInfo() << description << settings->fileName();
+            break;
+        }
+    }
+
+    return settings;
 }
 
 QSettings* UBSettings::getAdminSettings()
 {
     static bool loaded = false;
-
-    if (!loaded && !qApp->applicationName().isEmpty())
-    {
-        loaded = true;
-        sAdminSettings = openOptionalSettings(qApp->applicationName() + "Admin.config");
-
-        if (sAdminSettings)
-        {
-            qInfo() << "Administrator settings:" << sAdminSettings->fileName();
-        }
-    }
-
-    return sAdminSettings;
+    return openOptionalSettings(sAdminSettings, loaded, "Admin.config", "Administrator settings:");
 }
 
 QSettings* UBSettings::getPolicySettings()
 {
     static bool loaded = false;
-
-    if (!loaded && !qApp->applicationName().isEmpty())
-    {
-        loaded = true;
-        sPolicySettings = openOptionalSettings(qApp->applicationName() + "Policy.config");
-
-        if (sPolicySettings)
-        {
-            qInfo() << "Policy settings:" << sPolicySettings->fileName();
-        }
-    }
-
-    return sPolicySettings;
+    return openOptionalSettings(sPolicySettings, loaded, "Policy.config", "Policy settings:");
 }
 
 bool UBSettings::isPolicyManaged(const QString& key)
@@ -1108,21 +1092,14 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
-namespace
+static QString localDataDirectory()
 {
-    QString sDataDirPath;
-    bool sUseLocalDataDirectory = false;
-    bool sDataDirectoryDecisionPending = false;
+    QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 
-    QString localDataDirectory()
-    {
-        QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
+    if (qApp->organizationName().size() > 0)
+        dataDirPath.replace(qApp->organizationName() + "/", "");
 
-        if (qApp->organizationName().size() > 0)
-            dataDirPath.replace(qApp->organizationName() + "/", "");
-
-        return dataDirPath;
-    }
+    return dataDirPath;
 }
 
 QString UBSettings::configuredDataDirectory()

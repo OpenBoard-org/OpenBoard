@@ -79,6 +79,23 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     // Probably no fileType equivalent on Windows
 }
 
+bool UBPlatformUtils::canListDirectory(const QString& directory)
+{
+    const QString pattern = QDir::toNativeSeparators(QDir(directory).absoluteFilePath("*"));
+    WIN32_FIND_DATAW entry;
+    const HANDLE handle = FindFirstFileExW(reinterpret_cast<LPCWSTR>(pattern.utf16()), FindExInfoBasic,
+                                           &entry, FindExSearchNameMatch, nullptr, 0);
+
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        // the root of an empty drive has no entry at all
+        return GetLastError() == ERROR_FILE_NOT_FOUND;
+    }
+
+    FindClose(handle);
+    return true;
+}
+
 void UBPlatformUtils::fadeDisplayOut()
 {
     // NOOP

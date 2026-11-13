@@ -136,6 +136,7 @@ class UBApplication : public SingleApplication
         void showMinimized();
 //#endif
         void onScreenCountChanged(int newCount);
+        void onCommitDataRequest(QSessionManager& manager);
 
     private:
         void updateProtoActionsState();

@@ -20,8 +20,7 @@
  */
 
 
-#ifndef UBPERSISTENCEJOURNAL_H
-#define UBPERSISTENCEJOURNAL_H
+#pragma once
 
 #include <QByteArray>
 #include <QHash>
@@ -50,9 +49,6 @@ class UBPersistenceJournal
 {
 public:
     static UBPersistenceJournal* journal();
-
-    // Write a file atomically: the previous version stays readable if writing fails.
-    static bool writeFile(const QString& fileName, const QByteArray& data);
 
     // Keep a local copy of the data for the target file. Returns false if it could not be stored.
     // The sequence number orders the versions of a file (see UBPersistenceWorker::nextSequence()):
@@ -89,13 +85,6 @@ public:
     // true if the target file existed in the storage before the local copy was stored
     bool existedBefore(const QString& targetFile) const;
 
-    static QString parentDirectory(const QString& file);
-
-    // True if the document was written by a newer OpenBoard version with a table of contents
-    // (toc.json): its page files do not follow the page order, so local copies of pages must
-    // never be written into it.
-    static bool isWrittenByNewerVersion(const QString& documentDirectory);
-
 private:
     UBPersistenceJournal();
 
@@ -118,5 +107,3 @@ private:
     QHash<QString, QString> mFileStates;
     QThread* mFrozenThread{nullptr};
 };
-
-#endif // UBPERSISTENCEJOURNAL_H

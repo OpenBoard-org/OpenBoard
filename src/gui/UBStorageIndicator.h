@@ -20,14 +20,11 @@
  */
 
 
-#ifndef UBSTORAGEINDICATOR_H_
-#define UBSTORAGEINDICATOR_H_
+#pragma once
 
 #include <QFrame>
 #include <QPointer>
 #include <QTimer>
-
-#include <functional>
 
 class QLabel;
 
@@ -48,29 +45,25 @@ public:
     // its descendants) and right of leftNeighbour when it is a visible child of parent.
     UBStorageIndicator(QWidget* parent, QWidget* anchor = nullptr, QWidget* leftNeighbour = nullptr);
 
-    void setStorageAvailable(bool available);
-
-    // descendants of parent which must not be covered, e.g. the stylus palette or messages
-    void setObstacles(std::function<QList<QWidget*>()> obstacles);
-
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+
+private slots:
+    void setStorageAvailable(bool available);
 
 private:
     void showUnavailable();
     void showAvailableAgain();
     void setExpanded(bool expanded);
     void updatePosition();
+    QList<QWidget*> obstacles() const;
 
     QPointer<QWidget> mAnchor;
     QPointer<QWidget> mLeftNeighbour;
-    std::function<QList<QWidget*>()> mObstacles;
     QLabel* mIcon;
     QLabel* mTitle;
     QLabel* mExplanation;
     QTimer mInformationTimer;
     bool mUnavailable{false};
 };
-
-#endif /* UBSTORAGEINDICATOR_H_ */

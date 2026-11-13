@@ -40,7 +40,6 @@
 #include <QTimer>
 #include <QtConcurrent>
 #include <QEventLoop>
-#include <functional>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -68,9 +67,7 @@
 #include "gui/UBResources.h"
 #include "gui/UBThumbnail.h"
 #include "gui/UBStartupHintsPalette.h"
-#include "gui/UBMessageWindow.h"
 #include "gui/UBStorageIndicator.h"
-#include "gui/UBStylusPalette.h"
 
 #include "ui_mainWindow.h"
 
@@ -458,117 +455,68 @@ int UBApplication::exec(const QString& pFileToImport)
     // Logging off or shutting down does not always quit OpenBoard normally before the
     // process is ended. Save everything now, without waiting for a storage which does not
     // answer: what is not written is kept on this computer.
-    connect(this, &QGuiApplication::commitDataRequest, this, [](QSessionManager&){
-        qInfo() << "Session ending, saving";
-
-        if (boardController && boardController->selectedDocument())
-        {
-            boardController->persistCurrentScene();
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(boardController->selectedDocument());
-        }
-
-        UBSettings::settings()->save();
-        UBPersistenceManager::persistenceManager()->flush(3000);
-    }, Qt::DirectConnection);
+    connect(this, &QGuiApplication::commitDataRequest, this, &UBApplication::onCommitDataRequest, Qt::DirectConnection);
 
     return QApplication::exec();
+}
+
+void UBApplication::onCommitDataRequest(QSessionManager& manager)
+{
+    Q_UNUSED(manager);
+    qInfo() << "Session ending, saving";
+
+    if (boardController && boardController->selectedDocument())
+    {
+        boardController->persistCurrentScene();
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(boardController->selectedDocument());
+    }
+
+    UBSettings::settings()->save();
+    UBPersistenceManager::persistenceManager()->flush(3000);
 }
 
 void UBApplication::setupStorageIndicator()
 {
     // A discreet badge in the bottom left corner while the document location is not available,
     // instead of message boxes: the teacher can continue working, nothing has to be decided.
-    UBBoardPaletteManager* paletteManager = boardController->paletteManager();
-    QWidget* leftPalette = paletteManager->leftPalette();
-    QWidget* boardContainer = boardController->controlContainer();
-    QWidget* thumbnailView = documentController->thumbnailView();
-
-    // messages are shown in the same corner as the badge
-    const auto messagesIn = [](QWidget* parent) {
-        QList<QWidget*> messages;
-
-        for (UBMessageWindow* message : parent->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
-        {
-            messages << message;
-        }
-
-        return messages;
-    };
-
-    UBStorageIndicator* boardIndicator = new UBStorageIndicator(boardContainer, nullptr, leftPalette);
-    boardIndicator->setObstacles([messagesIn, boardContainer, paletteManager]() {
-        // the stylus palette is created again when its orientation changes
-        QList<QWidget*> obstacles = messagesIn(boardContainer);
-        obstacles << paletteManager->stylusPalette();
-        return obstacles;
-    });
+    QWidget* leftPalette = boardController->paletteManager()->leftPalette();
+    new UBStorageIndicator(boardController->controlContainer(), nullptr, leftPalette);
 
     // the documents badge is placed at the bottom left of the thumbnail view
-    UBStorageIndicator* documentIndicator = new UBStorageIndicator(documentController->controlView(), thumbnailView, leftPalette);
-    documentIndicator->setObstacles([messagesIn, thumbnailView]() {
-        return messagesIn(thumbnailView);
-    });
-
-    QList<UBStorageIndicator*> indicators;
-    indicators << boardIndicator << documentIndicator;
-
-    const bool available = !UBPersistenceManager::persistenceManager()->isStorageUnavailable();
-
-    for (UBStorageIndicator* indicator : indicators)
-    {
-        indicator->setStorageAvailable(available);
-    }
-
-    connect(UBPersistenceManager::persistenceManager(), &UBPersistenceManager::storageAvailabilityChanged, this, [indicators](bool available){
-        for (UBStorageIndicator* indicator : indicators)
-        {
-            indicator->setStorageAvailable(available);
-        }
-    });
+    new UBStorageIndicator(documentController->controlView(), documentController->thumbnailView(), leftPalette);
 }
 
 void UBApplication::showRecoveryReport()
 {
-    // informative only, does not block
-    QMessageBox* message = new QMessageBox(QMessageBox::Information,
-                                           tr("Changes recovered"),
-                                           UBPersistenceManager::persistenceManager()->recoveryReport(),
-                                           QMessageBox::Ok,
-                                           mainWindow);
-    message->setAttribute(Qt::WA_DeleteOnClose);
-    message->setWindowModality(Qt::NonModal);
-    message->show();
+    mainWindow->nonModalInformation(tr("Changes recovered"), UBPersistenceManager::persistenceManager()->recoveryReport());
 }
 
-namespace
+// Check the data directory in a background thread and wait at most timeoutMs.
+// Accessing a disconnected network path may block for a long time (SMB timeout,
+// stale mounts), so the GUI thread never accesses the configured path directly.
+// A check which did not finish in time is considered as failed. It is not waited for.
+static bool isDataDirectoryAvailableWithin(const QString& path, int timeoutMs)
 {
-    // Run a file system check in a background thread and wait at most timeoutMs.
-    // Accessing a disconnected network path may block for a long time (SMB timeout,
-    // stale mounts), so the GUI thread never accesses the configured path directly.
-    // A check which did not finish in time is considered as failed. It is not waited for.
-    bool runFileSystemCheck(std::function<bool()> check, int timeoutMs)
+    QFuture<bool> future = QtConcurrent::run(&UBSettings::isDataDirectoryAvailable, path);
+
+    if (!future.isFinished())
     {
-        QFuture<bool> future = QtConcurrent::run(check);
+        QEventLoop loop;
+        QFutureWatcher<bool> watcher;
+        QTimer timeout;
+        timeout.setSingleShot(true);
+        QObject::connect(&watcher, &QFutureWatcher<bool>::finished, &loop, &QEventLoop::quit);
+        QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
+        watcher.setFuture(future);
+        timeout.start(timeoutMs);
 
         if (!future.isFinished())
         {
-            QEventLoop loop;
-            QFutureWatcher<bool> watcher;
-            QTimer timeout;
-            timeout.setSingleShot(true);
-            QObject::connect(&watcher, &QFutureWatcher<bool>::finished, &loop, &QEventLoop::quit);
-            QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
-            watcher.setFuture(future);
-            timeout.start(timeoutMs);
-
-            if (!future.isFinished())
-            {
-                loop.exec();
-            }
+            loop.exec();
         }
-
-        return future.isFinished() && future.result();
     }
+
+    return future.isFinished() && future.result();
 }
 
 void UBApplication::checkDataDirectory()
@@ -582,10 +530,9 @@ void UBApplication::checkDataDirectory()
 
     qInfo() << "Checking configured data directory" << path;
 
-    const auto isAvailable = [path](){ return UBSettings::isDataDirectoryAvailable(path); };
     const int checkTimeout = 3000;
 
-    if (runFileSystemCheck(isAvailable, checkTimeout))
+    if (isDataDirectoryAvailableWithin(path, checkTimeout))
     {
         return;
     }
@@ -615,14 +562,14 @@ void UBApplication::checkDataDirectory()
     QTimer timer;
     timer.setInterval(2000);
 
-    connect(&timer, &QTimer::timeout, &box, [&](){
+    connect(&timer, &QTimer::timeout, &box, [&watcher, path](){
         if (!watcher.isRunning())
         {
-            watcher.setFuture(QtConcurrent::run(isAvailable));
+            watcher.setFuture(QtConcurrent::run(&UBSettings::isDataDirectoryAvailable, path));
         }
     });
 
-    connect(&watcher, &QFutureWatcher<bool>::finished, &box, [&](){
+    connect(&watcher, &QFutureWatcher<bool>::finished, &box, [&watcher, &box, &becameAvailable](){
         if (watcher.result() && box.isVisible())
         {
             becameAvailable = true;
@@ -650,7 +597,7 @@ void UBApplication::checkDataDirectory()
         }
 
         // retry (or dialog closed)
-        if (runFileSystemCheck(isAvailable, checkTimeout))
+        if (isDataDirectoryAvailableWithin(path, checkTimeout))
         {
             qInfo() << "Configured data directory" << path << "is available after retry";
             break;
@@ -666,18 +613,12 @@ void UBApplication::checkDataDirectory()
 
 void UBApplication::showLocalDataDirectoryWarning()
 {
-    QMessageBox* message = new QMessageBox(QMessageBox::Information,
-                                           tr("Local session"),
-                                           tr("OpenBoard is running locally for this session, without access to the configured data directory:\n%1\n\n"
-                                              "Documents created in this session are stored on this computer in:\n%2\n\n"
-                                              "The configured data directory is used again at the next start.")
-                                               .arg(QDir::toNativeSeparators(UBSettings::configuredDataDirectory()),
-                                                    QDir::toNativeSeparators(UBSettings::userDataDirectory())),
-                                           QMessageBox::Ok,
-                                           mainWindow);
-    message->setAttribute(Qt::WA_DeleteOnClose);
-    message->setWindowModality(Qt::NonModal);
-    message->show();
+    mainWindow->nonModalInformation(tr("Local session"),
+                                    tr("OpenBoard is running locally for this session, without access to the configured data directory:\n%1\n\n"
+                                       "Documents created in this session are stored on this computer in:\n%2\n\n"
+                                       "The configured data directory is used again at the next start.")
+                                        .arg(QDir::toNativeSeparators(UBSettings::configuredDataDirectory()),
+                                             QDir::toNativeSeparators(UBSettings::userDataDirectory())));
 }
 
 void UBApplication::onScreenCountChanged(int newCount)

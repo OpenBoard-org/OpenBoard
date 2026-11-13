@@ -130,6 +130,7 @@ class UBDisplayManager : public QObject
 
         void addOrRemoveScreen(QScreen* screen);
         void screenGeometryChanged();
+        void applyScreenConfiguration();
         void screenDestroyed(QObject* screen);
 
     private:

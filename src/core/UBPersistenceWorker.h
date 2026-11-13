@@ -53,7 +53,7 @@ struct PersistenceInformation
     std::shared_ptr<UBDocumentProxy> proxy;
     UBGraphicsScene* scene;
     int sceneIndex;
-    QString fileName;   // WriteFile: target file, ReplayJournal: root directory
+    QString path;       // WriteFile, WriteThumbnail: target file, ReplayJournal: root directory
     QByteArray data;    // WriteFile, WriteThumbnail: content
     quint64 sequence{0}; // order of the saves, see nextSequence()
 };
@@ -97,8 +97,8 @@ public:
     // put saves taken with takePendingSaves() back in front of the queue
     void requeue(const QList<PersistenceInformation>& pending);
 
-    // don't retry writing while the storage is known to be unavailable
-    void setStorageUnavailable(bool unavailable);
+    // writing is retried only while the storage is available
+    void setStorageAvailable(bool available);
 
 signals:
    void finished();
@@ -125,7 +125,7 @@ protected:
    bool mBusy{false};
    PersistenceInformation mCurrent{};
    QElapsedTimer mBusyTimer;
-   std::atomic<bool> mStorageUnavailable{false};
+   std::atomic<bool> mStorageAvailable{true};
    QSemaphore mSemaphore;
    mutable QMutex mMutex;
    QWaitCondition mAllSaved;

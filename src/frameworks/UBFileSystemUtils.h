@@ -112,6 +112,14 @@ class UBFileSystemUtils : public QObject
 
         static QString readTextFile(QString path);
 
+        // Write a file atomically: the previous version stays readable if writing fails.
+        static bool writeFile(const QString& fileName, const QByteArray& data);
+
+        // The paths are compared as written and as resolved by the system (e.g. drives created
+        // with subst, mapped network drives or symbolic links), which accesses the disk.
+        static bool isSamePath(const QString& path, const QString& other);
+        static bool isInside(const QString& path, const QString& directory);
+
     private:
         static QStringList sTempDirToCleanUp;
 

@@ -28,65 +28,27 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QSaveFile>
 #include <QSet>
 #include <QThread>
 
 #include "core/UBSettings.h"
+#include "frameworks/UBFileSystemUtils.h"
 
-namespace
-{
-    const QString indexFileName{"journal.txt"};
-    const QByteArray indexHeader{"OpenBoard journal 1"};
-    const QString absent{"absent"};
-
-    QString fileNameOf(const QString& file)
-    {
-        return file.mid(file.lastIndexOf('/') + 1);
-    }
-}
+static const QString indexFileName{"journal.txt"};
+static const QByteArray indexHeader{"OpenBoard journal 1"};
+static const QString absent{"absent"};
 
 UBPersistenceJournal* UBPersistenceJournal::journal()
 {
     // never destroyed: a persistence thread left behind when closing may still use it
-    static UBPersistenceJournal* sJournal = new UBPersistenceJournal;
-    return sJournal;
+    static UBPersistenceJournal* journal = new UBPersistenceJournal;
+    return journal;
 }
 
 UBPersistenceJournal::UBPersistenceJournal()
     : mRoot(UBSettings::recoveryDirectory())
 {
     load();
-}
-
-bool UBPersistenceJournal::writeFile(const QString& fileName, const QByteArray& data)
-{
-    QSaveFile file(fileName);
-
-    // some storages do not allow to create the temporary file next to the target file:
-    // then write directly to the target file, like before
-    file.setDirectWriteFallback(true);
-
-    if (!file.open(QIODevice::WriteOnly))
-    {
-        qCritical() << "cannot open" << fileName << "for writing. Error:" << file.errorString();
-        return false;
-    }
-
-    if (file.write(data) != data.size())
-    {
-        qCritical() << "cannot write" << fileName << ". Error:" << file.errorString();
-        file.cancelWriting();
-        return false;
-    }
-
-    if (!file.commit())
-    {
-        qCritical() << "cannot save" << fileName << ". Error:" << file.errorString();
-        return false;
-    }
-
-    return true;
 }
 
 bool UBPersistenceJournal::store(const QString& targetFile, const QByteArray& data, quint64 sequence)
@@ -98,7 +60,7 @@ bool UBPersistenceJournal::store(const QString& targetFile, const QByteArray& da
         return true;
     }
 
-    const QString targetDirectory = parentDirectory(targetFile);
+    const QString targetDirectory = QFileInfo(targetFile).path();
     const QString group = groupDirectory(targetDirectory);
 
     if (!QDir().mkpath(group))
@@ -118,7 +80,7 @@ bool UBPersistenceJournal::store(const QString& targetFile, const QByteArray& da
     if (isNew)
     {
         // register the file before writing it: at startup, an entry without data is ignored
-        mEntries.insert(targetFile, {group + "/" + fileNameOf(targetFile), mFileStates.value(targetFile)});
+        mEntries.insert(targetFile, {group + "/" + UBFileSystemUtils::lastPathComponent(targetFile), mFileStates.value(targetFile)});
 
         if (!saveIndex(targetDirectory))
         {
@@ -127,7 +89,7 @@ bool UBPersistenceJournal::store(const QString& targetFile, const QByteArray& da
         }
     }
 
-    if (!writeFile(mEntries.value(targetFile).localFile, data))
+    if (!UBFileSystemUtils::writeFile(mEntries.value(targetFile).localFile, data))
     {
         if (isNew)
         {
@@ -154,7 +116,7 @@ void UBPersistenceJournal::written(const QString& targetFile, quint64 sequence)
     }
 
     const Entry entry = mEntries.take(targetFile);
-    saveIndex(parentDirectory(targetFile));
+    saveIndex(QFileInfo(targetFile).path());
     QFile::remove(entry.localFile);
 }
 
@@ -183,7 +145,7 @@ void UBPersistenceJournal::discard(const QString& directory)
     {
         if (it.key().startsWith(prefix))
         {
-            directories << parentDirectory(it.key());
+            directories << QFileInfo(it.key()).path();
             QFile::remove(it.value().localFile);
             it = mEntries.erase(it);
         }
@@ -297,17 +259,6 @@ bool UBPersistenceJournal::existedBefore(const QString& targetFile) const
     return !base.isEmpty() && base != absent;
 }
 
-QString UBPersistenceJournal::parentDirectory(const QString& file)
-{
-    const int index = file.lastIndexOf('/');
-    return index < 0 ? QString() : file.left(index);
-}
-
-bool UBPersistenceJournal::isWrittenByNewerVersion(const QString& documentDirectory)
-{
-    return QFileInfo::exists(documentDirectory + "/toc.json");
-}
-
 QString UBPersistenceJournal::stateOf(const QString& file)
 {
     const QFileInfo info(file);
@@ -388,9 +339,9 @@ bool UBPersistenceJournal::saveIndex(const QString& targetDirectory)
 
     for (auto it = mEntries.cbegin(); it != mEntries.cend(); ++it)
     {
-        if (parentDirectory(it.key()) == targetDirectory)
+        if (QFileInfo(it.key()).path() == targetDirectory)
         {
-            content += fileNameOf(it.key()).toUtf8() + "\t" + it.value().base.toUtf8() + "\n";
+            content += UBFileSystemUtils::lastPathComponent(it.key()).toUtf8() + "\t" + it.value().base.toUtf8() + "\n";
             hasEntries = true;
         }
     }
@@ -400,5 +351,5 @@ bool UBPersistenceJournal::saveIndex(const QString& targetDirectory)
         return QDir(group).removeRecursively();
     }
 
-    return writeFile(group + "/" + indexFileName, content);
+    return UBFileSystemUtils::writeFile(group + "/" + indexFileName, content);
 }

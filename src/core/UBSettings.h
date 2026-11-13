@@ -509,6 +509,10 @@ class UBSettings : public QObject
         static QPointer<QSettings> sPolicySettings;
         static QPointer<UBSettings> sSingleton;
 
+        static QString sDataDirPath;
+        static bool sUseLocalDataDirectory;
+        static bool sDataDirectoryDecisionPending;
+
         static bool checkDirectory(QString& dirPath);
         static QString replaceWildcard(QString& path);
 

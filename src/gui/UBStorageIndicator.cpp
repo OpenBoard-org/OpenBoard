@@ -29,12 +29,14 @@
 #include <QStyle>
 #include <QVBoxLayout>
 
-namespace
-{
-    const int margin = 12;
-    const int expandedWidth = 380;
-    const int minimumExpandedWidth = 240;
-}
+#include "core/UBDocumentStorage.h"
+#include "core/UBPersistenceManager.h"
+#include "gui/UBMessageWindow.h"
+#include "gui/UBStylusPalette.h"
+
+static const int margin = 12;
+static const int expandedWidth = 380;
+static const int minimumExpandedWidth = 240;
 
 UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget* leftNeighbour)
     : QFrame(parent)
@@ -86,6 +88,10 @@ UBStorageIndicator::UBStorageIndicator(QWidget* parent, QWidget* anchor, QWidget
 
     setExpanded(false);
     hide();
+
+    UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
+    connect(storage, &UBDocumentStorage::availabilityChanged, this, &UBStorageIndicator::setStorageAvailable);
+    setStorageAvailable(storage->isAvailable());
 }
 
 void UBStorageIndicator::setStorageAvailable(bool available)
@@ -135,12 +141,6 @@ void UBStorageIndicator::showAvailableAgain()
     raise();
     setExpanded(true);
     mInformationTimer.start();
-}
-
-void UBStorageIndicator::setObstacles(std::function<QList<QWidget*>()> obstacles)
-{
-    mObstacles = obstacles;
-    updatePosition();
 }
 
 bool UBStorageIndicator::eventFilter(QObject* watched, QEvent* event)
@@ -223,9 +223,7 @@ void UBStorageIndicator::updatePosition()
     geometry.moveBottom(area.bottom() - margin);
 
     // do not cover the palettes: narrower if there is enough room left of them, else above them
-    const QList<QWidget*> obstacles = mObstacles ? mObstacles() : QList<QWidget*>();
-
-    for (QWidget* obstacle : obstacles)
+    for (QWidget* obstacle : obstacles())
     {
         if (!obstacle || !parent->isAncestorOf(obstacle))
         {
@@ -264,4 +262,23 @@ void UBStorageIndicator::updatePosition()
 
     // not setFixedSize(): it would also bound the size hint of the next texts to this size
     setGeometry(geometry);
+}
+
+QList<QWidget*> UBStorageIndicator::obstacles() const
+{
+    QList<QWidget*> obstacles;
+
+    // messages are shown in the same corner as the badge
+    for (UBMessageWindow* message : mAnchor->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
+    {
+        obstacles << message;
+    }
+
+    // the stylus palette of the board, created again when its orientation changes
+    for (UBStylusPalette* stylusPalette : parentWidget()->findChildren<UBStylusPalette*>(Qt::FindDirectChildrenOnly))
+    {
+        obstacles << stylusPalette;
+    }
+
+    return obstacles;
 }

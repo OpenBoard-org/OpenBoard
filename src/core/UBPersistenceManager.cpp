@@ -33,7 +33,6 @@
 #include <QVariant>
 #include <QDomDocument>
 #include <QXmlStreamWriter>
-#include <QSaveFile>
 #include <QMessageBox>
 #include <QModelIndex>
 #include <QtConcurrent>
@@ -104,9 +103,10 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
     mFoldersXmlStorageName =  mDocumentRepositoryPath + "/" + fFolders;
 
-    // a local session does not use the configured mount point
+    // A local session does not use the configured mount point. Never deleted: reads blocked
+    // on a storage which does not answer may still finish at exit.
     mDocumentStorage = new UBDocumentStorage(UBSettings::isUsingLocalDataDirectory()
-                                             ? QString() : UBSettings::configuredDataDirectoryMountPoint(), this);
+                                             ? QString() : UBSettings::configuredDataDirectoryMountPoint());
     connect(mDocumentStorage, &UBDocumentStorage::availabilityChanged, this, &UBPersistenceManager::onStorageAvailabilityChanged);
 
     // write the changes kept on this computer at the last session before reading the documents
@@ -120,17 +120,11 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mFoldersTimer.setSingleShot(true);
     mFoldersTimer.setInterval(2000);
     connect(&mFoldersTimer, &QTimer::timeout, this, &UBPersistenceManager::saveFoldersXml);
-    const auto scheduleFoldersXml = [this](){
-        if (!mIsApplicationClosing)
-        {
-            mFoldersTimer.start();
-        }
-    };
-    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsInserted, this, scheduleFoldersXml);
-    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsRemoved, this, scheduleFoldersXml);
-    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsMoved, this, scheduleFoldersXml);
-    connect(mDocumentTreeStructureModel, &QAbstractItemModel::dataChanged, this, scheduleFoldersXml);
-    connect(mDocumentTreeStructureModel, &QAbstractItemModel::modelReset, this, scheduleFoldersXml);
+    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsInserted, this, &UBPersistenceManager::scheduleFoldersXml);
+    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsRemoved, this, &UBPersistenceManager::scheduleFoldersXml);
+    connect(mDocumentTreeStructureModel, &QAbstractItemModel::rowsMoved, this, &UBPersistenceManager::scheduleFoldersXml);
+    connect(mDocumentTreeStructureModel, &QAbstractItemModel::dataChanged, this, &UBPersistenceManager::scheduleFoldersXml);
+    connect(mDocumentTreeStructureModel, &QAbstractItemModel::modelReset, this, &UBPersistenceManager::scheduleFoldersXml);
 
     // detect a storage which does not answer and retry writing the journal meanwhile
     mStorageWatchdog.setInterval(1000);
@@ -160,7 +154,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     if (UBPersistenceJournal::journal()->hasPendingFiles(mDocumentRepositoryPath))
     {
         // some files of the last session could not be written yet
-        setStorageUnavailable(true);
+        mDocumentStorage->setAvailable(false);
     }
 }
 
@@ -208,7 +202,7 @@ void UBPersistenceManager::onSaveFailed(UBGraphicsScene* scene, const QString& p
 
     // the data is kept in the journal: no message box, only the discreet indicator
     qCritical() << "Saving failed in" << path;
-    setStorageUnavailable(true);
+    mDocumentStorage->setAvailable(false);
 }
 
 UBPersistenceManager::~UBPersistenceManager()
@@ -223,9 +217,7 @@ UBPersistenceManager::~UBPersistenceManager()
         // journal. Do not wait for the persistence thread, it may hang in a system call.
         // The thread and the worker are left behind on purpose (deleting a running thread aborts).
         qWarning() << "Persistence thread left behind, pending changes are in" << UBSettings::recoveryDirectory();
-
-        // the thread may still be serializing one of the page copies: do not delete them
-        new QList<std::shared_ptr<UBGraphicsScene>>(mScenesToSave);
+        keepScenesForAbandonedThread();
         return;
     }
 
@@ -244,11 +236,17 @@ UBPersistenceManager::~UBPersistenceManager()
     {
         journalPendingSaves(true);
         qWarning() << "Persistence thread left behind after" << t.elapsed() << "ms";
-        new QList<std::shared_ptr<UBGraphicsScene>>(mScenesToSave);
+        keepScenesForAbandonedThread();
         return;
     }
 
     qDebug() << "stop waiting after " << t.elapsed() << " ms";
+}
+
+void UBPersistenceManager::keepScenesForAbandonedThread()
+{
+    // the thread may still be serializing one of the page copies: they are never deleted
+    new QList<std::shared_ptr<UBGraphicsScene>>(mScenesToSave);
 }
 
 bool UBPersistenceManager::waitForAllSaved(int timeoutMs) const
@@ -588,7 +586,7 @@ void UBPersistenceManager::flush(int timeoutMs, bool closing)
     {
         // the storage does not answer: keep the remaining saves on this computer
         qWarning() << "Saving did not finish within" << timeoutMs << "ms, keeping the remaining changes in the recovery directory";
-        setStorageUnavailable(true);
+        mDocumentStorage->setAvailable(false);
         journalPendingSaves(closing);
     }
 }
@@ -627,7 +625,7 @@ void UBPersistenceManager::journalPendingSaves(bool closing)
         }
         else if (info.action == WriteFile)
         {
-            journal->store(info.fileName, info.data, info.sequence);
+            journal->store(info.path, info.data, info.sequence);
         }
     }
 
@@ -677,6 +675,14 @@ QByteArray UBPersistenceManager::foldersXml()
     return data;
 }
 
+void UBPersistenceManager::scheduleFoldersXml()
+{
+    if (!mIsApplicationClosing)
+    {
+        mFoldersTimer.start();
+    }
+}
+
 void UBPersistenceManager::saveFoldersXml()
 {
     // written like the pages: local copy first, then the storage
@@ -688,17 +694,12 @@ void UBPersistenceManager::saveThumbnail(const QString& fileName, const QByteArr
     mWorker->saveThumbnail(fileName, data);
 }
 
-bool UBPersistenceManager::isStorageUnavailable() const
-{
-    return !mDocumentStorage->isAvailable();
-}
-
 UBDocumentStorage* UBPersistenceManager::documentStorage() const
 {
     return mDocumentStorage;
 }
 
-bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent)
+bool UBPersistenceManager::prepareToChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent)
 {
     // Adding, moving or deleting pages renames the following page files. Pending saves
     // must be written first, they use the page numbers. Wait shortly, but do not block
@@ -721,7 +722,7 @@ bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy
 
         if (!done)
         {
-            setStorageUnavailable(true);
+            mDocumentStorage->setAvailable(false);
         }
     }
 
@@ -743,35 +744,25 @@ bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy
     return false;
 }
 
-void UBPersistenceManager::setStorageUnavailable(bool unavailable)
-{
-    // the document storage knows whether it answers, see onStorageAvailabilityChanged()
-    mDocumentStorage->setAvailable(!unavailable);
-}
-
 void UBPersistenceManager::onStorageAvailabilityChanged(bool available)
 {
-    const bool unavailable = !available;
-
     if (mWorker)
     {
-        mWorker->setStorageUnavailable(unavailable);
+        mWorker->setStorageAvailable(available);
     }
 
-    // the storage badge tells the teacher (see UBStorageIndicator)
-    if (unavailable)
-    {
-        qWarning() << "Document location not available:" << mDocumentRepositoryPath;
-        mRetryTimer.start();
-    }
-    else
+    // the storage badge tells the user (see UBStorageIndicator)
+    if (available)
     {
         qInfo() << "Document location available again:" << mDocumentRepositoryPath;
         mRetryTimer.stop();
         UBThumbnailAdaptor::writePendingThumbnails();
     }
-
-    emit storageAvailabilityChanged(!unavailable);
+    else
+    {
+        qWarning() << "Document location not available:" << mDocumentRepositoryPath;
+        mRetryTimer.start();
+    }
 }
 
 void UBPersistenceManager::onSaveSucceeded()
@@ -796,15 +787,15 @@ void UBPersistenceManager::onJournalReplayed(bool complete)
 
     for (const QString& file : journal->pendingFiles(mDocumentRepositoryPath))
     {
-        const QString directory = UBPersistenceJournal::parentDirectory(file);
+        const QString directory = QFileInfo(file).path();
 
-        if (directory == mDocumentRepositoryPath || !UBPersistenceJournal::isWrittenByNewerVersion(directory))
+        if (directory == mDocumentRepositoryPath || !isWrittenByNewerVersion(directory))
         {
             return;
         }
     }
 
-    setStorageUnavailable(false);
+    mDocumentStorage->setAvailable(true);
 }
 
 void UBPersistenceManager::retryJournal()
@@ -821,7 +812,7 @@ void UBPersistenceManager::checkBlockedSave()
     // a save which does not finish means the storage does not answer
     if (mDocumentStorage->isAvailable() && mWorker->busyDuration() > 5000)
     {
-        setStorageUnavailable(true);
+        mDocumentStorage->setAvailable(false);
     }
 }
 
@@ -1080,7 +1071,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
 
 void UBPersistenceManager::deleteDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
-    if (!mayChangePages(pDocumentProxy, true))
+    if (!prepareToChangePages(pDocumentProxy, true))
     {
         // the folder is kept, the document appears again at the next start
         qWarning() << "Document location not available, not deleting" << pDocumentProxy->persistencePath();
@@ -1552,7 +1543,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
         // Wait for it, but do not block the teacher when the storage does not answer.
         if (!waitForAllSaved(3000))
         {
-            setStorageUnavailable(true);
+            mDocumentStorage->setAvailable(false);
         }
     }
 
@@ -1572,7 +1563,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(s
         // wait for it, but do not block the teacher when the storage does not answer
         if (mDocumentStorage->isAvailable() && !waitForAllSaved(3000))
         {
-            setStorageUnavailable(true);
+            mDocumentStorage->setAvailable(false);
         }
 
         emit documentMetadataChanged(pDocumentProxy);
@@ -1835,22 +1826,24 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         // We have lost the document repository, e.g. a network share was disconnected.
         // OpenBoard used to quit here, losing the latest changes. Now the changes are kept
         // on this computer and written when the repository is available again.
-        setStorageUnavailable(true);
+        mDocumentStorage->setAvailable(false);
     }
 }
 
-namespace
+bool UBPersistenceManager::isPageFile(const QString& fileName)
 {
-    bool isPageFile(const QString& fileName)
-    {
-        const QString name = QFileInfo(fileName).fileName();
-        return name.startsWith("page") && name.endsWith(".svg");
-    }
+    const QString name = QFileInfo(fileName).fileName();
+    return name.startsWith("page") && name.endsWith(".svg");
+}
 
-    QString thumbnailOf(const QString& pageFile)
-    {
-        return pageFile.left(pageFile.length() - 4) + ".thumbnail.jpg";
-    }
+bool UBPersistenceManager::isWrittenByNewerVersion(const QString& documentDirectory)
+{
+    return QFileInfo::exists(documentDirectory + "/toc.json");
+}
+
+static QString thumbnailOf(const QString& pageFile)
+{
+    return pageFile.left(pageFile.length() - 4) + ".thumbnail.jpg";
 }
 
 void UBPersistenceManager::recoverJournal()
@@ -1871,7 +1864,7 @@ void UBPersistenceManager::recoverJournal()
 
     for (const QString& file : files)
     {
-        filesByDirectory[UBPersistenceJournal::parentDirectory(file)] << file;
+        filesByDirectory[QFileInfo(file).path()] << file;
     }
 
     QStringList writtenDocuments;
@@ -1894,7 +1887,7 @@ void UBPersistenceManager::recoverJournal()
         const bool isDocument = directory != mDocumentRepositoryPath;
         const bool exists = QFileInfo::exists(directory);
 
-        const bool newerVersion = isDocument && exists && UBPersistenceJournal::isWrittenByNewerVersion(directory);
+        const bool newerVersion = isDocument && exists && isWrittenByNewerVersion(directory);
 
         if (isDocument && (!exists || newerVersion) && pages.isEmpty())
         {
@@ -1940,7 +1933,7 @@ void UBPersistenceManager::recoverJournal()
             {
                 journal->written(file);
             }
-            else if (UBPersistenceJournal::writeFile(file, data))
+            else if (UBFileSystemUtils::writeFile(file, data))
             {
                 qInfo() << "Written from the local copy:" << file;
                 journal->written(file);
@@ -1983,7 +1976,7 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
     }
 
     const bool exists = QFileInfo::exists(directory);
-    const bool newerVersion = exists && UBPersistenceJournal::isWrittenByNewerVersion(directory);
+    const bool newerVersion = exists && isWrittenByNewerVersion(directory);
 
     if (exists)
     {
@@ -2013,7 +2006,7 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
         {
             const QString target = copyPath + "/" + QFileInfo(file).fileName();
 
-            if (!UBPersistenceJournal::writeFile(target, journal->data(file)))
+            if (!UBFileSystemUtils::writeFile(target, journal->data(file)))
             {
                 return QString();
             }
@@ -2041,7 +2034,7 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
                     ? copyPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex++)
                     : copyPath + "/" + QFileInfo(file).fileName();
 
-            if (!UBPersistenceJournal::writeFile(target, journal->data(file)))
+            if (!UBFileSystemUtils::writeFile(target, journal->data(file)))
             {
                 return QString();
             }

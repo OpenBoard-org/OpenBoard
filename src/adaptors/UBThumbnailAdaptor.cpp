@@ -34,6 +34,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBPersistenceManager.h"
+#include "core/UBDocumentStorage.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
@@ -48,25 +49,22 @@
 
 #include "core/memcheck.h"
 
-namespace
+// Thumbnails not written yet (GUI thread only). They are written by the persistence thread,
+// so that a storage which does not answer does not block the GUI, and kept here until then.
+static QHash<QString, QPixmap> sPendingThumbnails;
+
+static bool isStorageAvailable()
 {
-    // Thumbnails not written yet (GUI thread only). They are written by the persistence thread,
-    // so that a storage which does not answer does not block the GUI, and kept here until then.
-    QHash<QString, QPixmap> sPendingThumbnails;
+    return UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable();
+}
 
-    bool isStorageUnavailable()
-    {
-        return UBPersistenceManager::persistenceManager()->isStorageUnavailable();
-    }
-
-    void writeThumbnail(const QString& fileName, const QPixmap& pixmap)
-    {
-        QByteArray data;
-        QBuffer buffer(&data);
-        buffer.open(QIODevice::WriteOnly);
-        pixmap.save(&buffer, "JPG");
-        UBPersistenceManager::persistenceManager()->saveThumbnail(fileName, data);
-    }
+static void writeThumbnail(const QString& fileName, const QPixmap& pixmap)
+{
+    QByteArray data;
+    QBuffer buffer(&data);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer, "JPG");
+    UBPersistenceManager::persistenceManager()->saveThumbnail(fileName, data);
 }
 
 void UBThumbnailAdaptor::writePendingThumbnails()
@@ -173,7 +171,7 @@ QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int page
         return sPendingThumbnails.value(fileName);
     }
 
-    if (isStorageUnavailable())
+    if (!isStorageAvailable())
     {
         // do not access the storage, and do not try to generate all missing thumbnails
         return QPixmap();
@@ -208,8 +206,8 @@ void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     // while the storage is not available, the thumbnail is kept in memory
-    const bool unavailable = isStorageUnavailable();
-    const bool missing = unavailable ? !sPendingThumbnails.contains(fileName) : !QFile::exists(fileName);
+    const bool available = isStorageAvailable();
+    const bool missing = available ? !QFile::exists(fileName) : !sPendingThumbnails.contains(fileName);
 
     if (pScene->isModified() || overrideModified || missing)
     {
@@ -251,7 +249,7 @@ void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
         // kept in memory until written, also while the storage is not available
         sPendingThumbnails.insert(fileName, pixmap);
 
-        if (!unavailable)
+        if (available)
         {
             writeThumbnail(fileName, pixmap);
         }

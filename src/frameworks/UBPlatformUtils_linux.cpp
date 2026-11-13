@@ -34,6 +34,7 @@
 #include <QDBusMetaType>
 #include <QProcessEnvironment>
 
+#include <dirent.h>
 #include <unistd.h>
 #include <X11/keysym.h>
 
@@ -103,6 +104,19 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     Q_UNUSED(fileType)
 
     // No fileType equivalent on Linux
+}
+
+bool UBPlatformUtils::canListDirectory(const QString& directory)
+{
+    DIR* handle = opendir(QFile::encodeName(directory).constData());
+
+    if (!handle)
+    {
+        return false;
+    }
+
+    closedir(handle);
+    return true;
 }
 
 void UBPlatformUtils::fadeDisplayOut()

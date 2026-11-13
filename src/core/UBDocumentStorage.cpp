@@ -22,7 +22,6 @@
 
 #include "UBDocumentStorage.h"
 
-#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QElapsedTimer>
@@ -37,41 +36,36 @@
 #include <memory>
 
 #include "core/UBPersistenceJournal.h"
+#include "frameworks/UBFileSystemUtils.h"
+#include "frameworks/UBPlatformUtils.h"
 
-#if defined(Q_OS_WIN)
-#include <windows.h>
-#else
-#include <dirent.h>
-#endif
+// A read is given up when no data arrived during this time: a slow storage which still
+// delivers data is waited for.
+static const int answerTimeoutMs = 3000;
 
-namespace
+// shorter while the storage is already known to be unavailable
+static const int answerTimeoutUnavailableMs = 1000;
+
+static const qint64 chunkSize = 256 * 1024;
+
+// Threads reading from the storage. Allocated once and never destroyed:
+// a read blocked on a storage which does not answer may still be running at exit.
+static QThreadPool* readPool()
 {
-    // A read is given up when no data arrived during this time. A slow storage which still
-    // delivers data is waited for, as before.
-    const int answerTimeoutMs = 3000;
+    static QThreadPool* pool = nullptr;
 
-    // shorter while the storage is already known to be unavailable
-    const int answerTimeoutUnavailableMs = 1000;
-
-    const qint64 chunkSize = 256 * 1024;
-
-    // Threads reading from the storage. Allocated once and never destroyed:
-    // a read blocked on a storage which does not answer may still be running at exit.
-    QThreadPool* readPool()
+    if (!pool)
     {
-        static QThreadPool* pool = []() {
-            QThreadPool* threadPool = new QThreadPool();
-            threadPool->setMaxThreadCount(4);
-            return threadPool;
-        }();
-
-        return pool;
+        pool = new QThreadPool();
+        pool->setMaxThreadCount(4);
     }
 
-    bool isReadPoolBusy()
-    {
-        return readPool()->activeThreadCount() >= readPool()->maxThreadCount();
-    }
+    return pool;
+}
+
+static bool isReadPoolBusy()
+{
+    return readPool()->activeThreadCount() >= readPool()->maxThreadCount();
 }
 
 struct UBDocumentStorage::FileRead
@@ -82,121 +76,6 @@ struct UBDocumentStorage::FileRead
     bool complete{false};
     QByteArray data;
 };
-
-void UBDocumentStorage::readFile(const QString& path, FileRead& read)
-{
-    QFile file(path);
-
-    if (!file.exists())
-    {
-        read.exists = false;
-    }
-    else if (file.open(QIODevice::ReadOnly))
-    {
-        QByteArray data;
-
-        while (!file.atEnd())
-        {
-            const QByteArray chunk = file.read(chunkSize);
-
-            if (chunk.isEmpty())
-            {
-                break;
-            }
-
-            data += chunk;
-            read.received += chunk.size();
-        }
-
-        read.complete = file.atEnd() && file.error() == QFileDevice::NoError;
-        read.data = data;
-    }
-
-    // remember the state of the file, to detect changes made elsewhere before a local copy
-    // of it is written
-    UBPersistenceJournal::journal()->noteFileState(path);
-}
-
-void UBDocumentStorage::startRead(const QString& path, const std::shared_ptr<FileRead>& read)
-{
-    const QPointer<UBDocumentStorage> storage(this);
-
-    readPool()->start([storage, path, read]() {
-        readFile(path, *read);
-        read->done.release();
-        postResult(storage, path, read);
-    });
-}
-
-void UBDocumentStorage::postResult(const QPointer<UBDocumentStorage>& storage, const QString& path, const std::shared_ptr<FileRead>& read)
-{
-    QCoreApplication* application = QCoreApplication::instance();
-
-    if (!application)
-    {
-        return;
-    }
-
-    QMetaObject::invokeMethod(application, [storage, path, read]() {
-        if (storage)
-        {
-            storage->onFileRead(path, *read);
-        }
-    }, Qt::QueuedConnection);
-}
-
-void UBDocumentStorage::onFileRead(const QString& path, const FileRead& read)
-{
-    mReadingAgain.remove(path);
-
-    if (!read.complete)
-    {
-        if (read.exists)
-        {
-            // reported as unavailable, read again when the storage is available
-            mUnreadFiles.insert(path);
-        }
-
-        return;
-    }
-
-    if (!mUnreadFiles.contains(path))
-    {
-        return;
-    }
-
-    mUnreadFiles.remove(path);
-
-    // a newer version of the file may wait to be written meanwhile
-    const QByteArray pending = UBPersistenceJournal::journal()->data(path);
-    emit fileReadLater(path, pending.isEmpty() ? read.data : pending);
-
-    if (mAvailable)
-    {
-        // continue with the next files, the storage answers
-        readUnreadFiles();
-    }
-}
-
-void UBDocumentStorage::readUnreadFiles()
-{
-    for (const QString& path : std::as_const(mUnreadFiles))
-    {
-        if (mReadingAgain.contains(path))
-        {
-            continue;
-        }
-
-        if (isReadPoolBusy())
-        {
-            // reads of the user interface go first; the remaining files are read when a read finished
-            return;
-        }
-
-        mReadingAgain.insert(path);
-        startRead(path, std::make_shared<FileRead>());
-    }
-}
 
 UBDocumentStorage::UBDocumentStorage(const QString& mountPoint, QObject* parent)
     : QObject(parent)
@@ -221,7 +100,7 @@ UBDocumentStorage::ReadResult UBDocumentStorage::read(const QString& path, QByte
     {
         // not the GUI thread: waiting does not block the user interface
         readFile(path, *read);
-        postResult(this, path, read);
+        postResult(path, read);
     }
     else
     {
@@ -332,36 +211,110 @@ bool UBDocumentStorage::isReachable(const QString& dataDirectory, const QString&
     // A data directory which exists but cannot be read (e.g. access denied once the user's
     // credentials to a share expired) would show an empty list of documents. If it does not
     // exist yet, it is created: its parent only needs to exist.
-    return !dataDirectoryExists || canList(dataDirectory);
+    return !dataDirectoryExists || UBPlatformUtils::canListDirectory(dataDirectory);
 }
 
-bool UBDocumentStorage::canList(const QString& directory)
+void UBDocumentStorage::readFile(const QString& path, FileRead& read)
 {
-#if defined(Q_OS_WIN)
-    const QString pattern = QDir::toNativeSeparators(QDir(directory).absoluteFilePath("*"));
-    WIN32_FIND_DATAW entry;
-    const HANDLE handle = FindFirstFileExW(reinterpret_cast<LPCWSTR>(pattern.utf16()), FindExInfoBasic,
-                                           &entry, FindExSearchNameMatch, nullptr, 0);
+    QFile file(path);
 
-    if (handle == INVALID_HANDLE_VALUE)
+    if (!file.exists())
     {
-        // the root of an empty drive has no entry at all
-        return GetLastError() == ERROR_FILE_NOT_FOUND;
+        read.exists = false;
+    }
+    else if (file.open(QIODevice::ReadOnly))
+    {
+        QByteArray data;
+
+        while (!file.atEnd())
+        {
+            const QByteArray chunk = file.read(chunkSize);
+
+            if (chunk.isEmpty())
+            {
+                break;
+            }
+
+            data += chunk;
+            read.received += chunk.size();
+        }
+
+        read.complete = file.atEnd() && file.error() == QFileDevice::NoError;
+        read.data = data;
     }
 
-    FindClose(handle);
-    return true;
-#else
-    DIR* handle = opendir(QFile::encodeName(directory).constData());
+    // remember the state of the file, to detect changes made elsewhere before a local copy
+    // of it is written
+    UBPersistenceJournal::journal()->noteFileState(path);
+}
 
-    if (!handle)
+void UBDocumentStorage::startRead(const QString& path, const std::shared_ptr<FileRead>& read)
+{
+    readPool()->start([this, path, read]() {
+        readFile(path, *read);
+        read->done.release();
+        postResult(path, read);
+    });
+}
+
+void UBDocumentStorage::postResult(const QString& path, const std::shared_ptr<FileRead>& read)
+{
+    QMetaObject::invokeMethod(this, [this, path, read]() {
+        onFileRead(path, *read);
+    }, Qt::QueuedConnection);
+}
+
+void UBDocumentStorage::onFileRead(const QString& path, const FileRead& read)
+{
+    mReadingAgain.remove(path);
+
+    if (!read.complete)
     {
-        return false;
+        if (read.exists)
+        {
+            // reported as unavailable, read again when the storage is available
+            mUnreadFiles.insert(path);
+        }
+
+        return;
     }
 
-    closedir(handle);
-    return true;
-#endif
+    if (!mUnreadFiles.contains(path))
+    {
+        return;
+    }
+
+    mUnreadFiles.remove(path);
+
+    // a newer version of the file may wait to be written meanwhile
+    const QByteArray pending = UBPersistenceJournal::journal()->data(path);
+    emit fileReadLater(path, pending.isEmpty() ? read.data : pending);
+
+    if (mAvailable)
+    {
+        // continue with the next files, the storage answers
+        readUnreadFiles();
+    }
+}
+
+void UBDocumentStorage::readUnreadFiles()
+{
+    for (const QString& path : std::as_const(mUnreadFiles))
+    {
+        if (mReadingAgain.contains(path))
+        {
+            continue;
+        }
+
+        if (isReadPoolBusy())
+        {
+            // reads of the user interface go first; the remaining files are read when a read finished
+            return;
+        }
+
+        mReadingAgain.insert(path);
+        startRead(path, std::make_shared<FileRead>());
+    }
 }
 
 bool UBDocumentStorage::isMountedAt(const QString& existingPath, const QString& mountPoint)
@@ -378,7 +331,7 @@ bool UBDocumentStorage::isMountedAt(const QString& existingPath, const QString& 
 
     if (volume.isValid())
     {
-        if (!volume.isReady() || !isSamePath(volume.rootPath(), mountPoint))
+        if (!volume.isReady() || !UBFileSystemUtils::isSamePath(volume.rootPath(), mountPoint))
         {
             return false;
         }
@@ -390,67 +343,5 @@ bool UBDocumentStorage::isMountedAt(const QString& existingPath, const QString& 
         return false;
     }
 
-    return isSamePath(existingPath, mountPoint) || isInside(existingPath, mountPoint);
-}
-
-namespace
-{
-#if defined(Q_OS_WIN)
-    const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseInsensitive;
-#else
-    const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseSensitive;
-#endif
-
-    // A path as written and as resolved by the system: a drive created with subst, a mapped
-    // network drive or a symbolic link may resolve to another path than the one configured.
-    QStringList pathForms(const QString& path)
-    {
-        const QFileInfo info(path);
-        QStringList forms{QDir::cleanPath(info.absoluteFilePath())};
-        const QString canonical = info.canonicalFilePath();
-
-        if (!canonical.isEmpty())
-        {
-            forms << QDir::cleanPath(canonical);
-        }
-
-        return forms;
-    }
-}
-
-bool UBDocumentStorage::isSamePath(const QString& path, const QString& other)
-{
-    for (const QString& form : pathForms(path))
-    {
-        for (const QString& otherForm : pathForms(other))
-        {
-            if (form.compare(otherForm, pathCaseSensitivity) == 0)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-bool UBDocumentStorage::isInside(const QString& path, const QString& directory)
-{
-    for (const QString& form : pathForms(path))
-    {
-        for (QString directoryForm : pathForms(directory))
-        {
-            if (!directoryForm.endsWith('/'))
-            {
-                directoryForm += '/';
-            }
-
-            if (form.startsWith(directoryForm, pathCaseSensitivity))
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return UBFileSystemUtils::isSamePath(existingPath, mountPoint) || UBFileSystemUtils::isInside(existingPath, mountPoint);
 }

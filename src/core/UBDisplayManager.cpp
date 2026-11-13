@@ -47,23 +47,7 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 
     mScreenConfigurationChangeTimer.setSingleShot(true);
     mScreenConfigurationChangeTimer.setInterval(3000);
-    connect(&mScreenConfigurationChangeTimer, &QTimer::timeout, this, [this](){
-        const bool screenListChanged = initScreenIndexes();
-
-        if (screenListChanged || mScreenAddedOrRemoved)
-        {
-            adjustScreens();
-        }
-        else
-        {
-            // Only a geometry change (e.g. resolution) without a change of the screen list:
-            // restore the roles cleared by initScreenIndexes() but do not reposition the
-            // windows, as in 1.7.7 (e.g. would show the board while in desktop mode).
-            assignRoles();
-        }
-
-        mScreenAddedOrRemoved = false;
-    });
+    connect(&mScreenConfigurationChangeTimer, &QTimer::timeout, this, &UBDisplayManager::applyScreenConfiguration);
 
     mScreenPositionTimer.setSingleShot(true);
     mScreenPositionTimer.setInterval(100);
@@ -351,17 +335,13 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
     return mAvailableScreens;
 }
 
-namespace
+static bool isWaylandSession()
 {
-    // backport of UBPlatformUtils::sessionType() == WAYLAND from 1.8
-    bool isWaylandSession()
-    {
 #ifdef Q_OS_LINUX
-        return QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE") == "wayland";
+    return QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE") == "wayland";
 #else
-        return false;
+    return false;
 #endif
-    }
 }
 
 void UBDisplayManager::adjustScreens()
@@ -580,6 +560,25 @@ void UBDisplayManager::screenGeometryChanged()
     // adding or removing a QScreen. Wait until the compositor has settled before
     // rebuilding the available screen list and assigning the display roles.
     mScreenConfigurationChangeTimer.start();
+}
+
+void UBDisplayManager::applyScreenConfiguration()
+{
+    const bool screenListChanged = initScreenIndexes();
+
+    if (screenListChanged || mScreenAddedOrRemoved)
+    {
+        adjustScreens();
+    }
+    else
+    {
+        // Only a geometry change (e.g. resolution) without a change of the screen list:
+        // restore the roles cleared by initScreenIndexes() but do not reposition the
+        // windows (e.g. would show the board while in desktop mode).
+        assignRoles();
+    }
+
+    mScreenAddedOrRemoved = false;
 }
 
 void UBDisplayManager::monitorScreenGeometry(QScreen* screen)

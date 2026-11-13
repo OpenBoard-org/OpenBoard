@@ -167,24 +167,29 @@ class UBPersistenceManager : public QObject
         bool waitForAllSaved(int timeoutMs = -1) const;
         bool isSceneInCached(std::shared_ptr<UBDocumentProxy>proxy, int index) const;
 
-        // true while the document storage does not answer or writing to it fails
-        bool isStorageUnavailable() const;
-
         // write a thumbnail in the persistence thread
         void saveThumbnail(const QString& fileName, const QByteArray& data);
 
         // the storage where the documents are kept, to read their files
         UBDocumentStorage* documentStorage() const;
 
-        // True if pages of the document can be inserted, moved or deleted now, which renames page
-        // files. Waits shortly for pending saves. Shows a short message if not, unless silent.
-        bool mayChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent = false);
+        // Before inserting, moving or deleting pages of the document, which renames page files:
+        // saves the page shown on the board and waits shortly for the pending saves. Returns false
+        // if the pages cannot be changed now, with a short message unless silent.
+        bool prepareToChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent = false);
 
         // what was written from the local journal at startup, empty if nothing
         QString recoveryReport() const;
 
         // remove temporary files left behind by interrupted writes (in the background)
         static void removeTemporaryFiles(const QString& documentPath);
+
+        static bool isPageFile(const QString& fileName);
+
+        // True if the document was written by a newer OpenBoard version with a table of contents
+        // (toc.json): its page files do not follow the page order, so local copies of pages must
+        // never be written into it.
+        static bool isWrittenByNewerVersion(const QString& documentDirectory);
 
     signals:
         void documentCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
@@ -194,8 +199,6 @@ class UBPersistenceManager : public QObject
         void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
         void documentSceneMoved(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int fromIndex, int toIndex);
         void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
-
-        void storageAvailabilityChanged(bool available);
 
 private:
         friend class UBDocumentVersionConverter;
@@ -207,8 +210,8 @@ private:
                       const int sourceIndex, const int targetIndex);
         void generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         void checkIfDocumentRepositoryExists();
-        void setStorageUnavailable(bool unavailable);
         void journalPendingSaves(bool closing);
+        void keepScenesForAbandonedThread();
         void recoverJournal();
         QString recoverDocumentCopy(const QString& directory, const QStringList& files);
         QByteArray foldersXml();
@@ -259,6 +262,7 @@ private:
         void onStorageAvailabilityChanged(bool available);
         void retryJournal();
         void checkBlockedSave();
+        void scheduleFoldersXml();
         void saveFoldersXml();
 };
 
