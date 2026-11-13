@@ -62,7 +62,7 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
 
     private slots:
         void OnRequireUpdate();
-        void OnRendererLoaded();
+        void onRendererLoaded();
 };
 
 #endif // GRAPHICSPDFITEM_H

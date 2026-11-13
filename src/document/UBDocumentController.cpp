@@ -1003,7 +1003,8 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     // copying the document files is not possible while the storage is not available
     if (pMode == aContentCopy && nodeSource->nodeType() == UBDocumentTreeNode::Document && nodeSource->proxyData()
-            && !UBPersistenceManager::persistenceManager()->prepareToChangePages(nodeSource->proxyData())) {
+            && !UBPersistenceManager::persistenceManager()->prepareToChangePages(nodeSource->proxyData()))
+    {
         return QModelIndex();
     }
 

@@ -335,7 +335,8 @@ bool UBBoardView::event (QEvent * e)
 
 void UBBoardView::tabletEvent (QTabletEvent * event)
 {
-    if (!bIsControl && !bIsDesktop) {
+    if (!bIsControl && !bIsDesktop)
+    {
         event->ignore();
         return;
     }

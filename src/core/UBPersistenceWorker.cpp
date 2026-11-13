@@ -322,8 +322,8 @@ void UBPersistenceWorker::process()
         {
             const QString directory = info.proxy->persistencePath();
 
-            // A document without pages has no folder and its metadata are not saved, like before.
-            // But keep them if pages are waiting in the journal: the folder could not be created.
+            // A document without pages has no folder and its metadata are not saved. But keep
+            // them if pages are waiting in the journal: the folder could not be created.
             const bool isEmptyDocument = !QFileInfo::exists(directory)
                     && QFileInfo::exists(QFileInfo(directory).path())
                     && !UBPersistenceJournal::journal()->hasPendingFiles(directory);

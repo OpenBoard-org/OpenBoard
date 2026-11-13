@@ -61,7 +61,7 @@ XPDFRenderer::XPDFRenderer()
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
 
-    connect(&m_cacheThread, SIGNAL(finished()), this, SLOT(OnThreadFinished()));
+    connect(&m_cacheThread, &QThread::finished, this, &XPDFRenderer::OnThreadFinished);
 }
 
 void XPDFRenderer::load(const QByteArray &fileData)
@@ -102,7 +102,7 @@ void XPDFRenderer::load(const QByteArray &fileData)
 
 XPDFRenderer::~XPDFRenderer()
 {
-    disconnect(&m_cacheThread, SIGNAL(finished()), this, SLOT(OnThreadFinished()));
+    disconnect(&m_cacheThread, &QThread::finished, this, &XPDFRenderer::OnThreadFinished);
     m_cacheThread.cancelPending();
     m_cacheThread.wait(XPDFThreadMaxTimeoutOnExit::timeout_ms);
     if (m_cacheThread.isRunning())

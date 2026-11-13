@@ -93,7 +93,7 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString &
         {
             // The same application or interactivity may exist in the user, administrator and
             // OpenBoard directories, which are scanned in this order. Keep only the first one
-            // (User > Admin > OpenBoard). Media files are not deduplicated (as in 1.7.7).
+            // (User > Admin > OpenBoard). Media files are not deduplicated.
             const QString virtualPath = currVirtualPath + "/" + fileName;
 
             if (mSentApplications.contains(virtualPath))

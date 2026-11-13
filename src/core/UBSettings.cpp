@@ -617,7 +617,9 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     QSettings* policy = getPolicySettings();
 
     if (policy && policy->contains(key))
+    {
         return policy->value(key);
+    }
 
     if (mSettingsQueue.contains(key))
         return mSettingsQueue.value(key);
@@ -1097,7 +1099,9 @@ static QString localDataDirectory()
     QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 
     if (qApp->organizationName().size() > 0)
+    {
         dataDirPath.replace(qApp->organizationName() + "/", "");
+    }
 
     return dataDirPath;
 }

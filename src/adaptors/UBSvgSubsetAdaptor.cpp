@@ -148,7 +148,6 @@ static void setPageModified(QGraphicsItem* item)
     }
 }
 
-// The scale of a PDF item, from the size of its PDF page
 static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
 {
     qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);

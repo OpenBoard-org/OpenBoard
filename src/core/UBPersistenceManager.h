@@ -170,7 +170,6 @@ class UBPersistenceManager : public QObject
         // write a thumbnail in the persistence thread
         void saveThumbnail(const QString& fileName, const QByteArray& data);
 
-        // the storage where the documents are kept, to read their files
         UBDocumentStorage* documentStorage() const;
 
         // Before inserting, moving or deleting pages of the document, which renames page files:

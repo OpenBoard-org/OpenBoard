@@ -653,7 +653,7 @@ void UBBoardController::addScene()
             && !UBPersistenceManager::persistenceManager()->prepareToChangePages(selectedDocument(), true))
     {
         // Inserting renames the following page files, which is not possible while the
-        // storage is not available. Do not block the teacher: add the page at the end.
+        // storage is not available. Do not block the user: add the page at the end.
         newPageIndex = selectedDocument()->pageCount();
         UBApplication::showMessage(tr("The document location is not available: the new page is added at the end of the document."));
     }
@@ -2076,16 +2076,20 @@ void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
         connect(mAutosaveTimer, SIGNAL(timeout()), this, SLOT(autosaveTimeout()));
     }
 
-    if (!mQuickSaveTimer) {
+    if (!mQuickSaveTimer)
+    {
         mQuickSaveTimer = new QTimer(this);
         mQuickSaveTimer->setInterval(30 * 1000);
         connect(mQuickSaveTimer, &QTimer::timeout, this, &UBBoardController::quickSaveTimeout);
     }
 
-    if (md == UBApplicationController::Board) {
+    if (md == UBApplicationController::Board)
+    {
         mAutosaveTimer->start(autoSaveInterval);
         mQuickSaveTimer->start();
-    } else {
+    }
+    else
+    {
         mAutosaveTimer->stop();
         mQuickSaveTimer->stop();
     }

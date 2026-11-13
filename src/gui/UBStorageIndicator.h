@@ -30,7 +30,7 @@ class QLabel;
 
 /**
  * A discreet badge in the bottom left corner of a view, shown while the document location
- * is not available. It does not block: the teacher can continue working.
+ * is not available. It does not block: the user can continue working.
  *
  * Clicking the badge shows or hides the explanation, which stays until the badge is clicked
  * again. When the location is available again, the badge tells it for a few seconds, as an

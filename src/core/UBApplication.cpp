@@ -478,7 +478,7 @@ void UBApplication::onCommitDataRequest(QSessionManager& manager)
 void UBApplication::setupStorageIndicator()
 {
     // A discreet badge in the bottom left corner while the document location is not available,
-    // instead of message boxes: the teacher can continue working, nothing has to be decided.
+    // instead of message boxes: the user can continue working, nothing has to be decided.
     QWidget* leftPalette = boardController->paletteManager()->leftPalette();
     new UBStorageIndicator(boardController->controlContainer(), nullptr, leftPalette);
 
@@ -556,7 +556,6 @@ void UBApplication::checkDataDirectory()
     box.setDefaultButton(retryButton);
     box.setEscapeButton(retryButton);
 
-    // check periodically in background
     bool becameAvailable = false;
     QFutureWatcher<bool> watcher;
     QTimer timer;

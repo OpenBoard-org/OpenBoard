@@ -545,7 +545,7 @@ void UBPersistenceManager::closing()
     mFoldersTimer.stop();
     saveFoldersXml();
 
-    // Do not keep the teacher waiting when the storage does not answer: what is not
+    // Do not keep the user waiting when the storage does not answer: what is not
     // written after the timeout stays in the local journal and is written at the next start.
     flush(mDocumentStorage->isAvailable() ? 5000 : 1000, true);
 
@@ -703,7 +703,7 @@ bool UBPersistenceManager::prepareToChangePages(std::shared_ptr<UBDocumentProxy>
 {
     // Adding, moving or deleting pages renames the following page files. Pending saves
     // must be written first, they use the page numbers. Wait shortly, but do not block
-    // the teacher when the storage does not answer.
+    // the user when the storage does not answer.
     if (mDocumentStorage->isAvailable())
     {
         // The modified page shown on the board must be written before the files are renamed. Save it
@@ -1540,7 +1540,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
     if (forceImmediateSaving && mDocumentStorage->isAvailable())
     {
         // The caller expects the page to be written now (e.g. before copying the page files).
-        // Wait for it, but do not block the teacher when the storage does not answer.
+        // Wait for it, but do not block the user when the storage does not answer.
         if (!waitForAllSaved(3000))
         {
             mDocumentStorage->setAvailable(false);
@@ -1560,7 +1560,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(s
 
     if (forceImmediateSaving)
     {
-        // wait for it, but do not block the teacher when the storage does not answer
+        // wait for it, but do not block the user when the storage does not answer
         if (mDocumentStorage->isAvailable() && !waitForAllSaved(3000))
         {
             mDocumentStorage->setAvailable(false);
@@ -1823,9 +1823,8 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
 
     if (!rp.exists())
     {
-        // We have lost the document repository, e.g. a network share was disconnected.
-        // OpenBoard used to quit here, losing the latest changes. Now the changes are kept
-        // on this computer and written when the repository is available again.
+        // The document repository is lost, e.g. a network share was disconnected: the changes
+        // are kept on this computer and written when the repository is available again.
         mDocumentStorage->setAvailable(false);
     }
 }
@@ -1849,7 +1848,7 @@ static QString thumbnailOf(const QString& pageFile)
 void UBPersistenceManager::recoverJournal()
 {
     // Files kept on this computer at the last session, because the document storage was not
-    // available. Write them now, without asking: the teacher must not have to decide anything.
+    // available. Write them now, without asking: the user must not have to decide anything.
     const auto journal = UBPersistenceJournal::journal();
     const QStringList files = journal->pendingFiles(mDocumentRepositoryPath);
 
@@ -2041,7 +2040,6 @@ QString UBPersistenceManager::recoverDocumentCopy(const QString& directory, cons
         }
     }
 
-    // the copy is a new document
     auto proxy = std::make_shared<UBDocumentProxy>(copyPath);
     // the time distinguishes several copies of the same document; same format as new document names
     const QDateTime now = QDateTime::currentDateTime();
