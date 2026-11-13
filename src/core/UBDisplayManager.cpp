@@ -335,20 +335,11 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
     return mAvailableScreens;
 }
 
-static bool isWaylandSession()
-{
-#ifdef Q_OS_LINUX
-    return QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE") == "wayland";
-#else
-    return false;
-#endif
-}
-
 void UBDisplayManager::adjustScreens()
 {
     assignRoles();
 
-    if (isWaylandSession())
+    if (UBPlatformUtils::sessionType() == UBPlatformUtils::SessionType::WAYLAND)
     {
         auto controlWidget = widget(ScreenRole::Control);
 

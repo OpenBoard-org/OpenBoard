@@ -184,11 +184,7 @@ QSettings* UBSettings::getAppSettings()
     return UBSettings::sAppSettings;
 }
 
-/*
- * System wide directory for the administrator configuration files. It is located
- * outside of the installation directory, so that the files are kept on updates.
- */
-static QString systemConfigDirectory()
+QString UBSettings::systemConfigDirectory()
 {
 #if defined(Q_OS_WIN)
     QString programData = qEnvironmentVariable("ProgramData");
@@ -206,11 +202,7 @@ static QString systemConfigDirectory()
 #endif
 }
 
-/*
- * Open an optional, read-only configuration file once the application name is known. It is
- * searched in the system configuration directory first, then next to OpenBoard.config.
- */
-static QSettings* openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
+QSettings* UBSettings::openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
 {
     if (loaded || qApp->applicationName().isEmpty())
     {
@@ -1094,7 +1086,7 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
-static QString localDataDirectory()
+QString UBSettings::localDataDirectory()
 {
     QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 

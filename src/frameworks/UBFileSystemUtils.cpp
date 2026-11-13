@@ -890,9 +890,7 @@ static const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseInsensitive;
 static const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseSensitive;
 #endif
 
-// A path as written and as resolved by the system: a drive created with subst, a mapped
-// network drive or a symbolic link may resolve to another path than the one configured.
-static QStringList pathForms(const QString& path)
+QStringList UBFileSystemUtils::pathForms(const QString& path)
 {
     const QFileInfo info(path);
     QStringList forms{QDir::cleanPath(info.absoluteFilePath())};

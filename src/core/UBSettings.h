@@ -502,6 +502,12 @@ class UBSettings : public QObject
         static QSettings* getAppSettings();
         static QSettings* getAdminSettings();
         static QSettings* getPolicySettings();
+        // system wide directory of the administrator configuration files, kept on updates
+        static QString systemConfigDirectory();
+        // an optional, read-only configuration file, searched in the system configuration directory
+        // first, then next to OpenBoard.config, once the application name is known
+        static QSettings* openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description);
+        static QString localDataDirectory();
         QVariant baseValue(const QString& key, const QVariant& defaultValue = QVariant());
 
         static QPointer<QSettings> sAppSettings;

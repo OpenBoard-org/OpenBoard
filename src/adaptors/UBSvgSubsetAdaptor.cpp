@@ -38,8 +38,6 @@
 #include <QGraphicsVideoItem>
 #include <QElapsedTimer>
 
-#include <functional>
-#include <memory>
 #include <optional>
 
 #include "domain/UBGraphicsSvgItem.h"
@@ -105,34 +103,29 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
-// Image file names (relative to the document folder) by document folder and item uuid.
-// The writer needs the file name of each image. It is usually found by listing the images
-// folder, which is not possible while the document storage is not available.
-static QMutex sFileCacheMutex;
-static QHash<QString, QHash<QUuid, QString>> sImageFiles;
+QMutex UBSvgSubsetAdaptor::sFileCacheMutex;
+QHash<QString, QHash<QUuid, QString>> UBSvgSubsetAdaptor::sImageFiles;
+QSet<QString> UBSvgSubsetAdaptor::sKnownPdfFiles;
 
-// embedded PDF files known to exist, no need to check the storage at each save
-static QSet<QString> sKnownPdfFiles;
-
-static QString rememberedImageFile(const QString& documentPath, const QUuid& uuid)
+QString UBSvgSubsetAdaptor::rememberedImageFile(const QString& documentPath, const QUuid& uuid)
 {
     QMutexLocker locker(&sFileCacheMutex);
     return sImageFiles.value(documentPath).value(uuid);
 }
 
-static void rememberPdfFile(const QString& path)
+void UBSvgSubsetAdaptor::rememberPdfFile(const QString& path)
 {
     QMutexLocker locker(&sFileCacheMutex);
     sKnownPdfFiles.insert(path);
 }
 
-static bool isKnownPdfFile(const QString& path)
+bool UBSvgSubsetAdaptor::isKnownPdfFile(const QString& path)
 {
     QMutexLocker locker(&sFileCacheMutex);
     return sKnownPdfFiles.contains(path);
 }
 
-static QPixmap pixmapFromData(const QByteArray& data)
+QPixmap UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapFromData(const QByteArray& data)
 {
     QBuffer buffer;
     buffer.setData(data);
@@ -141,8 +134,7 @@ static QPixmap pixmapFromData(const QByteArray& data)
     return QPixmap::fromImage(reader.read());
 }
 
-// The content of an item arrived after its page was read: the page is saved again, with its thumbnail.
-static void setPageModified(QGraphicsItem* item)
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::setPageModified(QGraphicsItem* item)
 {
     UBCoreGraphicsScene* scene = dynamic_cast<UBCoreGraphicsScene*>(item->scene());
 
@@ -152,22 +144,7 @@ static void setPageModified(QGraphicsItem* item)
     }
 }
 
-// Gives an item the content of a file which the document storage could not read yet, as soon as
-// it is read. Unlike disconnecting the item, it lets an item wait for several files.
-static void deliverWhenRead(UBDocumentStorage* storage, const QString& path, QObject* item, const std::function<void(const QByteArray&)>& deliver)
-{
-    auto connection = std::make_shared<QMetaObject::Connection>();
-
-    *connection = QObject::connect(storage, &UBDocumentStorage::fileReadLater, item, [connection, path, deliver](const QString& file, const QByteArray& data) {
-        if (file == path)
-        {
-            QObject::disconnect(*connection);
-            deliver(data);
-        }
-    });
-}
-
-static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
 {
     qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
     qreal pdfScale = qreal(pageDpi)/currentDpi;
@@ -183,6 +160,18 @@ static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int page
     }
 
     pdfItem->setScale(pdfScale);
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::retryOpeningWhenAvailable(UBGraphicsMediaItem* mediaItem)
+{
+    UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
+
+    QObject::connect(storage, &UBDocumentStorage::availabilityChanged, mediaItem, [mediaItem](bool available) {
+        if (available)
+        {
+            mediaItem->retryOpening();
+        }
+    });
 }
 
 
@@ -2560,6 +2549,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
     if(audioItem)
     {
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
+        retryOpeningWhenAvailable(audioItem);
 
         graphicsItemFromSvg(audioItem);
         auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
@@ -2597,6 +2587,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(videoItem){
         videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
+        retryOpeningWhenAvailable(videoItem);
 
         graphicsItemFromSvg(videoItem);
         auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
@@ -2983,43 +2974,15 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
     widgetItem->setWebActive(false);
 
     auto uuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
-    // an incompatible application shows a substitute image: its files are not waited for
-    const bool isCompatible = mProxy->isWidgetCompatible(QUuid(uuid.toString()));
-
-    if (!configuration && isCompatible)
-    {
-        deliverWhenRead(storage, configurationPath, widgetItem, [widgetItem](const QByteArray& data) {
-            widgetItem->configure(data);
-            setPageModified(widgetItem);
-        });
-    }
-
     QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid.toString() + ".png";
     widgetItem->setSnapshotPath(QUrl::fromLocalFile(pixPath));
 
     auto frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
     const bool isFrozen = !frozen.isNull() && frozen.toString() == xmlTrue;
     QByteArray snapshotData;
+    const bool isSnapshotRead = storage->read(pixPath, snapshotData) != UBDocumentStorage::ReadResult::Unavailable;
 
-    if (storage->read(pixPath, snapshotData) == UBDocumentStorage::ReadResult::Unavailable)
-    {
-        // a frozen application stays frozen, so that saving the page keeps it frozen
-        widgetItem->setSnapshot(QPixmap(), isFrozen);
-
-        if (isCompatible)
-        {
-            deliverWhenRead(storage, pixPath, widgetItem, [widgetItem](const QByteArray& data) {
-                // unless the user froze it meanwhile
-                if (widgetItem->snapshot().isNull())
-                {
-                    widgetItem->setSnapshot(pixmapFromData(data), widgetItem->isFrozen());
-                    widgetItem->update();
-                    setPageModified(widgetItem);
-                }
-            });
-        }
-    }
-    else
+    if (isSnapshotRead)
     {
         QPixmap snapshot = pixmapFromData(snapshotData);
 
@@ -3027,6 +2990,31 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
         {
             widgetItem->setSnapshot(snapshot, isFrozen);
         }
+    }
+    else
+    {
+        // a frozen application stays frozen, so that saving the page keeps it frozen
+        widgetItem->setSnapshot(QPixmap(), isFrozen);
+    }
+
+    // An incompatible application shows a substitute image: its files are not waited for.
+    // The others get the files which could not be read yet as soon as they are read.
+    if (mProxy->isWidgetCompatible(QUuid(uuid.toString())) && (!configuration || !isSnapshotRead))
+    {
+        QObject::connect(storage, &UBDocumentStorage::fileReadLater, widgetItem, [widgetItem, configurationPath, pixPath](const QString& file, const QByteArray& data) {
+            if (file == configurationPath)
+            {
+                widgetItem->configure(data);
+                setPageModified(widgetItem);
+            }
+            else if (file == pixPath && widgetItem->snapshot().isNull())
+            {
+                // unless the user froze it meanwhile
+                widgetItem->setSnapshot(pixmapFromData(data), widgetItem->isFrozen());
+                widgetItem->update();
+                setPageModified(widgetItem);
+            }
+        });
     }
 
     graphicsItemFromSvg(widgetItem);

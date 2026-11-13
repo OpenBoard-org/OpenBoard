@@ -121,6 +121,10 @@ class UBFileSystemUtils : public QObject
         static bool isInside(const QString& path, const QString& directory);
 
     private:
+        // A path as written and as resolved by the system: a drive created with subst, a mapped
+        // network drive or a symbolic link may resolve to another path than the one configured.
+        static QStringList pathForms(const QString& path);
+
         static QStringList sTempDirToCleanUp;
 
 };

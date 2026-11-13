@@ -127,6 +127,17 @@ class UBSvgSubsetAdaptor
         static QString toSvgTransform(const QTransform& matrix);
         static QTransform fromSvgTransform(const QString& transform);
 
+        // Files of the documents known from reading their pages. The writer needs the file name of each
+        // image and whether each PDF exists, which cannot be checked while the document storage is not
+        // available. Shared by the reader and the writer, which may run in different threads.
+        static QString rememberedImageFile(const QString& documentPath, const QUuid& uuid);
+        static void rememberPdfFile(const QString& path);
+        static bool isKnownPdfFile(const QString& path);
+
+        static QMutex sFileCacheMutex;
+        static QHash<QString, QHash<QUuid, QString>> sImageFiles;
+        static QSet<QString> sKnownPdfFiles;
+
 
         class UBSvgSubsetReader
         {
@@ -188,6 +199,13 @@ class UBSvgSubsetAdaptor
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 
                 qreal normalizedZValue(bool* hasValue);
+
+                static QPixmap pixmapFromData(const QByteArray& data);
+                // the content of an item arrived after its page was read: the page is saved again, with its thumbnail
+                static void setPageModified(QGraphicsItem* item);
+                static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize);
+                // a media file which could not be opened is opened again when the document storage is available again
+                static void retryOpeningWhenAvailable(UBGraphicsMediaItem* mediaItem);
 
                 QXmlStreamReader mXmlReader;
                 int mFileVersion;

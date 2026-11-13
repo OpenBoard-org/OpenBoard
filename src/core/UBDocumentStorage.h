@@ -29,6 +29,8 @@
 
 #include <memory>
 
+class QThreadPool;
+
 /**
  * The storage where the documents are kept: the data directory, on a local disk or on mounted
  * storage (e.g. a network share).
@@ -86,6 +88,10 @@ private:
     // a read on the storage, shared with the reading thread, which may finish after read() gave up
     struct FileRead;
 
+    // Threads reading from the storage. Allocated once and never destroyed:
+    // a read blocked on a storage which does not answer may still be running at exit.
+    static QThreadPool* readPool();
+    static bool isReadPoolBusy();
     static void readFile(const QString& path, FileRead& read);
     void startRead(const QString& path, const std::shared_ptr<FileRead>& read);
     // passes the result to onFileRead() in the thread of the storage, from any thread

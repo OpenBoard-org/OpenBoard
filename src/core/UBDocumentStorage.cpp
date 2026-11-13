@@ -48,9 +48,7 @@ static const int answerTimeoutUnavailableMs = 1000;
 
 static const qint64 chunkSize = 256 * 1024;
 
-// Threads reading from the storage. Allocated once and never destroyed:
-// a read blocked on a storage which does not answer may still be running at exit.
-static QThreadPool* readPool()
+QThreadPool* UBDocumentStorage::readPool()
 {
     static QThreadPool* pool = nullptr;
 
@@ -63,7 +61,7 @@ static QThreadPool* readPool()
     return pool;
 }
 
-static bool isReadPoolBusy()
+bool UBDocumentStorage::isReadPoolBusy()
 {
     return readPool()->activeThreadCount() >= readPool()->maxThreadCount();
 }

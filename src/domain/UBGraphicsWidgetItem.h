@@ -304,6 +304,8 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
     private:
         // reads its config.xml: size, start file, roles, metadata and default preferences
         void readConfiguration(const QByteArray& configuration);
+        // the start file of an application whose configuration names none
+        static QString defaultStartFile(const QString& widgetPath);
 
         static void loadNPAPIWrappersTemplates();
         static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);

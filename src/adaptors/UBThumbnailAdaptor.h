@@ -57,6 +57,11 @@ public:
 
 private:
     static void generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy);
+    static void writeThumbnail(const QString& fileName, const QPixmap& pixmap);
+
+    // Thumbnails not written yet (GUI thread only). They are written by the persistence thread,
+    // so that a storage which does not answer does not block the GUI, and kept here until then.
+    static QHash<QString, QPixmap> sPendingThumbnails;
 
     UBThumbnailAdaptor() {}
 };

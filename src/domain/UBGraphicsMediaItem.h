@@ -105,6 +105,10 @@ public:
     virtual void setMediaFileUrl(QUrl url);
     void setInitialPos(qint64 p);
     void setMediaPos(qint64 p);
+
+    // Opens the media file again if it could not be opened, e.g. while the document location was
+    // unavailable, but not if its format cannot be played. True if it is opened again.
+    bool retryOpening();
     virtual void setSourceUrl(const QUrl &pSourceUrl);
     void setSelected(bool selected);
     void setMinimumSize(const QSize& size);
@@ -170,8 +174,6 @@ private:
     // the media file could not be opened, e.g. while the document storage was unavailable,
     // rather than having a format which cannot be played
     bool hasFailedToOpen() const;
-    void openAgain();
-    void onStorageAvailabilityChanged(bool available);
 };
 
 class UBGraphicsAudioItem: public UBGraphicsMediaItem

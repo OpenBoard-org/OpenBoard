@@ -221,6 +221,17 @@ public:
 
         static bool errorOpeningVirtualKeyboard;
 #endif
+        enum SessionType {
+            UNKNOWN,
+            X11,
+            WAYLAND
+        };
+
+#ifdef Q_OS_LINUX
+        static SessionType sessionType();
+#else
+        static SessionType sessionType() { return UNKNOWN; }
+#endif
 };
 
 #ifdef Q_OS_LINUX

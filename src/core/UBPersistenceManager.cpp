@@ -1840,7 +1840,7 @@ bool UBPersistenceManager::isWrittenByNewerVersion(const QString& documentDirect
     return QFileInfo::exists(documentDirectory + "/toc.json");
 }
 
-static QString thumbnailOf(const QString& pageFile)
+QString UBPersistenceManager::thumbnailOf(const QString& pageFile)
 {
     return pageFile.left(pageFile.length() - 4) + ".thumbnail.jpg";
 }
