@@ -25,7 +25,11 @@
 
 #include <QByteArray>
 #include <QObject>
+#include <QPointer>
+#include <QSet>
 #include <QString>
+
+#include <memory>
 
 /**
  * The storage where the documents are kept: the data directory, on a local disk or on mounted
@@ -57,7 +61,9 @@ public:
     // at this path, which is checked to be currently mounted.
     explicit UBDocumentStorage(const QString& mountPoint, QObject* parent = nullptr);
 
-    // the newest content of a file (absolute path): the local copy if one waits, else the storage
+    // The newest content of a file (absolute path): the local copy if one waits, else the storage.
+    // A file reported as unavailable is read again in the background: fileReadLater() delivers
+    // its content as soon as it can be read.
     ReadResult read(const QString& path, QByteArray& data);
 
     bool isLocal() const;
@@ -76,7 +82,25 @@ public:
 signals:
     void availabilityChanged(bool available);
 
+    // A file which read() reported as unavailable could be read since: its read finished late,
+    // or it was read again once the storage became available.
+    void fileReadLater(const QString& path, const QByteArray& data);
+
 private:
+    // a read on the storage, shared with the reading thread, which may finish after read() gave up
+    struct FileRead;
+
+    static void readFile(const QString& path, FileRead& read);
+    // read in a background thread; the result is passed to onFileRead()
+    void startRead(const QString& path, const std::shared_ptr<FileRead>& read);
+    // pass the result of a read to onFileRead(), in the thread of the storage
+    static void postResult(const QPointer<UBDocumentStorage>& storage, const QString& path, const std::shared_ptr<FileRead>& read);
+    // result of every read on the storage, also of reads given up by read(); delivers the files
+    // which could not be read before
+    void onFileRead(const QString& path, const FileRead& read);
+    // read again, in the background, the files which could not be read
+    void readUnreadFiles();
+
     // true if the entries of an existing directory can be read
     static bool canList(const QString& directory);
     static bool isMountedAt(const QString& existingPath, const QString& mountPoint);
@@ -86,6 +110,10 @@ private:
 
     QString mMountPoint;
     bool mAvailable{true};
+    // files reported as unavailable by read() and not read since
+    QSet<QString> mUnreadFiles;
+    // files of mUnreadFiles currently read again
+    QSet<QString> mReadingAgain;
 };
 
 #endif /* UBDOCUMENTSTORAGE_H_ */

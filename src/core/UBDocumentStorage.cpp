@@ -22,6 +22,7 @@
 
 #include "UBDocumentStorage.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QElapsedTimer>
@@ -67,48 +68,133 @@ namespace
         return pool;
     }
 
-    // shared with the reading thread, which may finish after the reader gave up
-    struct FileRead
+    bool isReadPoolBusy()
     {
-        QSemaphore done;
-        std::atomic<qint64> received{0};
-        bool exists{true};
-        bool complete{false};
+        return readPool()->activeThreadCount() >= readPool()->maxThreadCount();
+    }
+}
+
+struct UBDocumentStorage::FileRead
+{
+    QSemaphore done;
+    std::atomic<qint64> received{0};
+    bool exists{true};
+    bool complete{false};
+    QByteArray data;
+};
+
+void UBDocumentStorage::readFile(const QString& path, FileRead& read)
+{
+    QFile file(path);
+
+    if (!file.exists())
+    {
+        read.exists = false;
+    }
+    else if (file.open(QIODevice::ReadOnly))
+    {
         QByteArray data;
-    };
 
-    void readFile(const QString& path, FileRead& read)
-    {
-        QFile file(path);
-
-        if (!file.exists())
+        while (!file.atEnd())
         {
-            read.exists = false;
-        }
-        else if (file.open(QIODevice::ReadOnly))
-        {
-            QByteArray data;
+            const QByteArray chunk = file.read(chunkSize);
 
-            while (!file.atEnd())
+            if (chunk.isEmpty())
             {
-                const QByteArray chunk = file.read(chunkSize);
-
-                if (chunk.isEmpty())
-                {
-                    break;
-                }
-
-                data += chunk;
-                read.received += chunk.size();
+                break;
             }
 
-            read.complete = file.atEnd() && file.error() == QFileDevice::NoError;
-            read.data = data;
+            data += chunk;
+            read.received += chunk.size();
         }
 
-        // remember the state of the file, to detect changes made elsewhere before a local copy
-        // of it is written
-        UBPersistenceJournal::journal()->noteFileState(path);
+        read.complete = file.atEnd() && file.error() == QFileDevice::NoError;
+        read.data = data;
+    }
+
+    // remember the state of the file, to detect changes made elsewhere before a local copy
+    // of it is written
+    UBPersistenceJournal::journal()->noteFileState(path);
+}
+
+void UBDocumentStorage::startRead(const QString& path, const std::shared_ptr<FileRead>& read)
+{
+    const QPointer<UBDocumentStorage> storage(this);
+
+    readPool()->start([storage, path, read]() {
+        readFile(path, *read);
+        read->done.release();
+        postResult(storage, path, read);
+    });
+}
+
+void UBDocumentStorage::postResult(const QPointer<UBDocumentStorage>& storage, const QString& path, const std::shared_ptr<FileRead>& read)
+{
+    QCoreApplication* application = QCoreApplication::instance();
+
+    if (!application)
+    {
+        return;
+    }
+
+    QMetaObject::invokeMethod(application, [storage, path, read]() {
+        if (storage)
+        {
+            storage->onFileRead(path, *read);
+        }
+    }, Qt::QueuedConnection);
+}
+
+void UBDocumentStorage::onFileRead(const QString& path, const FileRead& read)
+{
+    mReadingAgain.remove(path);
+
+    if (!read.complete)
+    {
+        if (read.exists)
+        {
+            // reported as unavailable, read again when the storage is available
+            mUnreadFiles.insert(path);
+        }
+
+        return;
+    }
+
+    if (!mUnreadFiles.contains(path))
+    {
+        return;
+    }
+
+    mUnreadFiles.remove(path);
+
+    // a newer version of the file may wait to be written meanwhile
+    const QByteArray pending = UBPersistenceJournal::journal()->data(path);
+    emit fileReadLater(path, pending.isEmpty() ? read.data : pending);
+
+    if (mAvailable)
+    {
+        // continue with the next files, the storage answers
+        readUnreadFiles();
+    }
+}
+
+void UBDocumentStorage::readUnreadFiles()
+{
+    for (const QString& path : std::as_const(mUnreadFiles))
+    {
+        if (mReadingAgain.contains(path))
+        {
+            continue;
+        }
+
+        if (isReadPoolBusy())
+        {
+            // reads of the user interface go first; the remaining files are read when a read finished
+            return;
+        }
+
+        mReadingAgain.insert(path);
+        startRead(path, std::make_shared<FileRead>());
     }
 }
 
@@ -135,21 +221,20 @@ UBDocumentStorage::ReadResult UBDocumentStorage::read(const QString& path, QByte
     {
         // not the GUI thread: waiting does not block the user interface
         readFile(path, *read);
+        postResult(this, path, read);
     }
     else
     {
-        if (readPool()->activeThreadCount() >= readPool()->maxThreadCount())
+        if (isReadPoolBusy())
         {
             // previous reads are still blocked
             qWarning() << "The document location does not answer, cannot read" << path;
+            mUnreadFiles.insert(path);
             setAvailable(false);
             return ReadResult::Unavailable;
         }
 
-        readPool()->start([read, path]() {
-            readFile(path, *read);
-            read->done.release();
-        });
+        startRead(path, read);
 
         // give up only if no data arrives anymore
         const int timeoutMs = mAvailable ? answerTimeoutMs : answerTimeoutUnavailableMs;
@@ -166,7 +251,10 @@ UBDocumentStorage::ReadResult UBDocumentStorage::read(const QString& path, QByte
             }
             else if (sinceLastData.elapsed() > timeoutMs)
             {
+                // the read goes on in the background and is delivered by fileReadLater() if it succeeds
                 qWarning() << "The document location does not answer, cannot read" << path;
+                mUnreadFiles.insert(path);
+                mReadingAgain.insert(path);
                 setAvailable(false);
                 return ReadResult::Unavailable;
             }
@@ -204,6 +292,11 @@ void UBDocumentStorage::setAvailable(bool available)
     {
         mAvailable = available;
         emit availabilityChanged(available);
+
+        if (available)
+        {
+            readUnreadFiles();
+        }
     }
 }
 

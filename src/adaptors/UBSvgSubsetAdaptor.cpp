@@ -38,6 +38,9 @@
 #include <QGraphicsVideoItem>
 #include <QElapsedTimer>
 
+#include <functional>
+#include <memory>
+
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
@@ -128,6 +131,41 @@ namespace
     {
         QMutexLocker locker(&sImageFileMutex);
         return sKnownPdfFiles.contains(path);
+    }
+
+    QPixmap pixmapFromData(const QByteArray& data)
+    {
+        QBuffer buffer;
+        buffer.setData(data);
+        QImageReader reader(&buffer);
+        reader.setAutoTransform(true);
+        return QPixmap::fromImage(reader.read());
+    }
+
+    // Shows the content of a file of the page which could not be read yet as soon as it is read,
+    // e.g. when the document location answers again. The page then changed: it is saved again,
+    // with its thumbnail.
+    template<class Item>
+    void showWhenRead(Item* item, const QString& path, std::function<void(const QByteArray&)> show)
+    {
+        UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
+        auto connection = std::make_shared<QMetaObject::Connection>();
+
+        *connection = QObject::connect(storage, &UBDocumentStorage::fileReadLater, item,
+                                       [item, path, show, connection](const QString& file, const QByteArray& data) {
+            if (file != path)
+            {
+                return;
+            }
+
+            QObject::disconnect(*connection);
+            show(data);
+
+            if (auto scene = dynamic_cast<UBCoreGraphicsScene*>(static_cast<QGraphicsItem*>(item)->scene()))
+            {
+                scene->setModified(true);
+            }
+        });
     }
 }
 
@@ -2244,16 +2282,19 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
         pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
         // Not read directly: the GUI thread must not block if the document location does not answer.
-        // An image which cannot be read is empty for this session; its file name is remembered below,
-        // so that the page keeps referring to the image file when it is saved.
+        // An image which cannot be read is empty until it can be read; its file name is remembered
+        // below, so that the page keeps referring to the image file when it is saved meanwhile.
+        const QString path = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href);
         QByteArray imageData;
-        UBPersistenceManager::persistenceManager()->documentStorage()->read(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href), imageData);
-        QBuffer imageBuffer(&imageData);
-        QImageReader rdr(&imageBuffer);
-        rdr.setAutoTransform(true);
-        QImage img = rdr.read();
-        QPixmap pix = QPixmap::fromImage(img);
-        pixmapItem->setPixmap(pix);
+
+        if (UBPersistenceManager::persistenceManager()->documentStorage()->read(path, imageData) == UBDocumentStorage::ReadResult::Unavailable)
+        {
+            showWhenRead(pixmapItem, path, [pixmapItem](const QByteArray& data) {
+                pixmapItem->setPixmap(pixmapFromData(data));
+            });
+        }
+
+        pixmapItem->setPixmap(pixmapFromData(imageData));
         graphicsItemFromSvg(pixmapItem);
         rememberImageFile(mDocumentPath, pixmapItem->uuid(), UBFileSystemUtils::normalizeFilePath(href));
     }
@@ -2293,9 +2334,17 @@ UBGraphicsSvgItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::svgItemFromSvg()
         QString href = imageHref.toString();
 
         // not read directly: the GUI thread must not block if the document location does not answer
+        const QString path = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href);
         QByteArray svgData;
-        UBPersistenceManager::persistenceManager()->documentStorage()->read(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href), svgData);
+        const auto result = UBPersistenceManager::persistenceManager()->documentStorage()->read(path, svgData);
         svgItem = new UBGraphicsSvgItem(svgData);
+
+        if (result == UBDocumentStorage::ReadResult::Unavailable)
+        {
+            showWhenRead(svgItem, path, [svgItem](const QByteArray& data) {
+                svgItem->setFileData(data);
+            });
+        }
     }
     else
     {
