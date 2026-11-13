@@ -211,9 +211,6 @@ public:
         static QStringList availableTranslations();
         static void setFrontProcess();
         static void showFullScreen(QWidget * pWidget);
-        // ask the window system to paint the window again (a window shown again after a display
-        // change may not be painted on Windows)
-        static void invalidateWindow(QWidget * pWidget);
         static void showOSK(bool show);
 
 #ifdef Q_OS_OSX

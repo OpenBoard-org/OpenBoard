@@ -362,21 +362,6 @@ namespace
         return false;
 #endif
     }
-
-    // A window shown again after a screen change is not always put on top, and not always painted
-    // (on Windows after extended mode is restored, no WM_PAINT is sent): the projector would show
-    // other windows or the desktop. Ask for a paint again while the system settles.
-    void bringToFront(QWidget* widget)
-    {
-        widget->raise();
-
-        for (int delay : {1000, 3000})
-        {
-            QTimer::singleShot(delay, widget, [widget]() {
-                UBPlatformUtils::invalidateWindow(widget);
-            });
-        }
-    }
 }
 
 void UBDisplayManager::adjustScreens()
@@ -488,7 +473,6 @@ void UBDisplayManager::positionScreens()
         widget(ScreenRole::Display)->showNormal();
         widget(ScreenRole::Display)->setGeometry(screenGeometry(ScreenRole::Display));
         UBPlatformUtils::showFullScreen(widget(ScreenRole::Display));
-        bringToFront(widget(ScreenRole::Display));
     }
     else if (widget(ScreenRole::Display))
     {
@@ -506,7 +490,6 @@ void UBDisplayManager::positionScreens()
                 previous->showNormal();
                 previous->setGeometry(screenGeometry(role));
                 UBPlatformUtils::showFullScreen(previous);
-                bringToFront(previous);
             }
             else
             {

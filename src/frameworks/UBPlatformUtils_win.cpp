@@ -473,17 +473,18 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
             #endif
         }
         pWidget->showFullScreen();
-    }
-}
 
-void UBPlatformUtils::invalidateWindow(QWidget *pWidget)
-{
-    // Windows does not always send WM_PAINT to a window shown again while the displays are
-    // reconfigured (e.g. extended mode restored): Qt then does not paint it and the screen shows
-    // the desktop. Invalidating the window makes Windows send WM_PAINT.
-    if (pWidget && pWidget->isVisible() && pWidget->windowHandle())
-    {
-        InvalidateRect(reinterpret_cast<HWND>(pWidget->windowHandle()->winId()), nullptr, FALSE);
+        // A window shown again while the displays are reconfigured (e.g. extended mode restored)
+        // may stay behind other windows and get no WM_PAINT, so that Qt does not paint it and the
+        // screen shows the desktop: raise it and ask Windows to paint it once the system settled.
+        pWidget->raise();
+
+        QTimer::singleShot(1000, pWidget, [pWidget]() {
+            if (pWidget->isVisible())
+            {
+                InvalidateRect(reinterpret_cast<HWND>(pWidget->winId()), nullptr, FALSE);
+            }
+        });
     }
 }
 

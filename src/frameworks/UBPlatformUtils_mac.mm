@@ -642,12 +642,6 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     }
 }
 
-void UBPlatformUtils::invalidateWindow(QWidget *pWidget)
-{
-    // not needed on macOS
-    Q_UNUSED(pWidget);
-}
-
 
 void UBPlatformUtils::showOSK(bool show)
 {
