@@ -292,6 +292,9 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void registerAPI();
 
     private:
+        // reads its config.xml: size, start file, roles, metadata and default preferences
+        void readConfiguration(const QByteArray& configuration);
+
         static void loadNPAPIWrappersTemplates();
         static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);
 

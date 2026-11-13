@@ -1039,6 +1039,22 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
 
 
 
+// the start file of an application whose configuration names none
+static QString defaultStartFile(const QString& widgetPath)
+{
+    if (QFile::exists(widgetPath + "index.htm"))
+    {
+        return "index.htm";
+    }
+
+    if (QFile::exists(widgetPath + "index.html"))
+    {
+        return "index.html";
+    }
+
+    return QString();
+}
+
 bool UBGraphicsW3CWidgetItem::sTemplateLoaded = false;
 QString UBGraphicsW3CWidgetItem::sNPAPIWrappperConfigTemplate;
 QMap<QString, QString> UBGraphicsW3CWidgetItem::sNPAPIWrapperTemplates;
@@ -1059,14 +1075,40 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     if (!path.endsWith("/"))
         path += "/";
 
-    int width = 300;
-    int height = 150;
-
     QFile configFile(path + "config.xml");
     configFile.open(QFile::ReadOnly);
 
+    readConfiguration(configFile.readAll());
+
+    if (mMainHtmlFileName.length() == 0)
+    {
+        mMainHtmlFileName = defaultStartFile(path);
+    }
+
+    mMainHtmlUrl = pWidgetUrl;
+    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
+    /* is it a valid local file ? */
+    QFile f(mMainHtmlUrl.toLocalFile());
+
+    if (!f.exists())
+        mMainHtmlUrl = QUrl(mMainHtmlFileName);
+
+    mWebEngineView->load(mMainHtmlUrl);
+
+    setMaximumSize(mNominalSize);
+
+
+    initialize();
+    setOwnFolder(pWidgetUrl);
+}
+
+void UBGraphicsW3CWidgetItem::readConfiguration(const QByteArray& configuration)
+{
+    int width = 300;
+    int height = 150;
+
     QDomDocument doc;
-    doc.setContent(configFile.readAll());
+    doc.setContent(configuration);
     QDomNodeList widgetDomList = doc.elementsByTagName("widget");
 
     if (widgetDomList.count() > 0) {
@@ -1154,35 +1196,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
         }
     }
 
-    if (mMainHtmlFileName.length() == 0) {
-        QFile defaultStartFile(path + "index.htm");
-
-        if (defaultStartFile.exists())
-            mMainHtmlFileName = "index.htm";
-        else {
-            QFile secondDefaultStartFile(path + "index.html");
-
-            if (secondDefaultStartFile.exists())
-                mMainHtmlFileName = "index.html";
-        }
-    }
-
-    mMainHtmlUrl = pWidgetUrl;
-    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
-    /* is it a valid local file ? */
-    QFile f(mMainHtmlUrl.toLocalFile());
-
-    if (!f.exists())
-        mMainHtmlUrl = QUrl(mMainHtmlFileName);
-
-    mWebEngineView->load(mMainHtmlUrl);
-
     mNominalSize = QSize(width, height);
-    setMaximumSize(mNominalSize);
-
-
-    initialize();
-    setOwnFolder(pWidgetUrl);
 }
 
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
