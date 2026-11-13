@@ -14,12 +14,12 @@
     <message>
         <location filename="../../src/web/simplebrowser/browserwindow.cpp" line="151"/>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigering</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/browserwindow.cpp" line="179"/>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa hämtningar</translation>
     </message>
 </context>
 <context>
@@ -27,24 +27,26 @@
     <message>
         <location filename="../../src/web/simplebrowser/certificateerrordialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/certificateerrordialog.ui" line="26"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikon</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/certificateerrordialog.ui" line="42"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/certificateerrordialog.ui" line="61"/>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>Du kan fortsätta med ett overifierat certifikat, men då kan anslutningen vara till en annan värd än den du försökte ansluta till.
+
+Vill du åsidosätta säkerhetskontrollen och fortsätta?</translation>
     </message>
 </context>
 <context>
@@ -52,17 +54,17 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.ui" line="14"/>
         <source>Downloads</source>
-        <translation type="unfinished">Hämtningar</translation>
+        <translation>Hämtningar</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.ui" line="89"/>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga hämtningar</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadmanagerwidget.cpp" line="82"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara som</translation>
     </message>
 </context>
 <context>
@@ -77,62 +79,62 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="87"/>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="127"/>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna fil</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="137"/>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="139"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="141"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="143"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="168"/>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%p % - %1 av %2 hämtat - %3/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="176"/>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>okänd storlek - %1 hämtat - %2/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="185"/>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>slutförd - %1 hämtat - %2/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="194"/>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>avbruten - %1 hämtat - %2/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="202"/>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>avbruten: %1</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="210"/>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt hämtning</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="214"/>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort från listan</translation>
     </message>
 </context>
 <context>
