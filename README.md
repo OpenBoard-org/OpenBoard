@@ -31,6 +31,9 @@ OpenBoard can be compiled with the latest open-source binaries of Qt 6. Support 
 ### Contribute
 You can contribute to OpenBoard by helping on translations, creating new web widgets or improving existing ones, or by developing new features and submit them as pull requests.
 
+#### Code and tests
+Before changing the code, whether you are a person or an AI agent, read [AGENTS.md](AGENTS.md): what matters most for OpenBoard's users and how the code is changed. The conventions are in [CODING_STYLE.md](CODING_STYLE.md), and [docs/quality](docs/quality/README.md) describes how changes are checked and how release candidates are tested. Testing a release candidate in your own setting and reporting what you find is a valuable contribution too.
+
 #### Translations
 OpenBoard is available, thanks to the work of its community, in 35 languages. If you want to contribute to OpenBoard or its dedicated website by adding a new language or updating an existing one, your help will be greatly appreciated.
 
