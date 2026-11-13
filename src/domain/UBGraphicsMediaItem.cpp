@@ -573,12 +573,10 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
 
         cp->setZValue(this->zValue());
 
-        // A copy, e.g. the one written when the page is saved, keeps the position read from the
-        // page while the media file could not be opened.
-        if (!isMediaLoaded())
-        {
-            cp->setInitialPos(mInitialPos);
-        }
+        // A copy, e.g. the one written when the page is saved, has a new player: it keeps where the
+        // media resumes, the position reached by pausing it or else the one read from the page.
+        const bool isPausedInside = isMediaLoaded() && playerState() == QMediaPlayer::PausedState && mediaPosition() > 0;
+        cp->setInitialPos(isPausedInside ? mediaPosition() : mInitialPos);
 
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), cp, SLOT(activeSceneChanged()));
         // TODO UB 4.7 complete all members
