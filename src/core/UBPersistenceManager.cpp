@@ -132,6 +132,15 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mRetryTimer.setInterval(15000);
     connect(&mRetryTimer, &QTimer::timeout, this, &UBPersistenceManager::retryJournal);
 
+    // a file which could not be read is read now: the storage answers again, its content is shown,
+    // so the local copies are written now instead of at the next retry
+    connect(mDocumentStorage, &UBDocumentStorage::fileReadLater, this, [this]() {
+        if (!mDocumentStorage->isAvailable())
+        {
+            retryJournal();
+        }
+    });
+
     mThread = new QThread;
     mWorker = new UBPersistenceWorker();
     mWorker->moveToThread(mThread);
