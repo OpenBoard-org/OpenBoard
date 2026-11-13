@@ -34,6 +34,8 @@
 #include <QDomElement>
 #include <QGraphicsProxyWidget>
 
+#include <optional>
+
 #include "core/UB.h"
 
 #include "UBItem.h"
@@ -269,7 +271,15 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         };
 
         UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
+
+        // An application whose files are read by the caller, e.g. from the document storage:
+        // the content of its config.xml, or none while it cannot be read (see configure()).
+        UBGraphicsW3CWidgetItem(const QUrl& widgetUrl, const std::optional<QByteArray>& configuration, QGraphicsItem* parent = nullptr);
         ~UBGraphicsW3CWidgetItem();
+
+        // Configures and loads an application created without its configuration. Its size,
+        // position, preferences and datastore entries are kept.
+        void configure(const QByteArray& configuration);
 
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
@@ -300,6 +310,8 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
 
         UBW3CWidgetAPI* mW3CWidgetAPI;
         QMap<QString, PreferenceValue> mPreferences;
+        // given to its copies, so that they do not read the files of the application again
+        std::optional<QByteArray> mConfiguration;
 
         static bool sTemplateLoaded;
         static QString sNPAPIWrappperConfigTemplate;

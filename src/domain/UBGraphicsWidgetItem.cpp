@@ -1102,8 +1102,56 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     setOwnFolder(pWidgetUrl);
 }
 
+UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& widgetUrl, const std::optional<QByteArray>& configuration, QGraphicsItem* parent)
+    : UBGraphicsWidgetItem(widgetUrl, parent)
+    , mW3CWidgetAPI(nullptr)
+{
+    if (configuration)
+    {
+        configure(*configuration);
+        // as an application of the library, until it is shown with its own size
+        setMaximumSize(mNominalSize);
+    }
+
+    initialize();
+    setOwnFolder(widgetUrl);
+}
+
+void UBGraphicsW3CWidgetItem::configure(const QByteArray& configuration)
+{
+    readConfiguration(configuration);
+
+    if (mMainHtmlFileName.isEmpty())
+    {
+        // only applications of old versions do not name their start file
+        mMainHtmlFileName = defaultStartFile(mWidgetUrl.toLocalFile() + "/");
+    }
+
+    if (QUrl(mMainHtmlFileName).isRelative())
+    {
+        mMainHtmlUrl = mWidgetUrl;
+        mMainHtmlUrl.setPath(mWidgetUrl.path() + "/" + mMainHtmlFileName);
+    }
+    else
+    {
+        // a start page on the web
+        mMainHtmlUrl = QUrl(mMainHtmlFileName);
+    }
+
+    // No minimum or maximum size here, unlike the constructors: it would resize an application
+    // configured while it is shown. Its controls may already exist.
+    if (Delegate() && Delegate()->frame() && resizable())
+    {
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    }
+
+    loadMainHtml();
+}
+
 void UBGraphicsW3CWidgetItem::readConfiguration(const QByteArray& configuration)
 {
+    mConfiguration = configuration;
+
     int width = 300;
     int height = 150;
 
@@ -1212,7 +1260,7 @@ void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
 
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 {
-    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWidgetUrl, parentItem());
+    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWidgetUrl, mConfiguration, parentItem());
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
     copyItemParameters(copy);
 

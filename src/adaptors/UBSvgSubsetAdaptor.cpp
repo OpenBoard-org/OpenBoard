@@ -38,6 +38,10 @@
 #include <QGraphicsVideoItem>
 #include <QElapsedTimer>
 
+#include <functional>
+#include <memory>
+#include <optional>
+
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
@@ -146,6 +150,21 @@ static void setPageModified(QGraphicsItem* item)
     {
         scene->setModified(true);
     }
+}
+
+// Gives an item the content of a file which the document storage could not read yet, as soon as
+// it is read. Unlike disconnecting the item, it lets an item wait for several files.
+static void deliverWhenRead(UBDocumentStorage* storage, const QString& path, QObject* item, const std::function<void(const QByteArray&)>& deliver)
+{
+    auto connection = std::make_shared<QMetaObject::Connection>();
+
+    *connection = QObject::connect(storage, &UBDocumentStorage::fileReadLater, item, [connection, path, deliver](const QString& file, const QByteArray& data) {
+        if (file == path)
+        {
+            QObject::disconnect(*connection);
+            deliver(data);
+        }
+    });
 }
 
 static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
@@ -2937,20 +2956,67 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
         href = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(widgetUrl.toString());
     }
 
-    UBGraphicsW3CWidgetItem* widgetItem = new UBGraphicsW3CWidgetItem(QUrl::fromLocalFile(href));
+    // Not read by the application itself: the GUI thread must not block if the document location
+    // does not answer. An application which cannot be read yet keeps what the page says about it
+    // (size, position, preferences) and is configured as soon as its configuration can be read.
+    UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
+    const QString configurationPath = href + "/config.xml";
+    QByteArray configurationData;
+    std::optional<QByteArray> configuration;
+
+    if (storage->read(configurationPath, configurationData) != UBDocumentStorage::ReadResult::Unavailable)
+    {
+        configuration = configurationData;
+    }
+
+    UBGraphicsW3CWidgetItem* widgetItem = new UBGraphicsW3CWidgetItem(QUrl::fromLocalFile(href), configuration);
     widgetItem->setWebActive(false);
 
     auto uuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
+    // an incompatible application shows a substitute image: its files are not waited for
+    const bool isCompatible = mProxy->isWidgetCompatible(QUuid(uuid.toString()));
+
+    if (!configuration && isCompatible)
+    {
+        deliverWhenRead(storage, configurationPath, widgetItem, [widgetItem](const QByteArray& data) {
+            widgetItem->configure(data);
+            setPageModified(widgetItem);
+        });
+    }
+
     QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid.toString() + ".png";
     widgetItem->setSnapshotPath(QUrl::fromLocalFile(pixPath));
 
-    QPixmap snapshot(pixPath);
-
     auto frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
+    const bool isFrozen = !frozen.isNull() && frozen.toString() == xmlTrue;
+    QByteArray snapshotData;
 
-    if (!snapshot.isNull())
+    if (storage->read(pixPath, snapshotData) == UBDocumentStorage::ReadResult::Unavailable)
     {
-        widgetItem->setSnapshot(snapshot, !frozen.isNull() && frozen.toString() == xmlTrue);
+        // a frozen application stays frozen, so that saving the page keeps it frozen
+        widgetItem->setSnapshot(QPixmap(), isFrozen);
+
+        if (isCompatible)
+        {
+            deliverWhenRead(storage, pixPath, widgetItem, [widgetItem](const QByteArray& data) {
+                // unless the user froze it meanwhile
+                if (widgetItem->snapshot().isNull())
+                {
+                    widgetItem->setSnapshot(pixmapFromData(data), widgetItem->isFrozen());
+                    widgetItem->update();
+                    setPageModified(widgetItem);
+                }
+            });
+        }
+    }
+    else
+    {
+        QPixmap snapshot = pixmapFromData(snapshotData);
+
+        if (!snapshot.isNull())
+        {
+            widgetItem->setSnapshot(snapshot, isFrozen);
+        }
     }
 
     graphicsItemFromSvg(widgetItem);
