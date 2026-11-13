@@ -37,6 +37,12 @@
 
 #include "core/UBPersistenceJournal.h"
 
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#else
+#include <dirent.h>
+#endif
+
 namespace
 {
     // A read is given up when no data arrived during this time. A slow storage which still
@@ -211,6 +217,7 @@ bool UBDocumentStorage::isReachable(const QString& dataDirectory, const QString&
     // Find the nearest existing directory: the data directory itself or a parent.
     // Drive letters or shares which are not connected have no existing directory.
     QString existingPath = dataDirectory;
+    const bool dataDirectoryExists = QDir(dataDirectory).exists();
 
     while (!QDir(existingPath).exists())
     {
@@ -224,13 +231,49 @@ bool UBDocumentStorage::isReachable(const QString& dataDirectory, const QString&
         existingPath = next;
     }
 
-    if (mountPoint.isEmpty())
+    if (!mountPoint.isEmpty() && !isMountedAt(existingPath, mountPoint))
     {
-        // local storage, or a drive or share which exists: the data directory is created if needed
-        return true;
+        return false;
     }
 
-    // the mount point must currently be the root of a mounted volume, and the data directory inside it
+    // A data directory which exists but cannot be read (e.g. access denied once the user's
+    // credentials to a share expired) would show an empty list of documents. If it does not
+    // exist yet, it is created: its parent only needs to exist.
+    return !dataDirectoryExists || canList(dataDirectory);
+}
+
+bool UBDocumentStorage::canList(const QString& directory)
+{
+#if defined(Q_OS_WIN)
+    const QString pattern = QDir::toNativeSeparators(QDir(directory).absoluteFilePath("*"));
+    WIN32_FIND_DATAW entry;
+    const HANDLE handle = FindFirstFileExW(reinterpret_cast<LPCWSTR>(pattern.utf16()), FindExInfoBasic,
+                                           &entry, FindExSearchNameMatch, nullptr, 0);
+
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        // the root of an empty drive has no entry at all
+        return GetLastError() == ERROR_FILE_NOT_FOUND;
+    }
+
+    FindClose(handle);
+    return true;
+#else
+    DIR* handle = opendir(QFile::encodeName(directory).constData());
+
+    if (!handle)
+    {
+        return false;
+    }
+
+    closedir(handle);
+    return true;
+#endif
+}
+
+bool UBDocumentStorage::isMountedAt(const QString& existingPath, const QString& mountPoint)
+{
+    // the mount point must currently be the root of a mounted volume, and the path inside it
     const QFileInfo mountInfo(mountPoint);
 
     if (!mountInfo.isDir())

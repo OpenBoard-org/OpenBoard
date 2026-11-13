@@ -66,16 +66,21 @@ public:
     // set by the writing code when writing fails or succeeds again
     void setAvailable(bool available);
 
-    // True if the data directory can be used: part of its path exists and, if a mount point is
-    // given, this mount point is currently the root of a mounted volume containing the directory.
-    // A share which is not mounted may leave an empty local directory at its mount point; writing
-    // there would hide the documents once the share is mounted again.
+    // True if the data directory can be used: part of its path exists, the directory can be read
+    // if it exists and, if a mount point is given, this mount point is currently the root of a
+    // mounted volume containing the directory. A share which is not mounted may leave an empty
+    // local directory at its mount point; writing there would hide the documents once the share
+    // is mounted again.
     static bool isReachable(const QString& dataDirectory, const QString& mountPoint);
 
 signals:
     void availabilityChanged(bool available);
 
 private:
+    // true if the entries of an existing directory can be read
+    static bool canList(const QString& directory);
+    static bool isMountedAt(const QString& existingPath, const QString& mountPoint);
+
     static bool isSamePath(const QString& path, const QString& other);
     static bool isInside(const QString& path, const QString& directory);
 
