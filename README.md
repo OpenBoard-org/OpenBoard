@@ -28,6 +28,9 @@ If you didn't find any installer for your platform, or if you want to modify Ope
 ### Qt support
 OpenBoard can be compiled with the latest open source binaries of Qt 5.15 and Qt 6. It is recommended to use Qt 6, as Qt 5 will no longer be supported in a near future. You should also be able to compile OpenBoard using Qt 5.12, but it is not officially tested/supported.
 
+### Code and tests
+Before changing the code, whether you are a person or an AI agent, read [AGENTS.md](AGENTS.md): what matters most for OpenBoard's users and how the code is changed. The conventions are in [CODING_STYLE.md](CODING_STYLE.md), and [docs/quality](docs/quality/README.md) describes how changes are checked and how release candidates are tested. Testing a release candidate in your own setting and reporting what you find is a valuable contribution too.
+
 ### Web Widgets
 
 Even with not a single bit of knowledge in C++, you can contribute to OpenBoard. Web Widgets are websites that you can put and use directly on the board ! And to turn a website to an OpenBoard web widget is really simple !
