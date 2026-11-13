@@ -1332,7 +1332,7 @@ Voulez-vous continuer quand-même ?   </translation>
         <translation type="vanished">Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBSvgSubsetAdaptor.cpp" line="256"/>
+        <location filename="../../src/adaptors/UBSvgSubsetAdaptor.cpp" line="330"/>
         <source>Loading scene (%1/%2)</source>
         <translation>Chargement de la scène (%1/%2)</translation>
     </message>
@@ -1392,17 +1392,17 @@ Voulez-vous continuer quand-même ?   </translation>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="533"/>
+        <location filename="../../src/core/UBApplication.cpp" line="491"/>
         <source>Changes recovered</source>
         <translation>Modifications récupérées</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="598"/>
+        <location filename="../../src/core/UBApplication.cpp" line="543"/>
         <source>Data directory not available</source>
         <translation>Répertoire de données indisponible</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="599"/>
+        <location filename="../../src/core/UBApplication.cpp" line="544"/>
         <source>The OpenBoard data directory is not available:
 %1
 
@@ -1413,27 +1413,27 @@ OpenBoard will start automatically as soon as this location becomes available.</
 OpenBoard démarrera automatiquement dès que cet emplacement sera disponible.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="602"/>
+        <location filename="../../src/core/UBApplication.cpp" line="547"/>
         <source>You can also start OpenBoard locally for this session only, without access to your documents stored in this directory. Documents created in this session are stored on this computer only. The data directory is used again at the next start.</source>
         <translation>Vous pouvez aussi démarrer OpenBoard localement, pour cette session uniquement, sans accès à vos documents enregistrés dans ce répertoire. Les documents créés pendant cette session sont enregistrés uniquement sur cet ordinateur. Le répertoire de données sera de nouveau utilisé au prochain démarrage.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="606"/>
+        <location filename="../../src/core/UBApplication.cpp" line="551"/>
         <source>Retry</source>
         <translation>Réessayer</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="607"/>
+        <location filename="../../src/core/UBApplication.cpp" line="552"/>
         <source>Start locally</source>
         <translation>Démarrer localement</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="669"/>
+        <location filename="../../src/core/UBApplication.cpp" line="612"/>
         <source>Local session</source>
         <translation>Session locale</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="670"/>
+        <location filename="../../src/core/UBApplication.cpp" line="613"/>
         <source>OpenBoard is running locally for this session, without access to the configured data directory:
 %1
 
@@ -1450,19 +1450,19 @@ Les documents créés pendant cette session sont enregistrés sur cet ordinateur
 Le répertoire de données configuré sera de nouveau utilisé au prochain démarrage.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="829"/>
+        <location filename="../../src/core/UBApplication.cpp" line="767"/>
         <source>Page Size</source>
         <translation>Taille de la page</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="850"/>
+        <location filename="../../src/core/UBApplication.cpp" line="788"/>
         <source>Podcast</source>
         <translation>Capture Vidéo</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="380"/>
-        <location filename="../../src/core/UBApplication.cpp" line="426"/>
-        <location filename="../../src/core/UBApplication.cpp" line="905"/>
+        <location filename="../../src/core/UBApplication.cpp" line="377"/>
+        <location filename="../../src/core/UBApplication.cpp" line="423"/>
+        <location filename="../../src/core/UBApplication.cpp" line="843"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation>Impossible d&apos;ouvrir un fichier UBX directement. Veuillez l&apos;importer depuis le mode Documents</translation>
     </message>
@@ -1511,95 +1511,95 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1317"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1318"/>
         <source>Downloading content %1 failed</source>
         <translation>Erreur de téléchargement du contenu %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1326"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1327"/>
         <source>Download finished</source>
         <translation>Téléchargement terminé</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1653"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1654"/>
         <source>Unknown tool type %1</source>
         <translation>Type d&apos;outil inconnu %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1809"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1810"/>
         <source>This page cannot be opened while the document location is unavailable.</source>
         <translation>Cette page ne peut pas être ouverte tant que l&apos;emplacement des documents est indisponible.</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2868"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2873"/>
         <source>Add Item</source>
         <translation>Ajouter un élément</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2870"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2875"/>
         <source>All Supported (%1)</source>
         <translation>Tous (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1698"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1699"/>
         <source>Unknown content type %1</source>
         <translation>Type de contenu inconnu (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="951"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="952"/>
         <source>Page %1 deleted</source>
         <translation>Page %1 supprimée</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1457"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1502"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2460"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2496"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1458"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1503"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2465"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2501"/>
         <source>Add file operation failed: file copying error</source>
         <translation>Echec d&apos;ajout de document : erreur de copie</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="109"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
         <source>Group</source>
         <translation>Grouper</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="111"/>
         <source>Ungroup</source>
         <translation>Dégrouper</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="486"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="487"/>
         <source>Saving document...</source>
         <translation>Sauvegarde du document...</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="492"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="493"/>
         <source>Document has just been saved...</source>
         <translation>Le document vient d&apos;être sauvegardé...</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="657"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="658"/>
         <source>The document location is not available: the new page is added at the end of the document.</source>
         <translation>L&apos;emplacement des documents est indisponible : la nouvelle page est ajoutée à la fin du document.</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="932"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="933"/>
         <source>Deleting page %1</source>
         <translation>Supression de la page %1</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="362"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="363"/>
         <source>Color</source>
         <translation>Couleur</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1666"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1667"/>
         <source>Untitled</source>
         <translation>Sans titre</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1693"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1694"/>
         <source>Could not find document.</source>
         <translation>Le document est introuvable.</translation>
     </message>
@@ -1627,12 +1627,12 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
 <context>
     <name>UBBoardView</name>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1814"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1815"/>
         <source>Is it for Board or Widget ?</source>
         <translation>Est-ce pour le tableau ou le widget ?</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1815"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1816"/>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation>Essayez-vous de déposer l’objet à l’intérieur du widget ?</translation>
     </message>
@@ -1701,109 +1701,109 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3346"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3347"/>
         <source>Open Supported File</source>
         <translation>Ouvrir un fichier compatible</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2040"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2041"/>
         <source>New Folder</source>
         <translation>Nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2090"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2091"/>
         <source>OpenBoard could not recover this file. Please delete it or contact your administrator for help</source>
         <translation>OpenBoard n’a pas pu récupérer ce document. Veuillez le supprimer ou contacter votre administrateur pour obtenir de l’aide</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2098"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2099"/>
         <source>Broken document</source>
         <translation>Document corrompu</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2101"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2102"/>
         <source>Don&apos;t show this again</source>
         <translation>Ne plus afficher ce message</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2267"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2268"/>
         <source>Add Folder of Images</source>
         <translation>Ajouter un dossier d&apos;images</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2268"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2269"/>
         <source>Add Images</source>
         <translation>Ajouter des images</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2269"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2270"/>
         <source>Add Pages from File</source>
         <translation>Ajouter des pages depuis un fichier</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2569"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2581"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3448"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2570"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2582"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3449"/>
         <source>Opening document in Board. Please wait...</source>
         <translation>Ouverture du document en mode Tableau. Veuillez patienter...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2595"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3462"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2596"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3463"/>
         <source>Document opened successfully</source>
         <translation>Document ouvert avec succès</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2655"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2656"/>
         <source>Duplicating Document %1</source>
         <translation>Copie du document %1 en cours</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2659"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2660"/>
         <source>Document %1 copied</source>
         <translation>Document %1 copié</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3274"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3361"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3275"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3362"/>
         <source>Importing file %1...</source>
         <translation>Importation du fichier %1...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3283"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3378"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3284"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3379"/>
         <source>Failed to import file ... </source>
         <translation>Impossible d&apos;importer le fichier ...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3303"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3304"/>
         <source>Import all Images from Folder</source>
         <translation>Importer toutes les images d&apos;un dossier</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3857"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3858"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3878"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3859"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3879"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3880"/>
         <source>Delete</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3872"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3873"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3884"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3874"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3885"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3886"/>
         <source>Empty</source>
         <translation>Vider</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1952"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3832"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1953"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3833"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3853"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3834"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3854"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3889"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3855"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3890"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3891"/>
         <source>Trash</source>
         <translation>Corbeille</translation>
     </message>
@@ -1812,17 +1812,17 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
         <translation type="vanished">Ouvrir le document</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3623"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3624"/>
         <source>Add all Images to Document</source>
         <translation>Ajouter toutes les images au document</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3624"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3625"/>
         <source>All Images (%1)</source>
         <translation>Toutes les images (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3645"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3646"/>
         <source>Selection does not contain any image files!</source>
         <translation>La sélection ne contient aucune image !</translation>
     </message>
@@ -1831,12 +1831,12 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
         <translation type="vanished">Page %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3324"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3325"/>
         <source>Folder does not contain any image files</source>
         <translation>Le dossier ne contient pas d&apos;image</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1953"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1954"/>
         <source>Untitled Documents</source>
         <translation>Documents sans titre</translation>
     </message>
@@ -1845,7 +1845,7 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
         <translation type="vanished">Le document &apos;%1&apos; a été créé avec une nouvelle version d&apos;OpenBoard (%2). En l&apos;ouvrant vous pourriez perdre des informations. Voulez-vous continuer ?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2645"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2646"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation>
@@ -1874,87 +1874,87 @@ Le répertoire de données configuré sera de nouveau utilisé au prochain déma
         <translation type="vanished">Actualisation des aperçus du mode Documents (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2702"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2703"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation>Suppression définitive de %1 documents/dossiers</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2703"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2704"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation>Vous êtes sur le point de supprimer définitivement %1 documents et/ou dossiers. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2787"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2788"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation>Suppression définitive du dossier %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2788"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2789"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation>Vous êtes sur le point de supprimer définitivement le dossier %1. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2793"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2794"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation>Supression définitive du document %1</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2794"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2795"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation>Vous êtes sur le point de supprimer définitivement le document %1. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2811"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2812"/>
         <source>Emptying My Documents</source>
         <translation>Vider Mes Documents</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2812"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2813"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation>Vous êtes sur le point de vider complètement le dossier &quot;Mes Documents&quot;. Tous vos documents seront déplacés dans la corbeille. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2848"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2849"/>
         <source>Emptying Trash</source>
         <translation>Vider la corbeille</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2849"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2850"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation>Vous êtes sur le point de vider complètement la corbeille. Tous les documents et dossiers à l’intérieur seront supprimés définitivement. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2865"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2866"/>
         <source>Moving %1 elements to trash</source>
         <translation>Déplacer %1 éléments dans la corbeille</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2866"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2867"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation>Vous êtes sur le point de déplacer %1 documents à la corbeille. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2874"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2875"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation>Déplacer le dossier &quot;%1&quot; dans la corbeille</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2875"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2876"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation>Vous êtes sur le point de déplacer le dossier &quot;%1&quot; dans la corbeille. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2881"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2882"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation>Déplacer le document &quot;%1&quot; à la corbeille</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2882"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2883"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation>Vous êtes sur le point de déplacer le document &quot;%1&quot; à la corbeille. Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3234"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3235"/>
         <source>Open Supported File(s)</source>
         <translation>Ouvrir le(s) fichier(s) supporté(s)</translation>
     </message>
@@ -2131,7 +2131,7 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1733"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1734"/>
         <source>%1 pages copied</source>
         <translation>
             <numerusform>%1 page copiée</numerusform>
@@ -2147,7 +2147,7 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
         <translation type="vanished">Voulez-vous vraiment supprimer le(s) élément(s) sélectionné(s) ?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1693"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1694"/>
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
     </message>
@@ -2632,23 +2632,23 @@ Voulez-vous continuer ?</translation>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="490"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="496"/>
         <source>Media resource couldn&apos;t be resolved</source>
         <translation>Ressource introuvable</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="493"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="499"/>
         <source>Unsupported media format</source>
         <translation>Format multimédia non supporté</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="497"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="503"/>
         <source>Media playback service not found</source>
         <translation>Service multimédia indisponible</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="500"/>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="503"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="506"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="509"/>
         <source>Media error: </source>
         <translation>Erreur multimédia :</translation>
     </message>
@@ -2703,7 +2703,7 @@ Voulez-vous continuer ?</translation>
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1247"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1308"/>
         <source>Web</source>
         <translation>Web</translation>
     </message>
@@ -2812,12 +2812,12 @@ Voulez-vous continuer ?</translation>
         <translation>Format PDF (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportPDF.cpp" line="75"/>
+        <location filename="../../src/adaptors/UBImportPDF.cpp" line="82"/>
         <source>PDF import failed.</source>
         <translation>Échec de l&apos;import du fichier PDF.</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportPDF.cpp" line="81"/>
+        <location filename="../../src/adaptors/UBImportPDF.cpp" line="88"/>
         <source>Importing %1 PDF pages. Please wait...</source>
         <translation>Importation de %1 pages PDF. Veuillez patienter...</translation>
     </message>
@@ -2952,22 +2952,22 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
 <context>
     <name>UBPersistenceManager</name>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="357"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="370"/>
         <source>Retrieved - %1</source>
         <translation>Récupéré - %1</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="371"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="384"/>
         <source>Broken - %1</source>
         <translation>Endommagé - %1</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="556"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="569"/>
         <source>Changes kept on this computer</source>
         <translation>Modifications conservées sur cet ordinateur</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="557"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="570"/>
         <source>The document location is not available.
 
 Your latest changes are kept on this computer. They will be copied automatically the next time OpenBoard is started on this computer.</source>
@@ -2976,37 +2976,35 @@ Your latest changes are kept on this computer. They will be copied automatically
 Vos dernières modifications sont conservées sur cet ordinateur. Elles seront copiées automatiquement au prochain démarrage d&apos;OpenBoard sur cet ordinateur.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="803"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="749"/>
         <source>The document location is not available: this action will be possible again once the location is available. Your work is kept on this computer.</source>
         <translation>L&apos;emplacement des documents est indisponible : cette action sera de nouveau possible dès que l&apos;emplacement sera disponible. Votre travail est conservé sur cet ordinateur.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="827"/>
         <source>The document location is not available. You can continue working: your changes are kept on this computer and saved automatically later.</source>
-        <translation>L&apos;emplacement des documents est indisponible. Vous pouvez continuer à travailler : vos modifications sont conservées sur cet ordinateur et seront enregistrées automatiquement plus tard.</translation>
+        <translation type="vanished">L&apos;emplacement des documents est indisponible. Vous pouvez continuer à travailler : vos modifications sont conservées sur cet ordinateur et seront enregistrées automatiquement plus tard.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="839"/>
         <source>The document location is available again. All your changes are saved.</source>
-        <translation>L&apos;emplacement des documents est de nouveau disponible. Toutes vos modifications sont enregistrées.</translation>
+        <translation type="vanished">L&apos;emplacement des documents est de nouveau disponible. Toutes vos modifications sont enregistrées.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1176"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1123"/>
         <source>(copy)</source>
         <translation>(copie)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2014"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1965"/>
         <source>The latest changes of the following documents were kept on this computer at the last session and are now saved:</source>
         <translation>Les dernières modifications des documents suivants avaient été conservées sur cet ordinateur lors de la dernière session ; elles sont maintenant enregistrées :</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2020"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1971"/>
         <source>The following documents were changed elsewhere meanwhile. Nothing was overwritten: the changes kept on this computer are restored in new documents:</source>
         <translation>Les documents suivants ont été modifiés ailleurs entre-temps. Rien n&apos;a été écrasé : les modifications conservées sur cet ordinateur sont restaurées dans de nouveaux documents :</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2086"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="2055"/>
         <source>%1 - copy recovered on %2 at %3</source>
         <translation>%1 - copie récupérée le %2 à %3</translation>
     </message>
@@ -3019,7 +3017,7 @@ Vos dernières modifications sont conservées sur cet ordinateur. Elles seront c
         <translation type="vanished">OpenBoard a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1640"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1587"/>
         <source>Renaming pages (%1/%2)</source>
         <translation>Actualisation des noms des pages en cours (%1/%2)</translation>
     </message>
@@ -3028,7 +3026,7 @@ Vos dernières modifications sont conservées sur cet ordinateur. Elles seront c
         <translation type="vanished">Récupération de tous vos documents (trouvés : %1)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="318"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="331"/>
         <source>Retrieving all your documents (found : %1)</source>
         <translation>Récupération de tous vos documents (trouvés : %1)</translation>
     </message>
@@ -3036,32 +3034,32 @@ Vos dernières modifications sont conservées sur cet ordinateur. Elles seront c
 <context>
     <name>UBPlatformUtils</name>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="462"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="429"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="500"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="446"/>
         <source>English</source>
         <translation>Anglais</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="463"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="430"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="501"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="447"/>
         <source>Russian</source>
         <translation>Russe</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="464"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="433"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="502"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="450"/>
         <source>German</source>
         <translation>Allemand</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="465"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="431"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="503"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="448"/>
         <source>French</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="466"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="432"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="504"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="449"/>
         <source>Swiss French</source>
         <translation>Français suisse</translation>
     </message>
@@ -3165,7 +3163,7 @@ Vos dernières modifications sont conservées sur cet ordinateur. Elles seront c
 <context>
     <name>UBSettings</name>
     <message>
-        <location filename="../../src/core/UBSettings.cpp" line="1319"/>
+        <location filename="../../src/core/UBSettings.cpp" line="1231"/>
         <source>My Movies</source>
         <translation>Mes films</translation>
     </message>
@@ -3378,34 +3376,57 @@ Vos dernières modifications sont conservées sur cet ordinateur. Elles seront c
 <context>
     <name>UBStorageIndicator</name>
     <message>
-        <location filename="../../src/gui/UBStorageIndicator.cpp" line="53"/>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="41"/>
         <source>Document location unavailable</source>
         <translation>Emplacement des documents indisponible</translation>
     </message>
     <message>
-        <location filename="../../src/gui/UBStorageIndicator.cpp" line="58"/>
         <source>Your work is saved on this computer and copied automatically to the document location as soon as it is available again. You can continue working normally.
 
 Click to close this message.</source>
-        <translation>Votre travail est enregistré sur cet ordinateur et sera copié automatiquement vers l&apos;emplacement des documents dès qu&apos;il sera de nouveau disponible. Vous pouvez continuer à travailler normalement.
+        <translation type="vanished">Votre travail est enregistré sur cet ordinateur et sera copié automatiquement vers l&apos;emplacement des documents dès qu&apos;il sera de nouveau disponible. Vous pouvez continuer à travailler normalement.
 
 Cliquez pour fermer ce message.</translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="42"/>
+        <source>OpenBoard tries again automatically. Your changes are saved on this computer.</source>
+        <translation>OpenBoard réessaie automatiquement. Vos modifications sont enregistrées sur cet ordinateur.</translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="43"/>
+        <source>They are copied to the document location as soon as it is available again. You can continue working normally.
+
+Click to close this message.</source>
+        <translation>Elles seront copiées vers l&apos;emplacement des documents dès qu&apos;il sera de nouveau disponible. Vous pouvez continuer à travailler normalement.
+
+Cliquez pour fermer ce message.</translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="50"/>
+        <source>Document location available again</source>
+        <translation>Emplacement des documents de nouveau disponible</translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="50"/>
+        <source>All your changes are saved.</source>
+        <translation>Toutes vos modifications sont enregistrées.</translation>
     </message>
 </context>
 <context>
     <name>UBThumbnailAdaptor</name>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="127"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="120"/>
         <source>Generating preview thumbnails ...</source>
         <translation>Création de vignettes en cours ...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="133"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="126"/>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="197"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="190"/>
         <source>Loading thumbnails (%1 pages)</source>
         <translation>Chargement des aperçus (%1 pages)</translation>
     </message>
@@ -3795,12 +3816,12 @@ Voulez-vous recharger la page ?</translation>
 <context>
     <name>XPDFRenderer</name>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="346"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="364"/>
         <source>Processing...</source>
         <translation>Traitement en cours...</translation>
     </message>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="81"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="99"/>
         <source>an error occured while trying to open the PDF file</source>
         <translation>Une erreur est survenue en tentant d’ouvrir le fichier PDF</translation>
     </message>

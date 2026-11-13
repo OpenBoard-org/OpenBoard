@@ -1437,7 +1437,7 @@ Segurtasun egiaztapena gainidatzi eta jarraitu nahi duzu?</translation>
         <translation type="unfinished">Edukia ez da helmuga formatuan onartzen.</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBSvgSubsetAdaptor.cpp" line="256"/>
+        <location filename="../../src/adaptors/UBSvgSubsetAdaptor.cpp" line="330"/>
         <source>Loading scene (%1/%2)</source>
         <translation type="unfinished">Eszena kargatzen</translation>
     </message>
@@ -1501,17 +1501,17 @@ Segurtasun egiaztapena gainidatzi eta jarraitu nahi duzu?</translation>
 <context>
     <name>UBApplication</name>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="533"/>
+        <location filename="../../src/core/UBApplication.cpp" line="491"/>
         <source>Changes recovered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="598"/>
+        <location filename="../../src/core/UBApplication.cpp" line="543"/>
         <source>Data directory not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="599"/>
+        <location filename="../../src/core/UBApplication.cpp" line="544"/>
         <source>The OpenBoard data directory is not available:
 %1
 
@@ -1519,27 +1519,27 @@ OpenBoard will start automatically as soon as this location becomes available.</
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="602"/>
+        <location filename="../../src/core/UBApplication.cpp" line="547"/>
         <source>You can also start OpenBoard locally for this session only, without access to your documents stored in this directory. Documents created in this session are stored on this computer only. The data directory is used again at the next start.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="606"/>
+        <location filename="../../src/core/UBApplication.cpp" line="551"/>
         <source>Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="607"/>
+        <location filename="../../src/core/UBApplication.cpp" line="552"/>
         <source>Start locally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="669"/>
+        <location filename="../../src/core/UBApplication.cpp" line="612"/>
         <source>Local session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="670"/>
+        <location filename="../../src/core/UBApplication.cpp" line="613"/>
         <source>OpenBoard is running locally for this session, without access to the configured data directory:
 %1
 
@@ -1550,19 +1550,19 @@ The configured data directory is used again at the next start.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="829"/>
+        <location filename="../../src/core/UBApplication.cpp" line="767"/>
         <source>Page Size</source>
         <translation>Orriaren tamaina</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="850"/>
+        <location filename="../../src/core/UBApplication.cpp" line="788"/>
         <source>Podcast</source>
         <translation>Podcasta</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBApplication.cpp" line="380"/>
-        <location filename="../../src/core/UBApplication.cpp" line="426"/>
-        <location filename="../../src/core/UBApplication.cpp" line="905"/>
+        <location filename="../../src/core/UBApplication.cpp" line="377"/>
+        <location filename="../../src/core/UBApplication.cpp" line="423"/>
+        <location filename="../../src/core/UBApplication.cpp" line="843"/>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
         <translation type="unfinished">Ezin da zure UBX fitxategia zuzenean ireki. Mesedez, inporta ezazu dokumentu moduan</translation>
     </message>
@@ -1611,22 +1611,22 @@ The configured data directory is used again at the next start.</source>
 <context>
     <name>UBBoardController</name>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="109"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
         <source>Group</source>
         <translation>Taldekatu</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="110"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="111"/>
         <source>Ungroup</source>
         <translation>Taldekatzea kendu</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="486"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="487"/>
         <source>Saving document...</source>
         <translation>Dokumentua gordetzen...</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="492"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="493"/>
         <source>Document has just been saved...</source>
         <translation>Dokumentua gorde da...</translation>
     </message>
@@ -1635,75 +1635,75 @@ The configured data directory is used again at the next start.</source>
         <translation type="vanished">Ezabatu %1 orria dokumentutik</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="951"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="952"/>
         <source>Page %1 deleted</source>
         <translation>%1 orria ezabatua</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1317"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1318"/>
         <source>Downloading content %1 failed</source>
         <translation>%1 edukiaren deskargak huts egin du</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1326"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1327"/>
         <source>Download finished</source>
         <translation>Deskarga amaitua</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1457"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="1502"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2460"/>
-        <location filename="../../src/board/UBBoardController.cpp" line="2496"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1458"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1503"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2465"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2501"/>
         <source>Add file operation failed: file copying error</source>
         <translation>Fitxategia gehitzearen prozesuak huts egin du: fitxategi kopiaren errorea</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1653"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1654"/>
         <source>Unknown tool type %1</source>
         <translation>%1 tresna mota ezezaguna</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1698"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1699"/>
         <source>Unknown content type %1</source>
         <translation>%1 eduki mota ezezaguna</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1809"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1810"/>
         <source>This page cannot be opened while the document location is unavailable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2868"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2873"/>
         <source>Add Item</source>
         <translation>Gehitu elementua</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="2870"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="2875"/>
         <source>All Supported (%1)</source>
         <translation>Onartutako guztiak (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="362"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="363"/>
         <source>Color</source>
         <translation type="unfinished">Kolorea</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="657"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="658"/>
         <source>The document location is not available: the new page is added at the end of the document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="932"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="933"/>
         <source>Deleting page %1</source>
         <translation type="unfinished">Orria ezabatzen</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1666"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1667"/>
         <source>Untitled</source>
         <translation type="unfinished">Izenik gabe</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardController.cpp" line="1693"/>
+        <location filename="../../src/board/UBBoardController.cpp" line="1694"/>
         <source>Could not find document.</source>
         <translation type="unfinished">Ezin izan da dokumentua aurkitu</translation>
     </message>
@@ -1724,12 +1724,12 @@ The configured data directory is used again at the next start.</source>
 <context>
     <name>UBBoardView</name>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1814"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1815"/>
         <source>Is it for Board or Widget ?</source>
         <translation type="unfinished">Arbelerako edo trepetarako?</translation>
     </message>
     <message>
-        <location filename="../../src/board/UBBoardView.cpp" line="1815"/>
+        <location filename="../../src/board/UBBoardView.cpp" line="1816"/>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation type="unfinished">Saiatzen ari zara objektua(k) trepetetan askatzen?</translation>
     </message>
@@ -1798,48 +1798,48 @@ The configured data directory is used again at the next start.</source>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1952"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3832"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1953"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3833"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3853"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3834"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3854"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3889"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3855"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3890"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3891"/>
         <source>Trash</source>
         <translation>Zakarrontzia</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1953"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1954"/>
         <source>Untitled Documents</source>
         <translation>Izenik gabeko dokumentuak</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2040"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2041"/>
         <source>New Folder</source>
         <translation>Karpeta berria</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2267"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2268"/>
         <source>Add Folder of Images</source>
         <translation>Gehitu irudien karpeta</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2268"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2269"/>
         <source>Add Images</source>
         <translation>Gehitu irudiak</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2269"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2270"/>
         <source>Add Pages from File</source>
         <translation>Gehitu orriak fitxategitik</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2655"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2656"/>
         <source>Duplicating Document %1</source>
         <translation>%1 dokumentua bikoizten</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2659"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2660"/>
         <source>Document %1 copied</source>
         <translation>%1 dokumentua kopiatu da</translation>
     </message>
@@ -1888,45 +1888,45 @@ The configured data directory is used again at the next start.</source>
         <translation type="vanished">Ez da dokumenturik aukeratu!</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3346"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3347"/>
         <source>Open Supported File</source>
         <translation>Ireki onartutako fitxategia</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3274"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3361"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3275"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3362"/>
         <source>Importing file %1...</source>
         <translation>%1 fitxategia inportatzen...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3283"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3378"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3284"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3379"/>
         <source>Failed to import file ... </source>
         <translation>Fitxategiaren inportazioak huts egin du...</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3303"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3304"/>
         <source>Import all Images from Folder</source>
         <translation>Inportatu karpetako fitxategi guztiak</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3324"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3325"/>
         <source>Folder does not contain any image files</source>
         <translation>Karpetak ez dauka irudi fitxategirik</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3857"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3858"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3878"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3859"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3879"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3880"/>
         <source>Delete</source>
         <translation>Ezabatu</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3872"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3873"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3884"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3874"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3885"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3886"/>
         <source>Empty</source>
         <translation>Hustu</translation>
     </message>
@@ -1939,17 +1939,17 @@ The configured data directory is used again at the next start.</source>
         <translation type="vanished">&apos;%1&apos; dokumentua OpenBoarden bertsio berriago batekin (%2) sortua da. Irekitzean baliteke informazioa galtzea. Jarraitu nahi duzu?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3623"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3624"/>
         <source>Add all Images to Document</source>
         <translation>Gehitu irudi guztiak dokumentura</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3624"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3625"/>
         <source>All Images (%1)</source>
         <translation>Irudi guztiak (%1)</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3645"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3646"/>
         <source>Selection does not contain any image files!</source>
         <translation>Hautapenak ez du irudi fitxategirik!</translation>
     </message>
@@ -1966,7 +1966,7 @@ The configured data directory is used again at the next start.</source>
         <translation type="vanished">%1 orria</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="2645"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2646"/>
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation type="unfinished">
@@ -1975,115 +1975,115 @@ The configured data directory is used again at the next start.</source>
         </translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2569"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2581"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3448"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2570"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2582"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3449"/>
         <source>Opening document in Board. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2090"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2091"/>
         <source>OpenBoard could not recover this file. Please delete it or contact your administrator for help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2098"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2099"/>
         <source>Broken document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2101"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2102"/>
         <source>Don&apos;t show this again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2595"/>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3462"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2596"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3463"/>
         <source>Document opened successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2702"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2703"/>
         <source>Complete deletion of %1 documents/folders</source>
         <translation type="unfinished">Burutu %1 dokumentu/karpeten ezabaketa</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2703"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2704"/>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
         <translation type="unfinished">%1 dokumentu edota karpeta ezabatu behar dituzu betiko. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2787"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2788"/>
         <source>Complete deletion of folder &quot;%1&quot;</source>
         <translation type="unfinished"> &quot;%1&quot; karpetaren ezabaketa</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2788"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2789"/>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished">&quot;%1&quot; karpeta ezabatu behar duzu betiko. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2793"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2794"/>
         <source>Complete deletion of document &quot;%1&quot;</source>
         <translation type="unfinished">&quot;%1&quot; dokumentuaren ezabaketa</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2794"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2795"/>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
         <translation type="unfinished">&quot;%1&quot; dokumentua ezabatu behar duzu betiko. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2811"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2812"/>
         <source>Emptying My Documents</source>
         <translation type="unfinished">Nire dokumentuak husten</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2812"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2813"/>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
         <translation type="unfinished">&quot;Nire dokumentuak&quot; karpeta hustu behar duzu. Dokumentu guztiak zakarrontzira mugituko dira. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2848"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2849"/>
         <source>Emptying Trash</source>
         <translation type="unfinished">Zakarrontzia husten</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2849"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2850"/>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
         <translation type="unfinished">Zakarrontzia hustu behar duzu. Bertako dokumnetu eta karpeta guztiak betiko ezabatuko dira. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2865"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2866"/>
         <source>Moving %1 elements to trash</source>
         <translation type="unfinished">%1 elementu zakarrontzira mugitzen</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2866"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2867"/>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
         <translation type="unfinished">%1 dokumentu edota karpeta zakarrontzira mugitu behar dituzu. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2874"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2875"/>
         <source>Move folder &quot;%1&quot;to trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2875"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2876"/>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished">&quot;%1&quot; karpeta zakarrontzira mugitzen. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2881"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2882"/>
         <source>Move document &quot;%1&quot;to trash</source>
         <translation type="unfinished">&quot;%1&quot; dokumentua zakarrontzira mugitu</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="2882"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="2883"/>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
         <translation type="unfinished">&quot;%1&quot; dokumentua zakarrontzira mugitu behar duzu. Ziur zaude?</translation>
     </message>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="3234"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="3235"/>
         <source>Open Supported File(s)</source>
         <translation type="unfinished">Ireki onartutako fitxategia(k)</translation>
     </message>
@@ -2247,12 +2247,12 @@ Izen berria ematean dokumentu berri bat sortuko da.</translation>
 <context>
     <name>UBDocumentTreeView</name>
     <message>
-        <location filename="../../src/document/UBDocumentController.cpp" line="1693"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1694"/>
         <source>Copying page %1/%2</source>
         <translation type="unfinished">%1/%2 orria kopiatzen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/document/UBDocumentController.cpp" line="1733"/>
+        <location filename="../../src/document/UBDocumentController.cpp" line="1734"/>
         <source>%1 pages copied</source>
         <translation type="unfinished">
             <numerusform>orri %1 kopiatu da</numerusform>
@@ -2748,23 +2748,23 @@ Do you want to continue?</source>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="490"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="496"/>
         <source>Media resource couldn&apos;t be resolved</source>
         <translation>Multimedia baliabidea ezin izan da ebatzi</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="493"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="499"/>
         <source>Unsupported media format</source>
         <translation>Multimedia formatua ez da onargarria</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="497"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="503"/>
         <source>Media playback service not found</source>
         <translation>Multimedia erreproduzitze zerbitzua ez da aurkitu</translation>
     </message>
     <message>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="500"/>
-        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="503"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="506"/>
+        <location filename="../../src/domain/UBGraphicsMediaItem.cpp" line="509"/>
         <source>Media error: </source>
         <translation>Multimedia errorea: </translation>
     </message>
@@ -2819,7 +2819,7 @@ Do you want to continue?</source>
 <context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1247"/>
+        <location filename="../../src/domain/UBGraphicsWidgetItem.cpp" line="1308"/>
         <source>Web</source>
         <translation>Weba</translation>
     </message>
@@ -2928,12 +2928,12 @@ Do you want to continue?</source>
         <translation>PDF formatua (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportPDF.cpp" line="75"/>
+        <location filename="../../src/adaptors/UBImportPDF.cpp" line="82"/>
         <source>PDF import failed.</source>
         <translation>PDF inportazioak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBImportPDF.cpp" line="81"/>
+        <location filename="../../src/adaptors/UBImportPDF.cpp" line="88"/>
         <source>Importing %1 PDF pages. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3068,7 +3068,7 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
 <context>
     <name>UBPersistenceManager</name>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1176"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1123"/>
         <source>(copy)</source>
         <translation>(kopia)</translation>
     </message>
@@ -3081,64 +3081,54 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
         <translation type="vanished">%1 dokumentu errepositoriora sarbidea galdu da. Tamalez aplikazioa itxi egingo da datuen galera sahiesteko. Azken aldaketak galdu daitezke ere.</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="318"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="331"/>
         <source>Retrieving all your documents (found : %1)</source>
         <translation type="unfinished">Zure dokumentu guztiak berreskuratzen (aurkitu dira: %1)</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="357"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="370"/>
         <source>Retrieved - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="371"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="384"/>
         <source>Broken - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="556"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="569"/>
         <source>Changes kept on this computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="557"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="570"/>
         <source>The document location is not available.
 
 Your latest changes are kept on this computer. They will be copied automatically the next time OpenBoard is started on this computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="803"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="749"/>
         <source>The document location is not available: this action will be possible again once the location is available. Your work is kept on this computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="827"/>
-        <source>The document location is not available. You can continue working: your changes are kept on this computer and saved automatically later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="839"/>
-        <source>The document location is available again. All your changes are saved.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="1640"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1587"/>
         <source>Renaming pages (%1/%2)</source>
         <translation type="unfinished">(%1/%2) orriak berrizendatzen</translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2014"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1965"/>
         <source>The latest changes of the following documents were kept on this computer at the last session and are now saved:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2020"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="1971"/>
         <source>The following documents were changed elsewhere meanwhile. Nothing was overwritten: the changes kept on this computer are restored in new documents:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/core/UBPersistenceManager.cpp" line="2086"/>
+        <location filename="../../src/core/UBPersistenceManager.cpp" line="2055"/>
         <source>%1 - copy recovered on %2 at %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3150,32 +3140,32 @@ Your latest changes are kept on this computer. They will be copied automatically
 <context>
     <name>UBPlatformUtils</name>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="462"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="429"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="500"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="446"/>
         <source>English</source>
         <translation>Ingelesa</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="463"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="430"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="501"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="447"/>
         <source>Russian</source>
         <translation>Errusiera</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="464"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="433"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="502"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="450"/>
         <source>German</source>
         <translation>Alemaniera</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="465"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="431"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="503"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="448"/>
         <source>French</source>
         <translation>Frantsesa</translation>
     </message>
     <message>
-        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="466"/>
-        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="432"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_linux.cpp" line="504"/>
+        <location filename="../../src/frameworks/UBPlatformUtils_win.cpp" line="449"/>
         <source>Swiss French</source>
         <translation>Suitzar frantsesa</translation>
     </message>
@@ -3313,7 +3303,7 @@ Your latest changes are kept on this computer. They will be copied automatically
 <context>
     <name>UBSettings</name>
     <message>
-        <location filename="../../src/core/UBSettings.cpp" line="1319"/>
+        <location filename="../../src/core/UBSettings.cpp" line="1231"/>
         <source>My Movies</source>
         <translation>Nire filmak</translation>
     </message>
@@ -3526,32 +3516,47 @@ Your latest changes are kept on this computer. They will be copied automatically
 <context>
     <name>UBStorageIndicator</name>
     <message>
-        <location filename="../../src/gui/UBStorageIndicator.cpp" line="53"/>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="41"/>
         <source>Document location unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/UBStorageIndicator.cpp" line="58"/>
-        <source>Your work is saved on this computer and copied automatically to the document location as soon as it is available again. You can continue working normally.
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="42"/>
+        <source>OpenBoard tries again automatically. Your changes are saved on this computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="43"/>
+        <source>They are copied to the document location as soon as it is available again. You can continue working normally.
 
 Click to close this message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="50"/>
+        <source>Document location available again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/UBStorageIndicator.cpp" line="50"/>
+        <source>All your changes are saved.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UBThumbnailAdaptor</name>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="127"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="120"/>
         <source>Generating preview thumbnails ...</source>
         <translation>Miniaturak sortzen...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="133"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="126"/>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniatura sortu dira...</translation>
     </message>
     <message>
-        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="197"/>
+        <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="190"/>
         <source>Loading thumbnails (%1 pages)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4026,12 +4031,12 @@ Orria berriro kargatu nahi duzu?</translation>
 <context>
     <name>XPDFRenderer</name>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="81"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="99"/>
         <source>an error occured while trying to open the PDF file</source>
         <translation type="unfinished">Errore bat gertatu da PDF fitxategia irekitzean</translation>
     </message>
     <message>
-        <location filename="../../src/pdf/XPDFRenderer.cpp" line="346"/>
+        <location filename="../../src/pdf/XPDFRenderer.cpp" line="364"/>
         <source>Processing...</source>
         <translation type="unfinished">Prozesatzen...</translation>
     </message>
