@@ -78,14 +78,18 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     QString dummyObjects = tr("objects");
     QString dummyWidgets = tr("widgets");
 
-    UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
+    UBExportFullPDF* exportFullPdfClip = new UBExportFullPDF(ScalingMode::ClipContent, this);
+    UBExportFullPDF* exportFullPdfScale = new UBExportFullPDF(ScalingMode::ScaleContent, this);
+    UBExportFullPDF* exportFullPdfExtend = new UBExportFullPDF(ScalingMode::ExtendPage, this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
 
     UBExportDocumentSetAdaptor *exportDocumentSet = new UBExportDocumentSetAdaptor(this);
     mExportAdaptors.append(exportDocument);
     mExportAdaptors.append(exportDocumentSet);
     //mExportAdaptors.append(webPublished);
-    mExportAdaptors.append(exportFullPdf);
+    mExportAdaptors.append(exportFullPdfClip);
+    mExportAdaptors.append(exportFullPdfScale);
+    mExportAdaptors.append(exportFullPdfExtend);
 
 //     UBExportWeb* exportWeb = new UBExportWeb(this);
 //     mExportAdaptors.append(exportWeb);

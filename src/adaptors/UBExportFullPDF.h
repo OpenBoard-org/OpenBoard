@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2026 Département de l'Instruction Publique (DIP-SEM)
+ * and contributors
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -26,9 +27,7 @@
 
 
 
-
-#ifndef UBExportFullPDF_H_
-#define UBExportFullPDF_H_
+#pragma once
 
 #include <QtCore>
 #include "UBExportAdaptor.h"
@@ -36,29 +35,32 @@
 
 class UBDocumentProxy;
 
-class UBExportFullPDF : public UBExportAdaptor
+enum class ScalingMode
 {
-    Q_OBJECT;
-
-    public:
-        UBExportFullPDF(QObject *parent = 0);
-        virtual ~UBExportFullPDF();
-
-        virtual QString exportName();
-        virtual QString exportExtention();
-        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
-        virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
-
-        virtual bool persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename);
-
-    protected:
-        void saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename);
-
-    private:
-        float mScaleFactor;
-        bool mHasPDFBackgrounds;
-
-        UBExportPDF * mSimpleExporter;
+    ScaleContent, ClipContent, ExtendPage
 };
 
-#endif /* UBExportFullPDF_H_ */
+class UBExportFullPDF : public UBExportAdaptor
+{
+    Q_OBJECT
+
+public:
+    UBExportFullPDF(ScalingMode scalingMode, QObject* parent = nullptr);
+    virtual ~UBExportFullPDF();
+
+    virtual QString exportName();
+    virtual QString exportExtention();
+    virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
+    virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
+
+    virtual bool persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename);
+
+protected:
+    void saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename);
+
+private:
+    bool mHasPDFBackgrounds{false};
+    ScalingMode mScalingMode{ScalingMode::ScaleContent};
+
+    UBExportPDF* mSimpleExporter{nullptr};
+};
