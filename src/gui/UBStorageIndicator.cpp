@@ -39,9 +39,9 @@ void UBStorageIndicator::setStorageAvailable(bool available)
     {
         mUnavailable = true;
         showWarning(tr("Document location unavailable"),
-                    QString(),
-                    tr("Your work is saved on this computer and copied automatically to the document "
-                       "location as soon as it is available again. You can continue working normally.\n\n"
+                    tr("OpenBoard tries again automatically. Your changes are saved on this computer."),
+                    tr("They are copied to the document location as soon as it is available again. "
+                       "You can continue working normally.\n\n"
                        "Click to close this message."));
     }
     else if (mUnavailable)
