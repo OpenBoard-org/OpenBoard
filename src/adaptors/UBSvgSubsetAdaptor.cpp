@@ -100,6 +100,36 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
+namespace
+{
+    // Image file names (relative to the document folder) by document folder and item uuid.
+    // The writer needs the file name of each image. It is usually found by listing the images
+    // folder, which is not possible while the document storage is not available.
+    QMutex sImageFileMutex;
+    QHash<QString, QHash<QUuid, QString>> sImageFiles;
+
+    // embedded PDF files known to exist, no need to check the storage at each save
+    QSet<QString> sKnownPdfFiles;
+
+    QString rememberedImageFile(const QString& documentPath, const QUuid& uuid)
+    {
+        QMutexLocker locker(&sImageFileMutex);
+        return sImageFiles.value(documentPath).value(uuid);
+    }
+
+    void rememberPdfFile(const QString& path)
+    {
+        QMutexLocker locker(&sImageFileMutex);
+        sKnownPdfFiles.insert(path);
+    }
+
+    bool isKnownPdfFile(const QString& path)
+    {
+        QMutexLocker locker(&sImageFileMutex);
+        return sKnownPdfFiles.contains(path);
+    }
+}
+
 
 QString UBSvgSubsetAdaptor::toSvgTransform(const QTransform& matrix)
 {
@@ -271,7 +301,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<U
 QByteArray UBSvgSubsetAdaptor::loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     QString fileName = pageFileName(proxy, pageIndex);
-    qDebug() << fileName;
+    qDebug() << "Loading page" << fileName;
 
     // a newer version of the page may still wait in the journal (document storage not available)
     const auto journal = UBPersistenceJournal::journal();
@@ -1189,12 +1219,14 @@ bool UBSvgSubsetAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
     const QString fileName = pageFileName(proxy, pageIndex);
     const QByteArray data = serializeScene(proxy, pScene, pageIndex);
 
-    // the journal must not replace this page later by an older copy
     if (!UBPersistenceJournal::writeFile(fileName, data))
     {
         return false;
     }
 
+    // writeFile() does not use the journal, but an earlier asynchronous save may have stored a
+    // local copy of this page. Remove it, as it would otherwise be written back over this newer
+    // page later.
     UBPersistenceJournal::journal()->written(fileName);
     return true;
 }
@@ -1214,30 +1246,6 @@ QString UBSvgSubsetAdaptor::pageFileName(std::shared_ptr<UBDocumentProxy> proxy,
     return proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 }
 
-namespace
-{
-    // Image file names (relative to the document folder) by document folder and item uuid.
-    // The writer needs the file name of each image. It is usually found by listing the images
-    // folder, which is not possible while the document storage is not available.
-    QMutex sImageFileMutex;
-    QHash<QString, QHash<QUuid, QString>> sImageFiles;
-
-    // embedded PDF files known to exist, no need to check the storage at each save
-    QSet<QString> sKnownPdfFiles;
-
-    void rememberPdfFile(const QString& path)
-    {
-        QMutexLocker locker(&sImageFileMutex);
-        sKnownPdfFiles.insert(path);
-    }
-
-    bool isKnownPdfFile(const QString& path)
-    {
-        QMutexLocker locker(&sImageFileMutex);
-        return sKnownPdfFiles.contains(path);
-    }
-}
-
 void UBSvgSubsetAdaptor::rememberImageFile(const QString& documentPath, const QUuid& uuid, const QString& relativeFileName)
 {
     if (uuid.isNull() || relativeFileName.isEmpty())
@@ -1247,12 +1255,6 @@ void UBSvgSubsetAdaptor::rememberImageFile(const QString& documentPath, const QU
 
     QMutexLocker locker(&sImageFileMutex);
     sImageFiles[documentPath].insert(uuid, relativeFileName);
-}
-
-QString UBSvgSubsetAdaptor::rememberedImageFile(const QString& documentPath, const QUuid& uuid)
-{
-    QMutexLocker locker(&sImageFileMutex);
-    return sImageFiles.value(documentPath).value(uuid);
 }
 
 

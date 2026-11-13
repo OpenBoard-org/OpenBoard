@@ -71,6 +71,8 @@ namespace
 
 void UBThumbnailAdaptor::writePendingThumbnails()
 {
+    // The thumbnails are not removed here: each one is removed by thumbnailWritten() when the
+    // persistence thread confirms the write, so that it is not lost if writing fails again.
     for (auto it = sPendingThumbnails.cbegin(); it != sPendingThumbnails.cend(); ++it)
     {
         writeThumbnail(it.key(), it.value());

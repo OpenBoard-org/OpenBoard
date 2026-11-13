@@ -93,9 +93,9 @@ class UBSvgSubsetAdaptor
         // storage may hang), returns an empty array if the page cannot be serialized completely.
         static QByteArray serializeScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex, bool storageAccess = true);
         static QString pageFileName(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
-        // file name of an image (relative to the document folder), known without accessing the storage
+        // remember the file name of an image (relative to the document folder), so that the page can
+        // be written without accessing the storage
         static void rememberImageFile(const QString& documentPath, const QUuid& uuid, const QString& relativeFileName);
-        static QString rememberedImageFile(const QString& documentPath, const QUuid& uuid);
         static void upgradeScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
 
         static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);

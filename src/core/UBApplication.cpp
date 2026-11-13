@@ -481,31 +481,32 @@ void UBApplication::setupStorageIndicator()
     UBBoardPaletteManager* paletteManager = boardController->paletteManager();
     QWidget* leftPalette = paletteManager->leftPalette();
     QWidget* boardContainer = boardController->controlContainer();
-    UBStorageIndicator* boardIndicator = new UBStorageIndicator(boardContainer, nullptr, leftPalette);
-    boardIndicator->setObstacles([paletteManager, boardContainer]() {
-        // messages are shown in the same corner; the stylus palette is created again when its orientation changes
-        QList<QWidget*> obstacles;
+    QWidget* thumbnailView = documentController->thumbnailView();
 
-        for (UBMessageWindow* message : boardContainer->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
+    // messages are shown in the same corner as the badge
+    const auto messagesIn = [](QWidget* parent) {
+        QList<QWidget*> messages;
+
+        for (UBMessageWindow* message : parent->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
         {
-            obstacles << message;
+            messages << message;
         }
 
+        return messages;
+    };
+
+    UBStorageIndicator* boardIndicator = new UBStorageIndicator(boardContainer, nullptr, leftPalette);
+    boardIndicator->setObstacles([messagesIn, boardContainer, paletteManager]() {
+        // the stylus palette is created again when its orientation changes
+        QList<QWidget*> obstacles = messagesIn(boardContainer);
         obstacles << paletteManager->stylusPalette();
         return obstacles;
     });
 
-    QWidget* thumbnailView = documentController->thumbnailView();
+    // the documents badge is placed at the bottom left of the thumbnail view
     UBStorageIndicator* documentIndicator = new UBStorageIndicator(documentController->controlView(), thumbnailView, leftPalette);
-    documentIndicator->setObstacles([thumbnailView]() {
-        QList<QWidget*> obstacles;
-
-        for (UBMessageWindow* message : thumbnailView->findChildren<UBMessageWindow*>(Qt::FindDirectChildrenOnly))
-        {
-            obstacles << message;
-        }
-
-        return obstacles;
+    documentIndicator->setObstacles([messagesIn, thumbnailView]() {
+        return messagesIn(thumbnailView);
     });
 
     QList<UBStorageIndicator*> indicators;

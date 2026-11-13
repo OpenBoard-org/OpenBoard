@@ -232,6 +232,8 @@ private:
         QFutureWatcher<void> futureWatcher;
         QPointer<UBPersistenceWorker> mWorker;
         QList<std::shared_ptr<UBGraphicsScene>> mScenesToSave;
+        // deep copy given to the persistence thread -> original scene, to mark the original as
+        // modified again if saving fails, and to serialize it when closing
         QHash<UBGraphicsScene*, std::weak_ptr<UBGraphicsScene>> mOriginalScenes;
         bool mStorageUnavailable{false};
         bool mAbandonWorker{false};
