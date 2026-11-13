@@ -49,11 +49,13 @@ GraphicsPDFItem::GraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphic
 #endif
     mRenderer->attach();
     connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+    connect(mRenderer, SIGNAL(loaded()), this, SLOT(OnRendererLoaded()));
 }
 
 GraphicsPDFItem::~GraphicsPDFItem()
 {
     disconnect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+    disconnect(mRenderer, SIGNAL(loaded()), this, SLOT(OnRendererLoaded()));
     mRenderer->detach();
 }
 
@@ -88,5 +90,12 @@ void GraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 void GraphicsPDFItem::OnRequireUpdate()
 {
     updateChild();
+}
+
+void GraphicsPDFItem::OnRendererLoaded()
+{
+    // the PDF could not be read before: the item had no size
+    prepareGeometryChange();
+    update();
 }
 

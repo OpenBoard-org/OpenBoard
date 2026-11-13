@@ -49,6 +49,7 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
         int pageNumber() const { return mPageNumber; }
+        PDFRenderer* renderer() const { return mRenderer; }
         QUuid fileUuid() const { return mRenderer->fileUuid(); }
         QByteArray fileData() const { return mRenderer->fileData(); }
         void setCacheAllowed(bool const value) { mIsCacheAllowed = value; }
@@ -61,6 +62,7 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
 
     private slots:
         void OnRequireUpdate();
+        void OnRendererLoaded();
 };
 
 #endif // GRAPHICSPDFITEM_H

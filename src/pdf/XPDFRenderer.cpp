@@ -44,12 +44,11 @@ namespace constants{
     SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
 }
 
-XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
+XPDFRenderer::XPDFRenderer()
     : mpSplashBitmapUncached(nullptr)
     , mSplashUncached(nullptr)
     , mDocument(nullptr)
 {
-    Q_UNUSED(importingFile);
     if (!globalParams)
     {
         // globalParams must be allocated once and never be deleted
@@ -61,20 +60,39 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 #endif
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
-#if POPPLER_VERSION_MAJOR > 25 || (POPPLER_VERSION_MAJOR == 25 && POPPLER_VERSION_MINOR >= 12)
-    mDocument = new PDFDoc(std::make_unique<GooString>(static_cast<std::string_view>(filename.toLocal8Bit())));
-#elif POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
-    mDocument = new PDFDoc(std::make_unique<GooString>(filename.toLocal8Bit()));
-#else
-    mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
-#endif
+
+    connect(&m_cacheThread, SIGNAL(finished()), this, SLOT(OnThreadFinished()));
+}
+
+void XPDFRenderer::load(const QByteArray &fileData)
+{
+    if (isValid())
+    {
+        return;
+    }
+
+    // a document which could not be read before
+    if (mDocument)
+    {
+        delete mDocument;
+        mDocument = nullptr;
+        sInstancesCount.deref();
+    }
+
+    if (fileData.isEmpty())
+    {
+        return;
+    }
+
+    // poppler reads the PDF from the data kept by the renderer, which must not change while the document exists
+    setFileData(fileData);
+    mDocument = new PDFDoc(new MemStream(this->fileData().constData(), 0, fileData.size(), Object(objNull)));
+    sInstancesCount.ref();
 
     if (isValid())
     {
         initPDFZoomData();
-
-        sInstancesCount.ref();
-        connect(&m_cacheThread, SIGNAL(finished()), this, SLOT(OnThreadFinished()));
+        emit loaded();
     }
     else
     {
