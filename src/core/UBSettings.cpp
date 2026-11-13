@@ -38,6 +38,7 @@
 
 #include "UB.h"
 #include "UBSetting.h"
+#include "UBDocumentStorage.h"
 
 #include "tools/UBToolsManager.h"
 
@@ -103,6 +104,12 @@ QColor UBSettings::opaquePaletteColor = QColor(66, 66, 66, 200);
 QColor UBSettings::documentViewLightColor = QColor(241, 241, 241);
 
 QPointer<QSettings> UBSettings::sAppSettings = 0;
+QPointer<QSettings> UBSettings::sAdminSettings = 0;
+QPointer<QSettings> UBSettings::sPolicySettings = 0;
+
+QString UBSettings::sDataDirPath;
+bool UBSettings::sUseLocalDataDirectory = false;
+bool UBSettings::sDataDirectoryDecisionPending = false;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
@@ -175,6 +182,96 @@ QSettings* UBSettings::getAppSettings()
     }
 
     return UBSettings::sAppSettings;
+}
+
+QString UBSettings::systemConfigDirectory()
+{
+#if defined(Q_OS_WIN)
+    QString programData = qEnvironmentVariable("ProgramData");
+
+    if (programData.isEmpty())
+    {
+        programData = "C:/ProgramData";
+    }
+
+    return QDir::fromNativeSeparators(programData) + "/" + qApp->applicationName();
+#elif defined(Q_OS_MACOS)
+    return "/Library/Application Support/" + qApp->applicationName();
+#else
+    return "/etc/" + qApp->applicationName().toLower();
+#endif
+}
+
+QSettings* UBSettings::openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
+{
+    if (loaded || qApp->applicationName().isEmpty())
+    {
+        return settings;
+    }
+
+    loaded = true;
+    const QStringList directories{systemConfigDirectory(), UBPlatformUtils::applicationEtcDirectory()};
+
+    for (const QString& directory : directories)
+    {
+        const QString path = directory + "/" + qApp->applicationName() + fileSuffix;
+
+        if (QFile::exists(path))
+        {
+            settings = new QSettings(path, QSettings::IniFormat, nullptr);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            settings->setIniCodec("utf-8");
+#endif
+            qInfo() << description << settings->fileName();
+            break;
+        }
+    }
+
+    return settings;
+}
+
+QSettings* UBSettings::getAdminSettings()
+{
+    static bool loaded = false;
+    return openOptionalSettings(sAdminSettings, loaded, "Admin.config", "Administrator settings:");
+}
+
+QSettings* UBSettings::getPolicySettings()
+{
+    static bool loaded = false;
+    return openOptionalSettings(sPolicySettings, loaded, "Policy.config", "Policy settings:");
+}
+
+bool UBSettings::isPolicyManaged(const QString& key)
+{
+    QSettings* policy = getPolicySettings();
+    return policy && policy->contains(key);
+}
+
+bool UBSettings::systemContains(const QString& key)
+{
+    QSettings* admin = getAdminSettings();
+    return isPolicyManaged(key) || (admin && admin->contains(key)) || getAppSettings()->contains(key);
+}
+
+QVariant UBSettings::systemValue(const QString& key, const QVariant& defaultValue)
+{
+    // Policy > Admin > Default (OpenBoard.config), for settings which cannot be set by the user
+    QSettings* policy = getPolicySettings();
+
+    if (policy && policy->contains(key))
+    {
+        return policy->value(key);
+    }
+
+    QSettings* admin = getAdminSettings();
+
+    if (admin && admin->contains(key))
+    {
+        return admin->value(key);
+    }
+
+    return getAppSettings()->value(key, defaultValue);
 }
 
 
@@ -504,8 +601,17 @@ void UBSettings::init()
  */
 QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
 {
-    // Check first the settings queue, then the app settings, then the user settings.
+    // Priority: Policy > User > Admin > Default (OpenBoard.config).
+    // Check first the policy settings, then the settings queue, then the user settings,
+    // then the admin settings, then the app settings.
     // If the key exists in neither of these, then defaultValue is returned.
+
+    QSettings* policy = getPolicySettings();
+
+    if (policy && policy->contains(key))
+    {
+        return policy->value(key);
+    }
 
     if (mSettingsQueue.contains(key))
         return mSettingsQueue.value(key);
@@ -514,8 +620,8 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     if (!sAppSettings->contains(key) && !(defaultValue == QVariant()))
         sAppSettings->setValue(key, defaultValue);
 
-    // Get the value from the user settings (or if it doesn't exist there, from the app settings)
-    QVariant val = mUserSettings->value(key, sAppSettings->value(key, defaultValue));
+    // Get the value from the user settings (or if it doesn't exist there, from the admin or app settings)
+    QVariant val = mUserSettings->value(key, baseValue(key, defaultValue));
 
     // Add the value to the settings queue for faster access next time it is requested
     mSettingsQueue[key] = val;
@@ -523,6 +629,19 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     return val;
 }
 
+
+QVariant UBSettings::baseValue(const QString& key, const QVariant& defaultValue)
+{
+    // value used when the user did not change the setting: Admin > Default
+    QSettings* admin = getAdminSettings();
+
+    if (admin && admin->contains(key))
+    {
+        return admin->value(key);
+    }
+
+    return getAppSettings()->value(key, defaultValue);
+}
 
 void UBSettings::setValue (const QString & key, const QVariant & value)
 {
@@ -538,6 +657,13 @@ void UBSettings::save()
     QHash<QString, QVariant>::const_iterator it = mSettingsQueue.constBegin();
 
     while (it != mSettingsQueue.constEnd()) {
+        // values imposed by the policy are never stored in the user settings
+        if (isPolicyManaged(it.key()))
+        {
+            ++it;
+            continue;
+        }
+
         /*
          * We save the setting to the user settings if
          * a) it is different from the (non-null) value stored in the user settings, or
@@ -558,7 +684,7 @@ void UBSettings::save()
         }
 
         else if (!mUserSettings->contains(it.key())
-                 && it.value() != mAppSettings->value(it.key()))
+                 && it.value() != baseValue(it.key()))
         {
             if (it.value().isValid())
             {
@@ -960,26 +1086,107 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
+QString UBSettings::localDataDirectory()
+{
+    QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
+
+    if (qApp->organizationName().size() > 0)
+    {
+        dataDirPath.replace(qApp->organizationName() + "/", "");
+    }
+
+    return dataDirPath;
+}
+
+QString UBSettings::configuredDataDirectory()
+{
+    if (systemContains("App/DataDirectory"))
+    {
+        QString dataDirPath = systemValue("App/DataDirectory").toString();
+        dataDirPath = replaceWildcard(dataDirPath);
+        // remove trailing separators etc., so that the parent directory is determined correctly
+        return dataDirPath.isEmpty() ? dataDirPath : QDir::cleanPath(dataDirPath);
+    }
+
+    return QString();
+}
+
+bool UBSettings::isDataDirectoryAvailable(const QString& path)
+{
+    return UBDocumentStorage::isReachable(path, configuredDataDirectoryMountPoint());
+}
+
+QString UBSettings::configuredDataDirectoryMountPoint()
+{
+    QString mountPoint = systemValue("App/DataDirectoryMountPoint").toString();
+    mountPoint = replaceWildcard(mountPoint);
+    return mountPoint.isEmpty() ? mountPoint : QDir::cleanPath(mountPoint);
+}
+
+void UBSettings::useLocalDataDirectory()
+{
+    sUseLocalDataDirectory = true;
+    sDataDirPath.clear();
+}
+
+bool UBSettings::isUsingLocalDataDirectory()
+{
+    return sUseLocalDataDirectory;
+}
+
+void UBSettings::setDataDirectoryDecisionPending(bool pending)
+{
+    sDataDirectoryDecisionPending = pending;
+}
+
 QString UBSettings::userDataDirectory()
 {
-    static QString dataDirPath = "";
-    if(dataDirPath.isEmpty()){
-        if (getAppSettings() && getAppSettings()->contains("App/DataDirectory")) {
-            qDebug() << "getAppSettings()->contains(App/DataDirectory):" << getAppSettings()->contains("App/DataDirectory");
-            dataDirPath = getAppSettings()->value("App/DataDirectory").toString();
-            dataDirPath = replaceWildcard(dataDirPath);
-
-            if(checkDirectory(dataDirPath))
-                return dataDirPath;
-            else
-                qCritical() << "Impossible to create datadirpath " << dataDirPath;
-
-        }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
-        if (qApp->organizationName().size() > 0)
-            dataDirPath.replace(qApp->organizationName() + "/", "");
+    if (!sDataDirPath.isEmpty())
+    {
+        return sDataDirPath;
     }
-    return dataDirPath;
+
+    QString configured = configuredDataDirectory();
+
+    if (!configured.isEmpty() && !sUseLocalDataDirectory)
+    {
+        if (sDataDirectoryDecisionPending)
+        {
+            // the user is asked right now, do not access the (possibly blocking) path again
+            return localDataDirectory();
+        }
+
+        if (isDataDirectoryAvailable(configured))
+        {
+            if (checkDirectory(configured))
+            {
+                sDataDirPath = configured;
+                qInfo() << "Configured data directory:" << configured << "- used data directory:" << sDataDirPath;
+                return sDataDirPath;
+            }
+
+            // Cannot create the directory: switch explicitly to a local session, so that the
+            // user is warned (see UBApplication::exec) instead of silently using another location.
+            sUseLocalDataDirectory = true;
+            sDataDirPath = localDataDirectory();
+            qCritical() << "Impossible to create datadirpath" << configured << "- starting a local session in" << sDataDirPath;
+            return sDataDirPath;
+        }
+
+        // Do not silently fall back to another location: as long as no decision was taken
+        // (see UBApplication::checkDataDirectory), the local path is returned without caching.
+        // No logging here: the verbose message handler itself calls userDataDirectory().
+        return localDataDirectory();
+    }
+
+    sDataDirPath = localDataDirectory();
+
+    if (!configured.isEmpty())
+    {
+        qWarning() << "Configured data directory:" << configured << "- used data directory (local session):" << sDataDirPath;
+    }
+
+    return sDataDirPath;
 }
 
 
@@ -987,8 +1194,8 @@ QString UBSettings::userImageDirectory()
 {
     static QString imageDirectory = "";
     if(imageDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserImageDirectory")) {
-            imageDirectory = getAppSettings()->value("App/UserImageDirectory").toString();
+        if (systemContains("App/UserImageDirectory")) {
+            imageDirectory = systemValue("App/UserImageDirectory").toString();
 
             imageDirectory = replaceWildcard(imageDirectory);
             if(checkDirectory(imageDirectory))
@@ -1008,8 +1215,8 @@ QString UBSettings::userVideoDirectory()
 {
     static QString videoDirectory = "";
     if(videoDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory")) {
-            videoDirectory = getAppSettings()->value("App/UserVideoDirectory").toString();
+        if (systemContains("App/UserVideoDirectory")) {
+            videoDirectory = systemValue("App/UserVideoDirectory").toString();
             videoDirectory = replaceWildcard(videoDirectory);
             if(checkDirectory(videoDirectory))
                 return videoDirectory;
@@ -1034,8 +1241,8 @@ QString UBSettings::userAudioDirectory()
 {
     static QString audioDirectory = "";
     if(audioDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserAudioDirectory")) {
-            audioDirectory = getAppSettings()->value("App/UserAudioDirectory").toString();
+        if (systemContains("App/UserAudioDirectory")) {
+            audioDirectory = systemValue("App/UserAudioDirectory").toString();
 
             audioDirectory = replaceWildcard(audioDirectory);
             if(checkDirectory(audioDirectory))
@@ -1055,9 +1262,9 @@ QString UBSettings::userPodcastRecordingDirectory()
 {
     static QString dirPath = "";
     if(dirPath.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
+        if (systemContains("Podcast/RecordingDirectory"))
         {
-            dirPath = getAppSettings()->value("Podcast/RecordingDirectory").toString();
+            dirPath = systemValue("Podcast/RecordingDirectory").toString();
             dirPath = replaceWildcard(dirPath);
             if(checkDirectory(dirPath))
                 return dirPath;
@@ -1180,8 +1387,8 @@ QString UBSettings::userInteractiveDirectory()
 {
     static QString interactiveDirectory = "";
     if(interactiveDirectory.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory")) {
-            interactiveDirectory = getAppSettings()->value("App/UserInteractiveContentDirectory").toString();
+        if (systemContains("App/UserInteractiveContentDirectory")) {
+            interactiveDirectory = systemValue("App/UserInteractiveContentDirectory").toString();
             interactiveDirectory = replaceWildcard(interactiveDirectory);
             if(checkDirectory(interactiveDirectory))
                 return interactiveDirectory;
@@ -1194,6 +1401,44 @@ QString UBSettings::userInteractiveDirectory()
     return interactiveDirectory;
 }
 
+
+QString UBSettings::recoveryDirectory()
+{
+    // Local copies of the files not yet written to the document storage. It must be on a local
+    // disk which stays available when the data directory is not, and must not be cleared when
+    // the user logs out. Can be changed with App/RecoveryDirectory in the admin or policy file,
+    // e.g. for computers whose local profile is deleted at logout.
+    static QString dirPath;
+
+    if (dirPath.isEmpty())
+    {
+        dirPath = systemValue("App/RecoveryDirectory", localDataDirectory() + "/recovery").toString();
+        dirPath = replaceWildcard(dirPath);
+        dirPath = UBFileSystemUtils::normalizeFilePath(QDir::cleanPath(dirPath));
+        qInfo() << "Recovery directory:" << dirPath;
+    }
+
+    return dirPath;
+}
+
+QString UBSettings::adminLibraryDirectory()
+{
+    // Library content added by the administrator for all users, kept on updates. It has the same
+    // structure as the library shipped with OpenBoard (applications, interactivities, pictures,
+    // audios, videos, shape). Default: "library" in the system configuration directory, can be
+    // changed with Library/AdminLibraryDirectory in the admin or policy file.
+    static QString dirPath;
+
+    if (dirPath.isEmpty())
+    {
+        dirPath = systemValue("Library/AdminLibraryDirectory", systemConfigDirectory() + "/library").toString();
+        dirPath = replaceWildcard(dirPath);
+        dirPath = UBFileSystemUtils::normalizeFilePath(QDir::cleanPath(dirPath));
+        qInfo() << "Administrator library directory:" << dirPath;
+    }
+
+    return dirPath;
+}
 
 QString UBSettings::applicationInteractivesDirectory()
 {
@@ -1283,8 +1528,8 @@ QString UBSettings::userInteractiveFavoritesDirectory()
 {
     static QString dirPath = "";
     if(dirPath.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory")) {
-            dirPath = getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString();
+        if (systemContains("App/UserInteractiveFavoritesDirectory")) {
+            dirPath = systemValue("App/UserInteractiveFavoritesDirectory").toString();
             dirPath = replaceWildcard(dirPath);
             if(checkDirectory(dirPath))
                 return dirPath;
@@ -1303,19 +1548,19 @@ QNetworkProxy* UBSettings::httpProxy()
 {
     QNetworkProxy* proxy = 0;
 
-    if (mAppSettings->value("Proxy/Enabled", false).toBool()) {
+    if (systemValue("Proxy/Enabled", false).toBool()) {
 
         proxy = new QNetworkProxy();
 
-        if (mAppSettings->value("Proxy/Type", "HTTP").toString() == "Socks5")
+        if (systemValue("Proxy/Type", "HTTP").toString() == "Socks5")
             proxy->setType(QNetworkProxy::Socks5Proxy);
         else
             proxy->setType(QNetworkProxy::HttpProxy);
 
-        proxy->setHostName(mAppSettings->value("Proxy/HostName").toString());
-        proxy->setPort(mAppSettings->value("Proxy/Port", 1080).toInt());
-        proxy->setUser(mAppSettings->value("Proxy/UserName").toString());
-        proxy->setPassword(mAppSettings->value("Proxy/Password").toString());
+        proxy->setHostName(systemValue("Proxy/HostName").toString());
+        proxy->setPort(systemValue("Proxy/Port", 1080).toInt());
+        proxy->setUser(systemValue("Proxy/UserName").toString());
+        proxy->setPassword(systemValue("Proxy/Password").toString());
     }
 
     return proxy;

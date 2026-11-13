@@ -34,6 +34,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBPersistenceManager.h"
+#include "core/UBDocumentStorage.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
@@ -47,6 +48,51 @@
 #include "UBSvgSubsetAdaptor.h"
 
 #include "core/memcheck.h"
+
+QHash<QString, QPixmap> UBThumbnailAdaptor::sPendingThumbnails;
+
+void UBThumbnailAdaptor::writeThumbnail(const QString& fileName, const QPixmap& pixmap)
+{
+    QByteArray data;
+    QBuffer buffer(&data);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer, "JPG");
+    UBPersistenceManager::persistenceManager()->saveThumbnail(fileName, data);
+}
+
+void UBThumbnailAdaptor::writePendingThumbnails()
+{
+    // The thumbnails are not removed here: each one is removed by thumbnailWritten() when the
+    // persistence thread confirms the write, so that it is not lost if writing fails again.
+    for (auto it = sPendingThumbnails.cbegin(); it != sPendingThumbnails.cend(); ++it)
+    {
+        writeThumbnail(it.key(), it.value());
+    }
+}
+
+void UBThumbnailAdaptor::thumbnailWritten(const QString& fileName)
+{
+    sPendingThumbnails.remove(fileName);
+}
+
+void UBThumbnailAdaptor::discardThumbnails(const QString& documentPath)
+{
+    // the page files are renumbered: thumbnails not written would belong to another page
+    const QString prefix = documentPath + "/";
+
+    for (auto it = sPendingThumbnails.begin(); it != sPendingThumbnails.end();)
+    {
+        if (it.key().startsWith(prefix))
+        {
+            QFile::remove(it.key()); // created again from the page when needed
+            it = sPendingThumbnails.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
 
 void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy)
 {
@@ -99,6 +145,11 @@ QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentP
         }
     }
 
+    if (sPendingThumbnails.contains(thumbFileName))
+    {
+        return sPendingThumbnails.value(thumbFileName);
+    }
+
     QPixmap pix;
     pix.load(thumbFileName);
     return pix;
@@ -107,6 +158,17 @@ QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentP
 QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+
+    if (sPendingThumbnails.contains(fileName))
+    {
+        return sPendingThumbnails.value(fileName);
+    }
+
+    if (!UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable())
+    {
+        // do not access the storage, and do not try to generate all missing thumbnails
+        return QPixmap();
+    }
 
     QFile file(fileName);
     if (!file.exists())
@@ -136,9 +198,11 @@ void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
-    QFile thumbFile(fileName);
+    // while the storage is not available, the thumbnail is kept in memory
+    const bool available = UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable();
+    const bool missing = available ? !QFile::exists(fileName) : !sPendingThumbnails.contains(fileName);
 
-    if (pScene->isModified() || overrideModified || !thumbFile.exists())
+    if (pScene->isModified() || overrideModified || missing)
     {
         qreal nominalWidth = pScene->nominalSize().width();
         qreal nominalHeight = pScene->nominalSize().height();
@@ -173,7 +237,15 @@ void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, st
         pScene->setRenderingContext(UBGraphicsScene::Screen);
         pScene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
-        thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation).save(fileName, "JPG");
+        const QPixmap pixmap = QPixmap::fromImage(thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+        // kept in memory until written, also while the storage is not available
+        sPendingThumbnails.insert(fileName, pixmap);
+
+        if (available)
+        {
+            writeThumbnail(fileName, pixmap);
+        }
     }
 }
 

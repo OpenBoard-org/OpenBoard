@@ -79,6 +79,23 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     // Probably no fileType equivalent on Windows
 }
 
+bool UBPlatformUtils::canListDirectory(const QString& directory)
+{
+    const QString pattern = QDir::toNativeSeparators(QDir(directory).absoluteFilePath("*"));
+    WIN32_FIND_DATAW entry;
+    const HANDLE handle = FindFirstFileExW(reinterpret_cast<LPCWSTR>(pattern.utf16()), FindExInfoBasic,
+                                           &entry, FindExSearchNameMatch, nullptr, 0);
+
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        // the root of an empty drive has no entry at all
+        return GetLastError() == ERROR_FILE_NOT_FOUND;
+    }
+
+    FindClose(handle);
+    return true;
+}
+
 void UBPlatformUtils::fadeDisplayOut()
 {
     // NOOP
@@ -473,6 +490,18 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
             #endif
         }
         pWidget->showFullScreen();
+
+        // A window shown again while the displays are reconfigured (e.g. extended mode restored)
+        // may stay behind other windows and get no WM_PAINT, so that Qt does not paint it and the
+        // screen shows the desktop: raise it and ask Windows to paint it once the system settled.
+        pWidget->raise();
+
+        QTimer::singleShot(1000, pWidget, [pWidget]() {
+            if (pWidget->isVisible())
+            {
+                InvalidateRect(reinterpret_cast<HWND>(pWidget->winId()), nullptr, FALSE);
+            }
+        });
     }
 }
 

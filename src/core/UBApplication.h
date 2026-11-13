@@ -136,10 +136,19 @@ class UBApplication : public SingleApplication
         void showMinimized();
 //#endif
         void onScreenCountChanged(int newCount);
+        void onCommitDataRequest(QSessionManager& manager);
 
     private:
         void updateProtoActionsState();
         void setupTranslators(QStringList args);
+        void checkDataDirectory();
+        // Accessing a disconnected network path may block for a long time (SMB timeout, stale
+        // mounts), so the GUI thread never accesses the configured path directly. A check which
+        // did not finish in time is considered as failed; it is not waited for.
+        static bool isDataDirectoryAvailableWithin(const QString& path, int timeoutMs);
+        void showLocalDataDirectoryWarning();
+        void setupStorageIndicator();
+        void showRecoveryReport();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
         QString checkLanguageAvailabilityForSankore(QString& language);

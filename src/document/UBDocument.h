@@ -54,11 +54,11 @@ public:
 
     std::shared_ptr<UBDocumentProxy> proxy() const;
 
-    void deletePages(QList<int> indexes);
-    void duplicatePage(int index);
-    void movePage(int fromIndex, int toIndex);
-    void copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex);
-    void insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
+    bool deletePages(QList<int> indexes);
+    bool duplicatePage(int index);
+    bool movePage(int fromIndex, int toIndex);
+    bool copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex);
+    bool insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool useUndoRedoStack = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, const int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false);

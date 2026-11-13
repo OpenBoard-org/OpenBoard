@@ -27,8 +27,6 @@
 
 
 
-#include <QFile>
-
 #include "PDFRenderer.h"
 
 #include "XPDFRenderer.h"
@@ -49,7 +47,7 @@ PDFRenderer::~PDFRenderer()
     // NOOP
 }
 
-PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &filename, bool importingFile)
+PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid)
 {
     if (sRenderers.contains(uuid))
     {
@@ -57,15 +55,10 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     }
     else
     {
-        PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
+        PDFRenderer *newRenderer = new XPDFRenderer();
 
         newRenderer->setRefCount(0);
         newRenderer->setFileUuid(uuid);
-
-        QFile file(filename);
-        file.open(QIODevice::ReadOnly);
-        newRenderer->setFileData(file.readAll());
-        file.close();
 
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 

@@ -30,6 +30,8 @@
 #define UBPERSISTENCEMANAGER_H_
 
 #include <QtCore>
+#include <QMessageBox>
+#include <QPointer>
 
 #include "UBSceneCache.h"
 #include "UBPersistenceWorker.h"
@@ -41,6 +43,7 @@ class UBDocumentProxy;
 class UBGraphicsScene;
 class UBDocumentTreeNode;
 class UBDocumentTreeModel;
+class UBDocumentStorage;
 
 class UBPersistenceManager : public QObject
 {
@@ -155,7 +158,37 @@ class UBPersistenceManager : public QObject
         QString adjustDocumentVirtualPath(const QString &str);
 
         void closing();
+
+        // Write all pending changes, waiting at most timeoutMs. What is not written then is kept
+        // in the local journal and written later. When closing, the persistence thread is abandoned.
+        void flush(int timeoutMs, bool closing = false);
+
+        // returns false if the timeout (ms, -1 for none) expired before all saves were written
+        bool waitForAllSaved(int timeoutMs = -1) const;
         bool isSceneInCached(std::shared_ptr<UBDocumentProxy>proxy, int index) const;
+
+        // write a thumbnail in the persistence thread
+        void saveThumbnail(const QString& fileName, const QByteArray& data);
+
+        UBDocumentStorage* documentStorage() const;
+
+        // Before inserting, moving or deleting pages of the document, which renames page files:
+        // saves the page shown on the board and waits shortly for the pending saves. Returns false
+        // if the pages cannot be changed now, with a short message unless silent.
+        bool prepareToChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent = false);
+
+        // what was written from the local journal at startup, empty if nothing
+        QString recoveryReport() const;
+
+        // remove temporary files left behind by interrupted writes (in the background)
+        static void removeTemporaryFiles(const QString& documentPath);
+
+        static bool isPageFile(const QString& fileName);
+
+        // True if the document was written by a newer OpenBoard version with a table of contents
+        // (toc.json): its page files do not follow the page order, so local copies of pages must
+        // never be written into it.
+        static bool isWrittenByNewerVersion(const QString& documentDirectory);
 
     signals:
         void documentCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
@@ -176,6 +209,12 @@ private:
                       const int sourceIndex, const int targetIndex);
         void generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         void checkIfDocumentRepositoryExists();
+        void journalPendingSaves(bool closing);
+        void keepScenesForAbandonedThread();
+        static QString thumbnailOf(const QString& pageFile);
+        void recoverJournal();
+        QString recoverDocumentCopy(const QString& directory, const QStringList& files);
+        QByteArray foldersXml();
 
         void saveFoldersTreeToXml(QXmlStreamWriter &writer, const QModelIndex &parentIndex);
         void loadFolderTreeFromXml(const QString &path, const QDomElement &element);
@@ -192,13 +231,22 @@ private:
         QString mFoldersXmlStorageName;
         QProgressDialog mProgress;
         QFutureWatcher<void> futureWatcher;
-        UBPersistenceWorker* mWorker;
+        QPointer<UBPersistenceWorker> mWorker;
         QList<std::shared_ptr<UBGraphicsScene>> mScenesToSave;
+        // deep copy given to the persistence thread -> original scene, to mark the original as
+        // modified again if saving fails, and to serialize it when closing
+        QHash<UBGraphicsScene*, std::weak_ptr<UBGraphicsScene>> mOriginalScenes;
+        UBDocumentStorage* mDocumentStorage{nullptr};
+        bool mAbandonWorker{false};
+        QTimer mStorageWatchdog;
+        QTimer mRetryTimer;
+        QTimer mFoldersTimer;
+        QString mRecoveryReport;
 
         QThread* mThread;
         bool mIsWorkerFinished;
 
-        bool mIsApplicationClosing;
+        bool mIsApplicationClosing{false};
 
         bool mReplaceDialogReturnedReplaceAll;
         bool mReplaceDialogReturnedCancel;
@@ -208,6 +256,14 @@ private:
         void errorString(QString error);
         void onWorkerFinished();
         void onScenePersisted(UBGraphicsScene* scene);
+        void onSaveFailed(UBGraphicsScene* scene, const QString& path);
+        void onSaveSucceeded();
+        void onJournalReplayed(bool complete);
+        void onStorageAvailabilityChanged(bool available);
+        void retryJournal();
+        void checkBlockedSave();
+        void scheduleFoldersXml();
+        void saveFoldersXml();
 };
 
 

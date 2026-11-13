@@ -853,3 +853,90 @@ QString UBFileSystemUtils::readTextFile(QString path)
 
     return "";
 }
+
+bool UBFileSystemUtils::writeFile(const QString& fileName, const QByteArray& data)
+{
+    QSaveFile file(fileName);
+
+    // some storages do not allow to create the temporary file next to the target file:
+    // then write directly to the target file
+    file.setDirectWriteFallback(true);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        qCritical() << "cannot open" << fileName << "for writing. Error:" << file.errorString();
+        return false;
+    }
+
+    if (file.write(data) != data.size())
+    {
+        qCritical() << "cannot write" << fileName << ". Error:" << file.errorString();
+        file.cancelWriting();
+        return false;
+    }
+
+    if (!file.commit())
+    {
+        qCritical() << "cannot save" << fileName << ". Error:" << file.errorString();
+        return false;
+    }
+
+    return true;
+}
+
+#if defined(Q_OS_WIN)
+static const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseInsensitive;
+#else
+static const Qt::CaseSensitivity pathCaseSensitivity = Qt::CaseSensitive;
+#endif
+
+QStringList UBFileSystemUtils::pathForms(const QString& path)
+{
+    const QFileInfo info(path);
+    QStringList forms{QDir::cleanPath(info.absoluteFilePath())};
+    const QString canonical = info.canonicalFilePath();
+
+    if (!canonical.isEmpty())
+    {
+        forms << QDir::cleanPath(canonical);
+    }
+
+    return forms;
+}
+
+bool UBFileSystemUtils::isSamePath(const QString& path, const QString& other)
+{
+    for (const QString& form : pathForms(path))
+    {
+        for (const QString& otherForm : pathForms(other))
+        {
+            if (form.compare(otherForm, pathCaseSensitivity) == 0)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool UBFileSystemUtils::isInside(const QString& path, const QString& directory)
+{
+    for (const QString& form : pathForms(path))
+    {
+        for (QString directoryForm : pathForms(directory))
+        {
+            if (!directoryForm.endsWith('/'))
+            {
+                directoryForm += '/';
+            }
+
+            if (form.startsWith(directoryForm, pathCaseSensitivity))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

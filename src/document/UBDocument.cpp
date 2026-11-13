@@ -36,6 +36,7 @@ UBDocument::UBDocument(std::shared_ptr<UBDocumentProxy> proxy)
     : mProxy(proxy)
     , mThumbnailScene(new UBThumbnailScene(this))
 {
+    UBPersistenceManager::removeTemporaryFiles(proxy->persistencePath());
     mThumbnailScene->createThumbnails();
 }
 
@@ -49,11 +50,12 @@ std::shared_ptr<UBDocumentProxy> UBDocument::proxy() const
     return mProxy;
 }
 
-void UBDocument::deletePages(QList<int> indexes)
+bool UBDocument::deletePages(QList<int> indexes)
 {
-    if (indexes.isEmpty())
+    // not possible while the storage is not available (the page files are renamed)
+    if (indexes.isEmpty() || !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
-        return;
+        return false;
     }
 
     bool accepted{false};
@@ -77,9 +79,10 @@ void UBDocument::deletePages(QList<int> indexes)
             QPixmap(":/images/trash-document-page.png"));
     }
 
-    if (!accepted)
+    // check again: the storage may have become unavailable while the question was shown
+    if (!accepted || !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
     {
-        return;
+        return false;
     }
 
     std::sort(indexes.begin(), indexes.end());
@@ -96,10 +99,16 @@ void UBDocument::deletePages(QList<int> indexes)
 
     QDateTime now = QDateTime::currentDateTime();
     mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    return true;
 }
 
-void UBDocument::duplicatePage(int index)
+bool UBDocument::duplicatePage(int index)
 {
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
+    {
+        return false;
+    }
+
     UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mProxy, index);
 
     mThumbnailScene->insertThumbnail(index + 1);
@@ -108,17 +117,29 @@ void UBDocument::duplicatePage(int index)
     mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
     emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(mProxy, index + 1);
+    return true;
 }
 
-void UBDocument::movePage(int fromIndex, int toIndex)
+bool UBDocument::movePage(int fromIndex, int toIndex)
 {
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
+    {
+        return false;
+    }
+
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mProxy, fromIndex, toIndex);
     mThumbnailScene->moveThumbnail(fromIndex, toIndex);
     emit UBPersistenceManager::persistenceManager()->documentSceneMoved(mProxy, fromIndex, toIndex);
+    return true;
 }
 
-void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
+bool UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
 {
+    if (!UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy) || !UBPersistenceManager::persistenceManager()->prepareToChangePages(to, true))
+    {
+        return false;
+    }
+
     UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, fromIndex, to, toIndex);
 
     const auto toDocument = findDocument(to);
@@ -127,17 +148,32 @@ void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, in
     {
         toDocument->mThumbnailScene->insertThumbnail(toIndex);
     }
+
+    return true;
 }
 
-void UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
+bool UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
 {
+    // adding a page at the end does not rename page files
+    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
+    {
+        return false;
+    }
+
     UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(mProxy, scene, index, persist, deleting);
 
     mThumbnailScene->insertThumbnail(index);
+    return true;
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool useUndoRedoStack)
 {
+    // adding a page at the end does not rename page files
+    if (index < mProxy->pageCount() && !UBPersistenceManager::persistenceManager()->prepareToChangePages(mProxy))
+    {
+        return nullptr;
+    }
+
     auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, index, useUndoRedoStack);
 
     mThumbnailScene->insertThumbnail(index, scene);

@@ -37,6 +37,8 @@
 #include <QWidget>
 #include <QRegularExpression>
 
+#include <dirent.h>
+
 #import <Foundation/NSAutoreleasePool.h>
 #import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
@@ -196,6 +198,19 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     ((FileInfo*)(catalogInfo.finderInfo))->fileCreator = 'UniB';
 
     FSSetCatalogInfo(&ref, whichInfo, &catalogInfo);
+}
+
+bool UBPlatformUtils::canListDirectory(const QString& directory)
+{
+    DIR* handle = opendir(QFile::encodeName(directory).constData());
+
+    if (!handle)
+    {
+        return false;
+    }
+
+    closedir(handle);
+    return true;
 }
 
 static CGDisplayFadeReservationToken token = NULL;

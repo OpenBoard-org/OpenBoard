@@ -133,6 +133,22 @@ class UBSettings : public QObject
 
         //user directories
         static QString userDataDirectory();
+
+        // DataDirectory configured in OpenBoard.config (wildcards replaced), empty if not configured
+        static QString configuredDataDirectory();
+        // DataDirectoryMountPoint configured in the admin or policy file (wildcards replaced), empty if
+        // the data directory is not on mounted storage
+        static QString configuredDataDirectoryMountPoint();
+        // true if part of the configured DataDirectory path exists and, if a mount point is configured,
+        // this mount point is currently the root of a mounted volume containing the data directory
+        // (not the empty directory left by a share which is not mounted)
+        static bool isDataDirectoryAvailable(const QString& path);
+        // use the local data directory for this session only instead of the configured one
+        static void useLocalDataDirectory();
+        static bool isUsingLocalDataDirectory();
+        // while the user is asked, userDataDirectory() must not access the configured path
+        static void setDataDirectoryDecisionPending(bool pending);
+
         static QString userDocumentDirectory();
         static QString userFavoriteListFilePath();
         static QString userTrashDirPath();
@@ -143,6 +159,10 @@ class UBSettings : public QObject
         static QString userAnimationDirectory();
         static QString userInteractiveDirectory();
         static QString userInteractiveFavoritesDirectory();
+        // library content provided by the administrator (read-only for the user)
+        static QString adminLibraryDirectory();
+        // local copies of files not yet written to the document storage
+        static QString recoveryDirectory();
         static QString userPodcastRecordingDirectory();
 
         QString userGipLibraryDirectory();
@@ -457,6 +477,12 @@ class UBSettings : public QObject
         QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );
         void setValue (const QString & key,const QVariant & value);
 
+        // true if the value is imposed by OpenBoardPolicy.config and cannot be changed
+        static bool isPolicyManaged(const QString& key);
+        // value of a setting which cannot be set by the user: Policy > Admin > Default
+        static bool systemContains(const QString& key);
+        static QVariant systemValue(const QString& key, const QVariant& defaultValue = QVariant());
+
         void colorChanged() { emit colorContextChanged(); }
 
     signals:
@@ -474,9 +500,24 @@ class UBSettings : public QObject
         static const char *sDefaultFontStyleName;
 
         static QSettings* getAppSettings();
+        static QSettings* getAdminSettings();
+        static QSettings* getPolicySettings();
+        // system wide directory of the administrator configuration files, kept on updates
+        static QString systemConfigDirectory();
+        // an optional, read-only configuration file, searched in the system configuration directory
+        // first, then next to OpenBoard.config, once the application name is known
+        static QSettings* openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description);
+        static QString localDataDirectory();
+        QVariant baseValue(const QString& key, const QVariant& defaultValue = QVariant());
 
         static QPointer<QSettings> sAppSettings;
+        static QPointer<QSettings> sAdminSettings;
+        static QPointer<QSettings> sPolicySettings;
         static QPointer<UBSettings> sSingleton;
+
+        static QString sDataDirPath;
+        static bool sUseLocalDataDirectory;
+        static bool sDataDirectoryDecisionPending;
 
         static bool checkDirectory(QString& dirPath);
         static QString replaceWildcard(QString& path);

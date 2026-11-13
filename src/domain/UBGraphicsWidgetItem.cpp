@@ -1039,6 +1039,21 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
 
 
 
+QString UBGraphicsW3CWidgetItem::defaultStartFile(const QString& widgetPath)
+{
+    if (QFile::exists(widgetPath + "index.htm"))
+    {
+        return "index.htm";
+    }
+
+    if (QFile::exists(widgetPath + "index.html"))
+    {
+        return "index.html";
+    }
+
+    return QString();
+}
+
 bool UBGraphicsW3CWidgetItem::sTemplateLoaded = false;
 QString UBGraphicsW3CWidgetItem::sNPAPIWrappperConfigTemplate;
 QMap<QString, QString> UBGraphicsW3CWidgetItem::sNPAPIWrapperTemplates;
@@ -1059,14 +1074,88 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     if (!path.endsWith("/"))
         path += "/";
 
-    int width = 300;
-    int height = 150;
-
     QFile configFile(path + "config.xml");
     configFile.open(QFile::ReadOnly);
 
+    readConfiguration(configFile.readAll());
+
+    if (mMainHtmlFileName.length() == 0)
+    {
+        mMainHtmlFileName = defaultStartFile(path);
+    }
+
+    mMainHtmlUrl = pWidgetUrl;
+    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
+    /* is it a valid local file ? */
+    QFile f(mMainHtmlUrl.toLocalFile());
+
+    if (!f.exists())
+        mMainHtmlUrl = QUrl(mMainHtmlFileName);
+
+    mWebEngineView->load(mMainHtmlUrl);
+
+    setMaximumSize(mNominalSize);
+
+
+    initialize();
+    setOwnFolder(pWidgetUrl);
+}
+
+UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& widgetUrl, const std::optional<QByteArray>& configuration, QGraphicsItem* parent)
+    : UBGraphicsWidgetItem(widgetUrl, parent)
+    , mW3CWidgetAPI(nullptr)
+{
+    if (configuration)
+    {
+        configure(*configuration);
+        // as an application of the library, until it is shown with its own size
+        setMaximumSize(mNominalSize);
+    }
+
+    initialize();
+    setOwnFolder(widgetUrl);
+}
+
+void UBGraphicsW3CWidgetItem::configure(const QByteArray& configuration)
+{
+    readConfiguration(configuration);
+
+    if (mMainHtmlFileName.isEmpty())
+    {
+        // only applications of old versions do not name their start file
+        mMainHtmlFileName = defaultStartFile(mWidgetUrl.toLocalFile() + "/");
+    }
+
+    if (QUrl(mMainHtmlFileName).isRelative())
+    {
+        mMainHtmlUrl = mWidgetUrl;
+        mMainHtmlUrl.setPath(mWidgetUrl.path() + "/" + mMainHtmlFileName);
+    }
+    else
+    {
+        // a start page on the web
+        mMainHtmlUrl = QUrl(mMainHtmlFileName);
+    }
+
+    // No minimum or maximum size here, unlike the constructors: it would resize an application
+    // configured while it is shown. Its controls may already exist.
+    if (Delegate() && Delegate()->frame() && resizable())
+    {
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    }
+
+    loadMainHtml();
+}
+
+void UBGraphicsW3CWidgetItem::readConfiguration(const QByteArray& configuration)
+{
+    mConfiguration = configuration;
+
+    int width = 300;
+    int height = 150;
+
     QDomDocument doc;
-    doc.setContent(configFile.readAll());
+    doc.setContent(configuration);
     QDomNodeList widgetDomList = doc.elementsByTagName("widget");
 
     if (widgetDomList.count() > 0) {
@@ -1154,35 +1243,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
         }
     }
 
-    if (mMainHtmlFileName.length() == 0) {
-        QFile defaultStartFile(path + "index.htm");
-
-        if (defaultStartFile.exists())
-            mMainHtmlFileName = "index.htm";
-        else {
-            QFile secondDefaultStartFile(path + "index.html");
-
-            if (secondDefaultStartFile.exists())
-                mMainHtmlFileName = "index.html";
-        }
-    }
-
-    mMainHtmlUrl = pWidgetUrl;
-    mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
-    /* is it a valid local file ? */
-    QFile f(mMainHtmlUrl.toLocalFile());
-
-    if (!f.exists())
-        mMainHtmlUrl = QUrl(mMainHtmlFileName);
-
-    mWebEngineView->load(mMainHtmlUrl);
-
     mNominalSize = QSize(width, height);
-    setMaximumSize(mNominalSize);
-
-
-    initialize();
-    setOwnFolder(pWidgetUrl);
 }
 
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
@@ -1198,7 +1259,7 @@ void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
 
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 {
-    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWidgetUrl, parentItem());
+    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWidgetUrl, mConfiguration, parentItem());
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
     copyItemParameters(copy);
 

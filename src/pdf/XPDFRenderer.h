@@ -42,6 +42,7 @@
 #include <poppler/GlobalParams.h>
 #include <poppler/SplashOutputDev.h>
 #include <poppler/PDFDoc.h>
+#include <poppler/Stream.h>
 #include <poppler/cpp/poppler-version.h>
 
 class PDFDoc;
@@ -64,9 +65,10 @@ class XPDFRenderer : public PDFRenderer
     Q_OBJECT
 
     public:
-        XPDFRenderer(const QString &filename, bool importingFile = false);
+        XPDFRenderer();
         virtual ~XPDFRenderer();
 
+        virtual void load(const QByteArray &fileData) override;
         void initPDFZoomData();
         virtual bool isValid() const override;
         virtual int pageCount() const override;

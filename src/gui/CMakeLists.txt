@@ -49,6 +49,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBMessagesDialog.h
     UBMousePressFilter.cpp
     UBMousePressFilter.h
+    UBNotification.cpp
+    UBNotification.h
     UBPageNavigationWidget.cpp
     UBPageNavigationWidget.h
     UBPropertyPalette.cpp
@@ -67,6 +69,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBSpinningWheel.h
     UBStartupHintsPalette.cpp
     UBStartupHintsPalette.h
+    UBStorageIndicator.cpp
+    UBStorageIndicator.h
     UBStylusPalette.cpp
     UBStylusPalette.h
     UBThumbnail.cpp

@@ -88,7 +88,14 @@ class UBSvgSubsetAdaptor
         static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
         static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
 
-        static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
+        static bool persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
+        // SVG content of the page, without writing it. Without storage access (GUI thread while the
+        // storage may hang), returns an empty array if the page cannot be serialized completely.
+        static QByteArray serializeScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex, bool storageAccess = true);
+        static QString pageFileName(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
+        // remember the file name of an image (relative to the document folder), so that the page can
+        // be written without accessing the storage
+        static void rememberImageFile(const QString& documentPath, const QUuid& uuid, const QString& relativeFileName);
         static void upgradeScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
 
         static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
@@ -119,6 +126,17 @@ class UBSvgSubsetAdaptor
 
         static QString toSvgTransform(const QTransform& matrix);
         static QTransform fromSvgTransform(const QString& transform);
+
+        // Files of the documents known from reading their pages. The writer needs the file name of each
+        // image and whether each PDF exists, which cannot be checked while the document storage is not
+        // available. Shared by the reader and the writer, which may run in different threads.
+        static QString rememberedImageFile(const QString& documentPath, const QUuid& uuid);
+        static void rememberPdfFile(const QString& path);
+        static bool isKnownPdfFile(const QString& path);
+
+        static QMutex sFileCacheMutex;
+        static QHash<QString, QHash<QUuid, QString>> sImageFiles;
+        static QSet<QString> sKnownPdfFiles;
 
 
         class UBSvgSubsetReader
@@ -182,6 +200,13 @@ class UBSvgSubsetAdaptor
 
                 qreal normalizedZValue(bool* hasValue);
 
+                static QPixmap pixmapFromData(const QByteArray& data);
+                // the content of an item arrived after its page was read: the page is saved again, with its thumbnail
+                static void setPageModified(QGraphicsItem* item);
+                static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize);
+                // a media file which could not be opened is opened again when the document storage is available again
+                static void retryOpeningWhenAvailable(UBGraphicsMediaItem* mediaItem);
+
                 QXmlStreamReader mXmlReader;
                 int mFileVersion;
                 std::shared_ptr<UBDocumentProxy> mProxy;
@@ -211,7 +236,9 @@ class UBSvgSubsetAdaptor
 
                 UBSvgSubsetWriter(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
 
-                bool persistScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+                QByteArray serializeScene(std::shared_ptr<UBDocumentProxy> proxy);
+                void setStorageAccess(bool access) { mStorageAccess = access; }
+                bool isIncomplete() const { return mIncomplete; }
 
                 virtual ~UBSvgSubsetWriter(){}
 
@@ -289,6 +316,8 @@ class UBSvgSubsetAdaptor
                 QXmlStreamWriter mXmlWriter;
                 QString mDocumentPath;
                 int mPageIndex;
+                bool mStorageAccess{true};
+                bool mIncomplete{false};
 
         };
 };

@@ -142,6 +142,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
         bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool isInputDevicePressed() const { return mInputDeviceIsPressed; }
 
         void leaveEvent (QEvent* event);
 

@@ -60,6 +60,13 @@ UBSetting::~UBSetting()
 
 void UBSetting::set(const QVariant& pValue)
 {
+    if (UBSettings::isPolicyManaged(mPath))
+    {
+        // value imposed by OpenBoardPolicy.config, ignore changes
+        qDebug() << "Setting" << mPath << "is imposed by policy, change ignored";
+        return;
+    }
+
     if (pValue != get())
     {
         mOwner->setValue(mPath, pValue);

@@ -46,11 +46,22 @@ public:
     static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
     static QPixmap get(std::shared_ptr<UBDocumentProxy> proxy, int index);
+    // write the thumbnails kept in memory while the storage was not available
+    static void writePendingThumbnails();
+    // a thumbnail was written by the persistence thread
+    static void thumbnailWritten(const QString& fileName);
+    // forget the thumbnails not written yet of a document whose pages are renumbered
+    static void discardThumbnails(const QString& documentPath);
     static void load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list);
     static QPixmap generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
 private:
     static void generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy);
+    static void writeThumbnail(const QString& fileName, const QPixmap& pixmap);
+
+    // Thumbnails not written yet (GUI thread only). They are written by the persistence thread,
+    // so that a storage which does not answer does not block the GUI, and kept here until then.
+    static QHash<QString, QPixmap> sPendingThumbnails;
 
     UBThumbnailAdaptor() {}
 };

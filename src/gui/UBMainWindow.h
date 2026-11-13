@@ -59,6 +59,8 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         bool yesNoQuestion(QString windowTitle, QString text, const QPixmap &iconPixmap = QPixmap(), const QMessageBox::Icon icon = QMessageBox::Question);
         void warning(QString windowTitle, QString text);
         void information(QString windowTitle, QString text);
+        // does not block, deleted when closed
+        void nonModalInformation(QString windowTitle, QString text);
 
         void showDownloadWidget();
         void hideDownloadWidget();
