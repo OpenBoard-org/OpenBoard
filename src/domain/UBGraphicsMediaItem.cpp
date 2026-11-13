@@ -34,6 +34,8 @@
 #include "UBGraphicsDelegateFrame.h"
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
+#include "core/UBDocumentStorage.h"
+#include "core/UBPersistenceManager.h"
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
 
@@ -119,6 +121,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
             this, &UBGraphicsMediaItem::mediaError);
 #endif
+
+    connect(UBPersistenceManager::persistenceManager()->documentStorage(), &UBDocumentStorage::availabilityChanged,
+            this, &UBGraphicsMediaItem::onStorageAvailabilityChanged);
 }
 
 UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
@@ -413,6 +418,13 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 }
 void UBGraphicsMediaItem::play()
 {
+    if (hasFailedToOpen())
+    {
+        openAgain();
+        // it plays as soon as it is opened: its first frame needs not be shown before
+        mFirstLoad = false;
+    }
+
     mMediaObject->play();
     mStopped = false;
 }
@@ -511,6 +523,45 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
     }
 }
 
+bool UBGraphicsMediaItem::isMediaLoaded() const
+{
+    const QMediaPlayer::MediaStatus status = mMediaObject->mediaStatus();
+
+    return status != QMediaPlayer::NoMedia
+        && status != QMediaPlayer::LoadingMedia
+        && status != QMediaPlayer::InvalidMedia;
+}
+
+bool UBGraphicsMediaItem::hasFailedToOpen() const
+{
+    return mMediaObject->mediaStatus() == QMediaPlayer::InvalidMedia
+        && mMediaObject->error() != QMediaPlayer::FormatError;
+}
+
+// The player opens the file in the background, but waits for an opening still running when its
+// source changes: only an opening which failed, and is therefore finished, is retried.
+void UBGraphicsMediaItem::openAgain()
+{
+    // the player opens a file again only when its source changes
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const QUrl source = mMediaObject->source();
+    mMediaObject->setSource(QUrl());
+    mMediaObject->setSource(source);
+#else
+    const QMediaContent media = mMediaObject->media();
+    mMediaObject->setMedia(QMediaContent());
+    mMediaObject->setMedia(media);
+#endif
+}
+
+void UBGraphicsMediaItem::onStorageAvailabilityChanged(bool available)
+{
+    if (available && hasFailedToOpen())
+    {
+        openAgain();
+    }
+}
+
 void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsMediaItem *cp = dynamic_cast<UBGraphicsMediaItem*>(copy);
@@ -528,6 +579,13 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setSize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());
+
+        // A copy, e.g. the one written when the page is saved, keeps the position read from the
+        // page while the media file could not be opened.
+        if (!isMediaLoaded())
+        {
+            cp->setInitialPos(mInitialPos);
+        }
 
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), cp, SLOT(activeSceneChanged()));
         // TODO UB 4.7 complete all members

@@ -163,6 +163,15 @@ protected:
     qint64 mInitialPos;
 
     QString mErrorString;
+
+private:
+    // the player opened the media file: it knows its duration and position
+    bool isMediaLoaded() const;
+    // the media file could not be opened, e.g. while the document storage was unavailable,
+    // rather than having a format which cannot be played
+    bool hasFailedToOpen() const;
+    void openAgain();
+    void onStorageAvailabilityChanged(bool available);
 };
 
 class UBGraphicsAudioItem: public UBGraphicsMediaItem

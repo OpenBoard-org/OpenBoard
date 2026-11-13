@@ -2492,6 +2492,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAud
         qint64 pos = audioItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
+    else if (audioItem->initialPos() > 0)
+    {
+        // the position read from the page, kept while the media could not be opened
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(audioItem->initialPos()));
+    }
 
     QString audioFileHref = "audios/" + audioItem->mediaFileUrl().fileName();
 
@@ -2518,6 +2523,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVid
     {
         qint64 pos = videoItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
+    }
+    else if (videoItem->initialPos() > 0)
+    {
+        // the position read from the page, kept while the media could not be opened
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(videoItem->initialPos()));
     }
 
     QString videoFileHref = "videos/" + videoItem->mediaFileUrl().fileName();
