@@ -46,6 +46,7 @@
 #include "core/UBSetting.h"
 #include "core/UBForeignObjectsHandler.h"
 #include "core/UBPersistenceJournal.h"
+#include "core/UBDocumentStorage.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -102,6 +103,11 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
 
     mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
     mFoldersXmlStorageName =  mDocumentRepositoryPath + "/" + fFolders;
+
+    // a local session does not use the configured mount point
+    mDocumentStorage = new UBDocumentStorage(UBSettings::isUsingLocalDataDirectory()
+                                             ? QString() : UBSettings::configuredDataDirectoryMountPoint(), this);
+    connect(mDocumentStorage, &UBDocumentStorage::availabilityChanged, this, &UBPersistenceManager::onStorageAvailabilityChanged);
 
     // write the changes kept on this computer at the last session before reading the documents
     recoverJournal();
@@ -543,7 +549,7 @@ void UBPersistenceManager::closing()
 
     // Do not keep the teacher waiting when the storage does not answer: what is not
     // written after the timeout stays in the local journal and is written at the next start.
-    flush(mStorageUnavailable ? 1000 : 5000, true);
+    flush(mDocumentStorage->isAvailable() ? 5000 : 1000, true);
 
     if (!UBPersistenceJournal::journal()->pendingFiles(mDocumentRepositoryPath).isEmpty())
     {
@@ -684,82 +690,12 @@ void UBPersistenceManager::saveThumbnail(const QString& fileName, const QByteArr
 
 bool UBPersistenceManager::isStorageUnavailable() const
 {
-    return mStorageUnavailable;
+    return !mDocumentStorage->isAvailable();
 }
 
-namespace
+UBDocumentStorage* UBPersistenceManager::documentStorage() const
 {
-    // Threads reading from the document storage. Allocated once and never destroyed:
-    // a read blocked on a storage which does not answer may still be running at exit.
-    QThreadPool* storageReadPool()
-    {
-        static QThreadPool* pool = []() {
-            QThreadPool* readPool = new QThreadPool();
-            readPool->setMaxThreadCount(4);
-            return readPool;
-        }();
-
-        return pool;
-    }
-}
-
-bool UBPersistenceManager::readStorageFile(const QString& fileName, QByteArray& content, bool noteFileState)
-{
-    struct Read
-    {
-        QSemaphore done;
-        bool ok{false};
-        QByteArray data;
-    };
-
-    // shared with the reading thread, which may finish after this function returned
-    auto read = std::make_shared<Read>();
-
-    auto task = [read, fileName, noteFileState]() {
-        QFile file(fileName);
-
-        if (file.open(QIODevice::ReadOnly))
-        {
-            read->data = file.readAll();
-            read->ok = true;
-        }
-
-        if (noteFileState)
-        {
-            // to detect changes made elsewhere before the journal is written
-            UBPersistenceJournal::journal()->noteFileState(fileName);
-        }
-
-        read->done.release();
-    };
-
-    if (QThread::currentThread() != thread())
-    {
-        // not the GUI thread, waiting does not block the user interface
-        task();
-    }
-    else
-    {
-        if (storageReadPool()->activeThreadCount() >= storageReadPool()->maxThreadCount())
-        {
-            // previous reads are still blocked
-            qWarning() << "The document location does not answer, cannot read" << fileName;
-            setStorageUnavailable(true);
-            return false;
-        }
-
-        storageReadPool()->start(task);
-
-        if (!read->done.tryAcquire(1, mStorageUnavailable ? 1000 : 3000))
-        {
-            qWarning() << "The document location does not answer, cannot read" << fileName;
-            setStorageUnavailable(true);
-            return false;
-        }
-    }
-
-    content = read->data;
-    return read->ok;
+    return mDocumentStorage;
 }
 
 bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy, bool silent)
@@ -767,7 +703,7 @@ bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy
     // Adding, moving or deleting pages renames the following page files. Pending saves
     // must be written first, they use the page numbers. Wait shortly, but do not block
     // the teacher when the storage does not answer.
-    if (!mStorageUnavailable)
+    if (mDocumentStorage->isAvailable())
     {
         // The modified page shown on the board must be written before the files are renamed. Save it
         // now and wait for it here, not later in the operation, which could not be cancelled anymore.
@@ -791,7 +727,7 @@ bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy
 
     const bool pending = proxy && UBPersistenceJournal::journal()->hasPendingFiles(proxy->persistencePath());
 
-    if (!mStorageUnavailable && !pending)
+    if (mDocumentStorage->isAvailable() && !pending)
     {
         // thumbnails not written are not renumbered with the pages
         UBThumbnailAdaptor::discardThumbnails(proxy ? proxy->persistencePath() : QString());
@@ -809,13 +745,18 @@ bool UBPersistenceManager::mayChangePages(std::shared_ptr<UBDocumentProxy> proxy
 
 void UBPersistenceManager::setStorageUnavailable(bool unavailable)
 {
-    if (unavailable == mStorageUnavailable)
-    {
-        return;
-    }
+    // the document storage knows whether it answers, see onStorageAvailabilityChanged()
+    mDocumentStorage->setAvailable(!unavailable);
+}
 
-    mStorageUnavailable = unavailable;
-    mWorker->setStorageUnavailable(unavailable);
+void UBPersistenceManager::onStorageAvailabilityChanged(bool available)
+{
+    const bool unavailable = !available;
+
+    if (mWorker)
+    {
+        mWorker->setStorageUnavailable(unavailable);
+    }
 
     if (unavailable)
     {
@@ -846,7 +787,7 @@ void UBPersistenceManager::setStorageUnavailable(bool unavailable)
 void UBPersistenceManager::onSaveSucceeded()
 {
     // the storage answers again: write the files waiting in the journal
-    if (mStorageUnavailable)
+    if (!mDocumentStorage->isAvailable())
     {
         mWorker->replayJournal(mDocumentRepositoryPath);
     }
@@ -854,7 +795,7 @@ void UBPersistenceManager::onSaveSucceeded()
 
 void UBPersistenceManager::onJournalReplayed(bool complete)
 {
-    if (complete && mStorageUnavailable && !UBPersistenceJournal::journal()->hasPendingFiles(mDocumentRepositoryPath))
+    if (complete && !mDocumentStorage->isAvailable() && !UBPersistenceJournal::journal()->hasPendingFiles(mDocumentRepositoryPath))
     {
         setStorageUnavailable(false);
     }
@@ -872,7 +813,7 @@ void UBPersistenceManager::retryJournal()
 void UBPersistenceManager::checkBlockedSave()
 {
     // a save which does not finish means the storage does not answer
-    if (!mStorageUnavailable && mWorker->busyDuration() > 5000)
+    if (mDocumentStorage->isAvailable() && mWorker->busyDuration() > 5000)
     {
         setStorageUnavailable(true);
     }
@@ -1546,7 +1487,7 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::sh
     }
 
     // while the document location is unavailable, do not wait for pages which are not needed now
-    if (cacheNeighboringScenes && !mStorageUnavailable)
+    if (cacheNeighboringScenes && mDocumentStorage->isAvailable())
     {
         if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
             mSceneCache.prepareLoading(proxy,sceneIndex+1);
@@ -1581,7 +1522,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
     generatePathIfNeeded(pDocumentProxy);
 
-    if (!mStorageUnavailable && !QFileInfo::exists(pDocumentProxy->persistencePath()))
+    if (mDocumentStorage->isAvailable() && !QFileInfo::exists(pDocumentProxy->persistencePath()))
     {
         // create the document folder only, not its parents (see UBPersistenceWorker::write)
         QDir().mkdir(pDocumentProxy->persistencePath());
@@ -1599,7 +1540,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
     UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
     pScene->setModified(false);
 
-    if (forceImmediateSaving && !mStorageUnavailable)
+    if (forceImmediateSaving && mDocumentStorage->isAvailable())
     {
         // The caller expects the page to be written now (e.g. before copying the page files).
         // Wait for it, but do not block the teacher when the storage does not answer.
@@ -1623,7 +1564,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(s
     if (forceImmediateSaving)
     {
         // wait for it, but do not block the teacher when the storage does not answer
-        if (!mStorageUnavailable && !waitForAllSaved(3000))
+        if (mDocumentStorage->isAvailable() && !waitForAllSaved(3000))
         {
             setStorageUnavailable(true);
         }

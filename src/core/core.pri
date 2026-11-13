@@ -17,6 +17,7 @@ HEADERS      += src/core/UB.h \
                 src/core/UBTextTools.h \
     src/core/UBPersistenceWorker.h \
     src/core/UBPersistenceJournal.h \
+    src/core/UBDocumentStorage.h \
     $$PWD/UBForeignObjectsHandler.h
 
 SOURCES      += src/core/main.cpp \
@@ -37,4 +38,5 @@ SOURCES      += src/core/main.cpp \
                 src/core/UBTextTools.cpp \
     src/core/UBPersistenceWorker.cpp \
     src/core/UBPersistenceJournal.cpp \
+    src/core/UBDocumentStorage.cpp \
     $$PWD/UBForeignObjectsHandler.cpp

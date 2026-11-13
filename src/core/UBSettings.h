@@ -136,8 +136,12 @@ class UBSettings : public QObject
 
         // DataDirectory configured in OpenBoard.config (wildcards replaced), empty if not configured
         static QString configuredDataDirectory();
-        // true if the configured DataDirectory exists and seems to be the real storage
-        // (e.g. not the empty mount point of a disconnected network share)
+        // DataDirectoryMountPoint configured in the admin or policy file (wildcards replaced), empty if
+        // the data directory is not on mounted storage
+        static QString configuredDataDirectoryMountPoint();
+        // true if part of the configured DataDirectory path exists and, if a mount point is configured,
+        // this mount point is currently the root of a mounted volume containing the data directory
+        // (not the empty directory left by a share which is not mounted)
         static bool isDataDirectoryAvailable(const QString& path);
         // use the local data directory for this session only instead of the configured one
         static void useLocalDataDirectory();

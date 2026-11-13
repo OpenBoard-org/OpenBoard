@@ -75,6 +75,7 @@
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBPersistenceJournal.h"
+#include "core/UBDocumentStorage.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBTextTools.h"
@@ -303,20 +304,10 @@ QByteArray UBSvgSubsetAdaptor::loadSceneAsText(std::shared_ptr<UBDocumentProxy> 
     QString fileName = pageFileName(proxy, pageIndex);
     qDebug() << "Loading page" << fileName;
 
-    // a newer version of the page may still wait in the journal (document storage not available)
-    const auto journal = UBPersistenceJournal::journal();
-    const QByteArray pending = journal->data(fileName);
-
-    if (!pending.isEmpty())
-    {
-        return pending;
-    }
-
-    // Not read directly: the GUI thread must not block if the document location does not answer.
-    // The state of the file is remembered to detect changes made elsewhere before the journal is replayed.
+    // the newest version of the page, without blocking if the document location does not answer
     QByteArray content;
 
-    if (!UBPersistenceManager::persistenceManager()->readStorageFile(fileName, content, true))
+    if (UBPersistenceManager::persistenceManager()->documentStorage()->read(fileName, content) != UBDocumentStorage::ReadResult::Read)
     {
         qWarning() << "Cannot read file" << fileName;
         return "";
@@ -2252,7 +2243,13 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
     {
         pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
-        QImageReader rdr(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        // Not read directly: the GUI thread must not block if the document location does not answer.
+        // An image which cannot be read is empty for this session; its file name is remembered below,
+        // so that the page keeps referring to the image file when it is saved.
+        QByteArray imageData;
+        UBPersistenceManager::persistenceManager()->documentStorage()->read(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href), imageData);
+        QBuffer imageBuffer(&imageData);
+        QImageReader rdr(&imageBuffer);
         rdr.setAutoTransform(true);
         QImage img = rdr.read();
         QPixmap pix = QPixmap::fromImage(img);
@@ -2295,7 +2292,10 @@ UBGraphicsSvgItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::svgItemFromSvg()
     {
         QString href = imageHref.toString();
 
-        svgItem = new UBGraphicsSvgItem(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        // not read directly: the GUI thread must not block if the document location does not answer
+        QByteArray svgData;
+        UBPersistenceManager::persistenceManager()->documentStorage()->read(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href), svgData);
+        svgItem = new UBGraphicsSvgItem(svgData);
     }
     else
     {

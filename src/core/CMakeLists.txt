@@ -7,6 +7,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBApplicationController.h
     UBDisplayManager.cpp
     UBDisplayManager.h
+    UBDocumentStorage.cpp
+    UBDocumentStorage.h
     UBDocumentManager.cpp
     UBDocumentManager.h
     UBDownloadManager.cpp

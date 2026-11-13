@@ -43,6 +43,7 @@ class UBDocumentProxy;
 class UBGraphicsScene;
 class UBDocumentTreeNode;
 class UBDocumentTreeModel;
+class UBDocumentStorage;
 
 class UBPersistenceManager : public QObject
 {
@@ -172,11 +173,8 @@ class UBPersistenceManager : public QObject
         // write a thumbnail in the persistence thread
         void saveThumbnail(const QString& fileName, const QByteArray& data);
 
-        // Read a file of the document storage. On the GUI thread, the file is read in another thread
-        // and this waits at most a few seconds, so that a storage which does not answer does not freeze
-        // the user interface: the storage is then considered unavailable. Returns false if the file
-        // could not be read.
-        bool readStorageFile(const QString& fileName, QByteArray& content, bool noteFileState = false);
+        // the storage where the documents are kept, to read their files
+        UBDocumentStorage* documentStorage() const;
 
         // True if pages of the document can be inserted, moved or deleted now, which renames page
         // files. Waits shortly for pending saves. Shows a short message if not, unless silent.
@@ -235,7 +233,7 @@ private:
         // deep copy given to the persistence thread -> original scene, to mark the original as
         // modified again if saving fails, and to serialize it when closing
         QHash<UBGraphicsScene*, std::weak_ptr<UBGraphicsScene>> mOriginalScenes;
-        bool mStorageUnavailable{false};
+        UBDocumentStorage* mDocumentStorage{nullptr};
         bool mAbandonWorker{false};
         QTimer mStorageWatchdog;
         QTimer mRetryTimer;
@@ -258,6 +256,7 @@ private:
         void onSaveFailed(UBGraphicsScene* scene, const QString& path);
         void onSaveSucceeded();
         void onJournalReplayed(bool complete);
+        void onStorageAvailabilityChanged(bool available);
         void retryJournal();
         void checkBlockedSave();
         void saveFoldersXml();
