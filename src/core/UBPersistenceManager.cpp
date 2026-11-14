@@ -613,6 +613,8 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
         const auto pageId = toc.insert(0);
         const auto scene = createDocumentSceneAt(doc, pageId);
         toc.setUuid(0, scene->uuid());
+        toc.setAssets(0, {});
+        toc.setPageSize(0, scene->nominalSize());
     }
 
     bool documentAdded = false;
@@ -839,10 +841,16 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
     return newScene;
 }
 
-std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool cached)
 {
-    mSceneCache.prepareLoading(proxy, pageId);
-    return mSceneCache.value(proxy, pageId);
+    auto handle = mSceneCache.prepareLoading(proxy, pageId, {}, cached);
+
+    if (!handle || cached)
+    {
+        return mSceneCache.value(proxy, pageId);
+    }
+
+    return mSceneCache.value(handle);
 }
 
 std::shared_ptr<void> UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent, bool cached)

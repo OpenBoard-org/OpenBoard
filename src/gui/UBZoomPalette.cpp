@@ -34,35 +34,68 @@
 #include <math.h>
 
 #include "core/UBApplication.h"
+#include "core/UBSettings.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 
 #include "core/memcheck.h"
 
 UBZoomPalette::UBZoomPalette(QWidget* parent)
     : UBFloatingPalette(Qt::BottomRightCorner, parent)
-    , mIsExpanded(1)
 {
     mBoardController = UBApplication::boardController;
     QLayout* layout = new QVBoxLayout(this);
     mCurrentZoomButton = new QPushButton(parent);
-    mCurrentZoomButton->setStyleSheet(QString("QPushButton { color: white; background-color: transparent; border: none; font-family: Arial; font-weight: bold; font-size: 20px }"));
+    mCurrentZoomButton->setStyleSheet(QString("QPushButton { background-color: transparent; border: none; font-family: Arial; font-weight: bold; font-size: 20px }"));
     mCurrentZoomButton->setFocusPolicy(Qt::NoFocus);
     connect(mCurrentZoomButton, SIGNAL(clicked(bool)), this, SLOT(showHideExtraButton()));
     connect(mBoardController, SIGNAL(zoomChanged(qreal)), this, SLOT(refreshPalette()));
     connect(mBoardController, SIGNAL(activeSceneChanged()), this, SLOT(refreshPalette()));
+    connect(UBDrawingController::drawingController(), &UBDrawingController::stylusToolChanged, this, &UBZoomPalette::refreshPalette);
 
-    mHundredButton = new QPushButton(parent);
-    mHundredButton->setStyleSheet(QString("QPushButton { color: white; background-color: transparent; border: none; font-family: Arial; font-weight: bold; font-size: 20px }"));
-    mHundredButton->setFocusPolicy(Qt::NoFocus);
-    mHundredButton->setIcon(QIcon(":/images/stylusPalette/restoreZoom.png"));
-    mHundredButton->setIconSize(QSize(42,42));
-    connect(mHundredButton, SIGNAL(clicked(bool)), this, SLOT(goHundred()));
+    mZoom100 = new QToolButton(this);
+    mZoom100->setIcon(QIcon(":/images/zoomPalette/zoom100.svg"));
+    mZoom100->setIconSize({48, 36});
+    mZoom100->setToolTip(tr("100%"));
+    connect(mZoom100, &QToolButton::clicked, this, &UBZoomPalette::goHundred);
 
-    layout->setContentsMargins(radius() + 15, 4, radius() + 15, 4);
-    layout->addWidget(mHundredButton);
+    mZoomFit = new QToolButton(this);
+    mZoomFit->setIcon(QIcon(":/images/zoomPalette/zoomFit.svg"));
+    mZoomFit->setIconSize({48, 36});
+    mZoomFit->setToolTip(tr("Fit page"));
+    connect(mZoomFit, &QToolButton::clicked, this, &UBZoomPalette::goFit);
+
+    mZoomFitContent = new QToolButton(this);
+    mZoomFitContent->setIcon(QIcon(":/images/zoomPalette/zoomFitContent.svg"));
+    mZoomFitContent->setIconSize({48, 36});
+    mZoomFitContent->setToolTip(tr("Fit content"));
+    connect(mZoomFitContent, &QToolButton::clicked, this, &UBZoomPalette::goFitContent);
+
+    mZoomWidth = new QToolButton(this);
+    mZoomWidth->setIcon(QIcon(":/images/zoomPalette/zoomWidth.svg"));
+    mZoomWidth->setIconSize({48, 36});
+    mZoomWidth->setToolTip(tr("Fit width"));
+    connect(mZoomWidth, &QToolButton::clicked, this, &UBZoomPalette::goWidth);
+
+    mZoomWidthTop = new QToolButton(this);
+    mZoomWidthTop->setIcon(QIcon(":/images/zoomPalette/zoomWidthTop.svg"));
+    mZoomWidthTop->setIconSize({48, 36});
+    mZoomWidthTop->setToolTip(tr("Fit width, scroll to top"));
+    connect(mZoomWidthTop, &QToolButton::clicked, this, &UBZoomPalette::goWidthTop);
+
+    QGridLayout* grid = new QGridLayout(this);
+    grid->addWidget(mZoom100, 0, 0, 1, 2);
+    grid->addWidget(mZoomFit, 0, 2, 1, 2);
+    grid->addWidget(mZoomFitContent, 0, 4, 1, 2);
+    grid->addWidget(mZoomWidth, 1, 1, 1, 2);
+    grid->addWidget(mZoomWidthTop, 1, 3, 1, 2);
+
+    layout->setContentsMargins(radius(), 4, radius(), 4);
+    layout->addItem(grid);
     layout->addWidget(mCurrentZoomButton);
+
     hide();
     refreshPalette();
 }
@@ -74,24 +107,50 @@ UBZoomPalette::~UBZoomPalette()
 
 void UBZoomPalette::showHideExtraButton()
 {
-    if (mIsExpanded)
+    mIsExpanded = !mIsExpanded;
+
+    mZoom100->setVisible(mIsExpanded);
+    mZoomFit->setVisible(mIsExpanded);
+    mZoomFitContent->setVisible(mIsExpanded);
+    mZoomWidth->setVisible(mIsExpanded);
+    mZoomWidthTop->setVisible(mIsExpanded);
+
+    if (!mIsExpanded)
     {
-        mHundredButton->setVisible(false);
-        mIsExpanded = false;
-        adjustSizeAndPosition(false);
-    }
-    else
-    {
-        mHundredButton->setVisible(true);
-        mIsExpanded = true;
-        adjustSizeAndPosition(true);
+        resize(layout()->sizeHint());
     }
 
+    adjustSizeAndPosition(mIsExpanded);
 }
 
 void UBZoomPalette::goHundred()
 {
     mBoardController->zoomRestore();
+    UBSettings::settings()->boardInitialViewState->set(ViewState::OriginalSize);
+}
+
+void UBZoomPalette::goFit()
+{
+    mBoardController->zoomToFit();
+    UBSettings::settings()->boardInitialViewState->set(ViewState::FitSize);
+}
+
+void UBZoomPalette::goFitContent()
+{
+    mBoardController->zoomTo(ViewState::FitContent);
+    UBSettings::settings()->boardInitialViewState->set(ViewState::FitContent);
+}
+
+void UBZoomPalette::goWidth()
+{
+    mBoardController->zoomTo(ViewState::FitWidth);
+    UBSettings::settings()->boardInitialViewState->set(ViewState::FitWidth);
+}
+
+void UBZoomPalette::goWidthTop()
+{
+    mBoardController->zoomTo(ViewState::FitWidthScrollToTop);
+    UBSettings::settings()->boardInitialViewState->set(ViewState::FitWidthScrollToTop);
 }
 
 void UBZoomPalette::hide()
@@ -107,17 +166,17 @@ void UBZoomPalette::hide()
 
 void UBZoomPalette::refreshPalette()
 {
-    qreal currentZoomFactor = mBoardController->currentZoom();
-    bool showAsNoZoom = (currentZoomFactor > 0.9 && currentZoomFactor < 1.1);
-    if (showAsNoZoom)
-    {
-        currentZoomFactor = 1;
-    }
-    QString stringFactor = tr("%1 x").arg(currentZoomFactor, 0, 'f', 1);
+    const qreal currentZoomFactor = mBoardController->currentZoom();
+    const bool showAsNoZoom = (currentZoomFactor > 0.9 && currentZoomFactor < 1.1);
+    const QString stringFactor = tr("%1 x").arg(currentZoomFactor, 0, 'f', 2);
 
     mCurrentZoomButton->setText(stringFactor);
     adjustSizeAndPosition();
-    if (showAsNoZoom)
+
+    const auto tool = UBDrawingController::drawingController()->stylusTool();
+    const auto zoomTool = tool == UBStylusTool::ZoomIn || tool == UBStylusTool::ZoomOut;
+
+    if (showAsNoZoom && !zoomTool)
     {
         QTimer::singleShot(500, this, SLOT(hide()));
     }
@@ -126,4 +185,9 @@ void UBZoomPalette::refreshPalette()
         show();
         raise();
     }
+}
+
+int UBZoomPalette::border()
+{
+    return 5;
 }

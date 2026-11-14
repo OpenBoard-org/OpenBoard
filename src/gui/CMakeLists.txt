@@ -57,6 +57,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBMousePressFilter.h
     UBPageNavigationWidget.cpp
     UBPageNavigationWidget.h
+    UBPageSizePalette.cpp
+    UBPageSizePalette.h
     UBPreferredBackgroundWidget.cpp
     UBPreferredBackgroundWidget.h
     UBPropertyPalette.cpp
@@ -89,6 +91,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBThumbnailsView.h
     UBDocumentThumbnailsView.cpp
     UBDocumentThumbnailsView.h
+    UBToolbarExtensionPalette.cpp
+    UBToolbarExtensionPalette.h
     UBToolWidget.cpp
     UBToolWidget.h
     UBToolbarButtonGroup.cpp

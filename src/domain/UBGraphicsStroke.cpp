@@ -44,7 +44,7 @@ typedef QPair<QPointF, qreal> strokePoint;
 UBGraphicsStroke::UBGraphicsStroke(std::shared_ptr<UBGraphicsScene> scene)
     :mScene(scene)
 {
-    mAntiScaleRatio = 1./(UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1. / UBApplication::boardController->currentZoom();
 }
 
 

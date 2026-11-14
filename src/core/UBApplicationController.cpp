@@ -231,8 +231,7 @@ void UBApplicationController::adjustDisplayView()
 
         QTransform tr;
         qreal scaleFactor = systemDisplayViewScaleFactor
-                * UBApplication::boardController->currentZoom()
-                * UBApplication::boardController->systemScaleFactor();
+                * UBApplication::boardController->currentZoom();
 
         tr.scale(scaleFactor, scaleFactor);
 
@@ -294,11 +293,10 @@ void UBApplicationController::addCapturedPixmap(const QPixmap &pPixmap, bool pag
     if (!pPixmap.isNull())
     {
         // make all scaling calculations floating point
-        const auto sf = UBApplication::boardController->systemScaleFactor();
         const QSizeF pageNominalSize{UBApplication::boardController->activeScene()->nominalSize()};
         const QSizeF pixmapSize{pPixmap.size()};
 
-        QSizeF scaledSize{pixmapSize / sf};
+        QSizeF scaledSize{pixmapSize};
         QSizeF newSize{scaledSize.boundedTo(pageNominalSize)};
 
         if (pageMode)

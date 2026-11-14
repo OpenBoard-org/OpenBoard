@@ -142,7 +142,7 @@ void UBAbstractDrawRuler::EndLine()
 
 void UBAbstractDrawRuler::paint()
 {
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1. / UBApplication::boardController->currentZoom();
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
 

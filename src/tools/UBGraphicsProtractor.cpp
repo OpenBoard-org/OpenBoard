@@ -395,7 +395,7 @@ void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
 qreal UBGraphicsProtractor::antiScale() const
 {
-    return 1 / (mScaleFactor * UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    return 1. / (mScaleFactor * UBApplication::boardController->currentZoom());
 }
 
 

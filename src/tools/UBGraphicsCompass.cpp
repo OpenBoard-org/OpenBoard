@@ -134,7 +134,7 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->setBrush(edgeFillColor());
 
 
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1. / UBApplication::boardController->currentZoom();
     QTransform antiScaleTransform;
     antiScaleTransform.scale(mAntiScaleRatio, mAntiScaleRatio);
 

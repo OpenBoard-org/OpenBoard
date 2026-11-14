@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <QSize>
 #include <QString>
 #include <QVariant>
 #include <QVector>
@@ -58,6 +59,9 @@ public:
     void setAssets(int index, const QStringList& assets);
     void unsetAssets(int index);
     bool hasAssetsEntry(int index) const;
+
+    QSize pageSize(int index) const;
+    void setPageSize(int index, const QSize& pageSize);
 
     // load and save
     bool load();

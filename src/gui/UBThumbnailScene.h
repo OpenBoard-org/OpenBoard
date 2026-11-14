@@ -60,6 +60,9 @@ public:
     UBThumbnail* thumbnailAt(int index);
     UBThumbnail* lastSelectedThumbnail() const;
 
+signals:
+    void selectionChanged(int index, bool only, bool selected);
+
 protected:
     // only to be called from UBDocument
     friend class UBDocument;

@@ -663,13 +663,13 @@ QRect UBDisplayManager::screenGeometry(ScreenRole role) const
 qreal UBDisplayManager::physicalDpi(ScreenRole role) const
 {
     QScreen* scr = screen(role);
-    return scr ? scr->physicalDotsPerInch() : 96.;
+    return scr ? scr->physicalDotsPerInch() : UB_DOTS_PER_INCH;
 }
 
 qreal UBDisplayManager::logicalDpi(ScreenRole role) const
 {
     QScreen* scr = screen(role);
-    return scr ? scr->logicalDotsPerInch() : 96.;
+    return scr ? scr->logicalDotsPerInch() : UB_DOTS_PER_INCH;
 }
 
 void UBDisplayManager::grab(ScreenRole role, std::function<void (QPixmap)> callback, QRect rect) const

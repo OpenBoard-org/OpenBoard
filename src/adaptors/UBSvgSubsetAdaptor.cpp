@@ -75,7 +75,6 @@
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
 #include "core/UBTextTools.h"
 
 #include "pdf/PDFRenderer.h"
@@ -498,16 +497,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 }
             }
 
-            auto pageDpi = mXmlReader.attributes().value("pageDpi");
-
-            if (!pageDpi.isNull())
-                mProxy->setPageDpi(pageDpi.toInt());
-
-            else if (mProxy->pageDpi() == 0) {
-                mProxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
-                //pageDpiSpecified = false;
-            }
-
             bool darkBackground = false;
             bool crossedBackground = false;
             bool ruledBackground = false;
@@ -524,10 +513,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
 
             auto ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+            auto ubGridSizeF = mXmlReader.attributes().value(mNamespaceUri, "grid-sizeF");
 
-            if (!ubGridSize.isNull()) {
-                int gridSize = ubGridSize.toInt();
-
+            if (!ubGridSizeF.isNull())
+            {
+                auto gridSizeF = ubGridSizeF.toDouble();
+                mScene->setBackgroundGridSize(gridSizeF);
+            }
+            else if (!ubGridSize.isNull())
+            {
+                auto gridSize = ubGridSize.toInt();
                 mScene->setBackgroundGridSize(gridSize);
             }
 
@@ -894,24 +889,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                 if (pdfItem)
                 {
-                    qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
-                    // qDebug() << "currentDpi = " << currentDpi;
-                    qreal pdfScale = qreal(mProxy->pageDpi())/currentDpi;
-                    // qDebug() << "pdfScale " << pdfScale;
-
-                    // If the PDF is in the background, it occupies the whole page; so we can simply
-                    // use that information to calculate its scale.
-                    if (isBackground) {
-                        qreal pageWidth = mScene->nominalSize().width();
-                        qreal pageHeight = mScene->nominalSize().height();
-
-                        qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
-                        qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
-
-                        pdfScale = (scaleX+scaleY)/2.;
-                    }
-
-                    pdfItem->setScale(pdfScale);
                     pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -1239,18 +1216,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(std::shared_ptr<UBDo
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", crossedBackground ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "ruled-background", ruledBackground ? xmlTrue : xmlFalse);
 
-    int gridSize = mScene->backgroundGridSize();
-    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+    auto gridSize = mScene->backgroundGridSize();
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(qRound(gridSize)));
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-sizeF", QString::number(gridSize));
 
     if (crossedBackground || ruledBackground) {
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "intermediate-lines", QString::number(intermediateLines));
     }
-
-    if (proxy->pageDpi() == 0)
-        proxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
-
-    mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
-
 
     mXmlWriter.writeStartElement("rect");
     mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");

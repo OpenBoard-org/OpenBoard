@@ -34,7 +34,6 @@
 #include <QPrinter>
 
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
@@ -57,14 +56,15 @@
 
 using namespace merge_lib;
 
-
-UBExportFullPDF::UBExportFullPDF(QObject *parent)
-    : UBExportAdaptor(parent)
+namespace
 {
-    // need to calculate screen resolution
-    float dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
-    mScaleFactor = 72.0f / dpiCommon; // 1pt = 1/72 inch
+    const double POINTS_PER_DOT = 72.0f / UB_DOTS_PER_INCH; // 1pt = 1/72 inch
+}
 
+UBExportFullPDF::UBExportFullPDF(ScalingMode scalingMode, QObject *parent)
+    : UBExportAdaptor(parent)
+    , mScalingMode{scalingMode}
+{
     mSimpleExporter = new UBExportPDF();
 }
 
@@ -128,9 +128,10 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
 
             // pageSize is the output PDF page size; it is set to equal the scene's boundary size; if the contents
             // of the scene overflow from the boundaries, they will be scaled down.
-            QSizeF pageSize = scene->sceneSizeF() * mScaleFactor;   // points
+            QSizeF pageSize = scene->sceneSizeF() * POINTS_PER_DOT;   // points
 
             UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
+            const auto contentRect = scene->normalizedSceneRect();
 
             if (pdfItem)
             {
@@ -141,6 +142,11 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
             else
             {
                 sceneHasPDFBackground = false;
+            }
+
+            if (mScalingMode == ScalingMode::ExtendPage)
+            {
+                pageSize = contentRect.size() * POINTS_PER_DOT;
             }
 
             QPageSize size(pageSize, QPageSize::Point);
@@ -166,7 +172,20 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
             }
 
             //render to PDF
-            scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
+            QRectF sourceRect;
+
+            if (mScalingMode == ScalingMode::ClipContent)
+            {
+                const auto sceneSize = scene->sceneSizeF();
+                const auto topLeft = QPointF{sceneSize.width(), sceneSize.height()} / -2.;
+                sourceRect = QRectF{topLeft, sceneSize};
+            }
+            else
+            {
+                sourceRect = contentRect;
+            }
+
+            scene->render(pdfPainter, QRectF(), sourceRect);
 
             //restore screen rendering quality
             scene->setRenderingContext(UBGraphicsScene::Screen);
@@ -222,9 +241,6 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
 
             MergeDescription mergeInfo;
 
-            // factor between scene coordinates and PDF coordinates
-            double dpiScale = 72. / pDocumentProxy->pageDpi();
-
             auto document = UBDocument::getDocument(pDocumentProxy);
             int existingPageCount = document->pageCount();
 
@@ -247,57 +263,92 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
                     // Original data in scene coordinates, annotationsRect always contains pdfSceneRect
                     QRectF pdfSceneRect = pdfItem->sceneBoundingRect();
                     QRectF annotationsRect = scene->normalizedSceneRect();
-
-                    double xAnnotation = annotationsRect.x();
-                    double yAnnotation = annotationsRect.y();
-                    double xPdf = pdfSceneRect.x();
-                    double yPdf = pdfSceneRect.y();
-                    double hPdf = pdfSceneRect.height();
-
-                    // Exportation-transformed data, scaleFactor always <= 1
-                    double hScaleFactor = pdfSceneRect.width() / annotationsRect.width();
-                    double vScaleFactor = pdfSceneRect.height() / annotationsRect.height();
-                    double scaleFactor = qMin(hScaleFactor, vScaleFactor);
-
-                    double xAnnotationsOffset = 0;
-                    double yAnnotationsOffset = 0;
-                    double hPdfTransformed = hPdf * scaleFactor;
-
-                    // Compute scaling of PDF on the scene
-                    // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
-                    // than the current one), it should also be scaled here.
                     QSizeF pageSize = pdfItem->pageSize();
-                    double pdfScale = pdfSceneRect.width() / pageSize.width() * dpiScale;
 
-                    // Offsets are calculated in the PDF coordinate system.
-                    // It has its origin at the lower left corner and is measured in points of 1/72 inch.
-                    // Here, we force the PDF page to be on the topleft corner of the page
-                    double xPdfOffset = 0;
-                    double yPdfOffset = (hPdf - hPdfTransformed) * dpiScale / pdfScale;
+                    switch (mScalingMode)
+                    {
+                    case ScalingMode::ScaleContent:
+                    {
+                        double xAnnotation = annotationsRect.x();
+                        double yAnnotation = annotationsRect.y();
+                        double xPdf = pdfSceneRect.x();
+                        double yPdf = pdfSceneRect.y();
+                        double hPdf = pdfSceneRect.height();
 
-                    // Now we align the items
-                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor * dpiScale / pdfScale;
-                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * dpiScale / pdfScale;
+                        // Exportation-transformed data, scaleFactor always <= 1
+                        double hScaleFactor = pdfSceneRect.width() / annotationsRect.width();
+                        double vScaleFactor = pdfSceneRect.height() / annotationsRect.height();
+                        double scaleFactor = qMin(hScaleFactor, vScaleFactor);
 
-                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
-                    TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
+                        double hPdfTransformed = hPdf * scaleFactor;
 
-                    MergePageDescription pageDescription(pageSize.width(),
-                                                         pageSize.height(),
-                                                         pdfItem->pageNumber(),
-                                                         QFile::encodeName(backgroundPath).constData(),
-                                                         pdfTransform,
-                                                         pageIndex + 1,
-                                                         annotationTransform,
-                                                         false, false);
+                        // Compute scaling of PDF on the scene
+                        double pdfScale = pdfSceneRect.width() / pageSize.width();
 
-                    mergeInfo.push_back(pageDescription);
+                        // Offsets are calculated in the PDF coordinate system.
+                        // It has its origin at the lower left corner and is measured in points of 1/72 inch.
+                        // Here, we force the PDF page to be on the topleft corner of the page
+                        double xPdfOffset = 0;
+                        double yPdfOffset = (hPdf - hPdfTransformed) / pdfScale;
+
+                        // Now we align the items
+                        xPdfOffset += (xPdf - xAnnotation) * scaleFactor / pdfScale;
+                        yPdfOffset -= (yPdf - yAnnotation) * scaleFactor / pdfScale;
+
+                        TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
+
+                        MergePageDescription pageDescription(pageSize.width(),
+                                                             pageSize.height(),
+                                                             pdfItem->pageNumber(),
+                                                             QFile::encodeName(backgroundPath).constData(),
+                                                             pdfTransform,
+                                                             pageIndex + 1,
+                                                             TransformationDescription(),
+                                                             false, false);
+
+                        mergeInfo.push_back(pageDescription);
+                        break;
+                    }
+
+                    case ScalingMode::ClipContent:
+                    {
+                        MergePageDescription pageDescription(pageSize.width(),
+                                                             pageSize.height(),
+                                                             pdfItem->pageNumber(),
+                                                             QFile::encodeName(backgroundPath).constData(),
+                                                             TransformationDescription(),
+                                                             pageIndex + 1,
+                                                             TransformationDescription(),
+                                                             false, false);
+
+                        mergeInfo.push_back(pageDescription);
+                        break;
+                    }
+
+                    case ScalingMode::ExtendPage:
+                    {
+                        const auto offset = pdfSceneRect.topLeft() - annotationsRect.topLeft();
+
+                        TransformationDescription pdfTransform(offset.x() * POINTS_PER_DOT, -offset.y() * POINTS_PER_DOT, 1, 0);
+                        MergePageDescription pageDescription(annotationsRect.width() * POINTS_PER_DOT,
+                                                             annotationsRect.height() * POINTS_PER_DOT,
+                                                             pdfItem->pageNumber(),
+                                                             QFile::encodeName(backgroundPath).constData(),
+                                                             pdfTransform,
+                                                             pageIndex + 1,
+                                                             TransformationDescription(),
+                                                             false, false);
+
+                        mergeInfo.push_back(pageDescription);
+                        break;
+                    }
+                    }
 
                     merger.addBaseDocument(QFile::encodeName(backgroundPath).constData());
                 }
                 else
                 {
-                    QSizeF pageSize = scene->nominalSize() * mScaleFactor;
+                    QSizeF pageSize = scene->nominalSize() * POINTS_PER_DOT;
 
                     MergePageDescription pageDescription(pageSize.width(),
                              pageSize.height(),
@@ -373,5 +424,17 @@ QString UBExportFullPDF::exportExtention()
 
 QString UBExportFullPDF::exportName()
 {
-    return tr("Export to PDF");
+    switch (mScalingMode)
+    {
+    case ScalingMode::ScaleContent:
+        return tr("Export to PDF, scale content");
+
+    case ScalingMode::ClipContent:
+        return tr("Export to PDF, clip content");
+
+    case ScalingMode::ExtendPage:
+        return tr("Export to PDF, extend page");
+    }
+
+    return {};
 }

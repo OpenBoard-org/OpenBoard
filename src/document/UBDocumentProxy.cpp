@@ -40,8 +40,7 @@
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBDocumentProxy::UBDocumentProxy()
-    : mPageDpi(0)
-    , mPersistencePath("")
+    : mPersistencePath("")
     , mDocumentDateLittleEndian("")
     , mDocumentUpdatedAtLittleEndian("")
     , mNeedsCleanup(true)
@@ -53,8 +52,7 @@ UBDocumentProxy::UBDocumentProxy()
 
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
-    : mPageDpi(0)
-    , mNeedsCleanup(true)
+    : mNeedsCleanup(true)
     , mLastVisitedIndex(0)
     , mIsInFavoriteList(false)
 {
@@ -117,16 +115,6 @@ bool UBDocumentProxy::isInFavoriteList() const
 void UBDocumentProxy::setIsInFavoristeList(bool isInFavoriteList)
 {
     mIsInFavoriteList = isInFavoriteList;
-}
-
-int UBDocumentProxy::pageDpi()
-{
-    return mPageDpi;
-}
-
-void UBDocumentProxy::setPageDpi(int dpi)
-{
-    mPageDpi = dpi;
 }
 
 bool UBDocumentProxy::isWidgetCompatible(const QUuid &uuid) const

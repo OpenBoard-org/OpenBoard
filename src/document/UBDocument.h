@@ -24,6 +24,7 @@
 
 #include <QHash>
 #include <QList>
+#include <QSize>
 #include <QUuid>
 
 #include <memory>
@@ -67,9 +68,12 @@ public:
                                                 bool useUndoRedoStack = true, bool createThumbnail = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false, bool persistThumbnail = true, bool addToCache = true);
-    std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
+    std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true, bool cached = true);
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
+    QSize pageSize(int index) const;
+    void setPageSize(int index, const QSize& pageSize, std::shared_ptr<UBGraphicsScene> scene = nullptr);
+    void setPageSize(int index, const QSizeF& pageSize);
     UBThumbnailScene* thumbnailScene(bool startLoader = true);
     UBDocumentToc* toc();
 

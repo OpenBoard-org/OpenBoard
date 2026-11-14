@@ -199,11 +199,11 @@ class UBSettings : public QObject
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
-        // Background grid
-        static int crossSize;
-        static int defaultCrossSize;
-        static int minCrossSize;
-        static int maxCrossSize;
+        // Background grid sizes in pixels
+        static double crossSize;
+        static double defaultCrossSize;
+        static double minCrossSize;
+        static double maxCrossSize;
 
         static int colorPaletteSize;
         static const int minColorPaletteSize;
@@ -339,6 +339,8 @@ class UBSettings : public QObject
         UBSetting* showPenPreviewCircle;
         UBSetting* penPreviewFromSize;
 
+        UBSetting* boardInitialViewState;
+
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
@@ -372,7 +374,7 @@ class UBSettings : public QObject
 
         UBSetting* boardShowToolsPalette;
 
-        QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
+        QMap<DocumentSize::Enum, DocumentSize::Value> documentSizes;
 
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;

@@ -210,6 +210,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool saveToc,
     auto scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, pageId, cached, useUndoRedoStack);
     mToc->setUuid(index, scene->uuid());
     mToc->setAssets(index, {});
+    mToc->setPageSize(index, scene->nominalSize());
 
     if (saveToc)
     {
@@ -258,7 +259,7 @@ void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, 
     }
 }
 
-std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes)
+std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeighboringScenes, bool cached)
 {
     if (cacheNeighboringScenes)
     {
@@ -280,7 +281,7 @@ std::shared_ptr<UBGraphicsScene> UBDocument::loadScene(int index, bool cacheNeig
         }
     }
 
-    return UBPersistenceManager::persistenceManager()->loadDocumentScene(mProxy, mToc->pageId(index));
+    return UBPersistenceManager::persistenceManager()->loadDocumentScene(mProxy, mToc->pageId(index), cached);
 }
 
 std::shared_ptr<UBGraphicsScene> UBDocument::getScene(int index)
@@ -305,6 +306,43 @@ QList<QString> UBDocument::pageRelativeDependencies(int index)
     }
 
     return {};
+}
+
+QSize UBDocument::pageSize(int index) const
+{
+    return mToc->pageSize(index);
+}
+
+void UBDocument::setPageSize(int index, const QSize& pageSize, std::shared_ptr<UBGraphicsScene> scene)
+{
+    // inform scene
+    if (!scene)
+    {
+        scene = loadScene(index, false, false);
+    }
+
+    scene->setNominalSize(pageSize);
+    scene->setModified(true);
+    persistPage(scene, index, false, true, false, false);
+
+    // update TOC
+    mToc->setPageSize(index, pageSize);
+
+    // update thumbnail
+    const auto pixmap = UBThumbnailAdaptor::persistScene(this, scene, index, true);
+    thumbnailScene()->thumbnailAt(index)->setPixmap(pixmap);
+    thumbnailScene()->arrangeThumbnails(index, index + 1);
+
+    // update document timestamp and settgings
+    QDateTime now = QDateTime::currentDateTime();
+    mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+
+    UBSettings::settings()->pageSize->set(pageSize);
+}
+
+void UBDocument::setPageSize(int index, const QSizeF& pageSize)
+{
+    setPageSize(index, QSize{qCeil(pageSize.width()), qCeil(pageSize.height())});
 }
 
 UBThumbnailScene* UBDocument::thumbnailScene(bool startLoader)
@@ -386,8 +424,25 @@ void UBDocument::sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handl
 
     if (scene)
     {
+        scene->initViewState();
+
         const auto persistenceManager = UBPersistenceManager::persistenceManager();
         auto index = mToc->findUuid(scene->uuid());
+
+        if (index >= 0)
+        {
+            const auto pageSize = mToc->pageSize(index);
+
+            if (pageSize.isEmpty())
+            {
+                mToc->setPageSize(index, scene->nominalSize());
+            }
+            else if (pageSize != scene->nominalSize())
+            {
+                qWarning() << "Page size mismatch, index" << index << "toc:" << pageSize << "scene:" << scene->nominalSize();
+                mToc->setPageSize(index, scene->nominalSize());
+            }
+        }
 
         if (index >= 0 && !mToc->hasAssetsEntry(index))
         {
@@ -583,6 +638,8 @@ void UBDocument::scan(bool tocPresent)
         paths.append({pageId, mProxy->persistencePath() + "/" + page});
     }
 
+    static QRegularExpression matchPageSize{"ub:nominal-size=\"(\\d+)x(\\d+)\""};
+
     if (tocPresent)
     {
         // we have a TOC, but the document was last modified by an earlier version of OpenBoard
@@ -596,13 +653,13 @@ void UBDocument::scan(bool tocPresent)
             tocSceneUuids.insert(mToc->uuid(i));
         }
 
-        // load the first 300 bytes of each file in background, enough to get version and UUID
+        // load the first 400 bytes of each file in background, enough to get version, UUID and size
         mSceneHeaderLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
         int pageProcessed = -1;
         int currentPage = 0;
         const auto currentVersion = QVersionNumber::fromString(UBSettings::currentFileVersion);
 
-        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [&](int index, const QVariant& data){
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [&](int id, const QVariant& data){
             UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(++currentPage).arg(pages.count()), true);
             const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
 
@@ -627,11 +684,19 @@ void UBDocument::scan(bool tocPresent)
             else
             {
                 // add the file name and thumbnail file name to the TOC after the last processed TOC entry
-                qDebug() << "scan: insert scene" << index << "at offset" << pageProcessed;
+                qDebug() << "scan: insert scene" << id << "at offset" << pageProcessed;
                 ++pageProcessed;
                 mToc->insert(pageProcessed);
                 mToc->setUuid(pageProcessed, uuid);
-                mToc->setPageId(pageProcessed, index);
+                mToc->setPageId(pageProcessed, id);
+            }
+
+            const auto match = matchPageSize.match(data.toByteArray());
+
+            if (match.lastCapturedIndex() == 2)
+            {
+                const QSize pageSize{match.captured(1).toInt(), match.captured(2).toInt()};
+                mToc->setPageSize(pageProcessed, pageSize);
             }
 
             mSceneHeaderLoader->resultProcessed();
@@ -652,18 +717,35 @@ void UBDocument::scan(bool tocPresent)
             mToc->save();
         });
 
-        mSceneHeaderLoader->load(paths, 300);
+        mSceneHeaderLoader->load(paths, 400);
         assureHeaderLoaderFinished();
     }
     else if (!paths.empty())
     {
+        QList<int> ids;
+
+        for (const auto path : paths)
+        {
+            ids << path.first;
+        }
+
         // start reading the UUIDs in background, but make sure it is completed when the UBDocument is deleted
         mSceneHeaderLoader = new UBBackgroundLoader{UBBackgroundLoader::ByteArray};
         mSceneHeaderLoader->setKeepAlive(shared_from_this());
 
-        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this](int index, const QVariant& data){
+        QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [this, ids](int id, const QVariant& data){
+            const auto index = ids.indexOf(id);
             const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
             mToc->setUuid(index, uuid);
+
+            const auto match = matchPageSize.match(data.toByteArray());
+
+            if (match.lastCapturedIndex() == 2)
+            {
+                const QSize pageSize{match.captured(1).toInt(), match.captured(2).toInt()};
+                mToc->setPageSize(index, pageSize);
+            }
+
             mSceneHeaderLoader->resultProcessed();
         });
 
@@ -673,7 +755,7 @@ void UBDocument::scan(bool tocPresent)
             mToc->save();
         });
 
-        mSceneHeaderLoader->load(paths, 300);
+        mSceneHeaderLoader->load(paths, 400);
 
         // set the page ID for the pages
         for (int index = 0; index < pages.count(); ++index)

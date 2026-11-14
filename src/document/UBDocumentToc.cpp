@@ -29,6 +29,7 @@
 static const QString UUID{"uuid"};
 static const QString PAGE_ID{"id"};
 static const QString ASSETS("assets");
+static const QString PAGE_SIZE{"size"};
 
 UBDocumentToc::UBDocumentToc(const QString& documentPath)
     : mDocumentPath{documentPath}
@@ -176,6 +177,44 @@ void UBDocumentToc::unsetAssets(int index)
 bool UBDocumentToc::hasAssetsEntry(int index) const
 {
     return isValidIndex(index) && mToc.at(index).contains(ASSETS);
+}
+
+QSize UBDocumentToc::pageSize(int index) const
+{
+    if (isValidIndex(index))
+    {
+        const auto numbers = mToc.at(index).value(PAGE_SIZE).toString().split("x");
+
+        if (numbers.size() != 2)
+        {
+            return {};
+        }
+
+        bool ok1;
+        bool ok2;
+
+        auto width = numbers[0].toInt(&ok1);
+        auto height = numbers[1].toInt(&ok2);
+
+        if (ok1 && ok2)
+        {
+            return {width, height};
+        }
+    }
+
+    return {};
+}
+
+void UBDocumentToc::setPageSize(int index, const QSize& pageSize)
+{
+    if (index < 0)
+    {
+        return;
+    }
+
+    assureSize(index);
+    mToc[index][PAGE_SIZE] = QString::number(pageSize.width()) + "x" + QString::number(pageSize.height());
+    mModified = true;
 }
 
 bool UBDocumentToc::load()

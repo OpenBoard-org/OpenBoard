@@ -904,7 +904,7 @@ void UBBoardPaletteManager::zoomButtonReleased()
     {
         if(mZoomButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
         {
-            mBoardControler->zoomRestore();
+            mBoardControler->zoomToFit();
         }
 
         mPendingZoomButtonPressed = false;

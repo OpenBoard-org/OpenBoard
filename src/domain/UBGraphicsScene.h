@@ -215,7 +215,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         const UBBackgroundRuling* background() const;
 
-        int backgroundGridSize() const
+        double backgroundGridSize() const
         {
             return mBackgroundGridSize;
         }
@@ -335,7 +335,7 @@ public slots:
 
         void setSceneBackground(bool pIsDark, const UBBackgroundRuling *background);
         void setBackgroundZoomFactor(qreal zoom);
-        void setBackgroundGridSize(int pSize);
+        void setBackgroundGridSize(double pSize);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -369,6 +369,7 @@ public slots:
         void stylusToolChanged(int tool, int previousTool);
 
         void controlViewportChanged();
+        void initViewState();
 
 signals:
         void zoomChanged(qreal zoomFactor);
@@ -433,7 +434,7 @@ signals:
 
         bool mDarkBackground;
         const UBBackgroundRuling* mBackground{nullptr};
-        int mBackgroundGridSize;
+        double mBackgroundGridSize;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;

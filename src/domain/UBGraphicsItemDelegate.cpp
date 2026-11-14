@@ -253,7 +253,7 @@ void UBGraphicsItemDelegate::freeControls()
 
 void UBGraphicsItemDelegate::showControls()
 {
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1 / UBApplication::boardController->currentZoom();
     positionHandles();
 }
 
@@ -326,7 +326,7 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
 
             if (controlsExist())
             {
-                mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+                mAntiScaleRatio = 1 / UBApplication::boardController->currentZoom();
                 positionHandles();
                 break;
             }
@@ -757,7 +757,7 @@ void UBGraphicsItemDelegate::commitUndoStep()
 
 void UBGraphicsItemDelegate::onZoomChanged()
 {
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1 / UBApplication::boardController->currentZoom();
 
     positionHandles();
 }

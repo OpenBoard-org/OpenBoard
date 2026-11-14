@@ -33,7 +33,9 @@
 #include <QtWidgets>
 
 
-#define UB_MAX_ZOOM 9
+constexpr int UB_MAX_ZOOM = 9;
+constexpr double UB_DOTS_PER_INCH = 96.;
+constexpr double UB_DOTS_PER_MM = UB_DOTS_PER_INCH / 25.4;
 
 #if defined(Q_OS_LINUX) || (defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)))
 #define UB_REQUIRES_MASK_UPDATE 1
@@ -203,14 +205,28 @@ enum UBGraphicsFlag {
 Q_DECLARE_FLAGS(UBGraphicsFlags, UBGraphicsFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(UBGraphicsFlags )
 
-struct DocumentSizeRatio
+struct DocumentSize
 {
     enum Enum
     {
-        Ratio4_3 = 0, Ratio16_9, Custom
+        Ratio4_3 = 0, Ratio16_9, Ratio16_10, CustomRatio, SizeA4, SizeA5, CustomSize, ImportedSize
+    };
+
+    struct Value
+    {
+        bool isRatio;
+        QSize size;
+        QSizeF displayedSize;
     };
 };
 
+struct ViewState
+{
+    enum Enum
+    {
+        OriginalSize, FitSize, FitContent, FitWidth, FitWidthScrollToTop
+    };
+};
 
 struct UBUndoType
 {

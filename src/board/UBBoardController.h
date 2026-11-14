@@ -61,6 +61,7 @@ class UBSoftwareUpdateDialog;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
+class UBPageSizePalette;
 class UBItem;
 class UBGraphicsItem;
 class UBToolbarButtonGroup;
@@ -81,6 +82,8 @@ class UBBoardController : public UBDocumentContainer
     public:
         UBBoardController(UBMainWindow *mainWindow);
         virtual ~UBBoardController();
+
+        virtual QUndoStack* undoStack() const;
 
         void init();
         void setupLayout();
@@ -159,13 +162,9 @@ class UBBoardController : public UBDocumentContainer
             return mMarkerColorOnLightBackground;
         }
 
-        qreal systemScaleFactor() const
-        {
-            return mSystemScaleFactor;
-        }
         qreal currentZoom() const;
         void persistViewPositionOnCurrentScene() const;
-        void restoreViewPositionOnCurrentScene() const;
+        void restoreViewPositionOnCurrentScene();
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
@@ -173,7 +172,6 @@ class UBBoardController : public UBDocumentContainer
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 
-        void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager() const
         {
             return mPaletteManager;
@@ -217,9 +215,12 @@ class UBBoardController : public UBDocumentContainer
         void zoomIn(QPointF scenePoint = QPointF(0,0));
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();
+        void zoomToFit();
+        void zoomTo(ViewState::Enum viewState);
+        double zoomFactorFor(ViewState::Enum viewState, QSizeF sceneSize) const;
         void centerRestore();
         void centerOn(QPointF scenePoint = QPointF(0,0)) const;
-        void zoom(const qreal ratio, QPointF scenePoint);
+        void zoom(const qreal ratio, QPointF scenePoint, bool relative = true);
         void handScroll(qreal dx, qreal dy);
         void previousScene();
         void nextScene();
@@ -238,8 +239,6 @@ class UBBoardController : public UBDocumentContainer
         void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
-        void setWidePageSize(bool checked);
-        void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
         UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
@@ -283,7 +282,7 @@ class UBBoardController : public UBDocumentContainer
         void connectToolbar();
         void initToolbarTexts();
         void updateActionStates();
-        void updateSystemScaleFactor();
+        void updateDisplayScaleFactor();
         QString truncate(QString text, int maxWidth) const;
 
     protected slots:
@@ -296,8 +295,6 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
-        void initBackgroundGridSize();
-        void updatePageSizeState();
         int autosaveTimeoutFromSettings() const;
         void buildColorActions();
         void updateColorButtonsForPaletteSize();
@@ -308,6 +305,7 @@ class UBBoardController : public UBDocumentContainer
         int mActiveSceneIndex;
         int mSwitchToSceneIndex{-1};
         UBBoardPaletteManager *mPaletteManager;
+        UBPageSizePalette* mPageSizePalette{nullptr};
         UBBackgroundManager* mBgManager{nullptr};
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;
@@ -317,13 +315,14 @@ class UBBoardController : public UBDocumentContainer
         QWidget *mControlContainer;
         QHBoxLayout *mControlLayout;
         qreal mZoomFactor;
+        double mCurrentZoom{1.};
         bool mIsClosing;
         QColor mPenColorOnDarkBackground;
         QColor mPenColorOnLightBackground;
         QColor mMarkerColorOnDarkBackground;
         QColor mMarkerColorOnLightBackground;
         QPointer<UBColorPreferencesDialog> mColorPreferencesDialog;
-        qreal mSystemScaleFactor;
+        double mDisplayScaleFactor{1.};
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
         bool mCacheWidgetIsEnabled;

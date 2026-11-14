@@ -89,6 +89,7 @@ public:
     bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageId) const;
 
     std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
+    std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<void> handle);
 
     void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
 

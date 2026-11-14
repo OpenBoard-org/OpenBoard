@@ -53,6 +53,7 @@
 #include "gui/UBMessageWindow.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBDocumentToolsPalette.h"
+#include "gui/UBPageSizePalette.h"
 #include "gui/UBThumbnail.h"
 
 #include "domain/UBGraphicsScene.h"
@@ -1781,18 +1782,30 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    , mDefaultDocumentGroupName(tr("Untitled Documents"))
    , mCurrentTreeDocument(0)
    , mCurrentIndexMoved(false)
+   , mUndoStack{new QUndoStack{this}}
 {
-
     setupViews();
     setupToolbar();
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
     connect(this, SIGNAL(reorderDocumentsRequested()), this, SLOT(reorderDocuments()));
+
+    connect(UBApplication::applicationController, &UBApplicationController::mainModeChanged, this, [this](UBApplicationController::MainMode mode){
+        if (mode != UBApplicationController::Document && mPageSizePalette)
+        {
+            mPageSizePalette->hide();
+        }
+    });
 }
 
 UBDocumentController::~UBDocumentController()
 {
    if (mDocumentUI)
        delete mDocumentUI;
+}
+
+QUndoStack* UBDocumentController::undoStack() const
+{
+    return mUndoStack;
 }
 
 void UBDocumentController::createNewDocument()
@@ -2299,6 +2312,15 @@ void UBDocumentController::setupToolbar()
 {
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->documentToolBar, mMainWindow->actionBoard);
     connect(mMainWindow->actionDocumentTools, SIGNAL(triggered()), this, SLOT(toggleDocumentToolsPalette()));
+
+    //-----------------------------------------------------------//
+    // Setup page size palette as toolbar extension
+
+    mPageSizePalette = new UBPageSizePalette(mMainWindow->documentToolBar, this, mMainWindow);
+    auto fromWidget = mMainWindow->documentToolBar->widgetForAction(mMainWindow->actionNewDocument);
+    auto toWidget = mMainWindow->documentToolBar->widgetForAction(mMainWindow->actionExport);
+    mPageSizePalette->setSpan(fromWidget, toWidget);
+    mPageSizePalette->hide();
 }
 
 void UBDocumentController::setupPalettes()
