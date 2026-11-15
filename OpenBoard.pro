@@ -84,6 +84,7 @@ UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm
 UB_LIBRARY.files = resources/library
 UB_FONTS.files = resources/fonts
+UB_STARTUP_HINTS.files = resources/startupHints
 UB_THIRDPARTY_INTERACTIVE.files = thirdparty/interactive
 
 DEFINES += NO_THIRD_PARTY_WARNINGS
@@ -138,6 +139,7 @@ win32 {
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
+   UB_STARTUP_HINTS.path = $$DESTDIR
    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
    system(md $$replace(BUILD_DIR, /, \\))
    system(echo "$$VERSION" > $$BUILD_DIR/version)
@@ -217,6 +219,8 @@ macx {
    UB_LIBRARY.path = "$$RESOURCES_DIR"
    UB_FONTS.files = "resources/fonts"
    UB_FONTS.path = "$$RESOURCES_DIR"
+   UB_STARTUP_HINTS.files = "resources/startupHints"
+   UB_STARTUP_HINTS.path = "$$RESOURCES_DIR"
    UB_THIRDPARTY_INTERACTIVE.files = $$files($$THIRD_PARTY_PATH/interactive/*)
    UB_THIRDPARTY_INTERACTIVE.path = "$$RESOURCES_DIR/library/interactive"
    UB_MACX_ICNS.files = $$files(resources/macx/*.icns)
@@ -439,6 +443,7 @@ macx {
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
+       UB_STARTUP_HINTS \
        UB_THIRDPARTY_INTERACTIVE \
        UB_MACX_ICNS \
        UB_MACX_EXTRAS \
@@ -478,6 +483,7 @@ linux-g++* {
     UB_LIBRARY.path = $$DESTDIR
     UB_I18N.path = $$DESTDIR/i18n
     UB_ETC.path = $$DESTDIR
+    UB_STARTUP_HINTS.path = $$DESTDIR
     UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
     system(mkdir -p $$BUILD_DIR)
     system(echo "$$VERSION" > $$BUILD_DIR/version)
@@ -527,6 +533,7 @@ TRANSLATIONS = resources/i18n/OpenBoard_ar.ts \
 INSTALLS = UB_ETC \
    UB_I18N \
    UB_LIBRARY \
+   UB_STARTUP_HINTS \
    UB_THIRDPARTY_INTERACTIVE
 
 DISTFILES += \

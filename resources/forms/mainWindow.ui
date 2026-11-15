@@ -82,6 +82,7 @@
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
+   <addaction name="actionHideApplication"/>
    <addaction name="actionMenu"/>
   </widget>
   <widget class="QToolBar" name="webToolBar">
@@ -132,6 +133,7 @@
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
+   <addaction name="actionHideApplication"/>
    <addaction name="actionMenu"/>
   </widget>
   <widget class="QToolBar" name="documentToolBar">
@@ -186,6 +188,7 @@
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
+   <addaction name="actionHideApplication"/>
    <addaction name="actionMenu"/>
   </widget>
   <action name="actionStylus">
@@ -1849,10 +1852,10 @@
      <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
    </property>
    <property name="text">
-    <string>Hide OpenBoard</string>
+    <string>Minimize</string>
    </property>
    <property name="toolTip">
-    <string>Hide OpenBoard Application</string>
+    <string>Minimize OpenBoard</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
