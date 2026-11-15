@@ -198,6 +198,7 @@ public:
     mediaType getMediaType() const { return mediaType_Video; }
 
     void setSize(int width, int height);
+    void resize(qreal width, qreal height) override;
 
     virtual UBItem* deepCopy() const;
 
@@ -230,6 +231,15 @@ protected:
     void setPlaceholderVisible(bool visible);
 
     bool mHasVideoOutput;
+
+private slots:
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
+
+private:
+    void takePictureSize(const QSizeF& pictureSize);
+
+    // A new video takes the size of its picture; once it has a size, it keeps it
+    bool mIsSized{false};
 };
 
 

@@ -38,6 +38,7 @@
 #include "core/memcheck.h"
 
 #include <QGraphicsVideoItem>
+#include <QMediaMetaData>
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
@@ -166,6 +167,9 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
+
+    connect(mMediaObject, &QMediaPlayer::mediaStatusChanged,
+            this, &UBGraphicsVideoItem::onMediaStatusChanged);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     connect(mMediaObject, &QMediaPlayer::hasVideoChanged,
@@ -525,7 +529,7 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSourceUrl(this->sourceUrl());
-        cp->setSize(rect().width(), rect().height());
+        cp->resize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());
 
@@ -631,6 +635,38 @@ void UBGraphicsVideoItem::setSize(int width, int height)
     UBGraphicsMediaItem::setSize(sizeX, sizeY);
 }
 
+void UBGraphicsVideoItem::resize(qreal width, qreal height)
+{
+    // Once the video has a size, the size of its picture no longer changes it
+    mIsSized = true;
+    setSize(width, height);
+}
+
+void UBGraphicsVideoItem::takePictureSize(const QSizeF& pictureSize)
+{
+    if (mIsSized || pictureSize.isEmpty())
+    {
+        return;
+    }
+
+    resize(pictureSize.width(), pictureSize.height());
+}
+
+void UBGraphicsVideoItem::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    // The file tells the size of the picture as soon as it is loaded, before it is played
+    if (status != QMediaPlayer::LoadedMedia)
+    {
+        return;
+    }
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    takePictureSize(mMediaObject->metaData().value(QMediaMetaData::Resolution).toSize());
+#else
+    takePictureSize(mMediaObject->metaData(QMediaMetaData::Resolution).toSize());
+#endif
+}
+
 void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
 {
     /* Depending on the platform/video backend, video size information becomes
@@ -639,20 +675,15 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
      * soon as the information is available.
      */
 
-
-    // We don't want the video item to resize when the video is stopped or finished;
-    // and in those cases, the new size is reported as (0, 0).
-
-    // In OSX, nativeSizeChanged is called when the video starts, but with the initial size of the video,
-    // not (0,0), so we lose user own resizes if we perform it.
-#ifndef Q_OS_OSX
-    if (newSize != QSizeF(0,0))
-        this->setSize(newSize.width(), newSize.height());
-    else // Make sure the toolbar doesn't disappear
+    // When the video is stopped or finished, the new size is reported as (0, 0)
+    if (newSize.isEmpty())
+    {
+        // Make sure the toolbar doesn't disappear
         Delegate()->showToolBar(false);
-#else
-    Q_UNUSED(newSize);
-#endif
+        return;
+    }
+
+    takePictureSize(newSize);
 }
 
 void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
