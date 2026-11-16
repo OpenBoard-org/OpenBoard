@@ -42,7 +42,6 @@
 #include <poppler/GlobalParams.h>
 #include <poppler/SplashOutputDev.h>
 #include <poppler/PDFDoc.h>
-#include <poppler/Stream.h>
 #include <poppler/cpp/poppler-version.h>
 
 class PDFDoc;

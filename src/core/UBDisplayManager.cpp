@@ -344,7 +344,7 @@ void UBDisplayManager::adjustScreens()
         auto controlWidget = widget(ScreenRole::Control);
 
         // hide windows for repositioning
-        if (controlWidget && hasControl())
+        if (controlWidget)
         {
             if (controlWidget->isVisible())
             {

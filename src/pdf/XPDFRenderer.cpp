@@ -32,6 +32,7 @@
 #include <QtGui>
 
 #include <frameworks/UBPlatformUtils.h>
+#include <poppler/Stream.h>
 #include <poppler/cpp/poppler-version.h>
 
 #include "core/memcheck.h"
