@@ -211,7 +211,6 @@ private:
         void checkIfDocumentRepositoryExists();
         void journalPendingSaves(bool closing);
         void keepScenesForAbandonedThread();
-        static QString thumbnailOf(const QString& pageFile);
         void recoverJournal();
         QString recoverDocumentCopy(const QString& directory, const QStringList& files);
         QByteArray foldersXml();

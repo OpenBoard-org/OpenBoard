@@ -49,9 +49,11 @@
 
 #include "core/memcheck.h"
 
-QHash<QString, QPixmap> UBThumbnailAdaptor::sPendingThumbnails;
+// Thumbnails not written yet (GUI thread only). They are written by the persistence thread,
+// so that a storage which does not answer does not block the GUI, and kept here until then.
+static QHash<QString, QPixmap> sPendingThumbnails;
 
-void UBThumbnailAdaptor::writeThumbnail(const QString& fileName, const QPixmap& pixmap)
+static void writeThumbnail(const QString& fileName, const QPixmap& pixmap)
 {
     QByteArray data;
     QBuffer buffer(&data);

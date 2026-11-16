@@ -1039,7 +1039,8 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
 
 
 
-QString UBGraphicsW3CWidgetItem::defaultStartFile(const QString& widgetPath)
+// the start file of an application whose configuration names none
+static QString defaultStartFile(const QString& widgetPath)
 {
     if (QFile::exists(widgetPath + "index.htm"))
     {

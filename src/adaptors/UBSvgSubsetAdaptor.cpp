@@ -103,29 +103,32 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
-QMutex UBSvgSubsetAdaptor::sFileCacheMutex;
-QHash<QString, QHash<QUuid, QString>> UBSvgSubsetAdaptor::sImageFiles;
-QSet<QString> UBSvgSubsetAdaptor::sKnownPdfFiles;
+// Files of the documents known from reading their pages. The writer needs the file name of each
+// image and whether each PDF exists, which cannot be checked while the document storage is not
+// available. Shared by the reader and the writer, which may run in different threads.
+static QMutex sFileCacheMutex;
+static QHash<QString, QHash<QUuid, QString>> sImageFiles;
+static QSet<QString> sKnownPdfFiles;
 
-QString UBSvgSubsetAdaptor::rememberedImageFile(const QString& documentPath, const QUuid& uuid)
+static QString rememberedImageFile(const QString& documentPath, const QUuid& uuid)
 {
     QMutexLocker locker(&sFileCacheMutex);
     return sImageFiles.value(documentPath).value(uuid);
 }
 
-void UBSvgSubsetAdaptor::rememberPdfFile(const QString& path)
+static void rememberPdfFile(const QString& path)
 {
     QMutexLocker locker(&sFileCacheMutex);
     sKnownPdfFiles.insert(path);
 }
 
-bool UBSvgSubsetAdaptor::isKnownPdfFile(const QString& path)
+static bool isKnownPdfFile(const QString& path)
 {
     QMutexLocker locker(&sFileCacheMutex);
     return sKnownPdfFiles.contains(path);
 }
 
-QPixmap UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapFromData(const QByteArray& data)
+static QPixmap pixmapFromData(const QByteArray& data)
 {
     QBuffer buffer;
     buffer.setData(data);
@@ -134,7 +137,8 @@ QPixmap UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapFromData(const QByteArray& 
     return QPixmap::fromImage(reader.read());
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetReader::setPageModified(QGraphicsItem* item)
+// the content of an item arrived after its page was read: the page is saved again, with its thumbnail
+static void setPageModified(QGraphicsItem* item)
 {
     UBCoreGraphicsScene* scene = dynamic_cast<UBCoreGraphicsScene*>(item->scene());
 
@@ -144,7 +148,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::setPageModified(QGraphicsItem* item)
     }
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetReader::scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
+static void scalePdfItem(UBGraphicsPDFItem* pdfItem, bool isBackground, int pageDpi, const QSize& pageSize)
 {
     qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
     qreal pdfScale = qreal(pageDpi)/currentDpi;
@@ -162,7 +166,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::scalePdfItem(UBGraphicsPDFItem* pdfI
     pdfItem->setScale(pdfScale);
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetReader::retryOpeningWhenAvailable(UBGraphicsMediaItem* mediaItem)
+// a media file which could not be opened is opened again when the document storage is available again
+static void retryOpeningWhenAvailable(UBGraphicsMediaItem* mediaItem)
 {
     UBDocumentStorage* storage = UBPersistenceManager::persistenceManager()->documentStorage();
 

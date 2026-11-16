@@ -492,7 +492,10 @@ void UBApplication::showRecoveryReport()
 }
 
 // Check the data directory in a background thread and wait at most timeoutMs.
-bool UBApplication::isDataDirectoryAvailableWithin(const QString& path, int timeoutMs)
+// Accessing a disconnected network path may block for a long time (SMB timeout, stale mounts),
+// so the GUI thread never accesses the configured path directly. A check which did not finish
+// in time is considered as failed; it is not waited for.
+static bool isDataDirectoryAvailableWithin(const QString& path, int timeoutMs)
 {
     QFuture<bool> future = QtConcurrent::run(&UBSettings::isDataDirectoryAvailable, path);
 

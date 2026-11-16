@@ -107,9 +107,10 @@ QPointer<QSettings> UBSettings::sAppSettings = 0;
 QPointer<QSettings> UBSettings::sAdminSettings = 0;
 QPointer<QSettings> UBSettings::sPolicySettings = 0;
 
-QString UBSettings::sDataDirPath;
-bool UBSettings::sUseLocalDataDirectory = false;
-bool UBSettings::sDataDirectoryDecisionPending = false;
+// the data directory used in this session, and the decision taken when the configured one is not available
+static QString sDataDirPath;
+static bool sUseLocalDataDirectory = false;
+static bool sDataDirectoryDecisionPending = false;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
@@ -184,7 +185,8 @@ QSettings* UBSettings::getAppSettings()
     return UBSettings::sAppSettings;
 }
 
-QString UBSettings::systemConfigDirectory()
+// system wide directory of the administrator configuration files, kept on updates
+static QString systemConfigDirectory()
 {
 #if defined(Q_OS_WIN)
     QString programData = qEnvironmentVariable("ProgramData");
@@ -202,7 +204,9 @@ QString UBSettings::systemConfigDirectory()
 #endif
 }
 
-QSettings* UBSettings::openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
+// an optional, read-only configuration file, searched in the system configuration directory
+// first, then next to OpenBoard.config, once the application name is known
+static QSettings* openOptionalSettings(QPointer<QSettings>& settings, bool& loaded, const QString& fileSuffix, const char* description)
 {
     if (loaded || qApp->applicationName().isEmpty())
     {
@@ -1086,7 +1090,7 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
-QString UBSettings::localDataDirectory()
+static QString localDataDirectory()
 {
     QString dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 
