@@ -494,6 +494,8 @@ class UBSettings : public QObject
         QSettings* mUserSettings;
 
         QHash<QString, QVariant> mSettingsQueue;
+        // settings changed during this session, by the user or by OpenBoard (not only read)
+        QSet<QString> mChangedSettings;
 
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;

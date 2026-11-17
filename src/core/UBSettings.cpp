@@ -651,6 +651,7 @@ void UBSettings::setValue (const QString & key, const QVariant & value)
 {
     // Save the setting to the queue only; a call to save() is necessary to persist the settings
     mSettingsQueue[key] = value;
+    mChangedSettings.insert(key);
 }
 
 /**
@@ -674,7 +675,14 @@ void UBSettings::save()
          * b) it doesn't currently exist in the user settings AND has changed from the app settings
          * An invalid value indicates removal of the setting
         */
-        if (mUserSettings->contains(it.key())
+        if (mChangedSettings.contains(it.key())
+                && (!it.value().isValid() || it.value() == baseValue(it.key())))
+        {
+            // Changed back to the value of the administrator or the default: not stored, so that the
+            // setting follows later changes of the administrator.
+            mUserSettings->remove(it.key());
+        }
+        else if (mUserSettings->contains(it.key())
                 && it.value() != mUserSettings->value(it.key()))
         {
             if (it.value().isValid())
