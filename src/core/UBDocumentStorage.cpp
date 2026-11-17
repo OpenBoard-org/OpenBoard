@@ -162,6 +162,39 @@ UBDocumentStorage::ReadResult UBDocumentStorage::read(const QString& path, QByte
     return ReadResult::Read;
 }
 
+bool UBDocumentStorage::checkAvailability(const QString& path)
+{
+    if (!mAvailable)
+    {
+        return false;
+    }
+
+    if (isReadPoolBusy())
+    {
+        // previous reads are still blocked
+        qWarning() << "The document location does not answer, cannot check" << path;
+        setAvailable(false);
+        return false;
+    }
+
+    // not checked in this thread: the user interface must not wait for a storage which does not answer
+    auto answered = std::make_shared<QSemaphore>();
+
+    readPool()->start([path, answered]() {
+        QFileInfo::exists(path);
+        answered->release();
+    });
+
+    if (!answered->tryAcquire(1, answerTimeoutMs))
+    {
+        qWarning() << "The document location does not answer:" << path;
+        setAvailable(false);
+        return false;
+    }
+
+    return true;
+}
+
 bool UBDocumentStorage::isLocal() const
 {
     return mMountPoint.isEmpty();

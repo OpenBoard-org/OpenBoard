@@ -712,8 +712,9 @@ bool UBPersistenceManager::prepareToChangePages(std::shared_ptr<UBDocumentProxy>
 {
     // Adding, moving or deleting pages renames the following page files. Pending saves
     // must be written first, they use the page numbers. Wait shortly, but do not block
-    // the user when the storage does not answer.
-    if (mDocumentStorage->isAvailable())
+    // the user when the storage does not answer. The files are then changed directly:
+    // check that the storage answers, it may have stopped since the last access.
+    if (mDocumentStorage->checkAvailability(mDocumentRepositoryPath))
     {
         // The modified page shown on the board must be written before the files are renamed. Save it
         // now and wait for it here, not later in the operation, which could not be cancelled anymore.

@@ -69,6 +69,11 @@ public:
     bool isAvailable() const;
     void setAvailable(bool available);
 
+    // Checks that the storage answers now, before the user interface accesses it directly: waits
+    // at most the answer timeout, and makes the storage unavailable if the path does not answer.
+    // Returns whether the storage is available.
+    bool checkAvailability(const QString& path);
+
     // True if the data directory can be used: part of its path exists, the directory can be read
     // if it exists and, if a mount point is given, this mount point is currently the root of a
     // mounted volume containing the directory. A share which is not mounted may leave an empty
