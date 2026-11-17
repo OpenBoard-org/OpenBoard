@@ -26,6 +26,7 @@
 #include <QObject>
 #include <QSet>
 #include <QString>
+#include <QTimer>
 
 #include <memory>
 
@@ -102,4 +103,6 @@ private:
     QSet<QString> mUnreadFiles;
     // files of mUnreadFiles currently read again
     QSet<QString> mReadingAgain;
+    // reads again the files which could not be read while the storage is available
+    QTimer mReadAgainTimer;
 };

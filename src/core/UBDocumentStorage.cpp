@@ -48,6 +48,10 @@ static const int answerTimeoutUnavailableMs = 1000;
 
 static const qint64 chunkSize = 256 * 1024;
 
+// A file which cannot be read while the storage answers (e.g. no permission, or locked by another
+// program) is read again after this time.
+static const int readAgainIntervalMs = 15000;
+
 // Threads reading from the storage. Allocated once and never destroyed:
 // a read blocked on a storage which does not answer may still be running at exit.
 static QThreadPool* readPool()
@@ -81,6 +85,9 @@ UBDocumentStorage::UBDocumentStorage(const QString& mountPoint, QObject* parent)
     : QObject(parent)
     , mMountPoint(mountPoint)
 {
+    mReadAgainTimer.setInterval(readAgainIntervalMs);
+    mReadAgainTimer.setSingleShot(true);
+    connect(&mReadAgainTimer, &QTimer::timeout, this, &UBDocumentStorage::readUnreadFiles);
 }
 
 UBDocumentStorage::ReadResult UBDocumentStorage::read(const QString& path, QByteArray& data)
@@ -175,6 +182,11 @@ void UBDocumentStorage::setAvailable(bool available)
         if (available)
         {
             readUnreadFiles();
+        }
+        else
+        {
+            // read again when the storage is available
+            mReadAgainTimer.stop();
         }
     }
 }
@@ -274,6 +286,12 @@ void UBDocumentStorage::onFileRead(const QString& path, const FileRead& read)
         {
             // reported as unavailable, read again when the storage is available
             mUnreadFiles.insert(path);
+
+            if (mAvailable)
+            {
+                // the storage answers, but not for this file: it does not become available again
+                mReadAgainTimer.start();
+            }
         }
 
         return;
