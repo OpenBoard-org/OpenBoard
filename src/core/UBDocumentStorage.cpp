@@ -226,13 +226,27 @@ bool UBDocumentStorage::isReachable(const QString& dataDirectory, const QString&
     return !dataDirectoryExists || UBPlatformUtils::canListDirectory(dataDirectory);
 }
 
+// A file is missing only if the nearest existing folder above it can be listed: in a folder which
+// cannot be entered (e.g. no permission), the file may exist but cannot be read.
+static bool isMissing(const QString& path)
+{
+    QString folder = QFileInfo(path).path();
+
+    while (!QFileInfo::exists(folder) && QFileInfo(folder).path() != folder)
+    {
+        folder = QFileInfo(folder).path();
+    }
+
+    return UBPlatformUtils::canListDirectory(folder);
+}
+
 void UBDocumentStorage::readFile(const QString& path, FileRead& read)
 {
     QFile file(path);
 
     if (!file.exists())
     {
-        read.exists = false;
+        read.exists = !isMissing(path);
     }
     else if (file.open(QIODevice::ReadOnly))
     {
