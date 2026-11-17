@@ -89,7 +89,7 @@ initializeVariables()
   BUNDLE_QT=true
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/6.9.3/gcc_64"
+  QT_PATH="/home/dev/Qt/6.11.2/gcc_64"
   QT_SHARE_PATH="/usr/share/qt5/"
   GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
