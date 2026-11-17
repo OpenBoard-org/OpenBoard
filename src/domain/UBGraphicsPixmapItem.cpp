@@ -164,6 +164,7 @@ void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
+        cp->setData(UBGraphicsItemData::ItemSizeInPage, this->data(UBGraphicsItemData::ItemSizeInPage));
         cp->setSourceUrl(this->sourceUrl());
 
         cp->setZValue(this->zValue());

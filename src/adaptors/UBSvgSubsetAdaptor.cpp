@@ -2659,6 +2659,15 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         }
     }
 
+    if (gItem->boundingRect().isEmpty())
+    {
+        // The content (e.g. an image or a PDF file) could not be read yet: keep the size of the page,
+        // so that saving the page meanwhile does not replace it.
+        const qreal width = mXmlReader.attributes().value("width").toDouble();
+        const qreal height = mXmlReader.attributes().value("height").toDouble();
+        gItem->setData(UBGraphicsItemData::ItemSizeInPage, QSizeF(width, height));
+    }
+
     bool hasZValue;
     qreal zValue = normalizedZValue(&hasZValue);
 
@@ -2752,6 +2761,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("y", "0");
 
     QRectF rect = item->boundingRect();
+    const QVariant sizeInPage = item->data(UBGraphicsItemData::ItemSizeInPage);
+
+    if (rect.isEmpty() && sizeInPage.isValid())
+    {
+        // content not read yet: the size read from the page is written again
+        rect.setSize(sizeInPage.toSizeF());
+    }
 
     QAbstractGraphicsShapeItem* shapeItem = dynamic_cast<QAbstractGraphicsShapeItem*>(item);
 

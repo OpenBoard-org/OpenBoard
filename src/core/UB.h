@@ -145,6 +145,7 @@ struct UBGraphicsItemData
         , ItemRotatable // (bool)
         , ItemCanBeSetAsBackground
         , ItemIsHiddenOnDisplay
+        , ItemSizeInPage // (QSizeF) size written in the page, kept while the content of the item is not read
     };
 };
 
