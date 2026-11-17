@@ -699,7 +699,12 @@ void UBApplication::toolBarDisplayTextChanged(QVariant display)
 
 void UBApplication::closeEvent(QCloseEvent *event)
 {
-    Q_UNUSED(event);
+    if (isClosing)
+    {
+        // sent by quit() at the end of closing(): the window closes, closing() is not done again
+        event->accept();
+        return;
+    }
 
     closing();
 }
