@@ -135,11 +135,11 @@ notifyProgress(){
 
 copyQtLibrary(){
     echo -e "\t $1"
-    if ls "$QT_LIBRARY_SOURCE_PATH/$1.so" &> /dev/null; then
-        cp -P $QT_LIBRARY_SOURCE_PATH/$1.so "$QT_LIBRARY_DEST_PATH/"
+    # only the versioned files are needed at run time; Qt 6.11 has no unversioned link for ICU
+    if ls "$QT_LIBRARY_SOURCE_PATH/$1.so."* &> /dev/null; then
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.* "$QT_LIBRARY_DEST_PATH/"
 
-        strip $QT_LIBRARY_DEST_PATH/$1.so
+        find "$QT_LIBRARY_DEST_PATH" -maxdepth 1 -type f -name "$1.so.*" -exec strip {} \;
         chmod 644 $QT_LIBRARY_DEST_PATH/$1.so.* # 644 = rw-r-r
     else
         notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
@@ -225,7 +225,6 @@ if $BUNDLE_QT; then
     copyQtPlugin tls
     copyQtPlugin wayland-graphics-integration-client
     copyQtPlugin wayland-decoration-client
-    copyQtPlugin wayland-graphics-integration-server
     copyQtPlugin wayland-shell-integration
     copyQtPlugin xcbglintegrations
 
@@ -252,6 +251,7 @@ if $BUNDLE_QT; then
     #copyQtLibrary libQt6Sensors
     copyQtLibrary libQt6Sql
     copyQtLibrary libQt6Svg
+    copyQtLibrary libQt6SvgWidgets
     copyQtLibrary libQt6WebChannel
     copyQtLibrary libQt6WebEngineCore
     copyQtLibrary libQt6WebEngineWidgets
