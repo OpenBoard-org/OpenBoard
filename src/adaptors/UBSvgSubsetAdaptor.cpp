@@ -1045,6 +1045,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
                 qWarning() << "Ignoring unknown foreignObject:" << href;
             }
         }
+        else if (currentWidget && name == "iframe" && currentWidget->mainHtmlFileName().isEmpty())
+        {
+            // The configuration of the application could not be read yet: keep the start file of the page,
+            // so that saving the page meanwhile does not replace it.
+            currentWidget->setData(UBGraphicsItemData::ItemStartFileInPage, mXmlReader.attributes().value("src").toString());
+        }
         else if (currentWidget && (name == "preference"))
         {
             QString key = mXmlReader.attributes().value("key").toString();
@@ -2895,6 +2901,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         startFileUrl = widgetRootUrl.toString() + "/" + item->mainHtmlFileName();
 
     startFileUrl = QUrl::fromPercentEncoding(startFileUrl.toUtf8());
+
+    const QVariant startFileInPage = item->data(UBGraphicsItemData::ItemStartFileInPage);
+
+    if (item->mainHtmlFileName().isEmpty() && startFileInPage.isValid())
+    {
+        // configuration not read yet: the start file read from the page is written again
+        startFileUrl = startFileInPage.toString();
+    }
 
     mXmlWriter.writeAttribute("src", startFileUrl);
     mXmlWriter.writeEndElement(); //iFrame
