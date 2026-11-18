@@ -260,12 +260,14 @@ bool UBDocumentStorage::isReachable(const QString& dataDirectory, const QString&
 }
 
 // A file is missing only if the nearest existing folder above it can be listed: in a folder which
-// cannot be entered (e.g. no permission), the file may exist but cannot be read.
+// cannot be entered (e.g. no permission), the file may exist but cannot be read. The search stops
+// at the root of the path: above the root of a share which does not answer (e.g. //server/share),
+// the root of the current drive would be found.
 static bool isMissing(const QString& path)
 {
     QString folder = QFileInfo(path).path();
 
-    while (!QFileInfo::exists(folder) && QFileInfo(folder).path() != folder)
+    while (!QFileInfo::exists(folder) && !QDir(folder).isRoot())
     {
         folder = QFileInfo(folder).path();
     }
