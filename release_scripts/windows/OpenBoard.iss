@@ -99,13 +99,6 @@ Source: "{#QtLibs}\Qt6WebEngineCore.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6WebEngineWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6QuickWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6Core5Compat.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\double-conversion.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\icudt74.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\icuin74.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\pcre2-16.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\harfbuzz.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\icuuc74.dll"; DestDir: "{app}" 
-Source: "{#QtLibs}\zstd.dll"; DestDir: "{app}" 
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -129,35 +122,35 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestD
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ;Qt windows plugins
-Source: "{#QtDir}\Qt6\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 
 ;Qt images formats plugins
-Source: "{#QtDir}\Qt6\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 
 ;qt icon engine plugin
-Source: "{#QtDir}\Qt6\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
 ;qt multimedia plugin
-Source: "{#QtDir}\Qt6\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
 
 ;qt tls dependencies
-Source: "{#QtDir}\Qt6\plugins\tls\qcertonlybackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6\plugins\tls\qschannelbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\tls\qcertonlybackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\tls\qschannelbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
 
 ;QtWebEngine dependencies
 Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
-Source: "{#QtDir}\share\Qt6\resources\*"; DestDir: "{app}\resources"
+Source: "{#QtDir}\resources\*"; Excludes: "*.debug.*"; DestDir: "{app}\resources"
 
 ;Qt translations
-;Source: "{#QtDir}\translations\Qt6\*"; DestDir: "{app}\i18n"
-Source: "{#QtDir}\translations\Qt6\qtwebengine_locales\*"; DestDir: "{app}\translations\Qt6\qtwebengine_locales"
+;Source: "{#QtDir}\translations\*"; DestDir: "{app}\i18n"
+Source: "{#QtDir}\translations\qtwebengine_locales\*"; DestDir: "{app}\translations\qtwebengine_locales"
 
 ;fonts for xpdf
 Source: "{#ProjectRoot}\resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
