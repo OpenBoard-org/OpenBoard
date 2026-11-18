@@ -62,11 +62,16 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
     : QGraphicsSvgItem(parent)
 {
     init();
+    setFileData(pFileData);
+}
 
-    QSvgRenderer* renderer = new QSvgRenderer(pFileData, this);
 
-    setSharedRenderer(renderer);
+void UBGraphicsSvgItem::setFileData(const QByteArray& pFileData)
+{
+    // the renderer is a child of the item, deleted with it
+    setSharedRenderer(new QSvgRenderer(pFileData, this));
     mFileData = pFileData;
+    setMaximumCacheSize(boundingRect().size().toSize() * UB_MAX_ZOOM);
 }
 
 
@@ -184,6 +189,7 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, this->data(UBGraphicsItemData::ItemIsHiddenOnDisplay));
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
+        cp->setData(UBGraphicsItemData::ItemSizeInPage, this->data(UBGraphicsItemData::ItemSizeInPage));
         cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
     }

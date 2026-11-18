@@ -52,19 +52,23 @@ private:
         QString id() const;
         QString version() const;
         bool hasUniqueId() const;
+        // false if its config.xml could not be read now, e.g. while the document location does not answer
+        bool isReadable() const;
 
     private:
         QString m_path;
         QString m_id;
         QString m_version;
         bool m_hasUniqueId;
+        bool m_readable{true};
     };
 
     enum class ApiUsage
     {
         NO,
         COMPATIBLE,
-        INCOMPATIBLE
+        INCOMPATIBLE,
+        UNKNOWN // a file could not be read now: nothing can be decided
     };
 
 public:

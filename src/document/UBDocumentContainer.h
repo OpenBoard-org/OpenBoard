@@ -50,7 +50,7 @@ class UBDocumentContainer : public QObject
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
 
-        void duplicatePage(int index);
+        bool duplicatePage(int index);
         void deletePages(QList<int>& pageIndexes);
         void addPage(int index);
 

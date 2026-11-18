@@ -440,6 +440,7 @@ class UBDocumentController : public UBDocumentContainer
         bool firstAndOnlySceneSelected() const;
         bool everySceneSelected() const;
         QWidget *mainWidget() const {return mDocumentWidget;}
+        QWidget *thumbnailView() const;
 
         //issue 1629 - NNE - 20131212
         /**

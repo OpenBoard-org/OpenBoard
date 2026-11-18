@@ -1392,8 +1392,15 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
 
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
         std::shared_ptr<UBGraphicsScene> tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
-        tmpScene->setModified(true);
-        UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
+
+        // the page may not be readable now (e.g. the storage does not answer): its thumbnail is
+        // then created later, when it is needed
+        if (tmpScene)
+        {
+            tmpScene->setModified(true);
+            UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
+        }
+
         mCurrentScene->setModified(false);
     }
 

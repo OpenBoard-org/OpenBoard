@@ -92,6 +92,8 @@ private:
     QString mScanningVirtualPath;
     QList<QPair<QUrl, UBFeature> > mScanningData;
     QSet<QUrl> mFavoriteSet;
+    // applications and interactivities already sent during the current scan, to skip lower priority duplicates
+    QSet<QString> mSentApplications;
     bool restart;
     bool abort;
 };
@@ -287,6 +289,12 @@ private:
     QUrl mLibInteractiveDirectoryPath;
     QUrl mLibAnimationsDirectoryPath;
     QUrl mLibApplicationsDirectoryPath;
+    QUrl mAdminApplicationsDirectoryPath;
+    QUrl mAdminInteractiveDirectoryPath;
+    QUrl mAdminPicturesDirectoryPath;
+    QUrl mAdminAudiosDirectoryPath;
+    QUrl mAdminVideosDirectoryPath;
+    QUrl mAdminShapesDirectoryPath;
     QUrl mLibShapesDirectoryPath;
 
     QUrl trashDirectoryPath;

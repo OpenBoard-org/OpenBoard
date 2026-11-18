@@ -68,7 +68,14 @@ QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& fil
 {
     QList<UBGraphicsItem*> result;
 
-    PDFRenderer *pdfRenderer = PDFRenderer::rendererForUuid(uuid, filePath, true); // renderer is automatically deleted when not used anymore
+    PDFRenderer *pdfRenderer = PDFRenderer::rendererForUuid(uuid); // renderer is automatically deleted when not used anymore
+
+    QFile file(filePath);
+
+    if (file.open(QIODevice::ReadOnly))
+    {
+        pdfRenderer->load(file.readAll());
+    }
 
     if (!pdfRenderer->isValid())
     {

@@ -56,11 +56,11 @@ void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document,
     }
 }
 
-void UBDocumentContainer::duplicatePage(int index)
+bool UBDocumentContainer::duplicatePage(int index)
 {
     auto document = UBDocument::getDocument(selectedDocument());
 
-    document->duplicatePage(index);
+    return document->duplicatePage(index);
 }
 
 
@@ -68,13 +68,12 @@ void UBDocumentContainer::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> prox
 {
     auto document = UBDocument::getDocument(proxy);
 
-    if (document)
+    if (document && document->movePage(source, target))
     {
-        document->movePage(source, target);
         document->thumbnailScene()->hightlightItem(target);
 
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(proxy);
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxy);
     }
 }
 

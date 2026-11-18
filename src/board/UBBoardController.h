@@ -287,6 +287,7 @@ class UBBoardController : public UBDocumentContainer
 
     private slots:
         void autosaveTimeout();
+        void quickSaveTimeout();
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
@@ -325,6 +326,7 @@ class UBBoardController : public UBDocumentContainer
         QList<std::shared_ptr<UBDocument>> mRecentDocuments;
 
         QTimer *mAutosaveTimer;
+        QTimer *mQuickSaveTimer{nullptr};
 
     private slots:
         void stylusToolDoubleClicked(int tool);

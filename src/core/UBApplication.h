@@ -136,10 +136,15 @@ class UBApplication : public SingleApplication
         void showMinimized();
 //#endif
         void onScreenCountChanged(int newCount);
+        void onCommitDataRequest(QSessionManager& manager);
 
     private:
         void updateProtoActionsState();
         void setupTranslators(QStringList args);
+        void checkDataDirectory();
+        void showLocalDataDirectoryWarning();
+        void setupStorageIndicator();
+        void showRecoveryReport();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
         QString checkLanguageAvailabilityForSankore(QString& language);

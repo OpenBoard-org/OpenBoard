@@ -772,7 +772,13 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
             int toIndex = targetDocProxy->pageCount();
 
             auto fromDocument = UBDocument::getDocument(fromProxy);
-            fromDocument->copyPage(fromIndex, targetDocProxy, toIndex);
+
+            if (!fromDocument->copyPage(fromIndex, targetDocProxy, toIndex))
+            {
+                // storage not available, a message was shown
+                QApplication::restoreOverrideCursor();
+                return false;
+            }
         }
 
         QApplication::restoreOverrideCursor();
@@ -995,6 +1001,13 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
         return QModelIndex();
     }
 
+    // copying the document files is not possible while the storage is not available
+    if (pMode == aContentCopy && nodeSource->nodeType() == UBDocumentTreeNode::Document && nodeSource->proxyData()
+            && !UBPersistenceManager::persistenceManager()->prepareToChangePages(nodeSource->proxyData()))
+    {
+        return QModelIndex();
+    }
+
     //beginInsertRows(newParent, rowCount(newParent), rowCount(newParent));
 
     UBDocumentTreeNode *clonedNodeSource = 0;
@@ -1009,7 +1022,7 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
             duplicatedProxy = UBPersistenceManager::persistenceManager()->duplicateDocument(nodeSource->proxyData());
             QDateTime now = QDateTime::currentDateTime();
             duplicatedProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            UBMetadataDcSubsetAdaptor::persist(duplicatedProxy);
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(duplicatedProxy);
         }
         clonedNodeSource = new UBDocumentTreeNode(nodeSource->nodeType()
                                                   , nodeSource->nodeName()
@@ -2490,6 +2503,11 @@ QWidget* UBDocumentController::controlView()
     return mDocumentWidget;
 }
 
+QWidget* UBDocumentController::thumbnailView() const
+{
+    return mDocumentUI ? mDocumentUI->thumbnailWidget : nullptr;
+}
+
 
 void UBDocumentController::setupToolbar()
 {
@@ -2537,6 +2555,7 @@ void UBDocumentController::openSelectedItem()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
+    bool opened = true;
 
     if (selectedItems.count() > 0)
     {
@@ -2550,7 +2569,7 @@ void UBDocumentController::openSelectedItem()
             {
                 UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
                 UBApplication::applicationController->showBoard();
-                mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
+                opened = mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex()) != nullptr;
             }
         }
     }
@@ -2561,12 +2580,21 @@ void UBDocumentController::openSelectedItem()
         if (proxy && isOKToOpenDocument(proxy))
         {
             UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
-            mBoardController->setActiveDocumentScene(proxy);
-            UBApplication::applicationController->showBoard();
+            opened = mBoardController->setActiveDocumentScene(proxy) != nullptr;
+
+            // otherwise stay here with the message
+            if (opened)
+            {
+                UBApplication::applicationController->showBoard();
+            }
         }
     }
 
-    UBApplication::showMessage(tr("Document opened successfully"), false);
+    // otherwise a message says why the page could not be opened
+    if (opened)
+    {
+        UBApplication::showMessage(tr("Document opened successfully"), false);
+    }
 
     QApplication::restoreOverrideCursor();
 }
@@ -2600,13 +2628,18 @@ void UBDocumentController::duplicateSelectedItem()
             int offset = 0;
             foreach(int sceneIndex, selectedSceneIndexes)
             {
-                document->duplicatePage(sceneIndex + offset);
+                if (!document->duplicatePage(sceneIndex + offset))
+                {
+                    // storage not available, a message was shown
+                    return;
+                }
+
                 offset++;
             }
 
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
             int selectedThumbnailIndex = selectedSceneIndexes.last() + selectedSceneIndexes.size();
             mDocumentUI->thumbnailWidget->selectItemAt(selectedThumbnailIndex);
             int sceneCount = selectedSceneIndexes.count();
@@ -3284,7 +3317,7 @@ void UBDocumentController::addFolderOfImages()
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-                UBMetadataDcSubsetAdaptor::persist(document);
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                 pageSelectionChanged();
             }
             else
@@ -3338,7 +3371,7 @@ bool UBDocumentController::addFileToDocument(std::shared_ptr<UBDocumentProxy> do
             QDateTime now = QDateTime::currentDateTime();
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
-            UBMetadataDcSubsetAdaptor::persist(document);
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
             pageSelectionChanged();
         }
         else
@@ -3408,17 +3441,27 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     UBThumbnail* thumb = qgraphicsitem_cast<UBThumbnail*> (item);
+    bool opened = true;
 
     if (thumb) {
         std::shared_ptr<UBDocumentProxy> proxy = mDocumentUI->thumbnailWidget->document()->proxy();
         if (proxy && isOKToOpenDocument(proxy)) {
             UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
-            mBoardController->setActiveDocumentScene(proxy, index);
-            UBApplication::applicationController->showBoard();
+            opened = mBoardController->setActiveDocumentScene(proxy, index) != nullptr;
+
+            // otherwise stay here with the message
+            if (opened)
+            {
+                UBApplication::applicationController->showBoard();
+            }
         }
     }
 
-    UBApplication::showMessage(tr("Document opened successfully"), false);
+    // otherwise a message says why the page could not be opened
+    if (opened)
+    {
+        UBApplication::showMessage(tr("Document opened successfully"), false);
+    }
     QApplication::restoreOverrideCursor();
 }
 
@@ -3488,7 +3531,7 @@ void UBDocumentController::addToDocument()
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
         QDateTime now = QDateTime::currentDateTime();
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(mBoardController->selectedDocument());
 
         UBApplication::applicationController->showBoard();
 
@@ -3593,7 +3636,7 @@ void UBDocumentController::addImages()
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-                UBMetadataDcSubsetAdaptor::persist(document);
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
 
                 auto document = UBDocument::getDocument(selectedDocument());
                 pageSelectionChanged();

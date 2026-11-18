@@ -87,6 +87,7 @@ class UBPreferencesController : public QObject
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
         QString mScreenConfigurationPath;
+        QStringList mScreenList;
 
     protected slots:
 

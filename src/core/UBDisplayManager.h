@@ -32,6 +32,8 @@
 
 #include <QtGui>
 #include <QMap>
+#include <QPointer>
+#include <QTimer>
 
 class UBBlackoutWidget;
 class UBBoardView;
@@ -127,10 +129,14 @@ class UBDisplayManager : public QObject
     private slots:
 
         void addOrRemoveScreen(QScreen* screen);
+        void screenGeometryChanged();
+        void applyScreenConfiguration();
+        void screenDestroyed(QObject* screen);
 
     private:
 
-        void initScreenIndexes();
+        bool initScreenIndexes();
+        void monitorScreenGeometry(QScreen* screen);
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
         QList<Ui::BlackoutWidget*> mBlackoutUiList;
@@ -140,6 +146,10 @@ class UBDisplayManager : public QObject
         QMap<ScreenRole, QPointer<QWidget>> mWidgetsByRole;
 
         bool mUseMultiScreen;
+        bool mAvailableScreensOutdated{false};
+        bool mScreenAddedOrRemoved{false};
+        QTimer mScreenConfigurationChangeTimer;
+        QTimer mScreenPositionTimer;
 };
 
 #endif /* UBDISPLAYMANAGER_H_ */

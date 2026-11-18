@@ -413,6 +413,12 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 }
 void UBGraphicsMediaItem::play()
 {
+    if (retryOpening())
+    {
+        // it plays as soon as it is opened: its first frame needs not be shown before
+        mFirstLoad = false;
+    }
+
     mMediaObject->play();
     mStopped = false;
 }
@@ -511,6 +517,44 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
     }
 }
 
+bool UBGraphicsMediaItem::isMediaLoaded() const
+{
+    const QMediaPlayer::MediaStatus status = mMediaObject->mediaStatus();
+
+    return status != QMediaPlayer::NoMedia
+        && status != QMediaPlayer::LoadingMedia
+        && status != QMediaPlayer::InvalidMedia;
+}
+
+bool UBGraphicsMediaItem::hasFailedToOpen() const
+{
+    return mMediaObject->mediaStatus() == QMediaPlayer::InvalidMedia
+        && mMediaObject->error() != QMediaPlayer::FormatError;
+}
+
+// The player opens the file in the background, but waits for an opening still running when its
+// source changes: only an opening which failed, and is therefore finished, is retried.
+bool UBGraphicsMediaItem::retryOpening()
+{
+    if (!hasFailedToOpen())
+    {
+        return false;
+    }
+
+    // the player opens a file again only when its source changes
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const QUrl source = mMediaObject->source();
+    mMediaObject->setSource(QUrl());
+    mMediaObject->setSource(source);
+#else
+    const QMediaContent media = mMediaObject->media();
+    mMediaObject->setMedia(QMediaContent());
+    mMediaObject->setMedia(media);
+#endif
+
+    return true;
+}
+
 void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsMediaItem *cp = dynamic_cast<UBGraphicsMediaItem*>(copy);
@@ -528,6 +572,11 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setSize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());
+
+        // A copy, e.g. the one written when the page is saved, has a new player: it keeps where the
+        // media resumes, the position reached by pausing it or else the one read from the page.
+        const bool isPausedInside = isMediaLoaded() && playerState() == QMediaPlayer::PausedState && mediaPosition() > 0;
+        cp->setInitialPos(isPausedInside ? mediaPosition() : mInitialPos);
 
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), cp, SLOT(activeSceneChanged()));
         // TODO UB 4.7 complete all members
