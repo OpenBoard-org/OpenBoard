@@ -252,12 +252,14 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt6Sql
     copyQtLibrary libQt6Svg
     copyQtLibrary libQt6SvgWidgets
+    copyQtLibrary libQt6WaylandClient
     copyQtLibrary libQt6WebChannel
     copyQtLibrary libQt6WebEngineCore
     copyQtLibrary libQt6WebEngineWidgets
     copyQtLibrary libQt6QuickWidgets
     #copyQtLibrary libQt6WebSockets
     copyQtLibrary libQt6Widgets
+    copyQtLibrary libQt6WlShellIntegration
     copyQtLibrary libQt6XcbQpa
     copyQtLibrary libQt6Xml
     #copyQtLibrary libQt6XmlPatterns
