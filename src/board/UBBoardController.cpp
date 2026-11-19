@@ -227,6 +227,8 @@ void UBBoardController::setupLayout()
 
 void UBBoardController::setBoxing(QRect displayRect)
 {
+    mDisplayedSize = mControlView->size();
+
     if (displayRect.isNull())
     {
         mControlView->setBoxing({});
@@ -245,6 +247,8 @@ void UBBoardController::setBoxing(QRect displayRect)
     qreal displayRatio = displayWidth / displayHeight;
     qreal controlRatio = controlWidth / controlHeight;
 
+    QMargins margins;
+
     if (displayRatio < controlRatio)
     {
         // Pillarboxing
@@ -255,7 +259,7 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxWidth = 0;
         }
 
-        mControlView->setBoxing({boxWidth, 0, boxWidth, 0});
+        margins = {boxWidth, 0, boxWidth, 0};
     }
     else if (displayRatio > controlRatio)
     {
@@ -267,13 +271,11 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxHeight = 0;
         }
 
-        mControlView->setBoxing({0, boxHeight, 0, boxHeight});
+        margins = {0, boxHeight, 0, boxHeight};
     }
-    else
-    {
-        // No boxing
-        mControlView->setBoxing({});
-    }
+
+    mControlView->setBoxing(margins);
+    mDisplayedSize = mDisplayedSize.shrunkBy(margins);
 }
 
 void UBBoardController::setCursorFromAngle(qreal angle, const QPoint offset)
@@ -957,7 +959,7 @@ void UBBoardController::zoomTo(ViewState::Enum viewState)
 {
     double zoomFactor{1.};
     QSizeF sceneSize{};
-    QPointF center{};
+    QPointF center{0., 0.};
 
     switch (viewState)
     {
@@ -987,10 +989,10 @@ void UBBoardController::zoomTo(ViewState::Enum viewState)
         break;
 
     case ViewState::FitWidthScrollToTop:
-        const auto viewportSize = UBApplication::boardController->controlView()->size();
-        const auto viewportSizeInSceneCoordinates = viewportSize / zoomFactor;
+        const auto viewportSize = mDisplayedSize;
+        const auto viewportSizeInSceneCoordinates = viewportSize / zoomFactor / mDisplayScaleFactor;
         const auto diff = sceneSize - viewportSizeInSceneCoordinates;
-        center = QPointF(0., -diff.height() / 2);
+        center = QPointF{0., -diff.height() / 2.};
         break;
     }
 
@@ -1008,24 +1010,16 @@ double UBBoardController::zoomFactorFor(ViewState::Enum viewState, QSizeF sceneS
         return 1.;
 
     case ViewState::FitSize:
-    {
-        const auto viewportSize = controlView()->size();
-        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatio);
-        return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
-    }
-
     case ViewState::FitContent:
     {
-        const auto viewportSize = controlView()->size();
-        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatio);
+        const auto scaledSceneSize = sceneSize.scaled(mDisplayedSize.toSizeF(), Qt::KeepAspectRatio);
         return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
     }
 
     case ViewState::FitWidth:
     case ViewState::FitWidthScrollToTop:
     {
-        const auto viewportSize = controlView()->size();
-        const auto scaledSceneSize = sceneSize.scaled(viewportSize.toSizeF(), Qt::KeepAspectRatioByExpanding);
+        const auto scaledSceneSize = sceneSize.scaled(mDisplayedSize.toSizeF(), Qt::KeepAspectRatioByExpanding);
         return scaledSceneSize.width() / sceneSize.width() / mDisplayScaleFactor;
     }
     }
@@ -1850,7 +1844,7 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mPaletteManager->containerResized();
 
-    UBApplication::boardController->controlView()->scene()->moveMagnifier();
+    mControlView->scene()->moveMagnifier();
 
     if (mActiveScene &&  mInitialDocumentScene == mActiveScene)
     {
@@ -2687,7 +2681,7 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
 {
     if (mActiveSceneIndex >= 0)
     {
-        QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->items();
+        QList<QGraphicsItem *> list = activeScene()->items();
         foreach(QGraphicsItem *item, list)
         {
             freezeW3CWidget(item, freeze);

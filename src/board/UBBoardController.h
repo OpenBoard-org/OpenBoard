@@ -335,6 +335,7 @@ class UBBoardController : public UBDocumentContainer
         QList<std::shared_ptr<UBDocument>> mRecentDocuments;
         QList<QAction*> mColorActions;
         UBToolbarButtonGroup* mColorChoice{nullptr};
+        QSize mDisplayedSize;
 
         QTimer *mAutosaveTimer;
 

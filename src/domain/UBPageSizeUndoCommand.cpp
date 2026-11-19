@@ -30,9 +30,11 @@
 
 #include <QProgressDialog>
 
+#include "core/UBApplication.h"
 #include "document/UBDocument.h"
 #include "document/UBDocumentToc.h"
 #include "domain/UBGraphicsScene.h"
+#include "gui/UBMainWindow.h"
 #include "gui/UBThumbnailScene.h"
 
 #include "core/memcheck.h"
@@ -62,19 +64,19 @@ void UBPageSizeUndoCommand::undo()
         return;
     }
 
-    QProgressDialog progress(QObject::tr("Changing page format..."), "", 0, mPages.size());
-    progress.setWindowModality(Qt::WindowModal);
+    QProgressDialog progress(QObject::tr("Changing page format..."), "", 0, mPages.size(), UBApplication::mainWindow);
+    progress.setWindowModality(Qt::ApplicationModal);
     progress.setWindowFlag(Qt::FramelessWindowHint);
     progress.setCancelButton(nullptr);
     progress.setMinimumDuration(1000);
 
     for (int i = 0; i < mPages.size(); ++i)
     {
-        const auto pageId = mDocument->toc()->findUuid(mPages[i]);
+        const auto pageIndex = mDocument->toc()->findUuid(mPages[i]);
 
-        if (pageId >= 0)
+        if (pageIndex >= 0 && mPreviousSizes[i] != mDocument->pageSize(pageIndex))
         {
-            mDocument->setPageSize(pageId, mPreviousSizes[i]);
+            mDocument->setPageSize(pageIndex, mPreviousSizes[i]);
         }
 
         progress.setValue(i);
@@ -92,49 +94,50 @@ void UBPageSizeUndoCommand::redo()
         return;
     }
 
-    QProgressDialog progress(QObject::tr("Changing page format..."), QObject::tr("Cancel"), 0, mPages.size());
-    progress.setWindowModality(Qt::WindowModal);
+    QProgressDialog progress(QObject::tr("Changing page format..."), QObject::tr("Cancel"), 0, mPages.size(), UBApplication::mainWindow);
+    progress.setWindowModality(Qt::ApplicationModal);
     progress.setWindowFlag(Qt::FramelessWindowHint);
     progress.setMinimumDuration(1000);
 
     for (int i = 0; i < mPages.size(); ++i)
     {
-        const auto pageId = mDocument->toc()->findUuid(mPages[i]);
+        const auto pageIndex = mDocument->toc()->findUuid(mPages[i]);
 
-        if (pageId >= 0)
+        if (pageIndex >= 0)
         {
-            mPreviousSizes << mDocument->pageSize(pageId);
+            const auto currentSize = mDocument->pageSize(pageIndex);
+            mPreviousSizes << currentSize;
 
-            if (mNewSize.isNull())
+            if (progress.wasCanceled())
             {
-                const auto scene = mDocument->loadScene(pageId, false, false);
+                continue;
+            }
+            else if (mNewSize.isNull())
+            {
+                const auto scene = mDocument->loadScene(pageIndex, false, false);
                 const auto backgroundItem = scene->backgroundObject();
 
                 if (backgroundItem)
                 {
                     const auto itemSize = backgroundItem->sceneBoundingRect().size();
                     const QSize desiredPageSize{qCeil(itemSize.width()), qCeil(itemSize.height())};
-                    mDocument->setPageSize(pageId, desiredPageSize, scene);
+
+                    if (desiredPageSize != currentSize)
+                    {
+                        mDocument->setPageSize(pageIndex, desiredPageSize, scene);
+                    }
                 }
             }
-            else
+            else if (mNewSize != currentSize)
             {
-                mDocument->setPageSize(pageId, mNewSize);
+                mDocument->setPageSize(pageIndex, mNewSize);
             }
         }
 
         progress.setValue(i);
-
-        if (progress.wasCanceled())
-        {
-            // truncate the lists to those which were converted
-            mPages.resize(i + 1);
-            mPreviousSizes.resize(i + 1);
-        }
     }
 
     progress.close();
 
     mDocument->thumbnailScene()->update();
 }
-

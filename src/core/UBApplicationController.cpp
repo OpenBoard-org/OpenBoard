@@ -231,7 +231,7 @@ void UBApplicationController::adjustDisplayView()
 
         QTransform tr;
         qreal scaleFactor = systemDisplayViewScaleFactor
-                * UBApplication::boardController->currentZoom();
+                * mControlView->transform().m11();
 
         tr.scale(scaleFactor, scaleFactor);
 

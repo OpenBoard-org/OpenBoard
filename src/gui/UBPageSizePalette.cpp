@@ -292,10 +292,12 @@ void UBPageSizePalette::selectFormat()
     if (mFormat == DocumentSize::ImportedSize)
     {
         toolButtonFormat->setCheckState(Qt::PartiallyChecked);
+        toolButtonFormat->setEnabled(false);
     }
     else
     {
         toolButtonFormat->setCheckState(mPortrait ? Qt::Checked : Qt::Unchecked);
+        toolButtonFormat->setEnabled(true);
     }
 
     updateSpinBoxes(value.isRatio);

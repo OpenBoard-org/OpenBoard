@@ -2844,6 +2844,8 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
     if (mZoomFactor > 0.5)
     {
+        painter->save();
+
         if (mZoomFactor < 0.7)
         {
             painter->setOpacity(mZoomFactor / 2);
@@ -2856,6 +2858,8 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             nominalScene.moveCenter({0, 0});
             mBackground->draw(painter, rect, gridSize, nominalScene, mDarkBackground);
         }
+
+        painter->restore();
     }
 }
 
