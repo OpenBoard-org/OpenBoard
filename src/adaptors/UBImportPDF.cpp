@@ -94,8 +94,6 @@ void UBImportPDF::placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scen
     pdfItem->setPos(-pdfItem->boundingRect().width() / 2, -pdfItem->boundingRect().height() / 2);
 
     scene->setAsBackgroundObject(pdfItem, false, false);
-
-    scene->setNominalSize(pdfItem->boundingRect().width(), pdfItem->boundingRect().height());
 }
 
 const QString& UBImportPDF::folderToCopy()

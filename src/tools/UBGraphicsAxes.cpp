@@ -112,7 +112,7 @@ void UBGraphicsAxes::setRect(qreal x, qreal y, qreal w, qreal h)
     //  Save the bounds rect
     mBounds.setX(x);  mBounds.setY(y);  mBounds.setWidth(w); mBounds.setHeight(h);
 
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1. / UBApplication::boardController->currentZoom();
     qreal range = sItemWidth * mAntiScaleRatio;
     QPolygonF polygon;
     polygon << QPointF(-range, -range)
@@ -150,7 +150,7 @@ void UBGraphicsAxes::paint(QPainter *painter, const QStyleOptionGraphicsItem *st
     Q_UNUSED(styleOption);
     Q_UNUSED(widget);
 
-    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    mAntiScaleRatio = 1. / UBApplication::boardController->currentZoom();
     QTransform antiScaleTransform;
     antiScaleTransform.scale(mAntiScaleRatio, mAntiScaleRatio);
 

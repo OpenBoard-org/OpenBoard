@@ -392,8 +392,6 @@ int UBApplication::exec(const QString& pFileToImport)
     bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
     mainWindow->actionMultiScreen->setChecked(bUseMultiScreen);
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
-    connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
-    connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
 
     connect(mainWindow->actionCut, SIGNAL(triggered()), applicationController, SLOT(actionCut()));
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
@@ -571,15 +569,7 @@ void UBApplication::decorateActionMenu(QAction* action)
             tb->setPopupMode(QToolButton::InstantPopup);
             QMenu* menu = new QMenu(mainWindow);
 
-            QActionGroup* pageSizeGroup = new QActionGroup(mainWindow);
-            pageSizeGroup->addAction(mainWindow->actionWidePageSize);
-            pageSizeGroup->addAction(mainWindow->actionRegularPageSize);
-            pageSizeGroup->addAction(mainWindow->actionCustomPageSize);
-
-            QMenu* documentSizeMenu = menu->addMenu(QIcon(":/images/toolbar/pageSize.png"),tr("Page Size"));
-            documentSizeMenu->addAction(mainWindow->actionWidePageSize);
-            documentSizeMenu->addAction(mainWindow->actionRegularPageSize);
-            documentSizeMenu->addAction(mainWindow->actionCustomPageSize);
+            menu->addAction(mainWindow->actionPageSize);
             menu->addAction(mainWindow->actionCut);
             menu->addAction(mainWindow->actionCopy);
             menu->addAction(mainWindow->actionPaste);
