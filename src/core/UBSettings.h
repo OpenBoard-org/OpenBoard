@@ -148,6 +148,9 @@ class UBSettings : public QObject
         static bool isUsingLocalDataDirectory();
         // while the user is asked, userDataDirectory() must not access the configured path
         static void setDataDirectoryDecisionPending(bool pending);
+        // true once userDataDirectory() has decided which data directory is used: it then returns
+        // immediately, without checking the configured path
+        static bool isDataDirectoryKnown();
 
         static QString userDocumentDirectory();
         static QString userFavoriteListFilePath();

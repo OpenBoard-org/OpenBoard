@@ -132,6 +132,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
         || args.contains("verbose")
         || args.contains("-log")
         || args.contains("log");
+    mVerbosityKnown = true;
 
 
     setupTranslators(args);

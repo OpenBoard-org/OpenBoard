@@ -1151,6 +1151,11 @@ void UBSettings::setDataDirectoryDecisionPending(bool pending)
     sDataDirectoryDecisionPending = pending;
 }
 
+bool UBSettings::isDataDirectoryKnown()
+{
+    return !sDataDirPath.isEmpty();
+}
+
 QString UBSettings::userDataDirectory()
 {
     if (!sDataDirPath.isEmpty())
