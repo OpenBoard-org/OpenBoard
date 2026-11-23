@@ -70,7 +70,8 @@ public:
     void setAvailable(bool available);
 
     // Checks that the storage answers now, before the user interface accesses it directly: waits
-    // at most the answer timeout, and makes the storage unavailable if the path does not answer.
+    // at most the answer timeout, and makes the storage unavailable if the path does not answer
+    // or does not exist (a disconnected share answers at once, without the documents).
     // Returns whether the storage is available.
     bool checkAvailability(const QString& path);
 

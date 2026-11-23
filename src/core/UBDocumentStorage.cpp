@@ -179,15 +179,24 @@ bool UBDocumentStorage::checkAvailability(const QString& path)
 
     // not checked in this thread: the user interface must not wait for a storage which does not answer
     auto answered = std::make_shared<QSemaphore>();
+    auto exists = std::make_shared<std::atomic_bool>(false);
 
-    readPool()->start([path, answered]() {
-        QFileInfo::exists(path);
+    readPool()->start([path, answered, exists]() {
+        *exists = QFileInfo::exists(path);
         answered->release();
     });
 
     if (!answered->tryAcquire(1, answerTimeoutMs))
     {
         qWarning() << "The document location does not answer:" << path;
+        setAvailable(false);
+        return false;
+    }
+
+    if (!*exists)
+    {
+        // a disconnected share answers at once, but the documents are not there
+        qWarning() << "The document location is not available:" << path;
         setAvailable(false);
         return false;
     }
