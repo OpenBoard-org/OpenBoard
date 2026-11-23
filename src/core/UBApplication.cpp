@@ -160,6 +160,12 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
     setWindowIcon(QIcon(":/images/OpenBoard.png"));
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    // The user interface is designed for a light palette. Since Qt 6.5, the Fusion style follows the
+    // dark color scheme of the system, which makes texts dark on a dark background.
+    styleHints()->setColorScheme(Qt::ColorScheme::Light);
+#endif
+
     setStyle("fusion");
 
     QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationEtcDirectory() + "/"+ qApp->applicationName()+".css");
