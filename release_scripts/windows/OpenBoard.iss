@@ -70,8 +70,6 @@ Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags:
 ;OpenSSL
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-3.0.15-win64\bin\libssl-3-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-3.0.15-win64\bin\libcrypto-3-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
@@ -86,7 +84,6 @@ Source: "{#QtLibs}\Qt6PrintSupport.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6Qml.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6QmlMeta.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6QmlWorkerScript.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt6Sql.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6Svg.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6SvgWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6Widgets.dll"; DestDir: "{app}"
@@ -113,7 +110,6 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\liblzma.dll"; DestDi
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\libpng16.dll"; DestDir: "{app}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\openjp2.dll"; DestDir: "{app}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\poppler.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\poppler-cpp.dll"; DestDir: "{app}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\tiff.dll"; DestDir: "{app}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\zlib1.dll"; DestDir: "{app}"
 
