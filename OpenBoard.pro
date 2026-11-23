@@ -185,7 +185,7 @@ macx {
    INCLUDEPATH += /opt/local/include/poppler
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 13
 
    # For universal builds
    QMAKE_APPLE_DEVICE_ARCHS=x86_64 arm64
