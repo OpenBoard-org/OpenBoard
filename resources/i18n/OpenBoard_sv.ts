@@ -104,7 +104,7 @@ Vill du åsidosätta säkerhetskontrollen och fortsätta?</translation>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="168"/>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation>%p % - %1 av %2 hämtat - %3/s</translation>
+        <translation>%p% - %1 av %2 hämtat - %3/s</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="176"/>
