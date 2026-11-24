@@ -24,7 +24,7 @@
    </size>
   </property>
   <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonTextUnderIcon</enum>
+   <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
@@ -37,7 +37,7 @@
     </font>
    </property>
    <property name="contextMenuPolicy">
-    <enum>Qt::PreventContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
    </property>
    <property name="windowTitle">
     <string>Board</string>
@@ -46,7 +46,7 @@
     <bool>false</bool>
    </property>
    <property name="allowedAreas">
-    <set>Qt::BottomToolBarArea|Qt::TopToolBarArea</set>
+    <set>Qt::ToolBarArea::BottomToolBarArea|Qt::ToolBarArea::TopToolBarArea</set>
    </property>
    <property name="iconSize">
     <size>
@@ -55,7 +55,7 @@
     </size>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
+    <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -91,7 +91,7 @@
     </font>
    </property>
    <property name="contextMenuPolicy">
-    <enum>Qt::PreventContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
    </property>
    <property name="windowTitle">
     <string>Web</string>
@@ -100,7 +100,7 @@
     <bool>false</bool>
    </property>
    <property name="allowedAreas">
-    <set>Qt::BottomToolBarArea|Qt::TopToolBarArea</set>
+    <set>Qt::ToolBarArea::BottomToolBarArea|Qt::ToolBarArea::TopToolBarArea</set>
    </property>
    <property name="iconSize">
     <size>
@@ -141,7 +141,7 @@
     </font>
    </property>
    <property name="contextMenuPolicy">
-    <enum>Qt::PreventContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::PreventContextMenu</enum>
    </property>
    <property name="windowTitle">
     <string>Documents</string>
@@ -150,7 +150,7 @@
     <bool>false</bool>
    </property>
    <property name="allowedAreas">
-    <set>Qt::BottomToolBarArea|Qt::TopToolBarArea</set>
+    <set>Qt::ToolBarArea::BottomToolBarArea|Qt::ToolBarArea::TopToolBarArea</set>
    </property>
    <property name="iconSize">
     <size>
@@ -411,10 +411,10 @@
     <string>Quit OpenBoard</string>
    </property>
    <property name="shortcutContext">
-    <enum>Qt::WindowShortcut</enum>
+    <enum>Qt::ShortcutContext::WindowShortcut</enum>
    </property>
    <property name="menuRole">
-    <enum>QAction::NoRole</enum>
+    <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
   <action name="actionEraserSmall">
@@ -837,10 +837,10 @@
     </font>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
    <property name="priority">
-    <enum>QAction::HighPriority</enum>
+    <enum>QAction::Priority::HighPriority</enum>
    </property>
   </action>
   <action name="actionDesktop">
@@ -1082,7 +1082,7 @@
     </font>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
   <action name="actionDocumentTools">
@@ -1132,70 +1132,19 @@
     <string>Multi Screen</string>
    </property>
   </action>
-  <action name="actionWidePageSize">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="actionPageSize">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/pageSize.png</normaloff>:/images/toolbar/pageSize.png</iconset>
    </property>
    <property name="text">
-    <string>Wide Size (16/9)</string>
+    <string>Page Size</string>
    </property>
    <property name="iconText">
-    <string>Wide Size (16/9)</string>
+    <string>Page Size</string>
    </property>
    <property name="toolTip">
-    <string>Use Document Wide Size (16/9)</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionRegularPageSize">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
-   </property>
-   <property name="text">
-    <string>Regular Size (4/3)</string>
-   </property>
-   <property name="iconText">
-    <string>Regular Size (4/3)</string>
-   </property>
-   <property name="toolTip">
-    <string>Use Document Regular Size (4/3)</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionCustomPageSize">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
-   </property>
-   <property name="text">
-    <string>Custom Size</string>
-   </property>
-   <property name="iconText">
-    <string>Custom Size</string>
-   </property>
-   <property name="toolTip">
-    <string>Use Custom Document Size</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <string>Set Page Size</string>
    </property>
   </action>
   <action name="actionStopLoading">
@@ -1224,7 +1173,7 @@
     <string>Cut</string>
    </property>
    <property name="shortcutContext">
-    <enum>Qt::ApplicationShortcut</enum>
+    <enum>Qt::ShortcutContext::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionCopy">
@@ -1236,7 +1185,7 @@
     <string>Copy</string>
    </property>
    <property name="shortcutContext">
-    <enum>Qt::ApplicationShortcut</enum>
+    <enum>Qt::ShortcutContext::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionPaste">
@@ -1248,10 +1197,10 @@
     <string>Paste</string>
    </property>
    <property name="shortcutContext">
-    <enum>Qt::ApplicationShortcut</enum>
+    <enum>Qt::ShortcutContext::ApplicationShortcut</enum>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
   <action name="actionSleep">
@@ -1769,7 +1718,7 @@
     <bool>false</bool>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
   <action name="actionEraseDesktopAnnotations">

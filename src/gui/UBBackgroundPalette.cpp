@@ -6,6 +6,20 @@
 #include "gui/UBFlowLayout.h"
 #include "gui/UBMainWindow.h"
 
+namespace {
+// conversion functions
+// slider moves in steps of 0.2 mm
+int pixelToSlider(double pixel)
+{
+    return qRound(pixel * 5. / UB_DOTS_PER_MM);
+}
+
+double sliderToPixel(int slider)
+{
+    return slider / 5. * UB_DOTS_PER_MM;
+}
+}
+
 
 UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
      : UBActionPalette(parent)
@@ -51,10 +65,12 @@ void UBBackgroundPalette::init()
 
     mSlider = new QSlider(Qt::Horizontal);
 
-    mSlider->setMinimum(UBSettings::settings()->minCrossSize);
-    mSlider->setMaximum(UBSettings::settings()->maxCrossSize);
+    mSlider->setMinimum(pixelToSlider(UBSettings::settings()->minCrossSize));
+    mSlider->setMaximum(pixelToSlider(UBSettings::settings()->maxCrossSize));
     mSlider->setSingleStep(2);
     mSlider->setTracking(true); // valueChanged() is emitted during movement and not just upon releasing the slider
+    connect(mSlider, SIGNAL(valueChanged(int)),
+            this, SLOT(sliderValueChanged(int)));
 
     mSliderLabel = new QLabel(tr("Grid size"));
     mSliderLabel->setObjectName("BackgroundPaletteLabel");
@@ -238,9 +254,7 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
 {
     backgroundChanged();
 
-    mSlider->setValue(UBApplication::boardController->activeScene()->backgroundGridSize());
-    connect(mSlider, SIGNAL(valueChanged(int)),
-            this, SLOT(sliderValueChanged(int)));
+    mSlider->setValue(pixelToSlider(UBApplication::boardController->activeScene()->backgroundGridSize()));
 
     const auto scene = UBApplication::boardController->activeScene();
     mIsDark = scene->isDarkBackground();
@@ -252,16 +266,18 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
 
 void UBBackgroundPalette::sliderValueChanged(int value)
 {
-    UBApplication::boardController->activeScene()->setBackgroundGridSize(value);
-    UBSettings::settings()->crossSize = value; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
+    const auto gridSize = sliderToPixel(value);
+    UBApplication::boardController->activeScene()->setBackgroundGridSize(gridSize);
+    UBSettings::settings()->crossSize = gridSize; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
 
     UBApplication::boardController->activeScene()->setModified(true);
 }
 
 void UBBackgroundPalette::defaultBackgroundGridSize()
 {
-    mSlider->setValue(UBSettings::settings()->defaultCrossSize);
-    sliderValueChanged(UBSettings::settings()->defaultCrossSize);
+    const auto value = pixelToSlider(UBSettings::settings()->defaultCrossSize);
+    mSlider->setValue(value);
+    sliderValueChanged(value);
 }
 
 void UBBackgroundPalette::toggleBackgroundColor(bool checked)
@@ -294,5 +310,5 @@ void UBBackgroundPalette::backgroundChanged()
 void UBBackgroundPalette::refresh()
 {
     backgroundChanged();
-    mSlider->setValue(UBApplication::boardController->activeScene()->backgroundGridSize());
+    mSlider->setValue(pixelToSlider(UBApplication::boardController->activeScene()->backgroundGridSize()));
 }

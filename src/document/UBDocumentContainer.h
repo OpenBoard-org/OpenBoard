@@ -56,6 +56,8 @@ class UBDocumentContainer : public QObject
         void deletePages(QList<int>& pageIndexes);
         void addPage(int index);
 
+        virtual QUndoStack* undoStack() const = 0;
+
     public slots:
         void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
 

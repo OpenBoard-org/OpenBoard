@@ -96,9 +96,6 @@ class UBDocumentProxy
         QUuid uuid() const;
         void setUuid(const QUuid& uuid);
 
-        int pageDpi();
-        void setPageDpi(int dpi);
-
         bool isWidgetCompatible(const QUuid& uuid) const;
         void setWidgetCompatible(const QUuid& uuid, bool compatible);
         
@@ -120,8 +117,6 @@ class UBDocumentProxy
         QString mDocumentUpdatedAtLittleEndian;
 
         QMap<QString, QVariant> mMetaDatas;
-
-        int mPageDpi;
 
         QMap<QUuid, bool> mWidgetCompatibility;
         

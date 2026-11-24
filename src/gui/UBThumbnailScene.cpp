@@ -138,6 +138,8 @@ void UBThumbnailScene::hightlightItem(int index, bool only, bool selected)
 
         mLastSelectedThumbnail = selected ? thumbnail : nullptr;
     }
+
+    emit selectionChanged(index, only, selected);
 }
 
 int UBThumbnailScene::thumbnailCount() const

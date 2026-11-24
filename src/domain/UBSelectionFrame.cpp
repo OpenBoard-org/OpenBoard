@@ -294,7 +294,7 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
-    mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
+    mAntiscaleRatio = 1. / pZoom;
 
     placeButtons();
 }
