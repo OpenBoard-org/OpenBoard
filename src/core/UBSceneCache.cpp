@@ -170,7 +170,7 @@ void UBSceneCache::removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy)
     }
 
     // delete scenes by id
-    for(auto pageId : pageIds)
+    for(auto& pageId : pageIds)
     {
         removeScene(proxy, pageId);
     }

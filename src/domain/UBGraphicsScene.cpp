@@ -2645,7 +2645,7 @@ QList<QString> UBGraphicsScene::relativeDependencies() const
     return relativePaths;
 }
 
-QList<UBMediaAssetItem*> UBGraphicsScene::mediaAssetItems() const
+const QList<UBMediaAssetItem*> UBGraphicsScene::mediaAssetItems() const
 {
     QList<UBMediaAssetItem*> mediaAssetItemList;
 

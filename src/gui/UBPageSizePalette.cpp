@@ -85,8 +85,8 @@ UBPageSizePalette::UBPageSizePalette(QToolBar* toolBar, UBDocumentContainer* con
 
     connect(container, &UBDocumentContainer::documentSet, this, &UBPageSizePalette::setDocument);
 
-    connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QWidget::hide);
-    connect(buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &UBPageSizePalette::apply);
+    connect(buttonBox->button(QDialogButtonBox::Close), &QPushButton::clicked, this, &QWidget::hide);
+    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &UBPageSizePalette::apply);
 
     radioButton4_3->setProperty("format", DocumentSize::Ratio4_3);
     radioButton16_9->setProperty("format", DocumentSize::Ratio16_9);
@@ -165,8 +165,9 @@ void UBPageSizePalette::onSelectionChanged()
         mValue = {false, {}, {}};
         const auto thumbnailScene = mDocument->thumbnailScene();
         const auto count = mDocument->pageCount();
+        const auto selectedThumbnails = thumbnailScene->selectedItems();
 
-        if (thumbnailScene->selectedItems().count() == 0)
+        if (selectedThumbnails.count() == 0)
         {
             const auto pageSize = mDocument->proxy()->defaultDocumentSize();
             mFormat = formatFromSize(pageSize, mPortrait);
@@ -174,7 +175,7 @@ void UBPageSizePalette::onSelectionChanged()
         }
         else
         {
-            for (auto thumbnail : thumbnailScene->selectedItems())
+            for (const auto thumbnail : selectedThumbnails)
             {
                 const auto i = dynamic_cast<UBThumbnail*>(thumbnail)->sceneIndex();
                 auto pageSize = mDocument->pageSize(i);
@@ -207,7 +208,7 @@ void UBPageSizePalette::onSelectionChanged()
         }
 
         toolButtonFormat->setCheckState(mValue.size.isEmpty() ? Qt::PartiallyChecked : mPortrait ? Qt::Checked : Qt::Unchecked);
-        const auto allPagesSelected = count != 1 && thumbnailScene->selectedItems().count() == count;
+        const auto allPagesSelected = count != 1 && selectedThumbnails.count() == count;
         toolButtonScope->setCheckState(allPagesSelected ? Qt::Checked : Qt::Unchecked);
 
         bool isRatio{false};
@@ -259,7 +260,7 @@ void UBPageSizePalette::onSelectionChanged()
             radioButtonCustomSize->setAutoExclusive(true);
         }
 
-        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!mValue.size.isEmpty() || mFormat == DocumentSize::ImportedSize);
+        buttonBox->button(QDialogButtonBox::Apply)->setEnabled(!mValue.size.isEmpty() || mFormat == DocumentSize::ImportedSize);
         updateSpinBoxes(isRatio);
     }
 }
@@ -287,7 +288,7 @@ void UBPageSizePalette::selectFormat()
 
     mValue = value;
 
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!mValue.size.isEmpty() || mFormat == DocumentSize::ImportedSize);
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(!mValue.size.isEmpty() || mFormat == DocumentSize::ImportedSize);
 
     if (mFormat == DocumentSize::ImportedSize)
     {
@@ -346,7 +347,7 @@ void UBPageSizePalette::onSpinboxValueChanged()
             toolButtonFormat-> setCheckState(mPortrait ? Qt::Checked : Qt::Unchecked);
         }
 
-        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!mValue.size.isEmpty());
+        buttonBox->button(QDialogButtonBox::Apply)->setEnabled(!mValue.size.isEmpty());
     }
 }
 
@@ -403,8 +404,6 @@ void UBPageSizePalette::apply()
             mContainer->undoStack()->push(uc);
         }
     }
-
-    hide();
 }
 
 void UBPageSizePalette::undo()

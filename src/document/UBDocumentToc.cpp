@@ -221,7 +221,7 @@ bool UBDocumentToc::load()
     UBTocJsonSerializer serializer(mDocumentPath);
     const auto ok = serializer.load(mVersion, mToc);
 
-    for (const auto& entry : mToc)
+    for (const auto& entry : std::as_const(mToc))
     {
         mNextAvailablePageId = std::max(mNextAvailablePageId, entry[PAGE_ID].toInt() + 1);
     }

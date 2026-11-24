@@ -334,7 +334,7 @@ int UBDocumentManager::importPages(const QFile& file, std::shared_ptr<UBDocument
     }
 
     // NOTE when folderToCopy returns empty string, uuid parameter is not used for import
-    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
+    const QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
     const int startIndex = doc->pageCount();
     int pageIndex = startIndex;
 

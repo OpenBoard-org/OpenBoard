@@ -276,7 +276,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
         QList<QString> relativeDependencies() const;
-        QList<UBMediaAssetItem*> mediaAssetItems() const;
+        const QList<UBMediaAssetItem*> mediaAssetItems() const;
 
         QSize nominalSize();
 

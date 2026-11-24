@@ -619,7 +619,7 @@ void UBDocument::scan(bool tocPresent)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     // scan through the pages starting from the smallest number and counting up.
-    QStringList pages = UBPersistenceManager::persistenceManager()->pageFiles(mProxy->persistencePath());
+    const QStringList pages = UBPersistenceManager::persistenceManager()->pageFiles(mProxy->persistencePath());
 
     if (pages.isEmpty())
     {
@@ -630,7 +630,7 @@ void UBDocument::scan(bool tocPresent)
     // create a list of page IDs and paths for background loading
     QList<std::pair<int, QString>> paths;
 
-    for (const auto page : pages)
+    for (const auto& page : pages)
     {
         int pageId = page.mid(4, page.length() - 8).toInt();
         paths.append({pageId, mProxy->persistencePath() + "/" + page});
@@ -657,6 +657,7 @@ void UBDocument::scan(bool tocPresent)
         int currentPage = 0;
         const auto currentVersion = QVersionNumber::fromString(UBSettings::currentFileVersion);
 
+        // catching by reference is ok as we make sure that the sceneHeaderLoader is deleted before we leave this function
         QObject::connect(mSceneHeaderLoader, &UBBackgroundLoader::resultAvailable, mSceneHeaderLoader, [&](int id, const QVariant& data){
             UBApplication::showMessage(UBDocumentController::tr("Scanning page %1 of %2").arg(++currentPage).arg(pages.count()), true);
             const auto uuid = UBSvgSubsetAdaptor::sceneUuid(data.toByteArray());
@@ -811,7 +812,7 @@ void UBDocument::deleteUnreferencedAssets()
 
         const auto assets = mToc->assets(index);
 
-        for (const auto asset : assets)
+        for (const auto& asset : assets)
         {
             referencedMediaAssets << asset;
         }

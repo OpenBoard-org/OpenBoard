@@ -110,11 +110,15 @@ void UBToolbarExtensionPalette::updatePosition(QVariant atTop)
         return;
     }
 
-    const int width{toPos.x() + mToWidget->width() - fromPos.x()};
+    const int width{std::max(toPos.x() + mToWidget->width() - fromPos.x(), minimumSizeHint().width())};
+    QPoint pos{mFromWidget->pos().x(), mToolBar->height() - topOverlap};
+
+    if (pos.x() + width > mToolBar->width())
+    {
+        pos.setX(mToolBar->width() - width);
+    }
 
     resize(width, size().height());
-
-    QPoint pos{mFromWidget->pos().x(), mToolBar->height() - topOverlap};
 
     if (!mToolbarAtTop)
     {
