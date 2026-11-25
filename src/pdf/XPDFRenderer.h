@@ -68,6 +68,7 @@ class XPDFRenderer : public PDFRenderer
         virtual ~XPDFRenderer();
 
         void initPDFZoomData();
+        virtual void load(const QByteArray& fileData) override;
         virtual bool isValid() const override;
         virtual int pageCount() const override;
         virtual QSizeF pageSizeF(int pageNumber) const override;
@@ -136,7 +137,7 @@ class XPDFRenderer : public PDFRenderer
 
             CacheThread() {}
             ~CacheThread() {}
-            void pushJob(JobData &jobData) {               
+            void pushJob(JobData &jobData) {
                 QMutexLocker lock(&m_jobMutex);
                 m_nextJob.push_back(jobData);
             }

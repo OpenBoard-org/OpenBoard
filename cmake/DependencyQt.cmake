@@ -34,11 +34,13 @@ elseif(QT_VERSION STREQUAL "6")
     find_package(Qt6 6.2 REQUIRED COMPONENTS
         ${QT_COMPONENTS}
         SvgWidgets
+        Pdf
         LinguistTools
     )
 
     target_link_libraries(${PROJECT_NAME}
         Qt6::SvgWidgets
+        Qt6::Pdf
     )
 else()
     message(FATAL_ERROR "Qt Version ${QT_VERSION} not supported")

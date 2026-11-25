@@ -32,6 +32,7 @@
 #include "PDFRenderer.h"
 
 #include "XPDFRenderer.h"
+#include "QtPDFRenderer.h"
 
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
@@ -57,7 +58,8 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     }
     else
     {
-        PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
+        // PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
+        PDFRenderer *newRenderer = new QtPDFRenderer;
 
         newRenderer->setRefCount(0);
         newRenderer->setFileUuid(uuid);
@@ -65,7 +67,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
         QFile file(filename);
         if (file.open(QIODevice::ReadOnly))
         {
-            newRenderer->setFileData(file.readAll());
+            newRenderer->load(file.readAll());
             file.close();
         }
         else
