@@ -311,6 +311,8 @@ class UBSettings : public QObject
 
         UBSetting* boardUseHighResTabletEvent;
 
+        UBSetting* boardDisplayFullViewportUpdate;
+
         UBSetting* boardInterpolatePenStrokes;
         UBSetting* boardSimplifyPenStrokes;
         UBSetting* boardSimplifyPenStrokesThresholdAngle;

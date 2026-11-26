@@ -233,6 +233,15 @@ void UBBoardController::setupViews()
     mDisplayView->setInteractive(false);
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
+    // With some compositors or graphics drivers, the display screen shows stale or
+    // garbage content outside the regions repainted by the view. Repainting the whole
+    // display view on each update avoids it, at the cost of more rendering work.
+    if (UBSettings::settings()->boardDisplayFullViewportUpdate->get().toBool())
+    {
+        mDisplayView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+        qInfo() << "Display view: whole view repainted on each update";
+    }
+
     mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
 
     mMessageWindow = new UBMessageWindow(mControlContainer);
