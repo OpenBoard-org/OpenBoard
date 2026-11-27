@@ -137,6 +137,11 @@ void XPDFRenderer::initPDFZoomData()
     }
 }
 
+void XPDFRenderer::load(const QByteArray& fileData)
+{
+
+}
+
 bool XPDFRenderer::isValid() const
 {
     if (mDocument)

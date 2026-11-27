@@ -10,6 +10,10 @@ cmake_minimum_required(VERSION 3.16)
 #   QT_VERSION
 #       Qt Version to use
 #       Set to empty, 5 or 6, defaults to auto-selection with preference to 6
+#   WITHOUT_POPPLER
+#       Do not use Poppler as PDF renderer, defaults to FALSE
+#   WITHOUT_QTPDF
+#       Do not use the Qt PDF module as PDF renderer, defaults to FALSE
 #
 # Typical invocation
 #   cmake -S <srcdir> -B <builddir> -DCMAKE_INSTALL_PREFIX:PATH=/usr
@@ -45,6 +49,8 @@ add_compile_definitions(UBVERSION="${VERSION}")
 # ==========================================================================
 
 set(QT_VERSION "" CACHE STRING "Qt major version number to use - empty, 5 or 6")
+set(WITHOUT_POPPLER FALSE CACHE BOOL "Omit Poppler for PDF rendering - true or false")
+set(WITHOUT_QTPDF FALSE CACHE BOOL "Omit Qt PDF module for PDF rendering - true or false")
 
 # Internal setting
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication - do not change")
@@ -116,6 +122,21 @@ include(cmake/DependencyZlib.cmake)
 include(cmake/DependencyQuaZip.cmake)
 include(cmake/DependencyFFmpeg.cmake)
 include(cmake/DependencyPipewire.cmake)
+
+# check presence of PDF renderers
+if(NOT WITHOUT_POPPLER AND Poppler_FOUND)
+    set(USE_POPPLER TRUE)
+    add_compile_definitions(USE_POPPLER="1")
+    message(STATUS "Compiling with Poppler")
+endif()
+if(NOT WITHOUT_QTPDF AND Qt6Pdf_FOUND)
+    set(USE_QT6PDF TRUE)
+    add_compile_definitions(USE_QTPDF="1")
+    message(STATUS "Compiling with Qt6 PDF")
+endif()
+if (NOT USE_POPPLER AND NOT USE_QT6PDF)
+    message(FATAL_ERROR "No PDF renderer available")
+endif()
 
 # add source path to include directories
 target_include_directories(${PROJECT_NAME} PRIVATE

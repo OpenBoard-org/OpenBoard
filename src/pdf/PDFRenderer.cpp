@@ -31,10 +31,19 @@
 
 #include "PDFRenderer.h"
 
+#ifdef USE_POPPLER
 #include "XPDFRenderer.h"
+#endif
+#ifdef USE_QTPDF
+#include "QtPDFRenderer.h"
+#endif
+#if defined(USE_POPPLER) && defined(USE_QTPDF)
+#include "core/UBSettings.h"
+#endif
 
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
+
 #include "core/memcheck.h"
 
 
@@ -57,7 +66,26 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     }
     else
     {
-        PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
+        PDFRenderer* newRenderer{nullptr};
+
+#if defined(USE_POPPLER) && defined(USE_QTPDF)
+        bool usePoppler = UBSettings::settings()->value("PDF/PDFRenderer", "qtpdf").toString().compare("poppler", Qt::CaseInsensitive) == 0;
+
+        if (usePoppler)
+        {
+            newRenderer = new XPDFRenderer(filename, importingFile);
+        }
+        else
+        {
+            newRenderer = new QtPDFRenderer;
+        }
+#elif defined(USE_POPPLER)
+        newRenderer = new XPDFRenderer(filename, importingFile);
+#elif defined(USE_QTPDF)
+        newRenderer = new QtPDFRenderer;
+#else
+#error No PDF renderer available
+#endif
 
         newRenderer->setRefCount(0);
         newRenderer->setFileUuid(uuid);
@@ -65,7 +93,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
         QFile file(filename);
         if (file.open(QIODevice::ReadOnly))
         {
-            newRenderer->setFileData(file.readAll());
+            newRenderer->load(file.readAll());
             file.close();
         }
         else

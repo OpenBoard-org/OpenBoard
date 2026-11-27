@@ -35,11 +35,19 @@ elseif(QT_VERSION STREQUAL "6")
         ${QT_COMPONENTS}
         SvgWidgets
         LinguistTools
+        OPTIONAL_COMPONENTS Pdf
     )
 
     target_link_libraries(${PROJECT_NAME}
         Qt6::SvgWidgets
     )
+
+    if(Qt6Pdf_FOUND)
+        message(STATUS "Qt6 PDF module found")
+        target_link_libraries(${PROJECT_NAME}
+            Qt6::Pdf
+        )
+    endif()
 else()
     message(FATAL_ERROR "Qt Version ${QT_VERSION} not supported")
 endif()

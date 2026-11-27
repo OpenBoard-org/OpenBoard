@@ -9,7 +9,7 @@ if (Poppler_FOUND)
     )
 else()
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(Poppler REQUIRED IMPORTED_TARGET poppler poppler-cpp)
+    pkg_check_modules(Poppler IMPORTED_TARGET poppler poppler-cpp)
 
     if (Poppler_FOUND)
         target_link_libraries(${PROJECT_NAME} 
