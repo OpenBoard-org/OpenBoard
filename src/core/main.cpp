@@ -46,7 +46,16 @@
 #endif
 */
 
+// Lines of OpenBoard.log emitted before its location is known: before the arguments are read
+// (-v), or before the data directory is decided (configuration files read, configured data
+// directory checked, user asked). They are written as soon as the log file is known.
+static QStringList sPendingLogLines;
+static const int maxPendingLogLines = 1000;
+
 void ub_message_output(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
     // We must temporarily remove the handler to avoid the infinite recursion of
     // ub_message_output -> qt_message_output -> ub_message_output -> qt_message_output ...
     QtMessageHandler previousHandler = qInstallMessageHandler(0);
@@ -63,7 +72,19 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
     qt_message_output(type, context, msg);
 #endif
 
-    if (UBApplication::app() && UBApplication::app()->isVerbose()) {
+    const QString line = QDateTime::currentDateTime().toString(Qt::ISODateWithMs) + "      " + msg;
+    UBApplication* app = UBApplication::app();
+
+    if (!app || !app->isVerbosityKnown() || !UBSettings::isDataDirectoryKnown())
+    {
+        // userDataDirectory() is not called here: it may check the configured path, or log itself
+        if (sPendingLogLines.size() < maxPendingLogLines)
+        {
+            sPendingLogLines << line;
+        }
+    }
+    else if (app->isVerbose())
+    {
         QString logFileNamePath = UBSettings::userDataDirectory() + "/log/"+ qApp->applicationName() + ".log";
         QFile logFile(logFileNamePath);
 
@@ -72,10 +93,25 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
         if (logFile.open(QIODevice::Append | QIODevice::Text)) {
             QTextStream out(&logFile);
-            out << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
-                << "      " << msg << "\n";
+
+            for (const QString& pendingLine : std::as_const(sPendingLogLines))
+            {
+                out << pendingLine << "\n";
+            }
+
+            out << line << "\n";
             logFile.close();
+            sPendingLogLines.clear();
         }
+        else if (sPendingLogLines.size() < maxPendingLogLines)
+        {
+            // log directory not created yet, or location not available: written with a later line
+            sPendingLogLines << line;
+        }
+    }
+    else
+    {
+        sPendingLogLines.clear();
     }
 
     qInstallMessageHandler(previousHandler);

@@ -45,8 +45,13 @@ class PDFRenderer : public QObject
     Q_OBJECT
 
     public:
-        static PDFRenderer* rendererForUuid(const QUuid &uuid, const QString &filename, bool importingFile = false);
+        // the renderer of the PDF file with this uuid, shared by its pages; load() gives it the content of the file
+        static PDFRenderer* rendererForUuid(const QUuid &uuid);
         virtual ~PDFRenderer();
+
+        // the content of the PDF file, kept in memory: the file is not accessed anymore when rendering.
+        // Ignored if a valid PDF is already loaded.
+        virtual void load(const QByteArray &fileData) = 0;
 
         virtual bool isValid() const = 0;
 
@@ -70,13 +75,16 @@ class PDFRenderer : public QObject
 
         virtual void render(QPainter *p, int pageNumber, bool const cacheAllowed, const QRectF &bounds = QRectF()) = 0;
 
+    signals:
+        // a valid PDF was loaded, e.g. after its file could not be read when its pages were read
+        void loaded();
+
     private:
         QAtomicInt mRefCount;
         QByteArray mFileData;
         QUuid mFileUuid;
 
         void setRefCount(const QAtomicInt &refCount);
-        void setFileData(const QByteArray &fileData);
         void setFileUuid(const QUuid &fileUuid);
 
         static QMap< QUuid, QPointer<PDFRenderer> > sRenderers;
@@ -84,6 +92,7 @@ class PDFRenderer : public QObject
     protected:
         int dpiForRendering;
         PDFRenderer();
+        void setFileData(const QByteArray &fileData);
 };
 
 #endif // PDFRENDERER_H

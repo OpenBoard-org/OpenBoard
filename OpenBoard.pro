@@ -125,6 +125,7 @@ win32 {
    include($$THIRD_PARTY_PATH/quazip/quazip.pri)
 
    RC_FILE = resources/win/OpenBoard.rc
+   QMAKE_MANIFEST = resources/win/OpenBoard.exe.manifest
    CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
@@ -184,7 +185,7 @@ macx {
    INCLUDEPATH += /opt/local/include/poppler
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 13
 
    # For universal builds
    QMAKE_APPLE_DEVICE_ARCHS=x86_64 arm64

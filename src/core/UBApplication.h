@@ -104,6 +104,8 @@ class UBApplication : public SingleApplication
         bool eventFilter(QObject *obj, QEvent *event);
 
         bool isVerbose() { return mIsVerbose;}
+        // false until the arguments were read: whether to write OpenBoard.log is not known yet
+        bool isVerbosityKnown() const { return mVerbosityKnown; }
         void setVerbose(bool verbose){mIsVerbose = verbose;}
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
@@ -136,12 +138,18 @@ class UBApplication : public SingleApplication
         void showMinimized();
 //#endif
         void onScreenCountChanged(int newCount);
+        void onCommitDataRequest(QSessionManager& manager);
 
     private:
         void updateProtoActionsState();
         void setupTranslators(QStringList args);
+        void checkDataDirectory();
+        void showLocalDataDirectoryWarning();
+        void setupStorageIndicator();
+        void showRecoveryReport();
         QList<QMenu*> mProtoMenus;
-        bool mIsVerbose;
+        bool mIsVerbose{false};
+        bool mVerbosityKnown{false};
         QString checkLanguageAvailabilityForSankore(QString& language);
     protected:
 /*

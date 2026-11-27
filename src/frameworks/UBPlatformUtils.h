@@ -195,6 +195,8 @@ public:
         static QString applicationTemplateDirectory();
         static void hideFile(const QString &filePath);
         static void setFileType(const QString &filePath, unsigned long fileType);
+        // true if the entries of an existing directory can be read
+        static bool canListDirectory(const QString& directory);
         static void fadeDisplayOut();
         static void fadeDisplayIn();
         static QString translationPath(QString pFilePrefix, QString pLanguage);
@@ -218,6 +220,17 @@ public:
         static void toggleFinder(const bool on);
 
         static bool errorOpeningVirtualKeyboard;
+#endif
+        enum SessionType {
+            UNKNOWN,
+            X11,
+            WAYLAND
+        };
+
+#ifdef Q_OS_LINUX
+        static SessionType sessionType();
+#else
+        static SessionType sessionType() { return UNKNOWN; }
 #endif
 };
 

@@ -85,10 +85,19 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
-    adjustScreensPreferences();
 
     connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreensPreferences);
+
+    // apply screen settings when the dialog is closed, also by Esc or the window close button
+    connect(mPreferencesWindow, &QDialog::finished, this, [this](){
+        if (mScreenList != UBSettings::settings()->appScreenList->get().toStringList())
+        {
+            UBSettings::settings()->appScreenList->set(mScreenList);
+        }
+    });
+
     wire();
+    adjustScreensPreferences();
 }
 
 
@@ -136,6 +145,8 @@ void UBPreferencesController::adjustScreensPreferences()
         QVariant value = UBSettings::settings()->value(path);
         UBSettings::settings()->appScreenList->set(value);
         mPreferencesUI->screenList->loadScreenList(value.toStringList());
+        // keep in sync even if the loaded text is not accepted by the validator
+        mScreenList = value.toStringList();
     }
 }
 
@@ -158,7 +169,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
     connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
-        settings->appScreenList->set(screenList);
+        mScreenList = screenList;
 
         if (!mScreenConfigurationPath.isEmpty())
         {

@@ -24,6 +24,8 @@ HEADERS +=  \
     src/gui/UBToolWidget.h \
     src/gui/UBSpinningWheel.h \
     src/gui/UBZoomPalette.h \
+    src/gui/UBNotification.h \
+    src/gui/UBStorageIndicator.h \
     src/gui/UBRubberBand.h \
     src/gui/UBDocumentToolsPalette.h \
     src/gui/UBWebToolsPalette.h \
@@ -73,6 +75,8 @@ SOURCES +=  \
     src/gui/UBToolWidget.cpp \
     src/gui/UBSpinningWheel.cpp \
     src/gui/UBZoomPalette.cpp \
+    src/gui/UBNotification.cpp \
+    src/gui/UBStorageIndicator.cpp \
     src/gui/UBRubberBand.cpp \
     src/gui/UBDocumentToolsPalette.cpp \
     src/gui/UBWebToolsPalette.cpp \

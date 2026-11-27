@@ -27,6 +27,7 @@
 
 #include "UBWidgetUpgradeAdaptor.h"
 
+#include "core/UBDocumentStorage.h"
 #include "core/UBPersistenceManager.h"
 #include "document/UBDocumentProxy.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -43,6 +44,13 @@ UBWidgetUpgradeAdaptor::UBWidgetUpgradeAdaptor()
 
 void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> proxy)
 {
+    // Checking the applications lists and reads all their files, and upgrading them writes them:
+    // while the document location is not available, it is done when the document is opened again.
+    if (!UBPersistenceManager::persistenceManager()->documentStorage()->isAvailable())
+    {
+        return;
+    }
+
     if (libraryWidgets.empty())
     {
         fillLibraryWidgets();
@@ -54,8 +62,15 @@ void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> pro
     for (const QString& widgetPath : widgetPaths) {
         // scan widget for use of incompatible APIs
         const auto apiUsage = scanDir(QDir(widgetPath));
-        bool needsUpgrade = apiUsage == UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
         Widget widget(widgetPath);
+
+        if (apiUsage == UBWidgetUpgradeAdaptor::ApiUsage::UNKNOWN || !widget.isReadable())
+        {
+            // not changed nor marked incompatible: checked again when the document is opened again
+            continue;
+        }
+
+        bool needsUpgrade = apiUsage == UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
 
         needsUpgrade |= !widget.hasUniqueId();
 
@@ -150,14 +165,21 @@ UBWidgetUpgradeAdaptor::ApiUsage UBWidgetUpgradeAdaptor::scanFile(const QFileInf
                 "(pageCount|currentPageNumber|pageThumbnail|locale|preference|preferenceKeys)"
                 "(?![^\\r\\n]*function)");
 
-    QFile file(info.filePath());
+    QByteArray data;
 
-    if (!file.open(QFile::ReadOnly))
+    switch (UBPersistenceManager::persistenceManager()->documentStorage()->read(info.filePath(), data))
     {
+    case UBDocumentStorage::ReadResult::Missing:
         return UBWidgetUpgradeAdaptor::ApiUsage::NO;
+
+    case UBDocumentStorage::ReadResult::Unavailable:
+        return UBWidgetUpgradeAdaptor::ApiUsage::UNKNOWN;
+
+    case UBDocumentStorage::ReadResult::Read:
+        break;
     }
 
-    QString content = file.readAll();
+    QString content = data;
 
     if (!apis.match(content).hasMatch())
     {
@@ -247,13 +269,13 @@ UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir), m_hasU
 
     // read config.xml
     QString configPath = QString("%0/config.xml").arg(dir);
+    QByteArray data;
+    const UBDocumentStorage::ReadResult result = UBPersistenceManager::persistenceManager()->documentStorage()->read(configPath, data);
 
-    QFile f(configPath);
+    m_readable = result != UBDocumentStorage::ReadResult::Unavailable;
 
-    if (f.open(QIODevice::ReadOnly))
+    if (result == UBDocumentStorage::ReadResult::Read)
     {
-        QByteArray data = f.readAll();
-
         // compute md5sum
         QByteArray hash = QCryptographicHash::hash(data, QCryptographicHash::Md5);
 
@@ -269,7 +291,6 @@ UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir), m_hasU
 
         QDomDocument domDoc;
         domDoc.setContent(data);
-        f.close();
         QDomElement root = domDoc.documentElement();
 
         if (m_id.isEmpty())
@@ -311,4 +332,9 @@ QString UBWidgetUpgradeAdaptor::Widget::version() const
 bool UBWidgetUpgradeAdaptor::Widget::hasUniqueId() const
 {
     return m_hasUniqueId;
+}
+
+bool UBWidgetUpgradeAdaptor::Widget::isReadable() const
+{
+    return m_readable;
 }

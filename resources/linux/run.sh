@@ -25,4 +25,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Add custom libraries to LD_LIBRARY_PATH
 # TODO: Remomve the need for this
-env LD_LIBRARY_PATH=$DIR/qt/lib:$LD_LIBRARY_PATH QT_PLUGIN_PATH=$DIR/qt/plugins $DIR/OpenBoard "$@"
+# Prefer X11 (XWayland in a Wayland session), as before; use Wayland directly when no X server is
+# available. A platform chosen by the user with QT_QPA_PLATFORM is kept.
+env LD_LIBRARY_PATH=$DIR/qt/lib:$LD_LIBRARY_PATH QT_PLUGIN_PATH=$DIR/qt/plugins \
+    QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-xcb;wayland}" $DIR/OpenBoard "$@"

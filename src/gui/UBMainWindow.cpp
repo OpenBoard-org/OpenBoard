@@ -243,6 +243,14 @@ void UBMainWindow::information(QString windowTitle, QString text)
     oneButtonMessageBox(windowTitle, text, QMessageBox::Information);
 }
 
+void UBMainWindow::nonModalInformation(QString windowTitle, QString text)
+{
+    QMessageBox* messageBox = new QMessageBox(QMessageBox::Information, windowTitle, text, QMessageBox::Ok, this);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setWindowModality(Qt::NonModal);
+    messageBox->show();
+}
+
 void UBMainWindow::showDownloadWidget()
 {
     if(NULL != mpDownloadWidget)

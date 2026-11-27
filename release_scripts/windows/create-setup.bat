@@ -19,8 +19,8 @@ set SCRIPT_PATH=%~dp0
 set PROJECT_ROOT=%SCRIPT_PATH%\..\..
 
 set APPLICATION_NAME=OpenBoard
-set QT_DIR=D:\qt\x64-windows
-set QT_BIN=%QT_DIR%\tools\Qt6\bin
+set QT_DIR=D:\Qt\6.11.2\msvc2022_64
+set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files (x86)
 
@@ -30,7 +30,7 @@ set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 6\iscc.exe
 set BUILD_DIR=%PROJECT_ROOT%\build\win32\release
 set LRELEASE=%QT_BIN%\lrelease.exe
-set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations\Qt6
+set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 

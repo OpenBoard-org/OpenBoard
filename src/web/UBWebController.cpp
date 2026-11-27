@@ -119,6 +119,19 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
     mInterceptor = new UBUserAgentInterceptor(userAgent.toUtf8(), mWebProfile);
 
+    // the language of the user interface, with and without its region (e.g. "fr-CH,fr"): without it,
+    // no Accept-Language header is sent and the web sites choose a language of their own
+    const QLocale locale;
+    QStringList languages{locale.bcp47Name()};
+    const QString language = locale.name().section('_', 0, 0);
+
+    if (!languages.contains(language))
+    {
+        languages << language;
+    }
+
+    mWebProfile->setHttpAcceptLanguage(languages.join(','));
+
 #if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     mWebProfile->setUrlRequestInterceptor(mInterceptor);
 #else

@@ -32,6 +32,9 @@
 #include <QtGui>
 #include <QtXml>
 
+#include "core/UBPersistenceJournal.h"
+#include "frameworks/UBFileSystemUtils.h"
+
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
@@ -81,23 +84,34 @@ UBMetadataDcSubsetAdaptor::~UBMetadataDcSubsetAdaptor()
 }
 
 
-void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
+bool UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
 {
     if(!QDir(proxy->persistencePath()).exists()){
         //In this case the a document is an empty document so we do not persist it
-        return;
+        return true;
     }
-    QString fileName = proxy->persistencePath() + "/" + metadataFilename;
-    qInfo() << "Persisting document metadata; path is" << fileName;
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    const QString metadataFile = fileName(proxy);
+    qInfo() << "Persisting document metadata; path is" << metadataFile;
+
+    if (!UBFileSystemUtils::writeFile(metadataFile, serialize(proxy)))
     {
-        qCritical() << "cannot open " << fileName << " for writing ...";
-        qCritical() << "error : "  << file.errorString();
-        return;
+        return false;
     }
 
-    QXmlStreamWriter xmlWriter(&file);
+    // a local copy stored by an earlier save would otherwise be written back over these metadata
+    UBPersistenceJournal::journal()->written(metadataFile);
+    return true;
+}
+
+QString UBMetadataDcSubsetAdaptor::fileName(std::shared_ptr<UBDocumentProxy> proxy)
+{
+    return proxy->persistencePath() + "/" + metadataFilename;
+}
+
+QByteArray UBMetadataDcSubsetAdaptor::serialize(std::shared_ptr<UBDocumentProxy> proxy)
+{
+    QByteArray data;
+    QXmlStreamWriter xmlWriter(&data);
     xmlWriter.setAutoFormatting(true);
 
     xmlWriter.writeStartDocument();
@@ -130,8 +144,7 @@ void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
 
     xmlWriter.writeEndDocument();
 
-    file.flush();
-    file.close();
+    return data;
 }
 
 

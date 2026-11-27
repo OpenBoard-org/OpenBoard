@@ -1563,8 +1563,14 @@ void UBGraphicsScene::saveWidgetSnapshots()
         if (item->type() == UBGraphicsItemType::GraphicsWidgetItemType)
         {
             UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem *>(item);
-            widget->takeSnapshot();
-            widget->saveSnapshot();
+
+            // an application which is not loaded, e.g. whose files could not be read yet, would
+            // replace its snapshot with an empty image
+            if (widget->hasLoadedSuccessfully())
+            {
+                widget->takeSnapshot();
+                widget->saveSnapshot();
+            }
         }
     }
 

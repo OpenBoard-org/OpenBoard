@@ -52,10 +52,8 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         QByteArray fileData() const;
 
-        void setFileData(const QByteArray& pFileData)
-        {
-            mFileData = pFileData;
-        }
+        // the SVG content of the item, which may also arrive after the item was created
+        void setFileData(const QByteArray& pFileData);
 
         enum { Type = UBGraphicsItemType::SvgItemType };
 

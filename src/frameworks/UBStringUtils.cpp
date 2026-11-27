@@ -142,7 +142,7 @@ QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
 
 QString UBStringUtils::toLittleEndian(const QDateTime& dateTime)
 {
-    return dateTime.toUTC().toString("dd/MM/yyyy hh:mm");
+    return dateTime.toLocalTime().toString("dd/MM/yyyy hh:mm");
 }
 
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)

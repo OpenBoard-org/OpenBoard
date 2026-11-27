@@ -34,6 +34,7 @@
 #include <QDBusMetaType>
 #include <QProcessEnvironment>
 
+#include <dirent.h>
 #include <unistd.h>
 #include <X11/keysym.h>
 
@@ -103,6 +104,43 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     Q_UNUSED(fileType)
 
     // No fileType equivalent on Linux
+}
+
+bool UBPlatformUtils::canListDirectory(const QString& directory)
+{
+    DIR* handle = opendir(QFile::encodeName(directory).constData());
+
+    if (!handle)
+    {
+        return false;
+    }
+
+    closedir(handle);
+    return true;
+}
+
+UBPlatformUtils::SessionType UBPlatformUtils::sessionType()
+{
+    /*
+     * We use XDG_SESSION_TYPE here instead of QGuiApplication::platformName(), because
+     * the platformName just says what Qt plugin is used to access the platform, while
+     * XDG_SESSION_TYPE is the actual type of the session. E.g. if we're on Wayland,
+     * but use the xcb platform plugin using xwayland, then platform name returns "xdg"
+     * just as if we're running on X11. However we would still have to use the desktop
+     * portal to access screen content outside of our application.
+     */
+    QString xdgSessionType = QProcessEnvironment::systemEnvironment().value("XDG_SESSION_TYPE", "");
+
+    if (xdgSessionType == "x11")
+    {
+        return X11;
+    }
+    else if (xdgSessionType == "wayland")
+    {
+        return WAYLAND;
+    }
+
+    return UNKNOWN;
 }
 
 void UBPlatformUtils::fadeDisplayOut()
