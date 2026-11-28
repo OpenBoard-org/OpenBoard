@@ -141,7 +141,7 @@
             "country":"Rwanda"
         },
         "BI":{
-            "city":"Bujumbura",
+            "city":"Gitega",
             "country":"Burundi"
         },
         "CG":{
@@ -153,7 +153,7 @@
             "country":"Gabon"
         },
         "GQ":{
-            "city":"Malabo",
+            "city":"Ciudad de la Paz",
             "country":"Equatorial Guinea"
         },
         "TZ":{
@@ -198,7 +198,7 @@
         },
         "SZ":{
             "city":"Mbabane",
-            "country":"Swaziland"
+            "country":"Eswatini"
         },
         "MG":{
             "city":"Antananarivo",
@@ -458,7 +458,7 @@
         },
         "MK":{
             "city":"Skopje",
-            "country":"Macedonia"
+            "country":"North Macedonia"
         },
         "MT":{
             "city":"Valetta",
@@ -851,7 +851,7 @@
             "country":"Руанда"
         },
         "BI":{
-            "city":"Бужумбура",
+            "city":"Гитега",
             "country":"Бурунди"
         },
         "CG":{
@@ -863,7 +863,7 @@
             "country":"Габон"
         },
         "GQ":{
-            "city":"Малабо",
+            "city":"Сьюдад-де-ла-Пас",
             "country":"Экваториальная Гвинея"
         },
         "TZ":{
@@ -908,7 +908,7 @@
         },
         "SZ":{
             "city":"Мбабане",
-            "country":"Свазиленд"
+            "country":"Эсватини"
         },
         "MG":{
             "city":"Антананариву",
@@ -1168,7 +1168,7 @@
         },
         "MK":{
             "city":"Скопье",
-            "country":"Македония"
+            "country":"Северная Македония"
         },
         "MT":{
             "city":"Валетта",
@@ -1561,7 +1561,7 @@
             "country":"Rwanda"
         },
         "BI":{
-            "city":"Bujumbura",
+            "city":"Gitega",
             "country":"Burundi"
         },
         "CG":{
@@ -1573,7 +1573,7 @@
             "country":"Gabon"
         },
         "GQ":{
-            "city":"Malabo",
+            "city":"Ciudad de la Paz",
             "country":"Guinée Equatoriale"
         },
         "TZ":{
@@ -1618,7 +1618,7 @@
         },
         "SZ":{
             "city":"Mbabane",
-            "country":"Swaziland"
+            "country":"Eswatini"
         },
         "MG":{
             "city":"Antananarivo",
@@ -1878,7 +1878,7 @@
         },
         "MK":{
             "city":"Skopje",
-            "country":"Macédoine"
+            "country":"Macédoine du Nord"
         },
         "MT":{
             "city":"La Valette",
@@ -2271,7 +2271,7 @@
             "country":"Rwanda"
         },
         "BI":{
-            "city":"Bujumbura",
+            "city":"Gitega",
             "country":"Burundi"
         },
         "CG":{
@@ -2328,7 +2328,7 @@
         },
         "SZ":{
             "city":"Mbabane",
-            "country":"Svazijsko"
+            "country":"Eswatini"
         },
         "MG":{
             "city":"Antananarivo",
@@ -2588,7 +2588,7 @@
         },
         "MK":{
             "city":"Skopje",
-            "country":"Macedónsko"
+            "country":"Severné Macedónsko"
         },
         "MT":{
             "city":"Valetta",
