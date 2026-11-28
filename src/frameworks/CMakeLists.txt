@@ -19,7 +19,7 @@ target_sources(openboard PRIVATE
     UBVersion.h
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD|Linux")
     target_sources(openboard PRIVATE
         UBPlatformUtils_linux.cpp
     )
