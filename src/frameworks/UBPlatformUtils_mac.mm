@@ -629,16 +629,23 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
             pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
         pWidget->show();
     } else {
-        pWidget->showMaximized();
+        // Determine which screen the widget should be fullscreened on.
+        // Use the widget's current screen association first, then fall back.
+        QScreen *screen = pWidget->screen();
+        if (!screen)
+            screen = QGuiApplication::screenAt(pWidget->geometry().center());
+        if (!screen)
+            screen = QGuiApplication::primaryScreen();
+        if (!screen)
+            return;
 
-        /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
-         * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
-         * screen area minus the menu bar and dock area). So we have to manually resize it to the
-         * total screen height, and move it up to the top of the screen (y=0 position). */
-
-        QRect currentScreenRect = QGuiApplication::screenAt(pWidget->geometry().topLeft())->geometry();
-        pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
-        pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+        // Avoid showMaximized() which triggers macOS window manager behavior
+        // (can relocate to different desktop/Space or fight manual geometry).
+        // Instead, show normally and manually set geometry to fill the screen.
+        pWidget->showNormal();
+        pWidget->setGeometry(screen->geometry());
+        pWidget->raise();
+        pWidget->activateWindow();
     }
 }
 
